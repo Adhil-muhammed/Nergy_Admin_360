@@ -6,7 +6,7 @@ export function Master() {
     <BrowserRouter>
       <Routes>
         <Route exact element={<Login />} path={"/"} />
-        <Route exact element={<Dashboard />} path={"/admin"} />
+        <Route exact element={<Dashboard />} path={"/admin/*"} />
       </Routes>
     </BrowserRouter>
   );
