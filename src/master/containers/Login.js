@@ -1,6 +1,16 @@
-import { Input, Button } from "reactstrap";
+import { Input, Button, Spinner } from "reactstrap";
+import { useAuthenticate } from "..";
 
 export function Login() {
+  const { authenticateState, setAuthenticateState, mutation } = useAuthenticate();
+  const { mutate, isLoading } = mutation;
+  const onsubmit = () => {
+    setAuthenticateState((draft) => {
+      draft.isValidate = true;
+    });
+    mutate(authenticateState.credential);
+  };
+
   return (
     <div>
       <title>Login - Mazer Admin Dashboard</title>
@@ -17,12 +27,19 @@ export function Login() {
               <p className="auth-subtitle mb-5">
                 Log in with your data that you entered during registration.
               </p>
-              <form action="index.html">
+              <form>
                 <div className="form-group position-relative has-icon-left mb-4">
                   <Input
                     type="text"
                     className="form-control form-control-xl"
                     placeholder="Username"
+                    value={authenticateState.userName}
+                    disabled={isLoading}
+                    onChange={(e) => {
+                      setAuthenticateState((draft) => {
+                        draft.credential.userName = e.target.value;
+                      });
+                    }}
                   />
                   <div className="form-control-icon">
                     <i className="bi bi-person" />
@@ -33,6 +50,13 @@ export function Login() {
                     type="password"
                     className="form-control form-control-xl"
                     placeholder="Password"
+                    disabled={isLoading}
+                    value={authenticateState.password}
+                    onChange={(e) => {
+                      setAuthenticateState((draft) => {
+                        draft.credential.password = e.target.value;
+                      });
+                    }}
                   />
                   <div className="form-control-icon">
                     <i className="bi bi-shield-lock" />
@@ -42,6 +66,7 @@ export function Login() {
                   <Input
                     className="form-check-input me-2"
                     type="checkbox"
+                    disabled={isLoading}
                     defaultValue
                     id="flexCheckDefault"
                   />
@@ -49,7 +74,15 @@ export function Login() {
                     Keep me logged in
                   </label>
                 </div>
-                <Button className="btn btn-primary btn-block btn-lg shadow-lg mt-5">Log in</Button>
+                <Button
+                  className="btn btn-primary btn-block btn-lg shadow-lg mt-5"
+                  disabled={isLoading}
+                  onClick={(e) => {
+                    onsubmit();
+                  }}
+                >
+                  {isLoading ? <Spinner type="border" color="light" /> : "Log in"}
+                </Button>
               </form>
               <div className="text-center mt-5 text-lg fs-4">
                 <p className="text-gray-600">

@@ -6,7 +6,7 @@ export function SideBar() {
           <div className="d-flex justify-content-between">
             <div className="logo">
               <a href="index.html">
-                <img src="assets/images/logo/logo.png" alt="Logo" srcSet />
+                <img src="assets/images/logo/logo.png" alt="Logo" />
               </a>
             </div>
             <div className="toggler">

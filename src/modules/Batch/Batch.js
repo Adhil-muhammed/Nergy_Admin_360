@@ -1,8 +1,4 @@
-import { useBatch } from ".";
-
 export function Batch() {
-  const { bartches } = useBatch();
-  console.log("bartches", bartches);
   return (
     <div className="page-heading">
       <div className="page-title">
