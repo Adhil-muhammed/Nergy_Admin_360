@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken } from "./helper";
+import { getToken } from ".";
 
 export const Axios = axios.create({
   baseURL: "http://n360-dev.azurewebsites.net/api/",
