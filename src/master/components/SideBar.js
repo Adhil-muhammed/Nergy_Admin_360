@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 export function SideBar() {
   return (
     <div id="sidebar" className="active">
@@ -20,14 +21,20 @@ export function SideBar() {
           <ul className="menu">
             <li className="sidebar-title">Menu</li>
             <li className="sidebar-item  ">
-              <a href="index.html" className="sidebar-link">
+              <NavLink to={"/admin"} className="sidebar-link">
                 <i className="bi bi-grid-fill" />
                 <span>Dashboard</span>
-              </a>
+              </NavLink>
+            </li>
+            <li className="sidebar-item  ">
+              <NavLink to={"batch"} href="index.html" className="sidebar-link">
+                <i className="bi bi-grid-fill" />
+                <span>Batch</span>
+              </NavLink>
             </li>
 
             <li className="sidebar-item  has-sub">
-              <a href="#" className="sidebar-link">
+              <a className="sidebar-link">
                 <i className="bi bi-collection-fill" />
                 <span>Extra Components</span>
               </a>

@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Footer, SideBar, Header } from "..";
-import { Batch } from "../../modules";
+import { Batch } from "modules/Batch";
 
 export function Dashboard() {
   return (
@@ -10,7 +10,7 @@ export function Dashboard() {
         <Header />
         <Routes>
           <Route element={<div>hi</div>} path={"/"} />
-          <Route element={<Batch />} path={"/batch"} />
+          <Route element={<Batch />} path={"/batch/*"} />
         </Routes>
         <Footer />
       </div>

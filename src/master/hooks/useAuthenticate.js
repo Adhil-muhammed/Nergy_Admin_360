@@ -13,7 +13,6 @@ export const useAuthenticate = () => {
 
   const mutation = useMutation(authenticate, {
     onSuccess: (data) => {
-      console.log(data);
       setAuthenticateState((draft) => {
         draft.isValidate = true;
       });

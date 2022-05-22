@@ -12,14 +12,22 @@ export const useBatch = () => {
     endDate: "",
     status: 0,
   });
+
   const queryClient = useQueryClient();
-  const batchesQuery = useQuery(GetBatchKey, getBatches);
+  const batchesQuery = useQuery(GetBatchKey, getBatches, { staleTime: Infinity });
 
   const createBatch = useMutation(createBatches, {
-    onMutate: {},
-    onSuccess: (data) => {},
-    onError: () => {
-      alert("there was an error");
+    onMutate: async (update) => {
+      await queryClient.cancelQueries(GetBatchKey);
+      const data = queryClient.getQueryData(GetBatchKey);
+      queryClient.setQueryData(GetBatchKey, (prevData) => {
+        let updatedData = [...prevData, update];
+        return updatedData;
+      });
+      return data;
+    },
+    onError: (e, newData, previousData) => {
+      queryClient.setQueryData(GetBatchKey, previousData);
     },
     onSettled: () => {
       queryClient.invalidateQueries("create");

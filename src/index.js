@@ -12,6 +12,7 @@ import "./assets/css/pages/auth.css";
 import "./assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js";
 // import "./assets/js/bootstrap.bundle.min.js";
 //import "./assets/js/mazer.js";
+import "react-datetime/css/react-datetime.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
