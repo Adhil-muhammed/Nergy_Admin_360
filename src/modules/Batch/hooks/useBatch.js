@@ -1,10 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
-import { getBatches, createBatches } from "..";
+import { getBatches, createBatches, updateBatches } from "..";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const GetBatchKey = "GET_BATCHES_API";
 
 export const useBatch = () => {
+  const history = useNavigate();
+  const location = useLocation();
   const [batch, setBatch] = useImmer({
     batchId: 0,
     name: "",
@@ -34,13 +37,48 @@ export const useBatch = () => {
     },
   });
 
+  const editBatch = useMutation(updateBatches, {
+    onMutate: async (update) => {
+      await queryClient.cancelQueries(GetBatchKey);
+      const data = queryClient.getQueryData(GetBatchKey);
+      queryClient.setQueryData(GetBatchKey, (prevData) => {
+        let updatedData = prevData.map((p) => {
+          let newData = { ...p };
+          if (p.batchId === update.batchId) {
+            newData.name = update.name;
+            newData.startDate = update.startDate;
+            newData.endDate = update.endDate;
+          }
+          return newData;
+        });
+        return updatedData;
+      });
+      return data;
+    },
+    onError: (e, newData, previousData) => {
+      queryClient.setQueryData(GetBatchKey, previousData);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("create");
+    },
+  });
+
   const onEdit = (id) => {
-    console.log("first", id);
+    const selectedBatch = batchesQuery.data.filter((s) => s.batchId === id)[0];
+    setBatch((draft) => {
+      draft.batchId = selectedBatch.batchId;
+      draft.endDate = selectedBatch.endDate;
+      draft.startDate = selectedBatch.startDate;
+      draft.name = selectedBatch.name;
+      draft.status = selectedBatch.status;
+      return draft;
+    });
+    history(`${location.pathname}/edit`);
   };
 
   const onDelete = (id) => {
     console.log("first", id);
   };
 
-  return { batch, setBatch, batchesQuery, createBatch, onEdit, onDelete };
+  return { batch, setBatch, batchesQuery, createBatch, editBatch, onEdit, onDelete };
 };
