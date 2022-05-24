@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useTable } from "react-table";
-import { ContentLayout, TableLayout } from "shared/components";
+import { ContentLayout, TableLayout, EditCell, DeleteCell } from "shared/components";
 import { BatchFilter } from "..";
 
 export const BatchList = (props) => {
@@ -18,6 +18,20 @@ export const BatchList = (props) => {
       {
         Header: "End",
         accessor: "endDate",
+      },
+
+      {
+        Header: "Edit",
+        accessor: "batchId",
+        id: "edtitBatch",
+        Cell: EditCell,
+      },
+      {
+        Header: "Delete",
+        id: "deleteBatch",
+        accessor: "batchId",
+        key: "deleteBatch",
+        Cell: DeleteCell,
       },
     ],
     []
