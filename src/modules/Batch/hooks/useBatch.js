@@ -34,5 +34,13 @@ export const useBatch = () => {
     },
   });
 
-  return { batch, setBatch, batchesQuery, createBatch };
+  const onEdit = (id) => {
+    console.log("first", id);
+  };
+
+  const onDelete = (id) => {
+    console.log("first", id);
+  };
+
+  return { batch, setBatch, batchesQuery, createBatch, onEdit, onDelete };
 };

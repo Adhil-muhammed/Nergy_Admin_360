@@ -1,10 +1,27 @@
 import React, { useMemo } from "react";
 import { useTable } from "react-table";
-import { ContentLayout, TableLayout, EditCell, DeleteCell } from "shared/components";
+import { ContentLayout, TableLayout } from "shared/components";
 import { BatchFilter } from "..";
+import { Button } from "reactstrap";
 
 export const BatchList = (props) => {
-  const { batches } = props;
+  const { batches, onEdit, onDelete } = props;
+
+  const EditCell = ({ value }) => {
+    return (
+      <Button className="btn btn-primary me-1 mb-1" onClick={() => onEdit(value)}>
+        Edit
+      </Button>
+    );
+  };
+  const DeleteCell = ({ value }) => {
+    return (
+      <Button className="btn btn-primary me-1 mb-1" onClick={() => onDelete(value)}>
+        Delete
+      </Button>
+    );
+  };
+
   const columns = useMemo(
     () => [
       {
