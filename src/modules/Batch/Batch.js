@@ -4,9 +4,19 @@ import { Routes, Route } from "react-router-dom";
 import React from "react";
 
 export const Batch = () => {
-  const { batch, setBatch, createBatch, batchesQuery, editBatch, onEdit, onDelete } = useBatch();
+  const {
+    batch,
+    setBatch,
+    createBatch,
+    batchesQuery,
+    editBatch,
+    deleteBatch,
+    isConfirmDelete,
+    onEdit,
+    onDelete,
+    onToggleModal,
+  } = useBatch();
   const { data, isLoading } = batchesQuery;
-
   return (
     <Routes>
       <Route
@@ -15,7 +25,15 @@ export const Batch = () => {
           isLoading || !data ? (
             <div>Loading</div>
           ) : (
-            <BatchList batches={data} onEdit={onEdit} onDelete={onDelete} />
+            <BatchList
+              batch={batch}
+              isConfirmDelete={isConfirmDelete}
+              deleteBatch={deleteBatch}
+              batches={data}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onToggleModal={onToggleModal}
+            />
           )
         }
       />
