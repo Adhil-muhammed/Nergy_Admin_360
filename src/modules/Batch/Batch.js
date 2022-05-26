@@ -16,35 +16,39 @@ export const Batch = () => {
     onDelete,
     onToggleModal,
   } = useBatch();
+
   const { data, isLoading } = batchesQuery;
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          isLoading || !data ? (
-            <div>Loading</div>
-          ) : (
-            <BatchList
-              batch={batch}
-              isConfirmDelete={isConfirmDelete}
-              deleteBatch={deleteBatch}
-              batches={data}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              onToggleModal={onToggleModal}
-            />
-          )
-        }
-      />
-      <Route
-        path="/create"
-        element={<CreateBatch batch={batch} setBatch={setBatch} createBatch={createBatch} />}
-      />
-      <Route
-        path="/edit"
-        element={<EditBatch batch={batch} setBatch={setBatch} editBatch={editBatch} />}
-      />
-    </Routes>
+    <>
+      {isLoading || !data ? (
+        <div>Loading</div>
+      ) : (
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <BatchList
+                batch={batch}
+                isConfirmDelete={isConfirmDelete}
+                deleteBatch={deleteBatch}
+                batches={data}
+                onDelete={onDelete}
+                onToggleModal={onToggleModal}
+              />
+            }
+          />
+          <Route
+            path="/create"
+            element={<CreateBatch batch={batch} setBatch={setBatch} createBatch={createBatch} />}
+          />
+          <Route
+            path="/edit/:batchId"
+            element={
+              <EditBatch batch={batch} setBatch={setBatch} editBatch={editBatch} onEdit={onEdit} />
+            }
+          />
+        </Routes>
+      )}
+    </>
   );
 };

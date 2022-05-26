@@ -3,12 +3,19 @@ import { useTable } from "react-table";
 import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
 import { BatchFilter } from "..";
 import { Button } from "reactstrap";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const BatchList = (props) => {
-  const { batch, batches, onEdit, onDelete, onToggleModal, isConfirmDelete, deleteBatch } = props;
+  const { batch, batches, onDelete, onToggleModal, isConfirmDelete, deleteBatch } = props;
 
+  const history = useNavigate();
+  const location = useLocation();
   const onConfirm = () => {
     deleteBatch.mutate(batch.batchId);
+  };
+
+  const onEdit = (batchId) => {
+    history(`${location.pathname}/edit/${batchId}`);
   };
 
   const EditCell = ({ value }) => {

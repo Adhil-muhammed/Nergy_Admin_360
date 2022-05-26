@@ -1,13 +1,13 @@
+import React from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
 import { getBatches, createBatches, updateBatches, deteleBatches } from "..";
-import { useNavigate, useLocation } from "react-router-dom";
 
 const GetBatchKey = "GET_BATCHES_API";
 
 export const useBatch = () => {
-  const history = useNavigate();
-  const location = useLocation();
+  const queryClient = useQueryClient();
+  const batchesQuery = useQuery(GetBatchKey, getBatches, { staleTime: Infinity });
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [batch, setBatch] = useImmer({
     batchId: 0,
@@ -16,9 +16,6 @@ export const useBatch = () => {
     endDate: "",
     status: 0,
   });
-
-  const queryClient = useQueryClient();
-  const batchesQuery = useQuery(GetBatchKey, getBatches, { staleTime: Infinity });
 
   const createBatch = useMutation(createBatches, {
     onMutate: async (update) => {
@@ -83,45 +80,58 @@ export const useBatch = () => {
     },
   });
 
-  const getSelectedBatch = (id) => {
-    const selectedBatch = batchesQuery.data.filter((s) => s.batchId === id)[0];
-    setBatch((draft) => {
-      draft.batchId = selectedBatch.batchId;
-      draft.endDate = selectedBatch.endDate;
-      draft.startDate = selectedBatch.startDate;
-      draft.name = selectedBatch.name;
-      draft.status = selectedBatch.status;
-      return draft;
-    });
-  };
+  const getSelectedBatch = React.useCallback(
+    (id) => {
+      const selectedBatch = batchesQuery.data.filter((s) => s.batchId === id)[0];
+      setBatch((draft) => {
+        draft.batchId = selectedBatch.batchId;
+        draft.endDate = selectedBatch.endDate;
+        draft.startDate = selectedBatch.startDate;
+        draft.name = selectedBatch.name;
+        draft.status = selectedBatch.status;
+        return draft;
+      });
+    },
+    [batchesQuery.data, setBatch]
+  );
 
-  const onEdit = (id) => {
-    const selectedBatch = batchesQuery.data.filter((s) => s.batchId === id)[0];
-    setBatch((draft) => {
-      draft.batchId = selectedBatch.batchId;
-      draft.endDate = selectedBatch.endDate;
-      draft.startDate = selectedBatch.startDate;
-      draft.name = selectedBatch.name;
-      draft.status = selectedBatch.status;
-      return draft;
-    });
-    history(`${location.pathname}/edit`);
-  };
+  const onEdit = React.useCallback(
+    (batchId) => {
+      if (batchId) {
+        const selectedBatch = batchesQuery.data.find((s) => s.batchId === batchId);
+        setBatch((draft) => {
+          draft.batchId = selectedBatch.batchId;
+          draft.endDate = selectedBatch.endDate;
+          draft.startDate = selectedBatch.startDate;
+          draft.name = selectedBatch.name;
+          draft.status = selectedBatch.status;
+          return draft;
+        });
+      }
+    },
+    [batchesQuery.data, setBatch]
+  );
 
-  const onDelete = (id) => {
-    getSelectedBatch(id);
-    setIsConfirmDelete((draft) => {
-      draft = true;
-      return draft;
-    });
-  };
+  const onDelete = React.useCallback(
+    (id) => {
+      getSelectedBatch(id);
+      setIsConfirmDelete((draft) => {
+        draft = true;
+        return draft;
+      });
+    },
+    [getSelectedBatch, setIsConfirmDelete]
+  );
 
-  const onToggleModal = (isOpen) => {
-    setIsConfirmDelete((draft) => {
-      draft = isOpen;
-      return draft;
-    });
-  };
+  const onToggleModal = React.useCallback(
+    (isOpen) => {
+      setIsConfirmDelete((draft) => {
+        draft = isOpen;
+        return draft;
+      });
+    },
+    [setIsConfirmDelete]
+  );
 
   return {
     batch,
