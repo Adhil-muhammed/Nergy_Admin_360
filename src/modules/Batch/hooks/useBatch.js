@@ -2,10 +2,12 @@ import React from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
 import { getBatches, createBatches, updateBatches, deteleBatches } from "..";
+import { useNavigate } from "react-router-dom";
 
 const GetBatchKey = "GET_BATCHES_API";
 
 export const useBatch = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const batchesQuery = useQuery(GetBatchKey, getBatches, { staleTime: Infinity });
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
@@ -58,6 +60,7 @@ export const useBatch = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries("create");
+      navigate("../batch", { replace: true });
     },
   });
 
