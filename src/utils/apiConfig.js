@@ -2,8 +2,8 @@ import axios from "axios";
 import { getToken } from ".";
 
 export const Axios = axios.create({
-  //baseURL: "http://n360-dev.azurewebsites.net/api/",
-  baseURL: "https://localhost:5001/api/",
+  baseURL: "http://n360-dev.azurewebsites.net/api/",
+  //baseURL: "https://localhost:5001/api/",
   headers: {
     "Content-Type": "application/json",
   },
