@@ -1,13 +1,26 @@
 import { ContentLayout } from "shared/components";
-import { Input, Button } from "reactstrap";
-import Datetime from "react-datetime";
+import { Input, Button, Toast } from "reactstrap";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const CreateRole = (props) => {
+  const history = useNavigate();
+  const location = useLocation();
   const { role, setRole, createRole } = props;
   const { name } = role;
 
   const onSubmit = () => {
     createRole.mutate(role);
+  };
+
+  const onReset = () => {
+    setRole((draft) => {
+      draft.name = "";
+      return draft;
+    });
+  };
+
+  const onCancel = () => {
+    history(`${location.pathname}`.replace("/create",""));
   };
 
   return (
@@ -46,10 +59,19 @@ export const CreateRole = (props) => {
                               onSubmit();
                             }}
                           >
-                            Click Me
+                            Create
                           </Button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1">
+                          <button type="reset" className="btn btn-light-secondary me-1 mb-1"
+                            onClick={() => {
+                              onReset();
+                            }}>
                             Reset
+                          </button>
+                          <button type="reset" className="btn btn-light-secondary me-1 mb-1"
+                            onClick={() => {
+                              onCancel();
+                            }}>
+                            Cancel
                           </button>
                         </div>
                       </div>
