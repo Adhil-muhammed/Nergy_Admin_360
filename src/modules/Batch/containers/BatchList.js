@@ -1,11 +1,22 @@
 import React, { useMemo } from "react";
 import { useTable } from "react-table";
-import { ContentLayout, TableLayout } from "shared/components";
+import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
 import { BatchFilter } from "..";
 import { Button } from "reactstrap";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const BatchList = (props) => {
-  const { batches, onEdit, onDelete } = props;
+  const { batch, batches, onDelete, onToggleModal, isConfirmDelete, deleteBatch } = props;
+
+  const history = useNavigate();
+  const location = useLocation();
+  const onConfirm = () => {
+    deleteBatch.mutate(batch.batchId);
+  };
+
+  const onEdit = (batchId) => {
+    history(`${location.pathname}/edit/${batchId}`);
+  };
 
   const EditCell = ({ value }) => {
     return (
@@ -14,6 +25,7 @@ export const BatchList = (props) => {
       </Button>
     );
   };
+
   const DeleteCell = ({ value }) => {
     return (
       <Button className="btn btn-primary me-1 mb-1" onClick={() => onDelete(value)}>
@@ -62,6 +74,15 @@ export const BatchList = (props) => {
     <ContentLayout title={"Batches"}>
       <BatchFilter />
       <TableLayout table={table} />
+      <ModalLayout
+        isOpen={isConfirmDelete}
+        title={"Confirm"}
+        message={`Are you sure? Do you want to delete batch ${batch.name}`}
+        onConfirm={() => {
+          onConfirm();
+        }}
+        onCancel={() => onToggleModal(false)}
+      />
     </ContentLayout>
   );
 };

@@ -1,10 +1,23 @@
 import { ContentLayout } from "shared/components";
 import { Input, Button } from "reactstrap";
 import Datetime from "react-datetime";
+import React from "react";
+import { useParams } from "react-router-dom";
+import moment from "moment";
 
 export const EditBatch = (props) => {
-  const { batch, setBatch, editBatch } = props;
+  const { batch, setBatch, editBatch, onEdit } = props;
   const { name, startDate, endDate } = batch;
+  const endDateVal = moment(endDate, "YYYY-MM-DD");
+  const startDateVal = moment(startDate, "YYYY-MM-DD");
+
+  let { batchId } = useParams();
+
+  React.useEffect(() => {
+    if (batchId) {
+      onEdit(parseInt(batchId.toString(), 10));
+    }
+  }, [batchId, onEdit]);
 
   const onStartDateChange = (m) => {
     const date = m.format("YYYY-MM-DD").toString();
@@ -60,7 +73,8 @@ export const EditBatch = (props) => {
                               dateformat="YYYY-MM-DD"
                               timeformat="{false}"
                               name="startDate"
-                              selected={startDate}
+                              selected={startDateVal}
+                              value={startDateVal}
                               onChange={onStartDateChange}
                             />
                           </div>
@@ -72,7 +86,8 @@ export const EditBatch = (props) => {
                               dateformat="YYYY-MM-DD"
                               timeformat="{false}"
                               name="endDate"
-                              selected={endDate}
+                              selected={endDateVal}
+                              value={endDateVal}
                               onChange={onEndDateChange}
                             />
                           </div>
