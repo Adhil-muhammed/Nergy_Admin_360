@@ -1,23 +1,32 @@
 import { ContentLayout } from "shared/components";
 import { Input, Button } from "reactstrap";
-import Datetime from "react-datetime";
+import React from "react";
+import { useParams } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const EditRole = (props) => {
   const history = useNavigate();
   const location = useLocation();
-  const { role, setRole, editRole } = props;
+  const { role, setRole, editRole, onEdit } = props;
   const { name } = role;
+
+  let { roleId } = useParams();
+
+  React.useEffect(() => {
+    if (roleId) {
+      onEdit(roleId, 10);
+    }
+  }, [roleId, onEdit]);
 
   const onSubmit = () => {
     editRole.mutate(role);
   };
   const onCancel = () => {
-    history(`${location.pathname}`.replace("/edit",""));
+    history(`${location.pathname}`.replace(`/edit/${roleId}`,""));
   };
 
   return (
-    <ContentLayout title={"Create New"}>
+    <ContentLayout title={"Update"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-md-6 col-12">

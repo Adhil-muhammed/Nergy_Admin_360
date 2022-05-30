@@ -15,7 +15,7 @@ export const updateRoles = async (role) => {
   return res.data;
 };
 
-export const deteleRoles = async (role) => {
-  const res = await Axios.delete(`/UserRoles/${role.roleId}`);
+export const deteleRoles = async (roleId) => {
+  const res = await Axios.delete(`/UserRoles/${roleId}`);
   return res.data;
 };

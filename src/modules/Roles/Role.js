@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import React from "react";
 
 export const Role = () => {
-  const { role, setRole, createRole, rolesQuery, editRole, onEdit, onDelete } = useRole();
+  const { role, setRole, createRole, rolesQuery, editRole, onEdit, onDelete, deleteRole, onToggleModal, isConfirmDelete } = useRole();
   const { data, isLoading } = rolesQuery;
 
   return (
@@ -15,7 +15,10 @@ export const Role = () => {
           isLoading || !data ? (
             <div>Loading</div>
           ) : (
-            <RoleList roles={data} onEdit={onEdit} onDelete={onDelete} />
+            <RoleList role={role}
+            isConfirmDelete={isConfirmDelete}
+            deleteRole={deleteRole}
+roles={data} onToggleModal={onToggleModal} onDelete={onDelete} />
           )
         }
       />
@@ -24,8 +27,8 @@ export const Role = () => {
         element={<CreateRole role={role} setRole={setRole} createRole={createRole} />}
       />
       <Route
-        path="/edit"
-        element={<EditRole role={role} setRole={setRole} editRole={editRole} />}
+        path="/edit/:roleId"
+        element={<EditRole role={role} setRole={setRole} editRole={editRole} onEdit={onEdit} />}
       />
     </Routes>
   );

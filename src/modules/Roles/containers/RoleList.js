@@ -1,11 +1,23 @@
 import React, { useMemo } from "react";
 import { useTable } from "react-table";
-import { ContentLayout, TableLayout } from "shared/components";
+import { ContentLayout, TableLayout,ModalLayout } from "shared/components";
 import { RoleFilter } from "..";
 import { Button } from "reactstrap";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const RoleList = (props) => {
-  const { roles, onEdit, onDelete } = props;
+  const { role, roles, onDelete, onToggleModal, isConfirmDelete, deleteRole } = props;
+
+  const history = useNavigate();
+  const location = useLocation();
+
+  const onConfirm = () => {
+    deleteRole.mutate(role.roleId);
+  };
+
+  const onEdit = (roleId) => {
+    history(`${location.pathname}/edit/${roleId}`);
+  };
 
   const EditCell = ({ value }) => {
     return (
@@ -53,6 +65,15 @@ export const RoleList = (props) => {
     <ContentLayout title={"Roles"}>
       <RoleFilter />
       <TableLayout table={table} />
+      <ModalLayout
+        isOpen={isConfirmDelete}
+        title={"Confirm"}
+        message={`Are you sure? Do you want to delete role ${role.name}`}
+        onConfirm={() => {
+          onConfirm();
+        }}
+        onCancel={() => onToggleModal(false)}
+      />
     </ContentLayout>
   );
 };

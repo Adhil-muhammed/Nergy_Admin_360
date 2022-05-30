@@ -1,5 +1,6 @@
 import { ContentLayout } from "shared/components";
-import { Input, Button, Toast } from "reactstrap";
+import { Input, Button } from "reactstrap";
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const CreateRole = (props) => {
@@ -22,6 +23,10 @@ export const CreateRole = (props) => {
   const onCancel = () => {
     history(`${location.pathname}`.replace("/create",""));
   };
+
+  React.useEffect(() => {
+    onReset();
+  }, [setRole]);
 
   return (
     <ContentLayout title={"Create New"}>
