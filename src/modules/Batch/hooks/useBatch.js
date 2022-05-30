@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
 import { getBatches, createBatches, updateBatches, deteleBatches } from "..";
 import { useNavigate } from "react-router-dom";
+import { successMessage, successDeletedMessage } from "utils";
 
 const GetBatchKey = "GET_BATCHES_API";
 
@@ -32,6 +33,9 @@ export const useBatch = () => {
     onError: (e, newData, previousData) => {
       queryClient.setQueryData(GetBatchKey, previousData);
     },
+    onSuccess: () => {
+      successMessage();
+    },
     onSettled: () => {
       queryClient.invalidateQueries("create");
     },
@@ -55,6 +59,9 @@ export const useBatch = () => {
       });
       return data;
     },
+    onSuccess: () => {
+      successMessage();
+    },
     onError: (e, newData, previousData) => {
       queryClient.setQueryData(GetBatchKey, previousData);
     },
@@ -76,6 +83,9 @@ export const useBatch = () => {
     },
     onError: (e, newData, previousData) => {
       queryClient.setQueryData(GetBatchKey, previousData);
+    },
+    onSuccess: () => {
+      successDeletedMessage();
     },
     onSettled: () => {
       queryClient.invalidateQueries("create");
@@ -100,19 +110,9 @@ export const useBatch = () => {
 
   const onEdit = React.useCallback(
     (batchId) => {
-      if (batchId) {
-        const selectedBatch = batchesQuery.data.find((s) => s.batchId === batchId);
-        setBatch((draft) => {
-          draft.batchId = selectedBatch.batchId;
-          draft.endDate = selectedBatch.endDate;
-          draft.startDate = selectedBatch.startDate;
-          draft.name = selectedBatch.name;
-          draft.status = selectedBatch.status;
-          return draft;
-        });
-      }
+      getSelectedBatch(batchId);
     },
-    [batchesQuery.data, setBatch]
+    [getSelectedBatch]
   );
 
   const onDelete = React.useCallback(

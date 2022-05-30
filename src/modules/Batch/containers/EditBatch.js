@@ -38,7 +38,7 @@ export const EditBatch = (props) => {
   };
 
   return (
-    <ContentLayout title={"Create New"}>
+    <ContentLayout title={"Update"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-md-6 col-12">
