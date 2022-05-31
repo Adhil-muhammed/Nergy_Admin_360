@@ -1,21 +1,22 @@
 import React, { useMemo } from "react";
 import { useTable } from "react-table";
 import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
-import { BatchFilter } from "..";
+import { StudentFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const StudentList = (props) => {
-  const { batch, batches, onDelete, onToggleModal, isConfirmDelete, deleteBatch } = props;
+  const { student, data, onDelete, onToggleModal, isConfirmDelete, deleteStudent } = props;
+  const { value: students } = data;
 
   const history = useNavigate();
   const location = useLocation();
   const onConfirm = () => {
-    deleteBatch.mutate(batch.batchId);
+    deleteStudent.mutate(student.studentId);
   };
 
-  const onEdit = (batchId) => {
-    history(`${location.pathname}/edit/${batchId}`);
+  const onEdit = (studentId) => {
+    history(`${location.pathname}/edit/${studentId}`);
   };
 
   const EditCell = ({ value }) => {
@@ -37,47 +38,48 @@ export const StudentList = (props) => {
   const columns = useMemo(
     () => [
       {
-        Header: "Name",
-        accessor: "name",
+        Header: "Registration Id",
+        accessor: "registrationId",
       },
       {
-        Header: "Start",
-        accessor: "startDate",
+        Header: "First Name",
+        accessor: "firstName",
       },
       {
-        Header: "End",
-        accessor: "endDate",
+        Header: "Last Name",
+        accessor: "lastName",
       },
 
       {
         Header: "Edit",
-        accessor: "batchId",
+        accessor: "studentId",
         id: "edtitBatch",
         Cell: EditCell,
       },
       {
         Header: "Delete",
         id: "deleteBatch",
-        accessor: "batchId",
+        accessor: "studentId",
         key: "deleteBatch",
         Cell: DeleteCell,
       },
     ],
     []
   );
+
   const table = useTable({
     columns,
-    data: batches,
+    data: students,
   });
 
   return (
-    <ContentLayout title={"Batches"}>
-      <BatchFilter />
+    <ContentLayout title={"Students"}>
+      <StudentFilter />
       <TableLayout table={table} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}
-        message={`Are you sure? Do you want to delete batch ${batch.name}`}
+        message={`Are you sure? Do you want to delete students ${students.name}`}
         onConfirm={() => {
           onConfirm();
         }}

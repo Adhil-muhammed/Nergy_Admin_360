@@ -7,7 +7,7 @@ export const Student = () => {
   const {
     student,
     setStudent,
-    batchesQuery,
+    studentsQuery,
     createStudent,
     editStudent,
     onEdit,
@@ -17,7 +17,7 @@ export const Student = () => {
     deleteStudent,
   } = useStudent();
 
-  const { data, isLoading } = batchesQuery;
+  const { data, isLoading } = studentsQuery;
   return (
     <>
       {isLoading || !data ? (
@@ -31,7 +31,7 @@ export const Student = () => {
                 student={student}
                 isConfirmDelete={isConfirmDelete}
                 deleteStudent={deleteStudent}
-                students={data}
+                data={data}
                 onDelete={onDelete}
                 onToggleModal={onToggleModal}
               />
@@ -48,7 +48,7 @@ export const Student = () => {
             }
           />
           <Route
-            path="/edit/:batchId"
+            path="/edit/:studentId"
             element={
               <EditStudent
                 student={student}

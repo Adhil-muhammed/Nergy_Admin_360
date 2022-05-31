@@ -10,7 +10,7 @@ const GetStudentKey = "GET_BATCHES_API";
 export const useStudent = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const batchesQuery = useQuery(GetStudentKey, getStudents, { staleTime: Infinity });
+  const studentsQuery = useQuery(GetStudentKey, getStudents, { staleTime: Infinity });
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [student, setStudent] = useImmer({
     studentId: 0,
@@ -103,7 +103,7 @@ export const useStudent = () => {
 
   const getSelectedStudent = React.useCallback(
     (id) => {
-      const selectedStudent = batchesQuery.data.filter((s) => s.studentId === id)[0];
+      const selectedStudent = studentsQuery.data.filter((s) => s.studentId === id)[0];
       setStudent((draft) => {
         draft.studentId = selectedStudent.studentId;
         draft.studentUserId = selectedStudent.studentUserId;
@@ -121,7 +121,7 @@ export const useStudent = () => {
         return draft;
       });
     },
-    [batchesQuery.data, setStudent]
+    [studentsQuery.data, setStudent]
   );
 
   const onEdit = React.useCallback(
@@ -155,7 +155,7 @@ export const useStudent = () => {
   return {
     student,
     setStudent,
-    batchesQuery,
+    studentsQuery,
     createStudent,
     editStudent,
     onEdit,
