@@ -44,6 +44,12 @@ export function SideBar() {
                 <span>Student</span>
               </NavLink>
             </li>
+            <li className="sidebar-item  ">
+              <NavLink to={"institute"} href="index.html" className="sidebar-link">
+                <i className="bi bi-grid-fill" />
+                <span>Institute</span>
+              </NavLink>
+            </li>
 
             <li className="sidebar-item  has-sub">
               <a className="sidebar-link">
