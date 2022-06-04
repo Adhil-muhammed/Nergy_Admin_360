@@ -1,27 +1,12 @@
 import { ContentLayout } from "shared/components";
 import { Input, Button } from "reactstrap";
-import Datetime from "react-datetime";
 
 export const CreateInstitute = (props) => {
-  const { batch, setBatch, createBatch } = props;
-  const { name, startDate, endDate } = batch;
-
-  const onStartDateChange = (m) => {
-    const date = m.format("YYYY-MM-DD").toString();
-    setBatch((draft) => {
-      draft.startDate = date;
-    });
-  };
-
-  const onEndDateChange = (m) => {
-    const date = m.format("YYYY-MM-DD").toString();
-    setBatch((draft) => {
-      draft.endDate = date;
-    });
-  };
+  const { institute, setInstitute, createInstitute } = props;
+  const { name } = institute;
 
   const onSubmit = () => {
-    createBatch.mutate(batch);
+    createInstitute.mutate(institute);
   };
 
   return (
@@ -43,37 +28,13 @@ export const CreateInstitute = (props) => {
                               id="first-name-vertical"
                               className="form-control"
                               name="name"
-                              placeholder="Batch Name"
+                              placeholder="Institute Name"
                               value={name}
                               onChange={(e) => {
-                                setBatch((draft) => {
+                                setInstitute((draft) => {
                                   draft.name = e.target.value;
                                 });
                               }}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-12">
-                          <div className="form-group">
-                            <label htmlFor="contact-info-vertical">Start Date</label>
-                            <Datetime
-                              dateformat="YYYY-MM-DD"
-                              timeformat="{false}"
-                              name="startDate"
-                              selected={startDate}
-                              onChange={onStartDateChange}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-12">
-                          <div className="form-group">
-                            <label htmlFor="contact-info-vertical">End Date</label>
-                            <Datetime
-                              dateformat="YYYY-MM-DD"
-                              timeformat="{false}"
-                              name="endDate"
-                              selected={endDate}
-                              onChange={onEndDateChange}
                             />
                           </div>
                         </div>
@@ -84,10 +45,10 @@ export const CreateInstitute = (props) => {
                               onSubmit();
                             }}
                           >
-                            Click Me
+                            Create
                           </Button>
                           <button type="reset" className="btn btn-light-secondary me-1 mb-1">
-                            Reset
+                            Cancel
                           </button>
                         </div>
                       </div>

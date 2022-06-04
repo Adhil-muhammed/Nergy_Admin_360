@@ -14,7 +14,7 @@ export const useInstitute = () => {
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [institute, setInstitute] = useImmer({
     instituteId: 0,
-    name: "string",
+    name: "",
   });
 
   const createInstitute = useMutation(createInstitutes, {
