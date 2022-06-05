@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Footer, SideBar, Header } from "..";
-import { Batch, Role, Student, Institute } from "modules";
+import { Batch, Role, Student, Institute, QuestionBanks } from "modules";
 
 export function Dashboard() {
   return (
@@ -14,6 +14,7 @@ export function Dashboard() {
           <Route element={<Role />} path={"/role/*"} />
           <Route element={<Student />} path={"/student/*"} />
           <Route element={<Institute />} path={"/institute/*"} />
+          <Route element={<QuestionBanks />} path={"/questionbanks/*"} />
         </Routes>
         <Footer />
       </div>

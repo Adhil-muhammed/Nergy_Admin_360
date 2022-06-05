@@ -50,6 +50,12 @@ export function SideBar() {
                 <span>Institute</span>
               </NavLink>
             </li>
+            <li className="sidebar-item  ">
+              <NavLink to={"questionbanks"} href="index.html" className="sidebar-link">
+                <i className="bi bi-grid-fill" />
+                <span>QuestionBanks</span>
+              </NavLink>
+            </li>
 
             <li className="sidebar-item  has-sub">
               <a className="sidebar-link">
