@@ -6,10 +6,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/vendors/bootstrap-icons/bootstrap-icons.css";
 import "./assets/css/app.css";
 import "./assets/css/pages/auth.css";
-
 import "./assets/vendors/perfect-scrollbar/perfect-scrollbar.css";
 import "./assets/css/pages/auth.css";
-// import "./assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js";
+import "./assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js";
+
 // import "./assets/js/bootstrap.bundle.min.js";
 //import "./assets/js/mazer.js";
 import "react-datetime/css/react-datetime.css";
