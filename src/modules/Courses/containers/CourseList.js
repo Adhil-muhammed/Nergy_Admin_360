@@ -16,7 +16,7 @@ export const CourseList = (props) => {
   };
 
   const onEdit = (courseId) => {
-    history(`${location.pathname}edit/${courseId}`);
+    history(`${location.pathname}/edit/${courseId}`);
   };
 
   const HasExam = ({ value }) => {
@@ -35,21 +35,21 @@ export const CourseList = (props) => {
     );
   };
 
-  // const EditCell = ({ value }) => {
-  //   return (
-  //     <Button className="btn btn-primary me-1 mb-1" onClick={() => onEdit(value)}>
-  //       Edit
-  //     </Button>
-  //   );
-  // };
+  const EditCell = ({ value }) => {
+    return (
+      <Button outline color="primary" onClick={() => onEdit(value)}>
+        Edit
+      </Button>
+    );
+  };
 
-  // const DeleteCell = ({ value }) => {
-  //   return (
-  //     <Button className="btn btn-primary me-1 mb-1" onClick={() => onDelete(value)}>
-  //       Delete
-  //     </Button>
-  //   );
-  // };
+  const DeleteCell = ({ value }) => {
+    return (
+      <Button color="danger" onClick={() => onDelete(value)}>
+        Delete
+      </Button>
+    );
+  };
 
   const columns = useMemo(
     () => [
@@ -75,19 +75,19 @@ export const CourseList = (props) => {
         accessor: "isContentEnabled",
         Cell: ContentEnabled,
       },
-      // {
-      //   Header: "Edit",
-      //   accessor: "courseId",
-      //   id: "editCourse",
-      //   Cell: EditCell,
-      // },
-      // {
-      //   Header: "Delete",
-      //   id: "deleteCourse",
-      //   accessor: "courseId",
-      //   key: "deleteCourse",
-      //   Cell: DeleteCell,
-      // },
+      {
+        Header: "Edit",
+        accessor: "courseId",
+        id: "editCourse",
+        Cell: EditCell,
+      },
+      {
+        Header: "Delete",
+        id: "deleteCourse",
+        accessor: "courseId",
+        // key: "deleteCourse",
+        Cell: DeleteCell,
+      },
     ],
     []
   );

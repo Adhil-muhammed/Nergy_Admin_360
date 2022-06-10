@@ -40,7 +40,8 @@ export const CreateInstitute = (props) => {
                         </div>
                         <div className="col-12 d-flex justify-content-end">
                           <Button
-                            className="btn btn-primary me-1 mb-1"
+                            className="me-1 mb-1"
+                            color="success"
                             onClick={() => {
                               onSubmit();
                             }}

@@ -2,14 +2,14 @@ import React from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
 import { getCourses, createCourses, updateCourses, deteleCourses } from "..";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { successMessage, successDeletedMessage } from "utils";
 
-const GetCourseKey = "GET_COURSE_API";
+const GetCourseKey = "GET_COURSES_API";
 
 export const useCourse = () => {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const coursesQuery = useQuery(GetCourseKey, getCourses, { staleTime: Infinity });
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
@@ -56,6 +56,13 @@ export const useCourse = () => {
           let newData = { ...p };
           if (p.courseId === update.courseId) {
             newData.name = update.name;
+            newData.description = update.description;
+            newData.instructions = update.instructions;
+            newData.courseImage = update.courseImage;
+            newData.certificateFile = update.certificateFile;
+            newData.contentPath = update.contentPath;
+            newData.hasExam = update.hasExam;
+            newData.isContentEnabled = update.isContentEnabled;
           }
           return newData;
         });
@@ -103,6 +110,13 @@ export const useCourse = () => {
       setCourse((draft) => {
         draft.courseId = selectedCourse.courseId;
         draft.name = selectedCourse.name;
+        draft.description = selectedCourse.description;
+        draft.instructions = selectedCourse.instructions;
+        draft.courseImage = selectedCourse.courseImage;
+        draft.certificateFile = selectedCourse.certificateFile;
+        draft.contentPath = selectedCourse.contentPath;
+        draft.hasExam = selectedCourse.hasExam;
+        draft.isContentEnabled = selectedCourse.isContentEnabled;
         return draft;
       });
     },

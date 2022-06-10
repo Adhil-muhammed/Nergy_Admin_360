@@ -27,7 +27,7 @@ export const QuestionBanksList = (props) => {
 
   const EditCell = ({ value }) => {
     return (
-      <Button className="btn btn-primary me-1 mb-1" onClick={() => onEdit(value)}>
+      <Button outline color="primary" onClick={() => onEdit(value)}>
         Edit
       </Button>
     );
@@ -35,7 +35,7 @@ export const QuestionBanksList = (props) => {
 
   const DeleteCell = ({ value }) => {
     return (
-      <Button className="btn btn-primary me-1 mb-1" onClick={() => onDelete(value)}>
+      <Button color="danger" onClick={() => onDelete(value)}>
         Delete
       </Button>
     );

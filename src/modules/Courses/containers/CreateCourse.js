@@ -85,7 +85,6 @@ export const CreateCourse = (props) => {
                               id="first-exam-vertical"
                               className="form-check-input"
                               name="hasExam"
-                              value={hasExam}
                               onChange={(e) => {
                                 setCourse((draft) => {
                                   draft.hasExam = e.target.checked;
@@ -100,7 +99,6 @@ export const CreateCourse = (props) => {
                               id="first-content-vertical"
                               className="form-check-input"
                               name="isContentEnabled"
-                              value={isContentEnabled}
                               onChange={(e) => {
                                 setCourse((draft) => {
                                   draft.isContentEnabled = e.target.checked;
@@ -111,7 +109,8 @@ export const CreateCourse = (props) => {
                         </div>
                         <div className="col-12 d-flex justify-content-end">
                           <Button
-                            className="btn btn-primary me-1 mb-1"
+                            className="me-1 mb-1"
+                            color="success"
                             onClick={() => {
                               onSubmit();
                             }}

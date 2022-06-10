@@ -9,8 +9,8 @@ export const InstituteIdFilter = () => {
   };
   return (
     <div>
-      <div>
-        <Button color="primary" onClick={gotoCreate}>
+      <div className="mb-4">
+        <Button color="primary" size="sm" onClick={gotoCreate}>
           Create New
         </Button>
       </div>
