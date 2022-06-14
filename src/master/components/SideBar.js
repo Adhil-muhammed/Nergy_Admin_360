@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import Nergy360Logo from "../../assets/images/logo/360logo.png";
+
 export function SideBar() {
   return (
     <div id="sidebar" className="active">
@@ -6,8 +8,8 @@ export function SideBar() {
         <div className="sidebar-header">
           <div className="d-flex justify-content-between">
             <div className="logo">
-              <a href="index.html">
-                <img src="assets/images/logo/logo.png" alt="Logo" />
+              <a href="/">
+                <img src={Nergy360Logo} alt="Logo" />
               </a>
             </div>
             <div className="toggler">

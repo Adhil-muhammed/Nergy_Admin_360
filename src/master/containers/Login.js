@@ -1,6 +1,6 @@
 import { Input, Button, Spinner } from "reactstrap";
 import { useAuthenticate } from "..";
-
+import Nergy360Logo from "../../assets/images/logo/360logo.png";
 export function Login() {
   const { authenticateState, setAuthenticateState, mutation } = useAuthenticate();
   const { mutate, isLoading } = mutation;
@@ -19,8 +19,8 @@ export function Login() {
           <div className="col-lg-5 col-12">
             <div id="auth-left">
               <div className="auth-logo">
-                <a href="index.html">
-                  <img src="./assets/images/logo/logo.png" alt="Logo" />
+                <a href="/">
+                  <img src={Nergy360Logo} alt="Logo" />
                 </a>
               </div>
               <h1 className="auth-title">Log in.</h1>
