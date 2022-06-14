@@ -2,16 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Master } from "./master";
 import reportWebVitals from "./reportWebVitals";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/vendors/bootstrap-icons/bootstrap-icons.css";
+import "./assets/css/bootstrap.css";
 import "./assets/css/app.css";
 import "./assets/css/pages/auth.css";
 import "./assets/vendors/perfect-scrollbar/perfect-scrollbar.css";
-import "./assets/css/pages/auth.css";
 import "./assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js";
 
-// import "./assets/js/bootstrap.bundle.min.js";
-//import "./assets/js/mazer.js";
 import "react-datetime/css/react-datetime.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

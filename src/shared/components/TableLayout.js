@@ -3,7 +3,7 @@ export const TableLayout = (props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = table;
   return (
     <table {...getTableProps()} className="table table-hover">
-      <thead className="thead-dark">
+      <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
