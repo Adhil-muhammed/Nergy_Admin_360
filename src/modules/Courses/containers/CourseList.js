@@ -6,8 +6,7 @@ import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const CourseList = (props) => {
-  const { course, courses, onDelete, onToggleModal, isConfirmDelete, deleteCourse } =
-    props;
+  const { course, courses, onDelete, onToggleModal, isConfirmDelete, deleteCourse } = props;
 
   const history = useNavigate();
   const location = useLocation();
@@ -20,19 +19,11 @@ export const CourseList = (props) => {
   };
 
   const HasExam = ({ value }) => {
-    return (
-      <span style={{color: value ? '#495057' : '#b61c1c'}}>
-        {value ? 'True' : 'False'}
-      </span>
-    );
+    return <span style={{ color: value ? "#495057" : "#b61c1c" }}>{value ? "True" : "False"}</span>;
   };
 
   const ContentEnabled = ({ value }) => {
-    return (
-      <span style={{color: value ? '#495057' : '#b61c1c'}}>
-        {value ? 'True' : 'False'}
-      </span>
-    );
+    return <span style={{ color: value ? "#495057" : "#b61c1c" }}>{value ? "True" : "False"}</span>;
   };
 
   const EditCell = ({ value }) => {
@@ -97,7 +88,7 @@ export const CourseList = (props) => {
   });
 
   return (
-    <ContentLayout title={"Courses"}>
+    <ContentLayout title={"Courses"} subtitle={"List"}>
       <CourseIdFilter />
       <TableLayout table={table} />
       <ModalLayout

@@ -15,11 +15,11 @@ export const CreateCourse = (props) => {
   };
 
   const onCancel = () => {
-    history(`${location.pathname}`.replace("/create",""));
+    history(`${location.pathname}`.replace("/create", ""));
   };
 
   return (
-    <ContentLayout title={"Create New Course"}>
+    <ContentLayout title={"Courses"} subtitle={"New"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-md-6 col-12">
@@ -117,10 +117,13 @@ export const CreateCourse = (props) => {
                           >
                             Create
                           </Button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1"
+                          <button
+                            type="reset"
+                            className="btn btn-light-secondary me-1 mb-1"
                             onClick={() => {
                               onCancel();
-                            }}>
+                            }}
+                          >
                             Cancel
                           </button>
                         </div>

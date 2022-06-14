@@ -21,11 +21,11 @@ export const EditCourse = (props) => {
     editCourse.mutate(course);
   };
   const onCancel = () => {
-    history(`${location.pathname}`.replace(`/edit/${courseId}`,""));
+    history(`${location.pathname}`.replace(`/edit/${courseId}`, ""));
   };
 
   return (
-    <ContentLayout title={"Update"}>
+    <ContentLayout title={"Courses"} subtitle={"Update"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-md-6 col-12">
@@ -35,7 +35,7 @@ export const EditCourse = (props) => {
                   <form className="form form-vertical">
                     <div className="form-body">
                       <div className="row">
-                      <div className="col-12">
+                        <div className="col-12">
                           <div className="form-group">
                             <label htmlFor="first-name-vertical">Name</label>
                             <Input
@@ -125,10 +125,13 @@ export const EditCourse = (props) => {
                           >
                             Update
                           </Button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1"
+                          <button
+                            type="reset"
+                            className="btn btn-light-secondary me-1 mb-1"
                             onClick={() => {
                               onCancel();
-                            }}>
+                            }}
+                          >
                             Cancel
                           </button>
                         </div>

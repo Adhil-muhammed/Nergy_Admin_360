@@ -1,5 +1,5 @@
 export const ContentLayout = (prop) => {
-  const { title, breadcrumb, children } = prop;
+  const { title, subtitle, breadcrumb, children } = prop;
   return (
     <div className="page-heading">
       <div className="page-title">
@@ -14,6 +14,9 @@ export const ContentLayout = (prop) => {
       </div>
       <section className="section">
         <div className="card">
+          <div className="card-header">
+            <h4 className="card-title">{subtitle}</h4>
+          </div>
           <div className="card-body">{children}</div>
         </div>
       </section>
