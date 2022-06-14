@@ -69,7 +69,7 @@ export const QuestionBanksList = (props) => {
   });
 
   return (
-    <ContentLayout title={"Question Banks"}>
+    <ContentLayout title={"Question Banks"} subtitle={"List"}>
       <QuestionBanksFilter />
       <TableLayout table={table} />
       <ModalLayout

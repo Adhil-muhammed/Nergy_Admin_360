@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useTable } from "react-table";
-import { ContentLayout, TableLayout,ModalLayout } from "shared/components";
+import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
 import { RoleFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -63,7 +63,7 @@ export const RoleList = (props) => {
   });
 
   return (
-    <ContentLayout title={"Roles"}>
+    <ContentLayout title={"Roles"} subtitle={"List"}>
       <RoleFilter />
       <TableLayout table={table} />
       <ModalLayout

@@ -63,7 +63,7 @@ export const InstituteList = (props) => {
   });
 
   return (
-    <ContentLayout title={"Institutes"}>
+    <ContentLayout title={"Institutes"} subtitle={"List"}>
       <InstituteIdFilter />
       <TableLayout table={table} />
       <ModalLayout

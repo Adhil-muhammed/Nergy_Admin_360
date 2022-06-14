@@ -73,7 +73,7 @@ export const StudentList = (props) => {
   });
 
   return (
-    <ContentLayout title={"Students"}>
+    <ContentLayout title={"Students"} subtitle={"List"}>
       <StudentFilter />
       <TableLayout table={table} />
       <ModalLayout
