@@ -6,18 +6,20 @@ export function Dashboard() {
   return (
     <div id="app">
       <SideBar />
-      <div id="main">
+      <div id="main" className="layout-navbar">
         <Header />
-        <Routes>
-          <Route element={<div>hi</div>} path={"/"} />
-          <Route element={<Batch />} path={"/batch/*"} />
-          <Route element={<Role />} path={"/role/*"} />
-          <Route element={<Student />} path={"/student/*"} />
-          <Route element={<Institute />} path={"/institute/*"} />
-          <Route element={<QuestionBanks />} path={"/questionbanks/*"} />
-          <Route element={<Courses />} path={"/courses/*"} />
-        </Routes>
-        <Footer />
+        <div id="main-content">
+          <Routes>
+            <Route element={<div>hi</div>} path={"/"} />
+            <Route element={<Batch />} path={"/batch/*"} />
+            <Route element={<Role />} path={"/role/*"} />
+            <Route element={<Student />} path={"/student/*"} />
+            <Route element={<Institute />} path={"/institute/*"} />
+            <Route element={<QuestionBanks />} path={"/questionbanks/*"} />
+            <Route element={<Courses />} path={"/courses/*"} />
+          </Routes>
+          <Footer />
+        </div>
       </div>
     </div>
   );
