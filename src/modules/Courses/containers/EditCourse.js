@@ -17,6 +17,20 @@ export const EditCourse = (props) => {
     }
   }, [courseId, onEdit]);
 
+  const onHandleChange = (e) => {
+    const { name, value } = e.target;
+    setCourse((draft) => {
+      draft[name] = value;
+    });
+  };
+
+  const handleChecked = (e) => {
+    const { name, checked } = e.target;
+    setCourse((draft) => {
+      draft[name] = checked;
+    });
+  }
+
   const onSubmit = () => {
     editCourse.mutate(course);
   };
@@ -42,11 +56,7 @@ export const EditCourse = (props) => {
                         name="name"
                         placeholder="Course Name"
                         value={name}
-                        onChange={(e) => {
-                          setCourse((draft) => {
-                            draft.name = e.target.value;
-                          });
-                        }}
+                        onChange={onHandleChange}
                       />
                     </div>
                     <div className="form-group">
@@ -58,11 +68,7 @@ export const EditCourse = (props) => {
                         name="description"
                         placeholder="Description"
                         value={description}
-                        onChange={(e) => {
-                          setCourse((draft) => {
-                            draft.description = e.target.value;
-                          });
-                        }}
+                        onChange={onHandleChange}
                       />
                     </div>
                     <div className="form-group">
@@ -74,11 +80,7 @@ export const EditCourse = (props) => {
                         name="instructions"
                         placeholder="Instructions"
                         value={instructions}
-                        onChange={(e) => {
-                          setCourse((draft) => {
-                            draft.instructions = e.target.value;
-                          });
-                        }}
+                        onChange={onHandleChange}
                       />
                     </div>
                     <div className="form-check">
@@ -89,11 +91,7 @@ export const EditCourse = (props) => {
                         className="form-check-input"
                         name="hasExam"
                         checked={hasExam}
-                        onChange={(e) => {
-                          setCourse((draft) => {
-                            draft.hasExam = e.target.checked;
-                          });
-                        }}
+                        onChange={handleChecked}
                       />
                     </div>
                     <div className="form-check">
@@ -104,11 +102,7 @@ export const EditCourse = (props) => {
                         className="form-check-input"
                         name="isContentEnabled"
                         checked={isContentEnabled}
-                        onChange={(e) => {
-                          setCourse((draft) => {
-                            draft.isContentEnabled = e.target.checked;
-                          });
-                        }}
+                        onChange={handleChecked}
                       />
                     </div>
                   </div>

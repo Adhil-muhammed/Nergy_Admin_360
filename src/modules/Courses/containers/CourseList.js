@@ -76,7 +76,6 @@ export const CourseList = (props) => {
         Header: "Delete",
         id: "deleteCourse",
         accessor: "courseId",
-        // key: "deleteCourse",
         Cell: DeleteCell,
       },
     ],

@@ -7,6 +7,21 @@ export const CreateCourse = (props) => {
   const { course, setCourse, createCourse } = props;
   const { name, description, instructions, hasExam, isContentEnabled } = course;
 
+  const onHandleChange = (e) => {
+    const { name, value } = e.target;
+    setCourse((draft) => {
+      draft[name] = value;
+    });
+  };
+
+  const handleChecked = (e) => {
+    const { name, checked } = e.target;
+    setCourse((draft) => {
+      draft[name] = checked;
+    });
+  }
+
+
   const history = useNavigate();
   const location = useLocation();
 
@@ -36,11 +51,7 @@ export const CreateCourse = (props) => {
                         name="name"
                         placeholder="Course Name"
                         value={name}
-                        onChange={(e) => {
-                          setCourse((draft) => {
-                            draft.name = e.target.value;
-                          });
-                        }}
+                        onChange={onHandleChange}
                       />
                     </div>
                     <div className="form-group">
@@ -52,11 +63,7 @@ export const CreateCourse = (props) => {
                         name="description"
                         placeholder="Description"
                         value={description}
-                        onChange={(e) => {
-                          setCourse((draft) => {
-                            draft.description = e.target.value;
-                          });
-                        }}
+                        onChange={onHandleChange}
                       />
                     </div>
                     <div className="form-group">
@@ -68,11 +75,7 @@ export const CreateCourse = (props) => {
                         name="instructions"
                         placeholder="Instructions"
                         value={instructions}
-                        onChange={(e) => {
-                          setCourse((draft) => {
-                            draft.instructions = e.target.value;
-                          });
-                        }}
+                        onChange={onHandleChange}
                       />
                     </div>
                     <div className="form-check">
@@ -82,11 +85,8 @@ export const CreateCourse = (props) => {
                         id="first-exam-vertical"
                         className="form-check-input"
                         name="hasExam"
-                        onChange={(e) => {
-                          setCourse((draft) => {
-                            draft.hasExam = e.target.checked;
-                          });
-                        }}
+                        value={hasExam}
+                        onChange={handleChecked}
                       />
                     </div>
                     <div className="form-check">
@@ -96,11 +96,8 @@ export const CreateCourse = (props) => {
                         id="first-content-vertical"
                         className="form-check-input"
                         name="isContentEnabled"
-                        onChange={(e) => {
-                          setCourse((draft) => {
-                            draft.isContentEnabled = e.target.checked;
-                          });
-                        }}
+                        value={isContentEnabled}
+                        onChange={handleChecked}
                       />
                     </div>
                   </div>
