@@ -9,7 +9,7 @@ export function SideBar() {
           <div className="d-flex justify-content-between">
             <div className="logo">
               <a href="/">
-                <img src={Nergy360Logo} alt="Logo" />
+                <img style={{height: '54px'}} src={Nergy360Logo} alt="Logo" />
               </a>
             </div>
             <div className="toggler">
@@ -30,37 +30,37 @@ export function SideBar() {
             </li>
             <li className="sidebar-item  ">
               <NavLink to={"batch"} href="index.html" className="sidebar-link">
-                <i className="bi bi-grid-fill" />
+                <i className="bi bi-people-fill" />
                 <span>Batch</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
               <NavLink to={"role"} href="index.html" className="sidebar-link">
-                <i className="bi bi-grid-fill" />
+                <i className="bi bi-gear-fill" />
                 <span>Role</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
               <NavLink to={"student"} href="index.html" className="sidebar-link">
-                <i className="bi bi-grid-fill" />
+                <i className="bi bi-person-fill" />
                 <span>Student</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
               <NavLink to={"institute"} href="index.html" className="sidebar-link">
-                <i className="bi bi-grid-fill" />
+                <i className="bi bi-house-door-fill" />
                 <span>Institute</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
               <NavLink to={"questionbanks"} href="index.html" className="sidebar-link">
-                <i className="bi bi-grid-fill" />
+                <i className="bi bi-archive-fill" />
                 <span>QuestionBanks</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
               <NavLink to={"courses"} href="index.html" className="sidebar-link">
-                <i className="bi bi-grid-fill" />
+                <i className="bi bi-book-fill" />
                 <span>Courses</span>
               </NavLink>
             </li>

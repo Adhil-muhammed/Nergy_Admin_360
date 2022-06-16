@@ -18,26 +18,32 @@ export const CourseList = (props) => {
     history(`${location.pathname}/edit/${courseId}`);
   };
 
-  const HasExam = ({ value }) => {
-    return <span style={{ color: value ? "#495057" : "#b61c1c" }}>{value ? "True" : "False"}</span>;
+  const CheckMarker = ({ value }) => {
+    return (
+      <span style={{ color: value ? "#3fba2d" : "#da1a1a", fontSize: '24px' }}>
+        <i className={`bi ${value ? "bi-check" : "bi-x"}`}></i>
+      </span>
+    );
   };
 
-  const ContentEnabled = ({ value }) => {
-    return <span style={{ color: value ? "#495057" : "#b61c1c" }}>{value ? "True" : "False"}</span>;
-  };
+  const Thumbnail =({value}) => {
+    return (
+      value ? <img style={{height: '40px'}} src={value} /> : 'No image'
+    )
+  }
 
   const EditCell = ({ value }) => {
     return (
-      <Button outline color="primary" onClick={() => onEdit(value)}>
-        Edit
+      <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
+        <i class="bi bi-pencil-square" style={{fontSize: '10px'}}></i> <span>Edit</span>
       </Button>
     );
   };
 
   const DeleteCell = ({ value }) => {
     return (
-      <Button color="danger" onClick={() => onDelete(value)}>
-        Delete
+      <Button color="danger" size="sm" onClick={() => onDelete(value)}>
+        <i class="bi bi-trash" style={{fontSize: '10px'}}></i> <span>Delete</span>
       </Button>
     );
   };
@@ -57,25 +63,31 @@ export const CourseList = (props) => {
         accessor: "instructions",
       },
       {
-        Header: "Has Exam",
+        Header: "Exam",
         accessor: "hasExam",
-        Cell: HasExam,
+        Cell: CheckMarker,
       },
       {
-        Header: "Content Enabled",
+        Header: "Content",
         accessor: "isContentEnabled",
-        Cell: ContentEnabled,
+        Cell: CheckMarker,
+      },
+      {
+        Header: "Thumbnail",
+        accessor: "courseImage",
+        Cell: Thumbnail,
       },
       {
         Header: "Edit",
-        accessor: "courseId",
         id: "editCourse",
+        accessor: "courseId",
         Cell: EditCell,
       },
       {
         Header: "Delete",
         id: "deleteCourse",
         accessor: "courseId",
+        key: "deleteCourse",
         Cell: DeleteCell,
       },
     ],

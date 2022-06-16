@@ -1,3 +1,4 @@
+import Avatar from '../../assets/images/faces/1.jpg'
 export function Header() {
   return (
     <header className="mb-3">
@@ -72,8 +73,8 @@ export function Header() {
                     <p className="mb-0 text-sm text-gray-600">Administrator</p>
                   </div>
                   <div className="user-img d-flex align-items-center">
-                    <div className="avatar avatar-md">
-                      <img src="assets/images/faces/1.jpg" />
+                    <div className="avatar">
+                      <img src={Avatar} />
                     </div>
                   </div>
                 </div>

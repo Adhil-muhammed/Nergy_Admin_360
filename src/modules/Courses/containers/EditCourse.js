@@ -8,7 +8,7 @@ export const EditCourse = (props) => {
   const history = useNavigate();
   const location = useLocation();
   const { course, setCourse, editCourse, onEdit } = props;
-  const { name, description, instructions, hasExam, isContentEnabled } = course;
+  const { name, description, instructions, hasExam, isContentEnabled, courseImage } = course;
   let { courseId } = useParams();
 
   React.useEffect(() => {
@@ -29,7 +29,22 @@ export const EditCourse = (props) => {
     setCourse((draft) => {
       draft[name] = checked;
     });
-  }
+  };
+
+  const handleUpload = (e) => {
+    const file = e.target.files[0];
+    const name = e.target.name
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (evt) => {
+        const result = evt.target.result
+        setCourse((draft) => {
+          draft[name] = result
+        });
+      };
+    }
+  };
 
   const onSubmit = () => {
     editCourse.mutate(course);
@@ -42,66 +57,99 @@ export const EditCourse = (props) => {
     <ContentLayout title={"Courses"} subtitle={"Update"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
-          <div className="col-md-6 col-12">
+          <div className="col-12">
             <form className="form form-vertical">
               <div className="form-body">
-                <div className="row">
-                  <div className="col-12">
-                    <div className="form-group">
-                      <label htmlFor="first-name-vertical">Name</label>
-                      <Input
-                        type="text"
-                        id="first-name-vertical"
-                        className="form-control"
-                        name="name"
-                        placeholder="Course Name"
-                        value={name}
-                        onChange={onHandleChange}
-                      />
+                <div className="col-12">
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group">
+                        <label htmlFor="first-name-vertical" className="mb-2">
+                          Name
+                        </label>
+                        <Input
+                          type="text"
+                          id="first-name-vertical"
+                          className="form-control"
+                          name="name"
+                          placeholder="Course Name"
+                          value={name}
+                          onChange={onHandleChange}
+                        />
+                      </div>
                     </div>
-                    <div className="form-group">
-                      <label htmlFor="first-description-vertical">Description</label>
-                      <Input
-                        type="text"
-                        id="first-description-vertical"
-                        className="form-control"
-                        name="description"
-                        placeholder="Description"
-                        value={description}
-                        onChange={onHandleChange}
-                      />
+                    <div className="col-sm-6">
+                      <div className="form-group">
+                        <label htmlFor="first-description-vertical" className="mb-2">
+                          Description
+                        </label>
+                        <Input
+                          type="text"
+                          id="first-description-vertical"
+                          className="form-control"
+                          name="description"
+                          placeholder="Description"
+                          value={description}
+                          onChange={onHandleChange}
+                        />
+                      </div>
                     </div>
-                    <div className="form-group">
-                      <label htmlFor="first-instruction-vertical">Instructions</label>
-                      <Input
-                        type="text"
-                        id="first-instruction-vertical"
-                        className="form-control"
-                        name="instructions"
-                        placeholder="Instructions"
-                        value={instructions}
-                        onChange={onHandleChange}
-                      />
+                  </div>
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group">
+                        <label htmlFor="first-instruction-vertical" className="mb-2">
+                          Instructions
+                        </label>
+                        <Input
+                          type="text"
+                          id="first-instruction-vertical"
+                          className="form-control"
+                          name="instructions"
+                          placeholder="Instructions"
+                          value={instructions}
+                          onChange={onHandleChange}
+                        />
+                      </div>
                     </div>
-                    <div className="form-check">
+                    <div className="col-sm-6">
+                      <div className="form-group">
+                        <label htmlFor="courseImage" className="form-label">
+                          Course image
+                        </label>
+                        <input
+                          id="courseImage"
+                          type="file"
+                          className="form-control"
+                          name="courseImage"
+                          accept=".jpeg, .png, .jpg"
+                          onChange={handleUpload}
+                        />
+                        {courseImage && <img style={{ height: "100px" }} src={courseImage} />}
+                        {/* <div style={{fontSize: '10px', width:'400px', height: '40px', overflow: 'auto'}}>{JSON.stringify(courseImage)}</div> */}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <div className="form-check form-check-inline">
                       <label htmlFor="first-exam-vertical">Has Exam</label>
                       <Input
                         type="checkbox"
                         id="first-exam-vertical"
                         className="form-check-input"
                         name="hasExam"
-                        checked={hasExam}
+                        value={hasExam}
                         onChange={handleChecked}
                       />
                     </div>
-                    <div className="form-check">
+                    <div className="form-check form-check-inline">
                       <label htmlFor="first-content-vertical">Is Content Enabled</label>
                       <Input
                         type="checkbox"
                         id="first-content-vertical"
                         className="form-check-input"
                         name="isContentEnabled"
-                        checked={isContentEnabled}
+                        value={isContentEnabled}
                         onChange={handleChecked}
                       />
                     </div>

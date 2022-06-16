@@ -20,7 +20,7 @@ export function Login() {
             <div id="auth-left">
               <div className="auth-logo">
                 <a href="/">
-                  <img src={Nergy360Logo} alt="Logo" />
+                  <img style={{height: '68px'}} src={Nergy360Logo} alt="Logo" />
                 </a>
               </div>
               <h1 className="auth-title">Log in.</h1>

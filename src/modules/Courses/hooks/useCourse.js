@@ -78,7 +78,8 @@ export const useCourse = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries("create");
-      navigate(`${location.pathname}`.replace("/create", ""));
+      // navigate(`${location.pathname}`.replace("/create", ""));
+      navigate("../courses", { replace: true });
     },
   });
 
