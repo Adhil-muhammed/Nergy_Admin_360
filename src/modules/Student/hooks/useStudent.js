@@ -13,7 +13,6 @@ export const useStudent = () => {
   const studentsQuery = useQuery(GetStudentKey, getStudents, { staleTime: Infinity });
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [student, setStudent] = useImmer({
-    studentId: 0,
     studentUserId: "",
     instituteId: 0,
     batchId: 0,
@@ -103,9 +102,9 @@ export const useStudent = () => {
 
   const getSelectedStudent = React.useCallback(
     (id) => {
-      const selectedStudent = studentsQuery.data.filter((s) => s.studentId === id)[0];
+      const selectedStudent = studentsQuery.data.value.filter((s) => s.studentUserId === id)[0];
+
       setStudent((draft) => {
-        draft.studentId = selectedStudent.studentId;
         draft.studentUserId = selectedStudent.studentUserId;
         draft.instituteId = selectedStudent.instituteId;
         draft.batchId = selectedStudent.batchId;
@@ -125,8 +124,8 @@ export const useStudent = () => {
   );
 
   const onEdit = React.useCallback(
-    (studentId) => {
-      getSelectedStudent(studentId);
+    (studentUserId) => {
+      getSelectedStudent(studentUserId);
     },
     [getSelectedStudent]
   );

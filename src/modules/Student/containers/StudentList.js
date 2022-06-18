@@ -15,8 +15,8 @@ export const StudentList = (props) => {
     deleteStudent.mutate(student.studentId);
   };
 
-  const onEdit = (studentId) => {
-    history(`${location.pathname}/edit/${studentId}`);
+  const onEdit = (studentUserId) => {
+    history(`${location.pathname}/edit/${studentUserId}`);
   };
 
   const EditCell = ({ value }) => {
@@ -52,14 +52,14 @@ export const StudentList = (props) => {
 
       {
         Header: "Edit",
-        accessor: "studentId",
+        accessor: "studentUserId",
         id: "edtitBatch",
         Cell: EditCell,
       },
       {
         Header: "Delete",
         id: "deleteBatch",
-        accessor: "studentId",
+        accessor: "studentUserId",
         key: "deleteBatch",
         Cell: DeleteCell,
       },
@@ -79,7 +79,7 @@ export const StudentList = (props) => {
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}
-        message={`Are you sure? Do you want to delete students ${students.name}`}
+        message={`Are you sure? Do you want to delete students ${students.firstName}`}
         onConfirm={() => {
           onConfirm();
         }}
