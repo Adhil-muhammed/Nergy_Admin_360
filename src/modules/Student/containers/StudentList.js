@@ -79,7 +79,7 @@ export const StudentList = (props) => {
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}
-        message={`Are you sure? Do you want to delete students ${students.firstName}`}
+        message={`Are you sure? Do you want to delete students ${student.firstName}`}
         onConfirm={() => {
           onConfirm();
         }}
