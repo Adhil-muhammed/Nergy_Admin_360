@@ -15,6 +15,7 @@ export const Student = () => {
     isConfirmDelete,
     onToggleModal,
     deleteStudent,
+    fetchData,
   } = useStudent();
 
   const { data, isLoading } = studentsQuery;
@@ -34,6 +35,7 @@ export const Student = () => {
                 data={data}
                 onDelete={onDelete}
                 onToggleModal={onToggleModal}
+                fetchData={fetchData}
               />
             }
           />

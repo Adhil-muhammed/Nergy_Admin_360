@@ -1,7 +1,8 @@
 import { Axios } from "utils";
 
-export const getStudents = async () => {
-  const res = await Axios.get("/Students");
+export const getStudents = async (pagination) => {
+  const { pageIndex, pageSize } = pagination;
+  const res = await Axios.get(`/Students?top=${1}&pageNo=${pageIndex}&pageSize=${pageSize}`);
   return res.data;
 };
 

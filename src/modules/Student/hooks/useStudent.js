@@ -10,7 +10,15 @@ const GetStudentKey = "GET_BATCHES_API";
 export const useStudent = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const studentsQuery = useQuery(GetStudentKey, getStudents, { staleTime: Infinity });
+  const [page, setPage] = useImmer({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const studentsQuery = useQuery([GetStudentKey, page], () => getStudents(page), {
+    keepPreviousData: true,
+    staleTime: Infinity,
+  });
+
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [student, setStudent] = useImmer({
     studentUserId: "",
@@ -151,6 +159,16 @@ export const useStudent = () => {
     [setIsConfirmDelete]
   );
 
+  const fetchData = React.useCallback(
+    ({ pageSize, pageIndex }) => {
+      setPage((draft) => {
+        draft.pageIndex = pageIndex;
+        draft.pageSize = pageSize;
+      });
+    },
+    [setPage]
+  );
+
   return {
     student,
     setStudent,
@@ -162,5 +180,7 @@ export const useStudent = () => {
     isConfirmDelete,
     onToggleModal,
     deleteStudent,
+    page,
+    fetchData,
   };
 };
