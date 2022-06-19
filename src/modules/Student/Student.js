@@ -16,6 +16,8 @@ export const Student = () => {
     onToggleModal,
     deleteStudent,
     fetchData,
+    batchesQuery,
+    institutesQuery,
   } = useStudent();
 
   const { data, isLoading } = studentsQuery;
@@ -45,7 +47,9 @@ export const Student = () => {
               <CreateStudent
                 student={student}
                 setStudent={setStudent}
-                createBatch={createStudent}
+                createStudent={createStudent}
+                batchesQuery={batchesQuery}
+                institutesQuery={institutesQuery}
               />
             }
           />
