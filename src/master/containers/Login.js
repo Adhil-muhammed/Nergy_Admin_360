@@ -20,7 +20,7 @@ export function Login() {
             <div id="auth-left">
               <div className="auth-logo">
                 <a href="/">
-                  <img style={{height: '68px'}} src={Nergy360Logo} alt="Logo" />
+                  <img style={{ height: "68px" }} src={Nergy360Logo} alt="Logo" />
                 </a>
               </div>
               <h1 className="auth-title">Log in.</h1>
@@ -75,7 +75,8 @@ export function Login() {
                   </label>
                 </div>
                 <Button
-                  className="btn btn-primary btn-block btn-lg shadow-lg mt-5"
+                  className="btn-block btn-lg shadow-lg mt-5"
+                  color="success"
                   disabled={isLoading}
                   onClick={(e) => {
                     onsubmit();
@@ -102,7 +103,14 @@ export function Login() {
             </div>
           </div>
           <div className="col-lg-7 d-none d-lg-block">
-            <div id="auth-right"></div>
+            {/* <div id="auth-right"></div> */}
+            <div id="auth-right">
+              <div class="fade-over"></div>
+              <div class="right-wrap-c">
+                <h1>Nulla hendrerit dictum justo, non efficitur turpis faucibus eget.</h1>
+                <h4>Vivamus imperdiet volutpat eros, vel aliquet sapien sagittis id.</h4>
+              </div>
+            </div>
           </div>
         </div>
       </div>

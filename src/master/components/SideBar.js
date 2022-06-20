@@ -22,49 +22,54 @@ export function SideBar() {
         <div className="sidebar-menu">
           <ul className="menu">
             <li className="sidebar-title">Menu</li>
-            <li className="sidebar-item  ">
+            <li className="sidebar-item">
               <NavLink to={"/admin"} className="sidebar-link">
                 <i className="bi bi-grid-fill" />
                 <span>Dashboard</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
-              <NavLink to={"batch"} href="index.html" className="sidebar-link">
-                <i className="bi bi-people-fill" />
+              <NavLink to={"batch"} className="sidebar-link">
+              <i className="bi bi-collection-fill"></i>
                 <span>Batch</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
-              <NavLink to={"role"} href="index.html" className="sidebar-link">
+              <NavLink to={"role"} className="sidebar-link">
                 <i className="bi bi-gear-fill" />
                 <span>Role</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
-              <NavLink to={"student"} href="index.html" className="sidebar-link">
+              <NavLink to={"student"} className="sidebar-link">
                 <i className="bi bi-person-fill" />
                 <span>Student</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
-              <NavLink to={"institute"} href="index.html" className="sidebar-link">
+              <NavLink to={"institute"} className="sidebar-link">
                 <i className="bi bi-house-door-fill" />
                 <span>Institute</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
-              <NavLink to={"questionbanks"} href="index.html" className="sidebar-link">
+              <NavLink to={"questionbanks"} className="sidebar-link">
                 <i className="bi bi-archive-fill" />
                 <span>QuestionBanks</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
-              <NavLink to={"courses"} href="index.html" className="sidebar-link">
+              <NavLink to={"courses"} className="sidebar-link">
                 <i className="bi bi-book-fill" />
                 <span>Courses</span>
               </NavLink>
             </li>
-
+            <li className="sidebar-item  ">
+              <NavLink to={"users"} className="sidebar-link">
+              <i className="bi bi-people-fill" />
+                <span>Users</span>
+              </NavLink>
+            </li>
             <li className="sidebar-item  has-sub">
               <a className="sidebar-link">
                 <i className="bi bi-collection-fill" />

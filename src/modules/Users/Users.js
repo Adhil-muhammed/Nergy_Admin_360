@@ -1,23 +1,23 @@
-import { CourseList, useCourse, CreateCourse, EditCourse } from ".";
+import { UserList, useUser, CreateUser, EditUser } from ".";
 import { Routes, Route } from "react-router-dom";
 
 import React from "react";
 
-export const Courses = () => {
+export const Users = () => {
   const {
-    course,
-    setCourse,
-    coursesQuery,
-    createCourse,
-    editCourse,
+    user,
+    setUser,
+    usersQuery,
+    createUser,
+    editUser,
     onEdit,
     onDelete,
     isConfirmDelete,
     onToggleModal,
-    deleteCourse,
-  } = useCourse();
+    deleteUser,
+  } = useUser();
 
-  const { data, isLoading } = coursesQuery;
+  const { data, isLoading } = usersQuery;
   return (
     <>
       {isLoading || !data ? (
@@ -27,11 +27,11 @@ export const Courses = () => {
           <Route
             path="/"
             element={
-              <CourseList
-                course={course}
+              <UserList
+                user={user}
                 isConfirmDelete={isConfirmDelete}
-                deleteCourse={deleteCourse}
-                courses={data}
+                deleteUser={deleteUser}
+                users={data}
                 onDelete={onDelete}
                 onToggleModal={onToggleModal}
               />
@@ -40,20 +40,20 @@ export const Courses = () => {
           <Route
             path="/create"
             element={
-              <CreateCourse
-                course={course}
-                setCourse={setCourse}
-                createCourse={createCourse}
+              <CreateUser
+                user={user}
+                setUser={setUser}
+                createUser={createUser}
               />
             }
           />
           <Route
-            path="/edit/:courseId"
+            path="/edit/:userId"
             element={
-              <EditCourse
-                course={course}
-                setCourse={setCourse}
-                editCourse={editCourse}
+              <EditUser
+                user={user}
+                setUser={setUser}
+                editUser={editUser}
                 onEdit={onEdit}
               />
             }
