@@ -4,23 +4,36 @@ import { useImmer } from "use-immer";
 import { getStudents, createStudents, updateStudents, deteleStudents } from "..";
 import { useNavigate } from "react-router-dom";
 import { successMessage, successDeletedMessage } from "utils";
+import { getInstitutes } from "modules/Institute";
+import { getBatches } from "modules/Batch";
 
 const GetStudentKey = "GET_BATCHES_API";
+const GetBatchKey = "GET_BATCHES_FOR_CREATE_STUDENT";
+const GetInstituteKey = "GET_INSTITUTES_FOR_CREATE_STUDENT";
 
 export const useStudent = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const studentsQuery = useQuery(GetStudentKey, getStudents, { staleTime: Infinity });
+  const [page, setPage] = useImmer({
+    pageIndex: 1,
+    pageSize: 10,
+  });
+  const studentsQuery = useQuery([GetStudentKey, page], () => getStudents(page), {
+    keepPreviousData: true,
+    staleTime: Infinity,
+  });
+  const batchesQuery = useQuery(GetBatchKey, getBatches, { staleTime: Infinity });
+  const institutesQuery = useQuery(GetInstituteKey, getInstitutes, { staleTime: Infinity });
+
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [student, setStudent] = useImmer({
-    studentId: 0,
     studentUserId: "",
-    instituteId: 0,
-    batchId: 0,
+    instituteId: -1,
+    batchId: -1,
     registrationId: "",
     firstName: "",
     lastName: "",
-    gender: 0,
+    gender: -1,
     emailAddress: "",
     qualification: "",
     dateOfBirth: "",
@@ -30,7 +43,13 @@ export const useStudent = () => {
 
   const createStudent = useMutation(createStudents, {
     onMutate: async (update) => {
-      await queryClient.cancelQueries(GetStudentKey);
+      await queryClient.cancelQueries([
+        GetStudentKey,
+        {
+          pageIndex: 1,
+          pageSize: 10,
+        },
+      ]);
       const data = queryClient.getQueryData(GetStudentKey);
       queryClient.setQueryData(GetStudentKey, (prevData) => {
         let updatedData = [...prevData, update];
@@ -75,7 +94,7 @@ export const useStudent = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries("create");
-      navigate("../batch", { replace: true });
+      navigate("../student", { replace: true });
     },
   });
 
@@ -103,9 +122,9 @@ export const useStudent = () => {
 
   const getSelectedStudent = React.useCallback(
     (id) => {
-      const selectedStudent = studentsQuery.data.filter((s) => s.studentId === id)[0];
+      const selectedStudent = studentsQuery.data.value.filter((s) => s.studentUserId === id)[0];
+
       setStudent((draft) => {
-        draft.studentId = selectedStudent.studentId;
         draft.studentUserId = selectedStudent.studentUserId;
         draft.instituteId = selectedStudent.instituteId;
         draft.batchId = selectedStudent.batchId;
@@ -125,8 +144,8 @@ export const useStudent = () => {
   );
 
   const onEdit = React.useCallback(
-    (studentId) => {
-      getSelectedStudent(studentId);
+    (studentUserId) => {
+      getSelectedStudent(studentUserId);
     },
     [getSelectedStudent]
   );
@@ -152,6 +171,16 @@ export const useStudent = () => {
     [setIsConfirmDelete]
   );
 
+  const fetchData = React.useCallback(
+    ({ pageSize, pageIndex }) => {
+      setPage((draft) => {
+        draft.pageIndex = pageIndex;
+        draft.pageSize = pageSize;
+      });
+    },
+    [setPage]
+  );
+
   return {
     student,
     setStudent,
@@ -163,5 +192,9 @@ export const useStudent = () => {
     isConfirmDelete,
     onToggleModal,
     deleteStudent,
+    page,
+    fetchData,
+    batchesQuery,
+    institutesQuery,
   };
 };

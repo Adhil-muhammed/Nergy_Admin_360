@@ -1,13 +1,13 @@
 import React, { useMemo } from "react";
-import { useTable } from "react-table";
-import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
+import { ContentLayout, PaginationTableLayout, ModalLayout } from "shared/components";
 import { StudentFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const StudentList = (props) => {
-  const { student, data, onDelete, onToggleModal, isConfirmDelete, deleteStudent } = props;
-  const { value: students } = data;
+  const { student, data, onDelete, onToggleModal, isConfirmDelete, deleteStudent, fetchData } =
+    props;
+  const { value: students, paging } = data;
 
   const history = useNavigate();
   const location = useLocation();
@@ -15,8 +15,8 @@ export const StudentList = (props) => {
     deleteStudent.mutate(student.studentId);
   };
 
-  const onEdit = (studentId) => {
-    history(`${location.pathname}/edit/${studentId}`);
+  const onEdit = (studentUserId) => {
+    history(`${location.pathname}/edit/${studentUserId}`);
   };
 
   const EditCell = ({ value }) => {
@@ -52,14 +52,14 @@ export const StudentList = (props) => {
 
       {
         Header: "Edit",
-        accessor: "studentId",
+        accessor: "studentUserId",
         id: "edtitBatch",
         Cell: EditCell,
       },
       {
         Header: "Delete",
         id: "deleteBatch",
-        accessor: "studentId",
+        accessor: "studentUserId",
         key: "deleteBatch",
         Cell: DeleteCell,
       },
@@ -67,19 +67,21 @@ export const StudentList = (props) => {
     []
   );
 
-  const table = useTable({
-    columns,
-    data: students,
-  });
-
   return (
     <ContentLayout title={"Students"} subtitle={"List"}>
       <StudentFilter />
-      <TableLayout table={table} />
+      <PaginationTableLayout
+        columns={columns}
+        data={students}
+        controlledPageCount={paging.pageCount}
+        controlledpageNo={paging.pageNo}
+        controlledpageSize={paging.pageSize}
+        fetchData={fetchData}
+      />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}
-        message={`Are you sure? Do you want to delete students ${students.name}`}
+        message={`Are you sure? Do you want to delete students ${student.firstName}`}
         onConfirm={() => {
           onConfirm();
         }}
