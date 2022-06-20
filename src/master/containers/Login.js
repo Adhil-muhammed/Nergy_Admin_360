@@ -105,8 +105,8 @@ export function Login() {
           <div className="col-lg-7 d-none d-lg-block">
             {/* <div id="auth-right"></div> */}
             <div id="auth-right">
-              <div class="fade-over"></div>
-              <div class="right-wrap-c">
+              <div className="fade-over"></div>
+              <div className="right-wrap-c">
                 <h1>Nulla hendrerit dictum justo, non efficitur turpis faucibus eget.</h1>
                 <h4>Vivamus imperdiet volutpat eros, vel aliquet sapien sagittis id.</h4>
               </div>

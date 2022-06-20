@@ -5,3 +5,4 @@ export * from "./Institute";
 export * from "./QuestionBanks";
 export * from "./Courses";
 export * from "./Users";
+export * from "./Dashboard";

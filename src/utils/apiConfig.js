@@ -5,8 +5,8 @@ export const Axios = axios.create({
   baseURL: "http://n360-dev.azurewebsites.net/api/",
   //baseURL: "https://localhost:5001/api/",
   headers: {
-    // "Content-Type": "application/json",
-    "Content-Type": "multipart/form-data",
+    "Content-Type": "application/json",
+    // "Content-Type": "multipart/form-data",
   },
 });
 

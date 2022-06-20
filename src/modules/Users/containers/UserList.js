@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { useTable } from "react-table";
 import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
 import { UserIdFilter } from "..";
-import { Button } from "reactstrap";
+import { Button, Badge } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const UserList = (props) => {
@@ -18,10 +18,14 @@ export const UserList = (props) => {
     history(`${location.pathname}/edit/${userId}`);
   };
 
+  const StatusIndicator = ({ value }) => {
+    return <Badge color={value ? "success" : "secondary"}>{value ? "Active" : "Inactive"}</Badge>;
+  };
+
   const EditCell = ({ value }) => {
     return (
       <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
-        <i class="bi bi-pencil-square" style={{fontSize: '10px'}}></i> <span>Edit</span>
+        <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
       </Button>
     );
   };
@@ -29,7 +33,7 @@ export const UserList = (props) => {
   const DeleteCell = ({ value }) => {
     return (
       <Button color="danger" size="sm" onClick={() => onDelete(value)}>
-        <i class="bi bi-trash" style={{fontSize: '10px'}}></i> <span>Delete</span>
+        <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
       </Button>
     );
   };
@@ -51,6 +55,7 @@ export const UserList = (props) => {
       {
         Header: "Is active",
         accessor: "isActive",
+        Cell: StatusIndicator,
       },
       {
         Header: "Edit",

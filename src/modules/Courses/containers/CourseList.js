@@ -35,7 +35,7 @@ export const CourseList = (props) => {
   const EditCell = ({ value }) => {
     return (
       <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
-        <i class="bi bi-pencil-square" style={{fontSize: '10px'}}></i> <span>Edit</span>
+        <i className="bi bi-pencil-square" style={{fontSize: '10px'}}></i> <span>Edit</span>
       </Button>
     );
   };
@@ -43,7 +43,7 @@ export const CourseList = (props) => {
   const DeleteCell = ({ value }) => {
     return (
       <Button color="danger" size="sm" onClick={() => onDelete(value)}>
-        <i class="bi bi-trash" style={{fontSize: '10px'}}></i> <span>Delete</span>
+        <i className="bi bi-trash" style={{fontSize: '10px'}}></i> <span>Delete</span>
       </Button>
     );
   };

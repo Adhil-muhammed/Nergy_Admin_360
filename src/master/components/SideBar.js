@@ -70,29 +70,6 @@ export function SideBar() {
                 <span>Users</span>
               </NavLink>
             </li>
-            <li className="sidebar-item  has-sub">
-              <a className="sidebar-link">
-                <i className="bi bi-collection-fill" />
-                <span>Extra Components</span>
-              </a>
-              <ul className="submenu ">
-                <li className="submenu-item ">
-                  <a href="extra-component-avatar.html">Avatar</a>
-                </li>
-                <li className="submenu-item ">
-                  <a href="extra-component-sweetalert.html">Sweet Alert</a>
-                </li>
-                <li className="submenu-item ">
-                  <a href="extra-component-toastify.html">Toastify</a>
-                </li>
-                <li className="submenu-item ">
-                  <a href="extra-component-rating.html">Rating</a>
-                </li>
-                <li className="submenu-item ">
-                  <a href="extra-component-divider.html">Divider</a>
-                </li>
-              </ul>
-            </li>
           </ul>
         </div>
         <button className="sidebar-toggler btn x">
