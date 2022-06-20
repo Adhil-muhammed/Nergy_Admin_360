@@ -61,6 +61,8 @@ export const Student = () => {
                 setStudent={setStudent}
                 editStudent={editStudent}
                 onEdit={onEdit}
+                batchesQuery={batchesQuery}
+                institutesQuery={institutesQuery}
               />
             }
           />
