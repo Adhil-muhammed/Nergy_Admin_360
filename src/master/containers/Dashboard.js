@@ -1,6 +1,15 @@
 import { Routes, Route } from "react-router-dom";
 import { Footer, SideBar, Header } from "..";
-import { Batch, Role, Student, Institute, QuestionBanks, Courses, Users, DashboardCanvas } from "modules";
+import {
+  Batch,
+  Role,
+  Student,
+  Institute,
+  QuestionBanks,
+  Courses,
+  Users,
+  DashboardCanvas,
+} from "modules";
 
 export function Dashboard() {
   return (

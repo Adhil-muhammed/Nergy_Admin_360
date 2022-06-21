@@ -7,7 +7,7 @@ export const DashboardView = (props) => {
     stats: { totalCertificates, totalCourses, totalInstitutes, totalStudents },
   } = props;
   return (
-    <DashboardLayout title={"Profile Statistics"}>
+    <DashboardLayout title={"Dashboard"}>
       <div className="row">
         <StatsCard icon={"bi bi-award"} iconbg={"#9694ff"} label={"Total Certificates"} value={totalCertificates} />
         <StatsCard icon={"bi bi-book"} iconbg={"#57caeb"} label={"Total Courses"} value={totalCourses} />

@@ -1,4 +1,4 @@
-import { Input, Button, Spinner } from "reactstrap";
+import { Spinner } from "reactstrap";
 import { useAuthenticate } from "..";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
 export function Login() {
@@ -29,7 +29,7 @@ export function Login() {
               </p>
               <form>
                 <div className="form-group position-relative has-icon-left mb-4">
-                  <Input
+                  <input
                     type="text"
                     className="form-control form-control-xl"
                     placeholder="Username"
@@ -46,7 +46,7 @@ export function Login() {
                   </div>
                 </div>
                 <div className="form-group position-relative has-icon-left mb-4">
-                  <Input
+                  <input
                     type="password"
                     className="form-control form-control-xl"
                     placeholder="Password"
@@ -63,7 +63,7 @@ export function Login() {
                   </div>
                 </div>
                 <div className="form-check form-check-lg d-flex align-items-end">
-                  <Input
+                  <input
                     className="form-check-input me-2"
                     type="checkbox"
                     disabled={isLoading}
@@ -74,16 +74,15 @@ export function Login() {
                     Keep me logged in
                   </label>
                 </div>
-                <Button
-                  className="btn-block btn-lg shadow-lg mt-5"
-                  color="success"
+                <button
+                  className="btn btn-block btn-lg shadow-lg mt-5 btn-success"
                   disabled={isLoading}
                   onClick={(e) => {
                     onsubmit();
                   }}
                 >
                   {isLoading ? <Spinner type="border" color="light" /> : "Log in"}
-                </Button>
+                </button>
               </form>
               <div className="text-center mt-5 text-lg fs-4">
                 <p className="text-gray-600">
