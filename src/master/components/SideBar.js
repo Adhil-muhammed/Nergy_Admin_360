@@ -9,7 +9,7 @@ export function SideBar() {
           <div className="d-flex justify-content-between">
             <div className="logo">
               <a href="/">
-                <img style={{height: '54px'}} src={Nergy360Logo} alt="Logo" />
+                <img style={{ height: "54px" }} src={Nergy360Logo} alt="Logo" />
               </a>
             </div>
             <div className="toggler">
@@ -30,7 +30,7 @@ export function SideBar() {
             </li>
             <li className="sidebar-item  ">
               <NavLink to={"batch"} className="sidebar-link">
-              <i className="bi bi-collection-fill"></i>
+                <i className="bi bi-collection-fill"></i>
                 <span>Batch</span>
               </NavLink>
             </li>
@@ -59,6 +59,12 @@ export function SideBar() {
               </NavLink>
             </li>
             <li className="sidebar-item  ">
+              <NavLink to={"questions"} className="sidebar-link">
+                <i className="bi bi-people-fill" />
+                <span>Questions</span>
+              </NavLink>
+            </li>
+            <li className="sidebar-item  ">
               <NavLink to={"courses"} className="sidebar-link">
                 <i className="bi bi-book-fill" />
                 <span>Courses</span>
@@ -66,7 +72,7 @@ export function SideBar() {
             </li>
             <li className="sidebar-item  ">
               <NavLink to={"users"} className="sidebar-link">
-              <i className="bi bi-people-fill" />
+                <i className="bi bi-people-fill" />
                 <span>Users</span>
               </NavLink>
             </li>

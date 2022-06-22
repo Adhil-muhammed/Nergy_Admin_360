@@ -9,6 +9,7 @@ import {
   Courses,
   Users,
   DashboardCanvas,
+  Questions,
 } from "modules";
 
 export function Dashboard() {
@@ -27,6 +28,7 @@ export function Dashboard() {
             <Route element={<QuestionBanks />} path={"/questionbanks/*"} />
             <Route element={<Courses />} path={"/courses/*"} />
             <Route element={<Users />} path={"/users/*"} />
+            <Route element={<Questions />} path={"/questions/*"} />
           </Routes>
           <Footer />
         </div>
