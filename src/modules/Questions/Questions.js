@@ -4,7 +4,15 @@ import { CreateQuestion, QuestionsList } from "./containers";
 import { useQuestion } from "./hooks";
 
 export const Questions = () => {
-  const { questionsQuery, state, setState } = useQuestion();
+  const {
+    questionsQuery,
+    state,
+    setState,
+    isConfirmDelete,
+    onToggleModal,
+    onDelete,
+    onDeleteQuestion,
+  } = useQuestion();
   const { data, isLoading } = questionsQuery;
 
   return (
@@ -13,7 +21,18 @@ export const Questions = () => {
         <div>Loading</div>
       ) : (
         <Routes>
-          <Route path="/" element={<QuestionsList data={data} />} />
+          <Route
+            path="/"
+            element={
+              <QuestionsList
+                data={data}
+                isConfirmDelete={isConfirmDelete}
+                onToggleModal={onToggleModal}
+                onDelete={onDelete}
+                onDeleteQuestion={onDeleteQuestion}
+              />
+            }
+          />
           <Route path="/create" element={<CreateQuestion state={state} setState={setState} />} />
         </Routes>
       )}

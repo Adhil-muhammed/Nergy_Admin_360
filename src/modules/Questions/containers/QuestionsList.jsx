@@ -6,30 +6,16 @@ import { ContentLayout, ModalLayout, TableLayout } from "shared";
 import { useImmer } from "use-immer";
 
 export const QuestionsList = (props) => {
-  const { data } = props;
+  const { data, isConfirmDelete, onToggleModal, onDelete, onDeleteQuestion } = props;
   const history = useNavigate();
   const location = useLocation();
-  const [modal, setModal] = useImmer({ isOpen: false, id: "" });
+
   const gotoCreate = () => {
     history(`${location.pathname}/create`);
   };
 
-  const onDelete = (value) => {
-    setModal((draft) => {
-      draft.isOpen = !draft.isOpen;
-      draft.id = value.id;
-    });
-  };
-
-  const toggleModal = () => {
-    setModal((draft) => {
-      draft.isOpen = !draft.isOpen;
-      draft.id = "";
-    });
-  };
-
   const onConfirm = () => {
-    // deleteQuestionBank.mutate(questionBank.questionBankId);
+    onDeleteQuestion.mutate("");
   };
 
   const onEdit = (questionBankId) => {
@@ -97,13 +83,13 @@ export const QuestionsList = (props) => {
         </div>
         <TableLayout table={table} />
         <ModalLayout
-          isOpen={modal.isOpen}
+          isOpen={isConfirmDelete}
           title="Confirm"
-          message={`Are you sure? Do you want to delete ${modal.name}`}
+          message={`Are you sure?`}
           onConfirm={() => {
             onConfirm();
           }}
-          onCancel={() => toggleModal()}
+          onCancel={() => onToggleModal(false)}
         />
       </ContentLayout>
     </>
