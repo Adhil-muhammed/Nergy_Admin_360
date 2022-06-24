@@ -28,7 +28,7 @@ export const CourseList = (props) => {
 
   const Thumbnail =({value}) => {
     return (
-      value ? <img style={{height: '40px'}} src={value} /> : 'No image'
+      value ? <img style={{height: '40px'}} src={value} /> : <span>No Thumbnail</span>
     )
   }
 
