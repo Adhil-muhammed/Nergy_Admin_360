@@ -11,8 +11,8 @@ export const createStudents = async (student) => {
   return res.data;
 };
 
-export const updateStudents = async (batch) => {
-  const res = await Axios.put("/Students", batch);
+export const updateStudents = async (student) => {
+  const res = await Axios.put("/Students", student);
   return res.data;
 };
 
