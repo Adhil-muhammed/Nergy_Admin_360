@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
 
+
+
 export function SideBar() {
   return (
     <div id="sidebar" className="active">
@@ -9,7 +11,7 @@ export function SideBar() {
           <div className="d-flex justify-content-between">
             <div className="logo">
               <a href="/">
-                <img style={{height: '54px'}} src={Nergy360Logo} alt="Logo" />
+                <img style={{ height: "54px" }} src={Nergy360Logo} alt="Logo" />
               </a>
             </div>
             <div className="toggler">
@@ -30,13 +32,13 @@ export function SideBar() {
             </li>
             <li className="sidebar-item  ">
               <NavLink to={"batch"} className="sidebar-link">
-              <i className="bi bi-collection-fill"></i>
+                <i className="bi bi-collection-fill"></i>
                 <span>Batch</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
               <NavLink to={"role"} className="sidebar-link">
-                <i className="bi bi-gear-fill" />
+                <i className="bi bi-pen-fill" />
                 <span>Role</span>
               </NavLink>
             </li>
@@ -68,6 +70,26 @@ export function SideBar() {
               <NavLink to={"users"} className="sidebar-link">
               <i className="bi bi-people-fill" />
                 <span>Users</span>
+              </NavLink>
+            </li>
+            {/* <li className="sidebar-item has-sub">
+              <NavLink to={"users"} className="sidebar-link">
+                <i className="bi bi-people-fill" />
+                <span>Users</span>
+              </NavLink>
+              <ul class="submenu">
+                <li class="submenu-item ">
+                  <a href="extra-component-avatar.html">Avatar</a>
+                </li>
+                <li class="submenu-item ">
+                  <a href="extra-component-sweetalert.html">Sweet Alert</a>
+                </li>
+              </ul>
+            </li> */}
+            <li className="sidebar-item  ">
+              <NavLink to={"settings"} className="sidebar-link">
+                <i className="bi bi-gear-fill" />
+                <span>Settings</span>
               </NavLink>
             </li>
           </ul>

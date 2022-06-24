@@ -22,19 +22,16 @@ export const UserList = (props) => {
     return <Badge color={value ? "success" : "secondary"}>{value ? "Active" : "Inactive"}</Badge>;
   };
 
-  const EditCell = ({ value }) => {
+  const ActionButtons = ({ value }) => {
     return (
-      <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
-        <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
-      </Button>
-    );
-  };
-
-  const DeleteCell = ({ value }) => {
-    return (
-      <Button color="danger" size="sm" onClick={() => onDelete(value)}>
-        <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
-      </Button>
+      <>
+        <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
+          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+        </Button>
+        <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
+          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+        </Button>
+      </>
     );
   };
 
@@ -58,17 +55,10 @@ export const UserList = (props) => {
         Cell: StatusIndicator,
       },
       {
-        Header: "Edit",
-        id: "editUser",
+        Header: "Actions",
+        id: "actions",
         accessor: "userId",
-        Cell: EditCell,
-      },
-      {
-        Header: "Delete",
-        id: "deleteUser",
-        accessor: "userId",
-        key: "deleteCourse",
-        Cell: DeleteCell,
+        Cell: ActionButtons,
       },
     ],
     []
