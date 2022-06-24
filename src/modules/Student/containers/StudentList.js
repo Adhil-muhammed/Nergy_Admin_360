@@ -12,7 +12,7 @@ export const StudentList = (props) => {
   const history = useNavigate();
   const location = useLocation();
   const onConfirm = () => {
-    deleteStudent.mutate(student.studentId);
+    deleteStudent.mutate(student.studentUserId);
   };
 
   const onEdit = (studentUserId) => {

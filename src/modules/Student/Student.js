@@ -54,7 +54,7 @@ export const Student = () => {
             }
           />
           <Route
-            path="/edit/:studentId"
+            path="/edit/:studentUserId"
             element={
               <EditStudent
                 student={student}

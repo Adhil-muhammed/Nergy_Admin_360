@@ -16,7 +16,7 @@ export const useStudent = () => {
   const queryClient = useQueryClient();
   const [page, setPage] = useImmer({
     pageIndex: 1,
-    pageSize: 10,
+    pageSize: 2,
   });
   const studentsQuery = useQuery([GetStudentKey, page], () => getStudents(page), {
     keepPreviousData: true,
@@ -47,24 +47,43 @@ export const useStudent = () => {
         GetStudentKey,
         {
           pageIndex: 1,
-          pageSize: 10,
+          pageSize: 2,
         },
       ]);
-      const data = queryClient.getQueryData(GetStudentKey);
-      queryClient.setQueryData(GetStudentKey, (prevData) => {
-        let updatedData = [...prevData, update];
-        return updatedData;
-      });
+      const data = queryClient.getQueryData([
+        GetStudentKey,
+        {
+          pageIndex: 1,
+          pageSize: 2,
+        },
+      ]);
+      queryClient.setQueryData(
+        [
+          GetStudentKey,
+          {
+            pageIndex: 1,
+            pageSize: 2,
+          },
+        ],
+        (prevData) => {
+          let updatedData = {
+            paging: { pageNo: 1, ...prevData.paging },
+            value: [...prevData, update],
+          };
+          return updatedData;
+        }
+      );
       return data;
     },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetStudentKey, previousData);
+      queryClient.setQueryData([GetStudentKey, page], previousData);
     },
     onSuccess: () => {
       successMessage();
     },
     onSettled: () => {
       queryClient.invalidateQueries("create");
+      navigate("../student", { replace: true });
     },
   });
 
@@ -99,23 +118,14 @@ export const useStudent = () => {
   });
 
   const deleteStudent = useMutation(deteleStudents, {
-    onMutate: async (batchId) => {
-      await queryClient.cancelQueries(GetStudentKey);
-      const data = queryClient.getQueryData(GetStudentKey);
-      queryClient.setQueryData(GetStudentKey, (prevData) => {
-        let updatedData = [...prevData.filter((n) => n.batchId !== batchId)];
-        return updatedData;
-      });
-      return data;
-    },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetStudentKey, previousData);
+      queryClient.setQueryData([GetStudentKey, page], previousData);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries([GetStudentKey, page]);
       successDeletedMessage();
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
       onToggleModal(false);
     },
   });
