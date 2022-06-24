@@ -50,7 +50,7 @@ export const SettingsList = (props) => {
               className="btn btn-light-secondary me-1 mb-1"
               onClick={() => {}}
             >
-              Cancel
+              Reset
             </button>
           </div>
         </form>

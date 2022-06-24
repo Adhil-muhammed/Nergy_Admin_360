@@ -1,7 +1,7 @@
 import { ContentLayout } from "shared/components";
 import { Input, Button } from "reactstrap";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 export const EditInstitute = (props) => {
   const { institute, setInstitute, editInstitute, onEdit } = props;
@@ -9,6 +9,8 @@ export const EditInstitute = (props) => {
   const { name } = institute;
 
   let { instituteId } = useParams();
+  const history = useNavigate();
+  const location = useLocation();
 
   React.useEffect(() => {
     if (instituteId) {
@@ -18,6 +20,10 @@ export const EditInstitute = (props) => {
 
   const onSubmit = () => {
     editInstitute.mutate(institute);
+  };
+
+  const onCancel = () => {
+    history(`${location.pathname}`.replace(`/edit/${instituteId}`,""));
   };
 
   return (
@@ -59,7 +65,9 @@ export const EditInstitute = (props) => {
                           >
                             Update
                           </Button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1">
+                          <button type="reset" className="btn btn-light-secondary me-1 mb-1" onClick={() => {
+                            onCancel()
+                          }}>
                             Cancel
                           </button>
                         </div>

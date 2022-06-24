@@ -2,7 +2,7 @@ import { ContentLayout } from "shared/components";
 import { Input, Button } from "reactstrap";
 import Datetime from "react-datetime";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment";
 
 export const EditStudent = (props) => {
@@ -23,6 +23,8 @@ export const EditStudent = (props) => {
   const dateOfBirthVal = moment(dateOfBirth, "YYYY-MM-DD");
 
   let { studentUserId } = useParams();
+  const history = useNavigate();
+  const location = useLocation();
 
   React.useEffect(() => {
     if (studentUserId) {
@@ -39,6 +41,10 @@ export const EditStudent = (props) => {
 
   const onSubmit = () => {
     editStudent.mutate(student);
+  };
+
+  const onCancel = () => {
+    history(`${location.pathname}`.replace(`/edit/${studentUserId}`, ""));
   };
 
   return (
@@ -275,6 +281,11 @@ export const EditStudent = (props) => {
                           </Button>
                           <button type="reset" className="btn btn-light-secondary me-1 mb-1">
                             Reset
+                          </button>
+                          <button type="button" className="btn btn-light-secondary me-1 mb-1" onClick={() => {
+                            onCancel()
+                          }}>
+                            Cancel
                           </button>
                         </div>
                       </div>

@@ -19,19 +19,16 @@ export const RoleList = (props) => {
     history(`${location.pathname}/edit/${roleId}`);
   };
 
-  const EditCell = ({ value }) => {
+  const ActionButtons = ({ value }) => {
     return (
-      <Button outline color="primary" onClick={() => onEdit(value)}>
-        Edit
-      </Button>
-    );
-  };
-
-  const DeleteCell = ({ value }) => {
-    return (
-      <Button color="danger" onClick={() => onDelete(value)}>
-        Delete
-      </Button>
+      <>
+        <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
+          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+        </Button>
+        <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
+          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+        </Button>
+      </>
     );
   };
 
@@ -42,17 +39,11 @@ export const RoleList = (props) => {
         accessor: "name",
       },
       {
-        Header: "Edit",
+        Header: "Actions",
+        id: "actions",
         accessor: "roleId",
-        id: "edtitRole",
-        Cell: EditCell,
-      },
-      {
-        Header: "Delete",
-        id: "deleteRole",
-        accessor: "roleId",
-        key: "deleteRole",
-        Cell: DeleteCell,
+        key: "actions",
+        Cell: ActionButtons,
       },
     ],
     []

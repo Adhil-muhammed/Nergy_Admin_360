@@ -1,12 +1,20 @@
 import { ContentLayout } from "shared/components";
 import { Input, Button } from "reactstrap";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const CreateInstitute = (props) => {
   const { institute, setInstitute, createInstitute } = props;
   const { name } = institute;
 
+  const history = useNavigate();
+  const location = useLocation();
+
   const onSubmit = () => {
     createInstitute.mutate(institute);
+  };
+
+  const onCancel = () => {
+    history(`${location.pathname}`.replace("/create", ""));
   };
 
   return (
@@ -48,7 +56,13 @@ export const CreateInstitute = (props) => {
                           >
                             Create
                           </Button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1">
+                          <button
+                            type="reset"
+                            className="btn btn-light-secondary me-1 mb-1"
+                            onClick={() => {
+                              onCancel();
+                            }}
+                          >
                             Cancel
                           </button>
                         </div>

@@ -1,6 +1,8 @@
 import { ContentLayout } from "shared/components";
 import { Input, Button } from "reactstrap";
 import Datetime from "react-datetime";
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 export const CreateStudent = (props) => {
   const { student, setStudent, createStudent, batchesQuery, institutesQuery } = props;
@@ -19,6 +21,9 @@ export const CreateStudent = (props) => {
     region,
   } = student;
 
+  const history = useNavigate();
+  const location = useLocation();
+
   const onDateOfBirthChange = (m) => {
     const date = m.format("YYYY-MM-DD").toString();
     setStudent((draft) => {
@@ -28,6 +33,10 @@ export const CreateStudent = (props) => {
 
   const onSubmit = () => {
     createStudent.mutate(student);
+  };
+
+  const onCancel = () => {
+    history(`${location.pathname}`.replace("/create", ""));
   };
 
   return (
@@ -263,6 +272,11 @@ export const CreateStudent = (props) => {
                           </Button>
                           <button type="reset" className="btn btn-light-secondary me-1 mb-1">
                             Reset
+                          </button>
+                          <button type="button" className="btn btn-light-secondary me-1 mb-1" onClick={() => {
+                            onCancel()
+                          }}>
+                            Cancel
                           </button>
                         </div>
                       </div>

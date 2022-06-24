@@ -2,7 +2,7 @@ import { ContentLayout } from "shared/components";
 import { Input, Button } from "reactstrap";
 import Datetime from "react-datetime";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment";
 
 export const EditBatch = (props) => {
@@ -12,6 +12,8 @@ export const EditBatch = (props) => {
   const startDateVal = moment(startDate, "YYYY-MM-DD");
 
   let { batchId } = useParams();
+  const history = useNavigate();
+  const location = useLocation();
 
   React.useEffect(() => {
     if (batchId) {
@@ -37,6 +39,9 @@ export const EditBatch = (props) => {
     editBatch.mutate(batch);
   };
 
+  const onCancel = () => {
+    history(`${location.pathname}`.replace(`/edit/${batchId}`,""));
+  };
   return (
     <ContentLayout title={"Update"}>
       <section id="basic-vertical-layouts">
@@ -102,7 +107,9 @@ export const EditBatch = (props) => {
                           >
                             Update
                           </Button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1">
+                          <button type="reset" className="btn btn-light-secondary me-1 mb-1" onClick={() => {
+                            onCancel()
+                          }}>
                             Cancel
                           </button>
                         </div>

@@ -1,12 +1,21 @@
 import { ContentLayout } from "shared/components";
 import { Input, Button } from "reactstrap";
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 export const CreateQuestionBanks = (props) => {
   const { questionBank, setQuestionBank, createQuestionBank } = props;
   const { name } = questionBank;
 
+  const history = useNavigate();
+  const location = useLocation();
+
   const onSubmit = () => {
     createQuestionBank.mutate(questionBank);
+  };
+
+  const onCancel = () => {
+    history(`${location.pathname}`.replace("/create", ""));
   };
 
   return (
@@ -48,7 +57,9 @@ export const CreateQuestionBanks = (props) => {
                           >
                             Create
                           </Button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1">
+                          <button type="reset" className="btn btn-light-secondary me-1 mb-1" onClick={() => {
+                            onCancel()
+                          }}>
                             Cancel
                           </button>
                         </div>

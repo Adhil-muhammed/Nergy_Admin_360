@@ -1,14 +1,15 @@
 import { ContentLayout } from "shared/components";
 import { Input, Button } from "reactstrap";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+
 
 export const EditQuestionBanks = (props) => {
   const { questionBank, setQuestionBank, editQuestionBank, onEdit } = props;
-
   const { name } = questionBank;
-
   let { questionBankId } = useParams();
+  const history = useNavigate();
+  const location = useLocation();
 
   React.useEffect(() => {
     if (questionBankId) {
@@ -18,6 +19,10 @@ export const EditQuestionBanks = (props) => {
 
   const onSubmit = () => {
     editQuestionBank.mutate(questionBank);
+  };
+
+  const onCancel = () => {
+    history(`${location.pathname}`.replace(`/edit/${questionBankId}`, ""));
   };
 
   return (
@@ -59,7 +64,9 @@ export const EditQuestionBanks = (props) => {
                           >
                             Update
                           </Button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1">
+                          <button type="reset" className="btn btn-light-secondary me-1 mb-1" onClick={() => {
+                            onCancel()
+                          }}>
                             Cancel
                           </button>
                         </div>

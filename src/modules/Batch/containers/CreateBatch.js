@@ -1,10 +1,14 @@
 import { ContentLayout } from "shared/components";
 import { Input, Button } from "reactstrap";
 import Datetime from "react-datetime";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const CreateBatch = (props) => {
   const { batch, setBatch, createBatch } = props;
   const { name, startDate, endDate } = batch;
+
+  const history = useNavigate();
+  const location = useLocation();
 
   const onStartDateChange = (m) => {
     const date = m.format("YYYY-MM-DD").toString();
@@ -22,6 +26,10 @@ export const CreateBatch = (props) => {
 
   const onSubmit = () => {
     createBatch.mutate(batch);
+  };
+
+  const onCancel = () => {
+    history(`${location.pathname}`.replace("/create",""));
   };
 
   return (
@@ -89,6 +97,12 @@ export const CreateBatch = (props) => {
                           </Button>
                           <button type="reset" className="btn btn-light-secondary me-1 mb-1">
                             Reset
+                          </button>
+                          <button type="reset" className="btn btn-light-secondary me-1 mb-1"
+                            onClick={() => {
+                              onCancel();
+                            }}>
+                            Cancel
                           </button>
                         </div>
                       </div>
