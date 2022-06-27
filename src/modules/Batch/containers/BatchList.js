@@ -61,7 +61,7 @@ export const BatchList = (props) => {
   });
 
   return (
-    <ContentLayout title={"Batches"}>
+    <ContentLayout title={"Batches"} subtitle={"List"}>
       <BatchFilter />
       <TableLayout table={table} />
       <ModalLayout

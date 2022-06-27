@@ -29,88 +29,89 @@ export const CreateBatch = (props) => {
   };
 
   const onCancel = () => {
-    history(`${location.pathname}`.replace("/create",""));
+    history(`${location.pathname}`.replace("/create", ""));
   };
 
   return (
     <ContentLayout title={"Create New"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
-          <div className="col-md-6 col-12">
-            <div className="card">
-              <div className="card-content">
-                <div className="card-body">
-                  <form className="form form-vertical">
-                    <div className="form-body">
-                      <div className="row">
-                        <div className="col-12">
-                          <div className="form-group">
-                            <label htmlFor="first-name-vertical">Name</label>
-                            <Input
-                              type="text"
-                              id="first-name-vertical"
-                              className="form-control"
-                              name="name"
-                              placeholder="Batch Name"
-                              value={name}
-                              onChange={(e) => {
-                                setBatch((draft) => {
-                                  draft.name = e.target.value;
-                                });
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-12">
-                          <div className="form-group">
-                            <label htmlFor="contact-info-vertical">Start Date</label>
-                            <Datetime
-                              dateformat="YYYY-MM-DD"
-                              timeformat="{false}"
-                              name="startDate"
-                              selected={startDate}
-                              onChange={onStartDateChange}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-12">
-                          <div className="form-group">
-                            <label htmlFor="contact-info-vertical">End Date</label>
-                            <Datetime
-                              dateformat="YYYY-MM-DD"
-                              timeformat="{false}"
-                              name="endDate"
-                              selected={endDate}
-                              onChange={onEndDateChange}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-12 d-flex justify-content-end">
-                          <Button
-                            className="me-1 mb-1"
-                            color="success"
-                            onClick={() => {
-                              onSubmit();
-                            }}
-                          >
-                            Click Me
-                          </Button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1">
-                            Reset
-                          </button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1"
-                            onClick={() => {
-                              onCancel();
-                            }}>
-                            Cancel
-                          </button>
-                        </div>
+          <div className="col-12">
+            <form className="form form-vertical">
+              <div className="form-body">
+                <div className="col-12">
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group">
+                        <label className="mb-2" htmlFor="first-name-vertical">Name</label>
+                        <Input
+                          type="text"
+                          id="first-name-vertical"
+                          className="form-control"
+                          name="name"
+                          placeholder="Batch Name"
+                          value={name}
+                          onChange={(e) => {
+                            setBatch((draft) => {
+                              draft.name = e.target.value;
+                            });
+                          }}
+                        />
                       </div>
                     </div>
-                  </form>
+                    <div className="col-sm-6">
+                      <div className="form-group">
+                        <label className="mb-2" htmlFor="contact-info-vertical">Start Date</label>
+                        <Datetime
+                          dateformat="YYYY-MM-DD"
+                          timeformat="{false}"
+                          name="startDate"
+                          selected={startDate}
+                          onChange={onStartDateChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group">
+                        <label className="mb-2" htmlFor="contact-info-vertical">End Date</label>
+                        <Datetime
+                          dateformat="YYYY-MM-DD"
+                          timeformat="{false}"
+                          name="endDate"
+                          selected={endDate}
+                          onChange={onEndDateChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12 d-flex justify-content-end">
+                    <Button
+                      className="me-1 mb-1"
+                      color="success"
+                      onClick={() => {
+                        onSubmit();
+                      }}
+                    >
+                      Click Me
+                    </Button>
+                    <button type="reset" className="btn btn-light-secondary me-1 mb-1">
+                      Reset
+                    </button>
+                    <button
+                      type="reset"
+                      className="btn btn-light-secondary me-1 mb-1"
+                      onClick={() => {
+                        onCancel();
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </section>
