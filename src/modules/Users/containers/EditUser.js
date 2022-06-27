@@ -8,7 +8,7 @@ export const EditUser = (props) => {
   const history = useNavigate();
   const location = useLocation();
   const { user, setUser, editUser, onEdit } = props;
-  const { firstName, lastName, email, password, confirmPassword } = user;
+  const { firstName, lastName, email } = user;
   let { userId } = useParams();
 
   React.useEffect(() => {
@@ -87,40 +87,6 @@ export const EditUser = (props) => {
                           name="email"
                           placeholder="Email address"
                           value={email}
-                          onChange={onHandleChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label htmlFor="first-password-vertical" className="mb-2">
-                          Password
-                        </label>
-                        <Input
-                          type="email"
-                          id="first-password-vertical"
-                          className="form-control"
-                          name="password"
-                          placeholder="Password"
-                          value={password}
-                          onChange={onHandleChange}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label htmlFor="first-confirm-password-vertical" className="mb-2">
-                          Confirm Password
-                        </label>
-                        <Input
-                          type="email"
-                          id="first-confirm-password-vertical"
-                          className="form-control"
-                          name="confirmPassword"
-                          placeholder="Confirm Password"
-                          value={confirmPassword}
                           onChange={onHandleChange}
                         />
                       </div>

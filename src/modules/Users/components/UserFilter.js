@@ -7,11 +7,17 @@ export const UserIdFilter = () => {
   const gotoCreate = () => {
     history(`${location.pathname}/create`);
   };
+  const gotoRoles = () => {
+    history('/admin/role');
+  };
   return (
     <div>
       <div className="mb-4">
         <Button color="primary" size="sm" onClick={gotoCreate}>
           Create New
+        </Button>
+        <Button className="ms-3" color="success" size="sm" onClick={gotoRoles}>
+          Roles
         </Button>
       </div>
     </div>

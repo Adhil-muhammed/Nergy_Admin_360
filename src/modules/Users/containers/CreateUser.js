@@ -86,6 +86,29 @@ export const CreateUser = (props) => {
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
+                        <label htmlFor="user-role-select" className="mb-2">
+                          Role
+                        </label>
+                        <select className="form-select">
+                          <option selected>--Select Role--</option>
+                          <option value="0">Admin</option>
+                          <option value="1">Role 1</option>
+                        </select>
+                        {/* <Input
+                          type="email"
+                          id="user-role-select"
+                          className="form-control"
+                          name="password"
+                          placeholder="Password"
+                          value={password}
+                          onChange={onHandleChange}
+                        /> */}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group">
                         <label htmlFor="first-password-vertical" className="mb-2">
                           Password
                         </label>
@@ -100,8 +123,6 @@ export const CreateUser = (props) => {
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="row">
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label htmlFor="first-confirm-password-vertical" className="mb-2">
