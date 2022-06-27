@@ -6,17 +6,19 @@ import { useNavigate } from "react-router-dom";
 import { successMessage, successDeletedMessage } from "utils";
 import { getInstitutes } from "modules/Institute";
 import { getBatches } from "modules/Batch";
+import { getCourses } from "modules/Courses";
 
 const GetStudentKey = "GET_BATCHES_API";
 const GetBatchKey = "GET_BATCHES_FOR_CREATE_STUDENT";
 const GetInstituteKey = "GET_INSTITUTES_FOR_CREATE_STUDENT";
+const GetCourseKey = "GET_COURSE_FOR_CREATE_STUDENT";
 
 export const useStudent = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [page, setPage] = useImmer({
     pageIndex: 1,
-    pageSize: 2,
+    pageSize: 10,
   });
   const studentsQuery = useQuery([GetStudentKey, page], () => getStudents(page), {
     keepPreviousData: true,
@@ -24,6 +26,15 @@ export const useStudent = () => {
   });
   const batchesQuery = useQuery(GetBatchKey, getBatches, { staleTime: Infinity });
   const institutesQuery = useQuery(GetInstituteKey, getInstitutes, { staleTime: Infinity });
+  const coursesQuery = useQuery(GetCourseKey, getCourses, { staleTime: Infinity });
+
+  const courses = React.useMemo(() => {
+    return coursesQuery.data
+      ? coursesQuery.data.map((c) => {
+          return { value: c.courseId, label: c.name };
+        })
+      : [];
+  }, [coursesQuery.data]);
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [student, setStudent] = useImmer({
@@ -39,42 +50,43 @@ export const useStudent = () => {
     dateOfBirth: "",
     mobile: "",
     region: "",
+    selectedCourses: [],
   });
 
   const createStudent = useMutation(createStudents, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries([
-        GetStudentKey,
-        {
-          pageIndex: 1,
-          pageSize: 2,
-        },
-      ]);
-      const data = queryClient.getQueryData([
-        GetStudentKey,
-        {
-          pageIndex: 1,
-          pageSize: 2,
-        },
-      ]);
-      queryClient.setQueryData(
-        [
-          GetStudentKey,
-          {
-            pageIndex: 1,
-            pageSize: 2,
-          },
-        ],
-        (prevData) => {
-          let updatedData = {
-            paging: { pageNo: 1, ...prevData.paging },
-            value: [...prevData, update],
-          };
-          return updatedData;
-        }
-      );
-      return data;
-    },
+    // onMutate: async (update) => {
+    //   await queryClient.cancelQueries([
+    //     GetStudentKey,
+    //     {
+    //       pageIndex: 1,
+    //       pageSize: 2,
+    //     },
+    //   ]);
+    //   const data = queryClient.getQueryData([
+    //     GetStudentKey,
+    //     {
+    //       pageIndex: 1,
+    //       pageSize: 2,
+    //     },
+    //   ]);
+    //   queryClient.setQueryData(
+    //     [
+    //       GetStudentKey,
+    //       {
+    //         pageIndex: 1,
+    //         pageSize: 2,
+    //       },
+    //     ],
+    //     (prevData) => {
+    //       let updatedData = {
+    //         paging: { pageNo: 1, ...prevData.paging },
+    //         value: [...prevData, update],
+    //       };
+    //       return updatedData;
+    //     }
+    //   );
+    //   return data;
+    // },
     onError: (e, newData, previousData) => {
       queryClient.setQueryData([GetStudentKey, page], previousData);
     },
@@ -82,7 +94,10 @@ export const useStudent = () => {
       successMessage();
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
+      setPage((draft) => {
+        draft.pageIndex = 1;
+        draft.pageSize = 2;
+      });
       navigate("../student", { replace: true });
     },
   });
@@ -92,7 +107,7 @@ export const useStudent = () => {
       await queryClient.cancelQueries([GetStudentKey, page]);
       const data = queryClient.getQueryData([GetStudentKey, page]);
       queryClient.setQueryData([GetStudentKey, page], (prevData) => {
-        let updatedData = prevData.value.map((p) => {
+        let updatedValue = prevData.value.map((p) => {
           let newData = { ...p };
           if (p.studentUserId === update.studentUserId) {
             newData.studentUserId = update.studentUserId;
@@ -107,9 +122,11 @@ export const useStudent = () => {
             newData.dateOfBirth = update.dateOfBirth;
             newData.mobile = update.mobile;
             newData.region = update.region;
+            newData.selectedCourses = update.selectedCourses;
           }
           return newData;
         });
+        let updatedData = { ...prevData, value: updatedValue };
         return updatedData;
       });
       return data;
@@ -154,6 +171,7 @@ export const useStudent = () => {
         draft.dateOfBirth = selectedStudent.dateOfBirth;
         draft.mobile = selectedStudent.mobile;
         draft.region = selectedStudent.region;
+        draft.selectedCourses = selectedStudent.selectedCourses;
         return draft;
       });
     },
@@ -162,7 +180,6 @@ export const useStudent = () => {
 
   const onEdit = React.useCallback(
     (studentUserId) => {
-      console.log("studentUserId", studentUserId);
       if (studentUserId) {
         getSelectedStudent(studentUserId);
       }
@@ -216,5 +233,6 @@ export const useStudent = () => {
     fetchData,
     batchesQuery,
     institutesQuery,
+    courses,
   };
 };
