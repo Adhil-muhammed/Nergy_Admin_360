@@ -12,6 +12,7 @@ export const Questions = () => {
     onToggleModal,
     onDelete,
     onDeleteQuestion,
+    question,
   } = useQuestion();
   const { data, isLoading } = questionsQuery;
 
@@ -26,6 +27,7 @@ export const Questions = () => {
             element={
               <QuestionsList
                 data={data}
+                question={question}
                 isConfirmDelete={isConfirmDelete}
                 onToggleModal={onToggleModal}
                 onDelete={onDelete}

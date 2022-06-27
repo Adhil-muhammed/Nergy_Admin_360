@@ -10,6 +10,7 @@ export const useQuestion = () => {
   const queryClient = useQueryClient();
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
+  const [question, setQuestion] = useImmer({ questionId: 0, name: "" });
   const [state, setState] = useImmer({
     data: {
       description: "",
@@ -37,11 +38,11 @@ export const useQuestion = () => {
   });
 
   const onDeleteQuestion = useMutation(deleteQuestion, {
-    onMutate: async (questionBankId) => {
+    onMutate: async (questionId) => {
       await queryClient.cancelQueries(GetQuestionKey);
       const data = queryClient.getQueryData(GetQuestionKey);
       queryClient.setQueryData(GetQuestionKey, (prevData) => {
-        let updatedData = [...prevData.filter((n) => n.questionBankId !== questionBankId)];
+        let updatedData = [...prevData.filter((n) => n.questionId !== questionId)];
         return updatedData;
       });
       return data;
@@ -58,14 +59,27 @@ export const useQuestion = () => {
     },
   });
 
-  const onDelete = React.useCallback(
+  const getSelectedQuestion = React.useCallback(
     (id) => {
+      const selectedQuestion = questionsQuery.data.filter((s) => s.questionId === id)[0];
+      setQuestion((draft) => {
+        draft.questionId = selectedQuestion.questionId;
+        draft.name = selectedQuestion.description;
+        return draft;
+      });
+    },
+    [questionsQuery.data, setQuestion]
+  );
+
+  const onDelete = React.useCallback(
+    (value) => {
+      getSelectedQuestion(value.original.questionId);
       setIsConfirmDelete((draft) => {
         draft = true;
         return draft;
       });
     },
-    [setIsConfirmDelete]
+    [getSelectedQuestion, setIsConfirmDelete]
   );
 
   const onToggleModal = React.useCallback(
@@ -86,5 +100,6 @@ export const useQuestion = () => {
     onToggleModal,
     onDelete,
     onDeleteQuestion,
+    question,
   };
 };

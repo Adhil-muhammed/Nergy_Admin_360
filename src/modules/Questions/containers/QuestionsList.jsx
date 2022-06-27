@@ -6,7 +6,7 @@ import { ContentLayout, ModalLayout, TableLayout } from "shared";
 import { useImmer } from "use-immer";
 
 export const QuestionsList = (props) => {
-  const { data, isConfirmDelete, onToggleModal, onDelete, onDeleteQuestion } = props;
+  const { data, isConfirmDelete, onToggleModal, onDelete, onDeleteQuestion, question } = props;
   const history = useNavigate();
   const location = useLocation();
 
@@ -15,7 +15,7 @@ export const QuestionsList = (props) => {
   };
 
   const onConfirm = () => {
-    onDeleteQuestion.mutate("");
+    onDeleteQuestion.mutate(question.questionId);
   };
 
   const onEdit = (questionBankId) => {
