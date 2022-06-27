@@ -2,11 +2,13 @@ import { ContentLayout } from "shared/components";
 import { Input, Button } from "reactstrap";
 import Datetime from "react-datetime";
 import React from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import Select from "react-select";
 import moment from "moment";
 
 export const EditStudent = (props) => {
-  const { student, setStudent, editStudent, batchesQuery, institutesQuery, onEdit } = props;
+  const { student, setStudent, editStudent, batchesQuery, institutesQuery, onEdit, courses } =
+    props;
   const {
     instituteId,
     batchId,
@@ -19,12 +21,21 @@ export const EditStudent = (props) => {
     dateOfBirth,
     mobile,
     region,
+    selectedCourses,
   } = student;
+  console.log("selectedCourses", selectedCourses, "courses", courses);
+
   const dateOfBirthVal = moment(dateOfBirth, "YYYY-MM-DD");
 
+  const selectedCoursesArray = selectedCourses
+    ? courses.filter((el) => {
+        return selectedCourses.some((f) => {
+          return f === el.courseId;
+        });
+      })
+    : [];
+
   let { studentUserId } = useParams();
-  const history = useNavigate();
-  const location = useLocation();
 
   React.useEffect(() => {
     if (studentUserId) {
@@ -41,10 +52,6 @@ export const EditStudent = (props) => {
 
   const onSubmit = () => {
     editStudent.mutate(student);
-  };
-
-  const onCancel = () => {
-    history(`${location.pathname}`.replace(`/edit/${studentUserId}`, ""));
   };
 
   return (
@@ -269,6 +276,24 @@ export const EditStudent = (props) => {
                             />
                           </div>
                         </div>
+                        <div className="col-12">
+                          <div className="form-group">
+                            <label htmlFor="first-name-vertical">Courses</label>
+                            <Select
+                              closeMenuOnSelect={false}
+                              defaultValue={selectedCoursesArray}
+                              isMulti
+                              options={courses}
+                              onChange={(selectedOption) => {
+                                setStudent((draft) => {
+                                  draft.selectedCourses = selectedOption.map((o) => {
+                                    return parseInt(o.value, 10);
+                                  });
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
                         <div className="col-12 d-flex justify-content-end">
                           <Button
                             className="me-1 mb-1"
@@ -281,11 +306,6 @@ export const EditStudent = (props) => {
                           </Button>
                           <button type="reset" className="btn btn-light-secondary me-1 mb-1">
                             Reset
-                          </button>
-                          <button type="button" className="btn btn-light-secondary me-1 mb-1" onClick={() => {
-                            onCancel()
-                          }}>
-                            Cancel
                           </button>
                         </div>
                       </div>

@@ -18,6 +18,7 @@ export const Student = () => {
     fetchData,
     batchesQuery,
     institutesQuery,
+    courses,
   } = useStudent();
 
   const { data, isLoading } = studentsQuery;
@@ -50,6 +51,7 @@ export const Student = () => {
                 createStudent={createStudent}
                 batchesQuery={batchesQuery}
                 institutesQuery={institutesQuery}
+                courses={courses}
               />
             }
           />
@@ -63,6 +65,7 @@ export const Student = () => {
                 onEdit={onEdit}
                 batchesQuery={batchesQuery}
                 institutesQuery={institutesQuery}
+                courses={courses}
               />
             }
           />
