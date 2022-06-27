@@ -3,18 +3,37 @@ import { Button, Input } from "reactstrap";
 import { ContentLayout } from "shared";
 
 export const CreateQuestion = (props) => {
-  const { state, setState } = props;
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setState((draft) => {
-      draft.data[name] = value;
-    });
+  const { state, setState, createQuestion } = props;
+
+  const onSubmit = () => {
+    createQuestion.mutate(state.data);
   };
-  const handleChecked = (e) => {
+
+  const onChange = (e, index, isChoice = false) => {
+    const { name, value } = e.target;
+    if (isChoice) {
+      setState((draft) => {
+        draft.data.choices[index][name] = value;
+        return draft;
+      });
+    } else {
+      setState((draft) => {
+        draft.data[name] = value;
+      });
+    }
+  };
+  const handleChecked = (e, index, isChoice = false) => {
     const { name, checked } = e.target;
-    setState((draft) => {
-      draft.data[name] = checked;
-    });
+    if (isChoice) {
+      setState((draft) => {
+        draft.data.choices[index][name] = checked;
+        return draft;
+      });
+    } else {
+      setState((draft) => {
+        draft.data[name] = checked;
+      });
+    }
   };
   const difficultyLevelData = [
     { value: 1, label: "Easy" },
@@ -68,12 +87,12 @@ export const CreateQuestion = (props) => {
                             </Input>
                           </div>
                         </div>
-                        <h5>Choices</h5>
+                        <h5 className="mt-3">Choices</h5>
                         {state.data.choices.map((item, index) => {
                           return (
-                            <>
+                            <div className="mt-2 mb-4">
                               <div>{`Choice ${index + 1}`}</div>
-                              <div className="col-12">
+                              <div className="col-12 mt-2">
                                 <div className="form-group">
                                   <label htmlFor="first-name-vertical">Code</label>
                                   <Input
@@ -83,7 +102,7 @@ export const CreateQuestion = (props) => {
                                     name="code"
                                     placeholder="Question description"
                                     value={item.code}
-                                    onChange={onChange}
+                                    onChange={(e) => onChange(e, index, true)}
                                   />
                                 </div>
                               </div>
@@ -97,7 +116,7 @@ export const CreateQuestion = (props) => {
                                     name="description"
                                     placeholder="Question description"
                                     value={item.description}
-                                    onChange={onChange}
+                                    onChange={(e) => onChange(e, index, true)}
                                   />
                                 </div>
                               </div>
@@ -109,10 +128,10 @@ export const CreateQuestion = (props) => {
                                   className="form-check-input"
                                   name="isAnswer"
                                   value={item.isAnswer}
-                                  onChange={handleChecked}
+                                  onChange={(e) => handleChecked(e, index, true)}
                                 />
                               </div>
-                            </>
+                            </div>
                           );
                         })}
 
@@ -145,7 +164,7 @@ export const CreateQuestion = (props) => {
                             className="me-1 mb-1"
                             color="success"
                             onClick={() => {
-                              // onSubmit();
+                              onSubmit();
                             }}
                           >
                             Create

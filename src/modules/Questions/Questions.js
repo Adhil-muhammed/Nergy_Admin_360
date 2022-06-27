@@ -13,6 +13,7 @@ export const Questions = () => {
     onDelete,
     onDeleteQuestion,
     question,
+    createQuestion,
   } = useQuestion();
   const { data, isLoading } = questionsQuery;
 
@@ -35,7 +36,12 @@ export const Questions = () => {
               />
             }
           />
-          <Route path="/create" element={<CreateQuestion state={state} setState={setState} />} />
+          <Route
+            path="/create"
+            element={
+              <CreateQuestion state={state} setState={setState} createQuestion={createQuestion} />
+            }
+          />
         </Routes>
       )}
     </>

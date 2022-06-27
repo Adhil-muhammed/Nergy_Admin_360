@@ -5,8 +5,8 @@ export const getQuestions = async () => {
   return res.data;
 };
 
-export const createNewQuestion = async () => {
-  const res = await Axios.post("/Questions");
+export const createNewQuestion = async (question) => {
+  const res = await Axios.post("/Questions", question);
   return res.data;
 };
 

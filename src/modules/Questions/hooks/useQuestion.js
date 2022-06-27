@@ -1,13 +1,16 @@
 import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { useImmer } from "use-immer";
-import { successDeletedMessage } from "utils";
-import { deleteQuestion, getQuestions } from "../api";
+import { successDeletedMessage, successMessage } from "utils";
+import { createNewQuestion, deleteQuestion, getQuestions } from "../api";
 
 const GetQuestionKey = "GET_QUESTION_API";
 
 export const useQuestion = () => {
   const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [question, setQuestion] = useImmer({ questionId: 0, name: "" });
@@ -16,7 +19,7 @@ export const useQuestion = () => {
       description: "",
       shuffleChoice: false,
       difficultyLevelCode: 0,
-      questionBankId: 0,
+      questionBankId: 1,
       review: false,
       choices: [
         {
@@ -35,6 +38,23 @@ export const useQuestion = () => {
 
   const questionsQuery = useQuery(GetQuestionKey, getQuestions, {
     staleTime: Infinity,
+  });
+
+  const createQuestion = useMutation(createNewQuestion, {
+    onMutate: async (update) => {
+      await queryClient.cancelQueries(GetQuestionKey);
+      const data = queryClient.getQueryData(GetQuestionKey);
+    },
+    onError: (e, newData, previousData) => {
+      queryClient.setQueryData(GetQuestionKey, previousData);
+    },
+    onSuccess: () => {
+      successMessage();
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("create");
+      navigate("../questions", { replace: true });
+    },
   });
 
   const onDeleteQuestion = useMutation(deleteQuestion, {
@@ -101,5 +121,6 @@ export const useQuestion = () => {
     onDelete,
     onDeleteQuestion,
     question,
+    createQuestion,
   };
 };
