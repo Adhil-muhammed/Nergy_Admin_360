@@ -65,7 +65,9 @@ export const EditStudent = (props) => {
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Registration Id</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Registration Id
+                        </label>
                         <Input
                           type="text"
                           id="first-name-vertical"
@@ -83,7 +85,9 @@ export const EditStudent = (props) => {
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Institute</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Institute
+                        </label>
                         <Input
                           value={instituteId}
                           id="first-name-vertical"
@@ -113,7 +117,9 @@ export const EditStudent = (props) => {
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Batch</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Batch
+                        </label>
                         <Input
                           value={batchId}
                           id="first-name-vertical"
@@ -138,7 +144,9 @@ export const EditStudent = (props) => {
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">First Name</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          First Name
+                        </label>
                         <Input
                           type="text"
                           id="first-name-vertical"
@@ -158,7 +166,9 @@ export const EditStudent = (props) => {
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Last Name</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Last Name
+                        </label>
                         <Input
                           type="text"
                           id="first-name-vertical"
@@ -176,7 +186,9 @@ export const EditStudent = (props) => {
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Gender</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Gender
+                        </label>
                         <Input
                           value={gender}
                           id="first-name-vertical"
@@ -198,7 +210,9 @@ export const EditStudent = (props) => {
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Email</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Email
+                        </label>
                         <Input
                           type="text"
                           id="first-name-vertical"
@@ -216,7 +230,9 @@ export const EditStudent = (props) => {
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Qualification</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Qualification
+                        </label>
                         <Input
                           type="text"
                           id="first-name-vertical"
@@ -236,7 +252,9 @@ export const EditStudent = (props) => {
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="contact-info-vertical">Date of birth</label>
+                        <label className="mb-2" htmlFor="contact-info-vertical">
+                          Date of birth
+                        </label>
                         <Datetime
                           dateformat="YYYY-MM-DD"
                           timeformat="{false}"
@@ -249,7 +267,9 @@ export const EditStudent = (props) => {
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Mobile</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Mobile
+                        </label>
                         <Input
                           type="text"
                           id="first-name-vertical"
@@ -269,7 +289,9 @@ export const EditStudent = (props) => {
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Region</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Region
+                        </label>
                         <Input
                           type="text"
                           id="first-name-vertical"
@@ -287,7 +309,9 @@ export const EditStudent = (props) => {
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Courses</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Courses
+                        </label>
                         <Select
                           closeMenuOnSelect={false}
                           defaultValue={selectedCoursesArray}
@@ -312,7 +336,7 @@ export const EditStudent = (props) => {
                         onSubmit();
                       }}
                     >
-                      Click Me
+                      Save
                     </Button>
                     <button type="reset" className="btn btn-light-secondary me-1 mb-1">
                       Reset
