@@ -52,7 +52,7 @@ export const useQuestion = () => {
       successMessage();
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
+      queryClient.invalidateQueries(GetQuestionKey);
       navigate("../questions", { replace: true });
     },
   });
@@ -68,7 +68,7 @@ export const useQuestion = () => {
       queryClient.setQueryData(GetQuestionKey, previousData);
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
+      queryClient.invalidateQueries(GetQuestionKey);
       navigate("../questions", { replace: true });
     },
   });
@@ -90,7 +90,6 @@ export const useQuestion = () => {
       successDeletedMessage();
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
       onToggleModal(false);
     },
   });
