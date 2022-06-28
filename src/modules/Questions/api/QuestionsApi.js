@@ -10,8 +10,8 @@ export const createNewQuestion = async (question) => {
   return res.data;
 };
 
-export const updateQuestion = async () => {
-  const res = await Axios.put("/Questions");
+export const updateQuestion = async (question) => {
+  const res = await Axios.put("/Questions", question);
   return res.data;
 };
 

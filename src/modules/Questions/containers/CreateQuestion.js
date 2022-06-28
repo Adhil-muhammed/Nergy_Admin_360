@@ -1,10 +1,15 @@
 import React, { useRef, useState } from "react";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 import { Button, FormFeedback, Input, Table } from "reactstrap";
 import { ContentLayout } from "shared";
 import SimpleReactValidator from "simple-react-validator";
+import { getQuestionById } from "../api";
 
 export const CreateQuestion = (props) => {
-  const { state, setState, createQuestion } = props;
+  const { state, setState, createQuestion, editQuestion, getQuestion } = props;
+  const { id } = useParams();
+  const updateMode = id !== undefined ? true : false;
   const [update, forceUpdate] = useState();
   const validator = useRef(
     new SimpleReactValidator({
@@ -12,9 +17,14 @@ export const CreateQuestion = (props) => {
     })
   );
 
+  const { isIdle, data } = useQuery(["details", id], getQuestionById, {
+    // The query will not execute until the id exists
+    enabled: !!id,
+  });
+
   const onSubmit = () => {
     if (validator.current.allValid()) {
-      createQuestion.mutate(state.data);
+      updateMode ? editQuestion.mutate(state.data) : createQuestion.mutate(state.data);
     } else {
       validator.current.showMessages();
       forceUpdate(1);
@@ -92,7 +102,7 @@ export const CreateQuestion = (props) => {
   console.log("state", state.data);
 
   return (
-    <ContentLayout title="Create New">
+    <ContentLayout title={updateMode ? "Edit" : "Create New"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -310,7 +320,7 @@ export const CreateQuestion = (props) => {
                               onSubmit();
                             }}
                           >
-                            Create
+                            {updateMode ? "Update" : "Create"}
                           </Button>
                           <button type="reset" className="btn btn-light-secondary me-1 mb-1">
                             Cancel

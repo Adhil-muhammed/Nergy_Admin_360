@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useImmer } from "use-immer";
 import { successDeletedMessage, successMessage } from "utils";
-import { createNewQuestion, deleteQuestion, getQuestions } from "../api";
+import { createNewQuestion, deleteQuestion, getQuestions, updateQuestion } from "../api";
 
 const GetQuestionKey = "GET_QUESTION_API";
 
@@ -57,6 +57,22 @@ export const useQuestion = () => {
     },
   });
 
+  const editQuestion = useMutation(updateQuestion, {
+    onMutate: async (update) => {
+      await queryClient.cancelQueries(GetQuestionKey);
+    },
+    onSuccess: () => {
+      successMessage();
+    },
+    onError: (e, newData, previousData) => {
+      queryClient.setQueryData(GetQuestionKey, previousData);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("create");
+      navigate("../questions", { replace: true });
+    },
+  });
+
   const onDeleteQuestion = useMutation(deleteQuestion, {
     onMutate: async (questionId) => {
       await queryClient.cancelQueries(GetQuestionKey);
@@ -79,27 +95,19 @@ export const useQuestion = () => {
     },
   });
 
-  const getSelectedQuestion = React.useCallback(
-    (id) => {
-      const selectedQuestion = questionsQuery.data.filter((s) => s.questionId === id)[0];
-      setQuestion((draft) => {
-        draft.questionId = selectedQuestion.questionId;
-        draft.name = selectedQuestion.description;
-        return draft;
-      });
-    },
-    [questionsQuery.data, setQuestion]
-  );
+  const getQuestion = () => {};
 
   const onDelete = React.useCallback(
     (value) => {
-      getSelectedQuestion(value.original.questionId);
       setIsConfirmDelete((draft) => {
         draft = true;
         return draft;
       });
+      setQuestion((draft) => {
+        draft.questionId = value.original.questionId;
+      });
     },
-    [getSelectedQuestion, setIsConfirmDelete]
+    [setIsConfirmDelete]
   );
 
   const onToggleModal = React.useCallback(
@@ -122,5 +130,7 @@ export const useQuestion = () => {
     onDeleteQuestion,
     question,
     createQuestion,
+    editQuestion,
+    getQuestion,
   };
 };

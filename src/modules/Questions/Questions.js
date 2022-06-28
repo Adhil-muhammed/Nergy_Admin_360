@@ -14,6 +14,8 @@ export const Questions = () => {
     onDeleteQuestion,
     question,
     createQuestion,
+    editQuestion,
+    getQuestion,
   } = useQuestion();
   const { data, isLoading } = questionsQuery;
 
@@ -33,13 +35,31 @@ export const Questions = () => {
                 onToggleModal={onToggleModal}
                 onDelete={onDelete}
                 onDeleteQuestion={onDeleteQuestion}
+                getQuestion={getQuestion}
               />
             }
           />
           <Route
-            path="/create"
+            path="/create/new"
             element={
-              <CreateQuestion state={state} setState={setState} createQuestion={createQuestion} />
+              <CreateQuestion
+                state={state}
+                setState={setState}
+                createQuestion={createQuestion}
+                editQuestion={editQuestion}
+                getQuestion={getQuestion}
+              />
+            }
+          />
+          <Route
+            path="/edit/:id"
+            element={
+              <CreateQuestion
+                state={state}
+                setState={setState}
+                createQuestion={createQuestion}
+                editQuestion={editQuestion}
+              />
             }
           />
         </Routes>

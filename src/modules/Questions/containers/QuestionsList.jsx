@@ -11,7 +11,7 @@ export const QuestionsList = (props) => {
   const location = useLocation();
 
   const gotoCreate = () => {
-    history(`${location.pathname}/create`);
+    history(`${location.pathname}/create/new`);
   };
 
   const onConfirm = () => {
@@ -19,12 +19,12 @@ export const QuestionsList = (props) => {
   };
 
   const onEdit = (questionBankId) => {
-    // history(`${location.pathname}/edit/${questionBankId}`);
+    history(`${location.pathname}/edit/${questionBankId}`);
   };
 
-  const EditCell = ({ value }) => {
+  const EditCell = ({ row }) => {
     return (
-      <Button outline color="primary" onClick={() => onEdit(value)}>
+      <Button outline color="primary" onClick={() => onEdit(row.original.questionId)}>
         Edit
       </Button>
     );
