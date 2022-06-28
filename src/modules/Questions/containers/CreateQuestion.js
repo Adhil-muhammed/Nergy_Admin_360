@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Button, FormFeedback, Input, Table } from "reactstrap";
 import { ContentLayout } from "shared";
 import SimpleReactValidator from "simple-react-validator";
-import { getQuestionById } from "../api";
+import { Axios } from "utils";
 
 export const CreateQuestion = (props) => {
   const { state, setState, createQuestion, editQuestion, getQuestion } = props;
@@ -17,8 +17,14 @@ export const CreateQuestion = (props) => {
     })
   );
 
+  const getQuestionById = async () => {
+    const res = await Axios.get(`/Questions/${id}`);
+    setState((draft) => {
+      draft.data = res.data;
+    });
+  };
+
   const { isIdle, data } = useQuery(["details", id], getQuestionById, {
-    // The query will not execute until the id exists
     enabled: !!id,
   });
 
