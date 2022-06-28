@@ -1,9 +1,11 @@
 import React from "react";
-import { Button, Input } from "reactstrap";
+import { Button, Input, Table } from "reactstrap";
 import { ContentLayout } from "shared";
 
 export const CreateQuestion = (props) => {
   const { state, setState, createQuestion } = props;
+
+  console.log("state", state);
 
   const onSubmit = () => {
     createQuestion.mutate(state.data);
@@ -41,18 +43,54 @@ export const CreateQuestion = (props) => {
     { value: 3, label: "Hard" },
   ];
 
+  const handleIsAnswer = (e, index) => {
+    let choices = JSON.parse(JSON.stringify(state.data.choices));
+    choices.forEach((choice, i) => {
+      if (i === index) {
+        choice.isAnswer = !choice.isAnswer;
+      } else {
+        choice.isAnswer = false;
+      }
+    });
+    setState((draft) => {
+      draft.data.choices = choices;
+      return draft;
+    });
+  };
+
+  const addChoice = () => {
+    setState((draft) => {
+      draft.data.choices = [
+        ...draft.data.choices,
+        {
+          code: "",
+          description: "",
+          isAnswer: false,
+        },
+      ];
+      return draft;
+    });
+  };
+
+  const onDeleteChoice = (index) => {
+    setState((draft) => {
+      draft.data.choices = draft.data.choices.filter((n, i) => i !== index);
+      return draft;
+    });
+  };
+
   return (
     <ContentLayout title="Create New">
       <section id="basic-vertical-layouts">
         <div className="row match-height">
-          <div className="col-md-6 col-12">
+          <div className="col-12">
             <div className="card">
               <div className="card-content">
                 <div className="card-body">
                   <form className="form form-vertical">
                     <div className="form-body">
                       <div className="row">
-                        <div className="col-12">
+                        <div className="col-6">
                           <div className="form-group">
                             <label htmlFor="first-name-vertical">Description</label>
                             <Input
@@ -66,7 +104,7 @@ export const CreateQuestion = (props) => {
                             />
                           </div>
                         </div>
-                        <div className="col-12">
+                        <div className="col-6">
                           <div className="form-group">
                             <label htmlFor="first-name-vertical">Difficlty Level</label>
                             <Input
@@ -88,52 +126,89 @@ export const CreateQuestion = (props) => {
                           </div>
                         </div>
                         <h5 className="mt-3">Choices</h5>
-                        {state.data.choices.map((item, index) => {
-                          return (
-                            <div className="mt-2 mb-4">
-                              <div>{`Choice ${index + 1}`}</div>
-                              <div className="col-12 mt-2">
-                                <div className="form-group">
-                                  <label htmlFor="first-name-vertical">Code</label>
-                                  <Input
-                                    type="text"
-                                    id="first-name-vertical"
-                                    className="form-control"
-                                    name="code"
-                                    placeholder="Question description"
-                                    value={item.code}
-                                    onChange={(e) => onChange(e, index, true)}
-                                  />
-                                </div>
-                              </div>
-                              <div className="col-12">
-                                <div className="form-group">
-                                  <label htmlFor="first-name-vertical">Description</label>
-                                  <Input
-                                    type="text"
-                                    id="first-name-vertical"
-                                    className="form-control"
-                                    name="description"
-                                    placeholder="Question description"
-                                    value={item.description}
-                                    onChange={(e) => onChange(e, index, true)}
-                                  />
-                                </div>
-                              </div>
-                              <div className="form-check form-check-inline">
-                                <label htmlFor="first-content-vertical">Answer</label>
-                                <Input
-                                  type="checkbox"
-                                  id="first-content-vertical"
-                                  className="form-check-input"
-                                  name="isAnswer"
-                                  value={item.isAnswer}
-                                  onChange={(e) => handleChecked(e, index, true)}
-                                />
-                              </div>
-                            </div>
-                          );
-                        })}
+                        <Table responsive size="">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>code</th>
+                              <th>description</th>
+                              <th>isAnswer</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {state.data.choices.map((item, index) => {
+                              return (
+                                <tr key={index}>
+                                  <th scope="row">{index + 1}</th>
+                                  <td>
+                                    <div className="col-6">
+                                      <div className="form-group">
+                                        <Input
+                                          type="text"
+                                          id="first-name-vertical"
+                                          className="form-control"
+                                          name="code"
+                                          placeholder="Question Code"
+                                          value={item.code}
+                                          onChange={(e) => onChange(e, index, true)}
+                                        />
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div className="col-6">
+                                      <div className="form-group">
+                                        <Input
+                                          type="text"
+                                          id="first-name-vertical"
+                                          className="form-control"
+                                          name="description"
+                                          placeholder="Question description"
+                                          value={item.description}
+                                          onChange={(e) => onChange(e, index, true)}
+                                        />
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div className="form-check form-check-inline">
+                                      <Input
+                                        type="radio"
+                                        id="first-content-vertical"
+                                        className="form-check-input"
+                                        name="isAnswer"
+                                        checked={item.isAnswer}
+                                        onChange={(e) => handleIsAnswer(e, index)}
+                                      />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <Button
+                                      color="danger"
+                                      disabled={state.data.choices.length < 3}
+                                      onClick={() => onDeleteChoice(index)}
+                                    >
+                                      Delete
+                                    </Button>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </Table>
+                        <div className="col-12 d-flex justify-content-end">
+                          <Button
+                            className="me-1 mb-1"
+                            color="secondary"
+                            disabled={state.data.choices.length > 3}
+                            onClick={() => {
+                              state.data.choices.length < 4 && addChoice();
+                            }}
+                          >
+                            Add Choice
+                          </Button>
+                        </div>
 
                         <div className="mt-4">
                           <div className="form-check form-check-inline">

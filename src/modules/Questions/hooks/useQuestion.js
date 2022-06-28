@@ -19,7 +19,7 @@ export const useQuestion = () => {
       description: "",
       shuffleChoice: false,
       difficultyLevelCode: 0,
-      questionBankId: 1,
+      questionBankId: 2,
       review: false,
       choices: [
         {
