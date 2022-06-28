@@ -6,8 +6,6 @@ import { useQuestion } from "./hooks";
 export const Questions = () => {
   const {
     questionsQuery,
-    state,
-    setState,
     isConfirmDelete,
     onToggleModal,
     onDelete,
@@ -43,8 +41,6 @@ export const Questions = () => {
             path="/create/new"
             element={
               <CreateQuestion
-                state={state}
-                setState={setState}
                 createQuestion={createQuestion}
                 editQuestion={editQuestion}
                 getQuestion={getQuestion}
@@ -53,14 +49,7 @@ export const Questions = () => {
           />
           <Route
             path="/edit/:id"
-            element={
-              <CreateQuestion
-                state={state}
-                setState={setState}
-                createQuestion={createQuestion}
-                editQuestion={editQuestion}
-              />
-            }
+            element={<CreateQuestion createQuestion={createQuestion} editQuestion={editQuestion} />}
           />
         </Routes>
       )}

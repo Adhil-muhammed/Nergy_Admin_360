@@ -1,13 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { Button, FormFeedback, Input, Table } from "reactstrap";
 import { ContentLayout } from "shared";
 import SimpleReactValidator from "simple-react-validator";
+import { useImmer } from "use-immer";
 import { Axios } from "utils";
 
 export const CreateQuestion = (props) => {
-  const { state, setState, createQuestion, editQuestion, getQuestion } = props;
+  const { createQuestion, editQuestion } = props;
   const { id } = useParams();
   const updateMode = id !== undefined ? true : false;
   const [update, forceUpdate] = useState();
@@ -16,6 +17,27 @@ export const CreateQuestion = (props) => {
       autoForceUpdate: { forceUpdate: forceUpdate },
     })
   );
+  const [state, setState] = useImmer({
+    data: {
+      description: "",
+      shuffleChoice: false,
+      difficultyLevelCode: "",
+      questionBankId: 2,
+      review: false,
+      choices: [
+        {
+          code: "",
+          description: "",
+          isAnswer: false,
+        },
+        {
+          code: "",
+          description: "",
+          isAnswer: false,
+        },
+      ],
+    },
+  });
 
   const getQuestionById = async () => {
     const res = await Axios.get(`/Questions/${id}`);
@@ -104,8 +126,6 @@ export const CreateQuestion = (props) => {
       return draft;
     });
   };
-
-  console.log("state", state.data);
 
   return (
     <ContentLayout title={updateMode ? "Edit" : "Create New"}>

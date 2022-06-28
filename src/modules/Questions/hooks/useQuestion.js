@@ -14,27 +14,6 @@ export const useQuestion = () => {
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [question, setQuestion] = useImmer({ questionId: 0, name: "" });
-  const [state, setState] = useImmer({
-    data: {
-      description: "",
-      shuffleChoice: false,
-      difficultyLevelCode: "",
-      questionBankId: 2,
-      review: false,
-      choices: [
-        {
-          code: "",
-          description: "",
-          isAnswer: false,
-        },
-        {
-          code: "",
-          description: "",
-          isAnswer: false,
-        },
-      ],
-    },
-  });
 
   const questionsQuery = useQuery(GetQuestionKey, getQuestions, {
     staleTime: Infinity,
@@ -121,8 +100,6 @@ export const useQuestion = () => {
 
   return {
     questionsQuery,
-    state,
-    setState,
     isConfirmDelete,
     onToggleModal,
     onDelete,
