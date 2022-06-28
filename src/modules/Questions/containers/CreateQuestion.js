@@ -1,14 +1,24 @@
-import React from "react";
-import { Button, Input, Table } from "reactstrap";
+import React, { useRef, useState } from "react";
+import { Button, FormFeedback, Input, Table } from "reactstrap";
 import { ContentLayout } from "shared";
+import SimpleReactValidator from "simple-react-validator";
 
 export const CreateQuestion = (props) => {
   const { state, setState, createQuestion } = props;
-
-  console.log("state", state);
+  const [update, forceUpdate] = useState();
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
 
   const onSubmit = () => {
-    createQuestion.mutate(state.data);
+    if (validator.current.allValid()) {
+      createQuestion.mutate(state.data);
+    } else {
+      validator.current.showMessages();
+      forceUpdate(1);
+    }
   };
 
   const onChange = (e, index, isChoice = false) => {
@@ -79,6 +89,8 @@ export const CreateQuestion = (props) => {
     });
   };
 
+  console.log("state", state.data);
+
   return (
     <ContentLayout title="Create New">
       <section id="basic-vertical-layouts">
@@ -101,18 +113,35 @@ export const CreateQuestion = (props) => {
                               placeholder="Question description"
                               value={state.data.description}
                               onChange={onChange}
+                              invalid={validator.current.message(
+                                "Description",
+                                state.data.description,
+                                "required"
+                              )}
                             />
+                            <FormFeedback>
+                              {validator.current.message(
+                                "Description",
+                                state.data.description,
+                                "required"
+                              )}
+                            </FormFeedback>
                           </div>
                         </div>
                         <div className="col-6">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Difficlty Level</label>
+                            <label htmlFor="first-name-vertical">Difficulty Level</label>
                             <Input
                               id="first-name-vertical"
                               name="difficultyLevelCode"
                               type="select"
                               value={state.data.difficultyLevelCode}
                               onChange={onChange}
+                              invalid={validator.current.message(
+                                "Difficulty Level",
+                                state.data.difficultyLevelCode,
+                                "required"
+                              )}
                             >
                               <option value={-1}>---Select---</option>
                               {difficultyLevelData.map((item) => {
@@ -123,6 +152,14 @@ export const CreateQuestion = (props) => {
                                 );
                               })}
                             </Input>
+
+                            <FormFeedback>
+                              {validator.current.message(
+                                "Difficulty Level",
+                                state.data.difficultyLevelCode,
+                                "required"
+                              )}
+                            </FormFeedback>
                           </div>
                         </div>
                         <h5 className="mt-3">Choices</h5>
@@ -152,7 +189,19 @@ export const CreateQuestion = (props) => {
                                           placeholder="Question Code"
                                           value={item.code}
                                           onChange={(e) => onChange(e, index, true)}
+                                          invalid={validator.current.message(
+                                            "Question Code",
+                                            item.code,
+                                            "required"
+                                          )}
                                         />
+                                        <FormFeedback>
+                                          {validator.current.message(
+                                            "Question Code",
+                                            item.code,
+                                            "required"
+                                          )}
+                                        </FormFeedback>
                                       </div>
                                     </div>
                                   </td>
@@ -167,7 +216,19 @@ export const CreateQuestion = (props) => {
                                           placeholder="Question description"
                                           value={item.description}
                                           onChange={(e) => onChange(e, index, true)}
+                                          invalid={validator.current.message(
+                                            "Question description",
+                                            item.description,
+                                            "required"
+                                          )}
                                         />
+                                        <FormFeedback>
+                                          {validator.current.message(
+                                            "Question description",
+                                            item.description,
+                                            "required"
+                                          )}
+                                        </FormFeedback>
                                       </div>
                                     </div>
                                   </td>
@@ -197,6 +258,13 @@ export const CreateQuestion = (props) => {
                             })}
                           </tbody>
                         </Table>
+                        <div className="text-danger">
+                          {update &&
+                            (state.data.choices.some((item) => item.isAnswer)
+                              ? ""
+                              : "Please select an answer")}
+                        </div>
+
                         <div className="col-12 d-flex justify-content-end">
                           <Button
                             className="me-1 mb-1"
