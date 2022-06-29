@@ -1,15 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, FormFeedback, Input, Table } from "reactstrap";
 import { ContentLayout } from "shared";
 import SimpleReactValidator from "simple-react-validator";
 import { useImmer } from "use-immer";
 import { Axios } from "utils";
+import Select from "react-select";
+import { useQuestionBanks } from "modules/QuestionBanks";
+import InputControl from "shared/components/InputControl";
 
 export const CreateQuestion = (props) => {
   const { createQuestion, editQuestion } = props;
+  const { questionBanksQuery } = useQuestionBanks();
   const { id } = useParams();
+  const navigate = useNavigate();
   const updateMode = id !== undefined ? true : false;
   const [update, forceUpdate] = useState();
   const validator = useRef(
@@ -22,7 +27,7 @@ export const CreateQuestion = (props) => {
       description: "",
       shuffleChoice: false,
       difficultyLevelCode: "",
-      questionBankId: 2,
+      questionBankId: "",
       review: false,
       choices: [
         {
@@ -38,6 +43,16 @@ export const CreateQuestion = (props) => {
       ],
     },
   });
+
+  const questionBanks = React.useMemo(() => {
+    return questionBanksQuery.data
+      ? questionBanksQuery.data.map((c) => {
+          return { value: c.questionBankId, label: c.name };
+        })
+      : [];
+  }, [questionBanksQuery.data]);
+
+  console.log("state", state.data, questionBanks);
 
   const getQuestionById = async () => {
     const res = await Axios.get(`/Questions/${id}`);
@@ -57,6 +72,12 @@ export const CreateQuestion = (props) => {
       validator.current.showMessages();
       forceUpdate(1);
     }
+  };
+
+  const onSelectChange = (e, name) => {
+    setState((draft) => {
+      draft.data[name] = e.value;
+    });
   };
 
   const onChange = (e, index, isChoice = false) => {
@@ -140,7 +161,7 @@ export const CreateQuestion = (props) => {
                       <div className="row">
                         <div className="col-6">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Description</label>
+                            <label htmlFor="first-name-vertical">Description*</label>
                             <Input
                               type="text"
                               id="first-name-vertical"
@@ -166,7 +187,7 @@ export const CreateQuestion = (props) => {
                         </div>
                         <div className="col-6">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Difficulty Level</label>
+                            <label htmlFor="first-name-vertical">Difficulty Level*</label>
                             <Input
                               id="first-name-vertical"
                               name="difficultyLevelCode"
@@ -196,6 +217,39 @@ export const CreateQuestion = (props) => {
                                 "required"
                               )}
                             </FormFeedback>
+                          </div>
+                        </div>
+                        <div className="col-6">
+                          <div className="form-group">
+                            <label htmlFor="first-name-vertical">QuestionBank*</label>
+                            <InputControl
+                              type="react-select"
+                              options={questionBanks}
+                              name="questionBankId"
+                              value={
+                                questionBanks.length > 0 &&
+                                state.data.questionBankId &&
+                                questionBanks.find(
+                                  (item) => item.value === state.data.questionBankId
+                                )
+                              }
+                              isValid={
+                                !validator.current.message(
+                                  "Question Bank",
+                                  state.data.questionBankId,
+                                  "required"
+                                )
+                              }
+                              onChange={(e) => onSelectChange(e, "questionBankId")}
+                            />
+
+                            <div className="text-danger">
+                              {validator.current.message(
+                                "Question Bank",
+                                state.data.questionBankId,
+                                "required"
+                              )}
+                            </div>
                           </div>
                         </div>
                         <h5 className="mt-3">Choices</h5>
@@ -249,7 +303,7 @@ export const CreateQuestion = (props) => {
                                           id="first-name-vertical"
                                           className="form-control"
                                           name="description"
-                                          placeholder="Question description"
+                                          placeholder="Choice description"
                                           value={item.description}
                                           onChange={(e) => onChange(e, index, true)}
                                           invalid={validator.current.message(
@@ -348,7 +402,11 @@ export const CreateQuestion = (props) => {
                           >
                             {updateMode ? "Update" : "Create"}
                           </Button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1">
+                          <button
+                            onClick={() => navigate(-1)}
+                            type="reset"
+                            className="btn btn-light-secondary me-1 mb-1"
+                          >
                             Cancel
                           </button>
                         </div>
