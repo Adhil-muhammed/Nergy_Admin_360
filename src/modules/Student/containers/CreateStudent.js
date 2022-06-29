@@ -280,8 +280,8 @@ export const CreateStudent = (props) => {
                           type="text"
                           id="first-name-vertical"
                           className="form-control"
-                          name="mobile"
-                          placeholder="mobile"
+                          name="region"
+                          placeholder="region"
                           value={region}
                           onChange={(e) => {
                             setStudent((draft) => {
