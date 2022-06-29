@@ -55,7 +55,7 @@ export function SideBar() {
             <li className="sidebar-item  ">
               <NavLink to={"AssessmentSection"} className="sidebar-link">
                 <i className="bi bi-archive-fill" />
-                <span>AssessmentSection</span>
+                <span>Assessment Section</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
