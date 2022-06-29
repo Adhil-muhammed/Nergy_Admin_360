@@ -2,19 +2,27 @@ import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
 import { useAuthenticate } from "..";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
-export function Login() {
-  const { authenticateState, setAuthenticateState, mutation } = useAuthenticate();
-  const { mutate, isLoading } = mutation;
-  const onsubmit = () => {
-    setAuthenticateState((draft) => {
+export function ResetPassword() {
+  const { resetPasswordState, setResetPasswordState, resetPasswordAuth } = useAuthenticate();
+  const { mutate, isLoading } = resetPasswordAuth;
+  const resetToken = localStorage.getItem('passwordResetToken')
+  // const formatted = JSON.stringify(resetToken)
+  const onHandleChange = (e) => {
+    const { name, value } = e.target;
+    setResetPasswordState((draft) => {
+      draft.credential[name] = value;
       draft.isValidate = true;
+      draft.credential['passwordResetToken'] = resetToken
     });
-    mutate(authenticateState.credential);
+  };
+
+  const onsubmit = () => {
+    mutate(resetPasswordState.credential);
   };
 
   return (
     <div>
-      <title>Login - Mazer Admin Dashboard</title>
+      <title>Reset password - Mazer Admin Dashboard</title>
       <div id="auth">
         <div className="row h-100">
           <div className="col-lg-5 col-12">
@@ -24,56 +32,48 @@ export function Login() {
                   <img style={{ height: "68px" }} src={Nergy360Logo} alt="Logo" />
                 </a>
               </div>
-              <h1 className="auth-title">Log in.</h1>
+              <h1 className="auth-title">Reset Password.</h1>
               <p className="auth-subtitle mb-5">
-                Log in with your data that you entered during registration.
+                Reset your password.
               </p>
               <form>
                 <div className="form-group position-relative has-icon-left mb-4">
                   <input
-                    type="text"
+                    type="email"
                     className="form-control form-control-xl"
-                    placeholder="Username"
-                    value={authenticateState.userName}
+                    placeholder="Email address"
+                    name="emailAddress"
                     disabled={isLoading}
-                    onChange={(e) => {
-                      setAuthenticateState((draft) => {
-                        draft.credential.userName = e.target.value;
-                      });
-                    }}
+                    onChange={onHandleChange}
                   />
                   <div className="form-control-icon">
-                    <i className="bi bi-person" />
+                    <i className="bi bi-envelope" />
+                  </div>
+                </div>
+                <div className="form-group position-relative has-icon-left mb-4">
+                  <input
+                    type="text"
+                    className="form-control form-control-xl"
+                    placeholder="New Password"
+                    name="newPassword"
+                    disabled={isLoading}
+                    onChange={onHandleChange}
+                  />
+                  <div className="form-control-icon">
+                    <i className="bi bi-shield-lock" />
                   </div>
                 </div>
                 <div className="form-group position-relative has-icon-left mb-4">
                   <input
                     type="password"
                     className="form-control form-control-xl"
-                    placeholder="Password"
+                    placeholder="Confirm Password"
+                    name="newPassword"
                     disabled={isLoading}
-                    value={authenticateState.password}
-                    onChange={(e) => {
-                      setAuthenticateState((draft) => {
-                        draft.credential.password = e.target.value;
-                      });
-                    }}
                   />
                   <div className="form-control-icon">
                     <i className="bi bi-shield-lock" />
                   </div>
-                </div>
-                <div className="form-check form-check-lg d-flex align-items-end">
-                  <input
-                    className="form-check-input me-2"
-                    type="checkbox"
-                    disabled={isLoading}
-                    defaultValue
-                    id="flexCheckDefault"
-                  />
-                  <label className="form-check-label text-gray-600" htmlFor="flexCheckDefault">
-                    Keep me logged in
-                  </label>
                 </div>
                 <button
                   className="btn btn-block btn-lg shadow-lg mt-5 btn-success"
@@ -82,19 +82,13 @@ export function Login() {
                     onsubmit();
                   }}
                 >
-                  {isLoading ? <Spinner type="border" color="light" /> : "Log in"}
+                  {isLoading ? <Spinner type="border" color="light" /> : "Reset password"}
                 </button>
               </form>
               <div className="text-center mt-5 text-lg fs-4">
                 <p className="text-gray-600">
-                  Don't have an account?{" "}
-                  <a href="auth-register.html" className="font-bold">
-                    Sign up
-                  </a>
-                  .
-                </p>
-                <p>
-                  <Link className="font-bold" to="/forgotPassword">Forgot password?</Link>
+                  Remember your account?{" "}
+                  <Link className="font-bold" to="/">Login</Link>
                   .
                 </p>
               </div>
