@@ -7,7 +7,7 @@ export const getAssessmentSections = async () => {
 };
 
 export const createAssessmentSections = async (payload) => {
-  const res = await Axios.psot("/AssessmentSections", payload);
+  const res = await Axios.post("/AssessmentSections", payload);
   return res.data;
 };
 

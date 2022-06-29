@@ -23,8 +23,8 @@ const AssessmentSectionList = ({
     onDeleteAssessmentSection.mutate(assessment.id);
   };
 
-  const onEdit = (questionBankId) => {
-    history(`${location.pathname}/edit/${questionBankId}`);
+  const onEdit = (sectionId) => {
+    history(`${location.pathname}/edit/${sectionId}`);
   };
 
   const EditCell = ({ row }) => {

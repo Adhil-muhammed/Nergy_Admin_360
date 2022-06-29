@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import AssessmentSectionList from "./containers/AssessmentSectionList";
+import CreateAssessmentSection from "./containers/CreateAssessmentSection";
 import { useAssessmentSection } from "./hooks";
 
 const AssessmentSection = () => {
@@ -32,6 +33,24 @@ const AssessmentSection = () => {
                 assessment={assessment}
                 onToggleModal={onToggleModal}
                 onDelete={onDelete}
+              />
+            }
+          />
+          <Route
+            path="/create/new"
+            element={
+              <CreateAssessmentSection
+                createAssessmentSection={createAssessmentSection}
+                editAssessmentSection={editAssessmentSection}
+              />
+            }
+          />
+          <Route
+            path="/edit/:id"
+            element={
+              <CreateAssessmentSection
+                createAssessmentSection={createAssessmentSection}
+                editAssessmentSection={editAssessmentSection}
               />
             }
           />

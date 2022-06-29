@@ -52,8 +52,6 @@ export const CreateQuestion = (props) => {
       : [];
   }, [questionBanksQuery.data]);
 
-  console.log("state", state.data, questionBanks);
-
   const getQuestionById = async () => {
     const res = await Axios.get(`/Questions/${id}`);
     setState((draft) => {
