@@ -43,7 +43,9 @@ export const CreateBatch = (props) => {
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Name</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Name
+                        </label>
                         <Input
                           type="text"
                           id="first-name-vertical"
@@ -61,7 +63,9 @@ export const CreateBatch = (props) => {
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="contact-info-vertical">Start Date</label>
+                        <label className="mb-2" htmlFor="contact-info-vertical">
+                          Start Date
+                        </label>
                         <Datetime
                           dateformat="YYYY-MM-DD"
                           timeformat="{false}"
@@ -75,7 +79,9 @@ export const CreateBatch = (props) => {
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="contact-info-vertical">End Date</label>
+                        <label className="mb-2" htmlFor="contact-info-vertical">
+                          End Date
+                        </label>
                         <Datetime
                           dateformat="YYYY-MM-DD"
                           timeformat="{false}"
@@ -94,7 +100,7 @@ export const CreateBatch = (props) => {
                         onSubmit();
                       }}
                     >
-                      Click Me
+                      Save
                     </Button>
                     <button type="reset" className="btn btn-light-secondary me-1 mb-1">
                       Reset
