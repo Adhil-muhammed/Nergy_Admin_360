@@ -1,8 +1,6 @@
 import { NavLink } from "react-router-dom";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
 
-
-
 export function SideBar() {
   return (
     <div id="sidebar" className="active">
@@ -52,6 +50,12 @@ export function SideBar() {
               <NavLink to={"institute"} className="sidebar-link">
                 <i className="bi bi-house-door-fill" />
                 <span>Institute</span>
+              </NavLink>
+            </li>
+            <li className="sidebar-item  ">
+              <NavLink to={"AssessmentSection"} className="sidebar-link">
+                <i className="bi bi-archive-fill" />
+                <span>AssessmentSection</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">

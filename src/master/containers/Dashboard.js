@@ -12,6 +12,7 @@ import {
   Settings,
   Questions,
 } from "modules";
+import AssessmentSection from "modules/AssessmentSection/AssessmentSection";
 
 export function Dashboard() {
   return (
@@ -31,6 +32,7 @@ export function Dashboard() {
             <Route element={<Users />} path={"/users/*"} />
             <Route element={<Settings />} path={"/settings/*"} />
             <Route element={<Questions />} path={"/questions/*"} />
+            <Route element={<AssessmentSection />} path={"/assessmentSection/*"} />
           </Routes>
           <Footer />
         </div>
