@@ -25,8 +25,6 @@ const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSectio
     data: { name: "", questions: [] },
   });
 
-  console.log(assessmentSection.data.name);
-
   const getAssessmentById = async () => {
     const res = await Axios.get(`/AssessmentSections/${id}`);
     setAssessmentSection((draft) => {

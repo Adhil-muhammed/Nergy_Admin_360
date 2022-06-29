@@ -2,7 +2,7 @@ import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useImmer } from "use-immer";
-import { successDeletedMessage, successMessage } from "utils";
+import { errorMessage, successDeletedMessage, successMessage } from "utils";
 import {
   createAssessmentSections,
   deleteAssessmentSections,
@@ -29,14 +29,14 @@ export const useAssessmentSection = () => {
       await queryClient.cancelQueries(GetAssessmentSections);
     },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetAssessmentSections, previousData);
+      errorMessage();
     },
     onSuccess: () => {
       successMessage();
+      navigate("../assessmentSection", { replace: true });
     },
     onSettled: () => {
       queryClient.invalidateQueries(GetAssessmentSections);
-      navigate("../assessmentSection", { replace: true });
     },
   });
 
@@ -46,13 +46,13 @@ export const useAssessmentSection = () => {
     },
     onSuccess: () => {
       successMessage();
+      navigate("../assessmentSection", { replace: true });
     },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetAssessmentSections, previousData);
+      errorMessage();
     },
     onSettled: () => {
       queryClient.invalidateQueries(GetAssessmentSections);
-      navigate("../assessmentSection", { replace: true });
     },
   });
 
@@ -67,7 +67,7 @@ export const useAssessmentSection = () => {
       return data;
     },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetAssessmentSections, previousData);
+      errorMessage();
     },
     onSuccess: () => {
       successDeletedMessage();

@@ -2,7 +2,7 @@ import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useImmer } from "use-immer";
-import { successDeletedMessage, successMessage } from "utils";
+import { errorMessage, successDeletedMessage, successMessage } from "utils";
 import { createNewQuestion, deleteQuestion, getQuestions, updateQuestion } from "../api";
 
 const GetQuestionKey = "GET_QUESTION_API";
@@ -26,13 +26,14 @@ export const useQuestion = () => {
     },
     onError: (e, newData, previousData) => {
       queryClient.setQueryData(GetQuestionKey, previousData);
+      errorMessage();
     },
     onSuccess: () => {
       successMessage();
+      navigate("../questions", { replace: true });
     },
     onSettled: () => {
       queryClient.invalidateQueries(GetQuestionKey);
-      navigate("../questions", { replace: true });
     },
   });
 
@@ -42,13 +43,14 @@ export const useQuestion = () => {
     },
     onSuccess: () => {
       successMessage();
+      navigate("../questions", { replace: true });
     },
     onError: (e, newData, previousData) => {
       queryClient.setQueryData(GetQuestionKey, previousData);
+      errorMessage();
     },
     onSettled: () => {
       queryClient.invalidateQueries(GetQuestionKey);
-      navigate("../questions", { replace: true });
     },
   });
 
@@ -64,6 +66,7 @@ export const useQuestion = () => {
     },
     onError: (e, newData, previousData) => {
       queryClient.setQueryData(GetQuestionKey, previousData);
+      errorMessage();
     },
     onSuccess: () => {
       successDeletedMessage();
