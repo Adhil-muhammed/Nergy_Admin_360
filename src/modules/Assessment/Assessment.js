@@ -35,8 +35,24 @@ const AssessmentSection = () => {
               />
             }
           />
-          <Route path="/create/new" element={<CreateAssessment />} />
-          <Route path="/edit/:id" element={<CreateAssessment />} />
+          <Route
+            path="/create/new"
+            element={
+              <CreateAssessment
+                createAssessment={createAssessment}
+                editAssessment={editAssessment}
+              />
+            }
+          />
+          <Route
+            path="/edit/:id"
+            element={
+              <CreateAssessment
+                createAssessment={createAssessment}
+                editAssessment={editAssessment}
+              />
+            }
+          />
         </Routes>
       )}
     </>

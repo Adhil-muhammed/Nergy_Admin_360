@@ -17,13 +17,13 @@ const AssessmentList = (props) => {
     onDeleteAssessment.mutate(assessment.assesmentId);
   };
 
-  const onEdit = (questionBankId) => {
-    // history(`${location.pathname}/edit/${questionBankId}`);
+  const onEdit = (id) => {
+    history(`${location.pathname}/edit/${id}`);
   };
 
   const EditCell = ({ row }) => {
     return (
-      <Button outline color="primary" onClick={() => onEdit(row.original.questionId)}>
+      <Button outline color="primary" onClick={() => onEdit(row.original.assesmentId)}>
         Edit
       </Button>
     );
