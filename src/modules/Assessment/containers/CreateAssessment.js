@@ -41,8 +41,8 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
       assessmentConfig: "",
       isMock: false,
       assesmentStatus: "",
-      selectedBatches: [],
-      selectedSections: [
+      assessmentBatches: [],
+      assessmentSections: [
         {
           sectionId: "",
           passMark: "",
@@ -92,7 +92,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
     const { name, value } = e.target;
     if (isSection) {
       setAssessment((draft) => {
-        draft.data.selectedSections[index][name] = value;
+        draft.data.assessmentSections[index][name] = value;
       });
     } else {
       setAssessment((draft) => {
@@ -102,7 +102,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
   };
 
   const onSelectChange = (e, name) => {
-    if (name === "selectedBatches") {
+    if (name === "assessmentBatches") {
       const requiredFormat = e.map((item) => item.value);
 
       setAssessment((draft) => {
@@ -118,7 +118,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
 
   const onSectionDropdownChange = (e, index) => {
     setAssessment((draft) => {
-      draft.data.selectedSections[index].sectionId = e.value;
+      draft.data.assessmentSections[index].sectionId = e.value;
     });
   };
 
@@ -148,14 +148,16 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
 
   const onDeleteSection = (index) => {
     setAssessment((draft) => {
-      draft.data.selectedSections = draft.data.selectedSections.filter((item, i) => i !== index);
+      draft.data.assessmentSections = draft.data.assessmentSections.filter(
+        (item, i) => i !== index
+      );
     });
   };
 
   const addSection = () => {
     setAssessment((draft) => {
-      draft.data.selectedSections = [
-        ...draft.data.selectedSections,
+      draft.data.assessmentSections = [
+        ...draft.data.assessmentSections,
         { sectionId: "", passMark: "" },
       ];
     });
@@ -361,27 +363,29 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                             <InputControl
                               type="react-select"
                               options={batchesList}
-                              name="selectedBatches"
+                              name="assessmentBatches"
                               isMulti
                               value={
-                                assessment.data.selectedBatches?.length > 0 &&
+                                assessment.data.assessmentBatches?.length > 0 &&
                                 batchesList.filter((item) => {
-                                  return assessment.data.selectedBatches?.indexOf(item.value) > -1;
+                                  return (
+                                    assessment.data.assessmentBatches?.indexOf(item.value) > -1
+                                  );
                                 })
                               }
                               isValid={
                                 !validator.current.message(
                                   "Batches",
-                                  assessment.data.selectedBatches,
+                                  assessment.data.assessmentBatches,
                                   "required"
                                 )
                               }
-                              onChange={(e) => onSelectChange(e, "selectedBatches")}
+                              onChange={(e) => onSelectChange(e, "assessmentBatches")}
                             />
                             <div className="text-danger">
                               {validator.current.message(
                                 "Batches",
-                                assessment.data.selectedBatches,
+                                assessment.data.assessmentBatches,
                                 "required"
                               )}
                             </div>
@@ -409,7 +413,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {assessment.data.selectedSections?.map((item, index) => {
+                                {assessment.data.assessmentSections?.map((item, index) => {
                                   return (
                                     <tr key={index}>
                                       <th scope="row">{index + 1}</th>
@@ -474,7 +478,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                                       <td>
                                         <Button
                                           color="danger"
-                                          disabled={assessment.data.selectedSections.length < 2}
+                                          disabled={assessment.data.assessmentSections.length < 2}
                                           onClick={() => onDeleteSection(index)}
                                         >
                                           Delete
