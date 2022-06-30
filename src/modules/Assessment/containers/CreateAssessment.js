@@ -163,7 +163,8 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
     });
   };
 
-  const handleInstrcutionsChange = ({ value }) => {
+  const handleInstrcutionsChange = (value) => {
+    console.log("value", value);
     setAssessment((draft) => {
       draft.data.instructions = value;
     });
@@ -395,14 +396,14 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                           <ReactQuill
                             theme="snow"
                             value={assessment.data.instructions}
-                            onChange={handleInstrcutionsChange}
+                            onChange={(e) => handleInstrcutionsChange(e)}
                           />
                         </div>
 
                         <div className="col-12">
                           <div className="form-group">
                             <h5 className="mt-3">Sections</h5>
-                            <Table responsive size="">
+                            <Table>
                               <thead>
                                 <tr>
                                   <th>#</th>
