@@ -13,6 +13,7 @@ import {
   Questions,
 } from "modules";
 import AssessmentSection from "modules/AssessmentSection/AssessmentSection";
+import Assessment from "modules/Assessment/Assessment";
 
 export function Dashboard() {
   return (
@@ -33,6 +34,7 @@ export function Dashboard() {
             <Route element={<Settings />} path={"/settings/*"} />
             <Route element={<Questions />} path={"/questions/*"} />
             <Route element={<AssessmentSection />} path={"/assessmentSection/*"} />
+            <Route element={<Assessment />} path={"/assessments/*"} />
           </Routes>
           <Footer />
         </div>
