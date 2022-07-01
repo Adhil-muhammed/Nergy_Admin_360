@@ -18,7 +18,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
   const navigate = useNavigate();
   const updateMode = id !== undefined ? true : false;
   const { coursesQuery } = useCourse();
-  const { batchesQuery } = useBatch();
+  const { batchesQuery } = useBatch({ load: true });
   const { assessmentSectionQuery } = useAssessmentSection();
   const { data: courses } = coursesQuery;
   const { data: batches } = batchesQuery;
