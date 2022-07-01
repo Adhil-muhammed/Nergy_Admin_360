@@ -22,19 +22,16 @@ export const QuestionsList = (props) => {
     history(`${location.pathname}/edit/${questionBankId}`);
   };
 
-  const EditCell = ({ row }) => {
+  const ActionButtons = ({ row }) => {
     return (
-      <Button outline color="primary" onClick={() => onEdit(row.original.questionId)}>
-        Edit
-      </Button>
-    );
-  };
-
-  const DeleteCell = ({ row }) => {
-    return (
-      <Button color="danger" onClick={() => onDelete(row)}>
-        Delete
-      </Button>
+      <>
+        <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.questionId)}>
+          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+        </Button>
+        <Button color="danger" size="sm" onClick={() => onDelete(row)} className="ms-3">
+          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+        </Button>
+      </>
     );
   };
 
@@ -53,17 +50,10 @@ export const QuestionsList = (props) => {
         accessor: (row) => row.questionBank.name,
       },
       {
-        Header: "Edit",
-        accessor: "questionBankId",
-        id: "editQuestionBank",
-        Cell: EditCell,
-      },
-      {
-        Header: "Delete",
-        id: "deleteInstitute",
-        accessor: "questionBankId",
-        key: "deleteQuestionBank",
-        Cell: DeleteCell,
+        Header: "Actions",
+        id: "actions",
+        accessor: "questionId",
+        Cell: ActionButtons,
       },
     ],
     []

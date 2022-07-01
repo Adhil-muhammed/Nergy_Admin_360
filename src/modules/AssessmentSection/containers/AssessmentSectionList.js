@@ -27,19 +27,16 @@ const AssessmentSectionList = ({
     history(`${location.pathname}/edit/${sectionId}`);
   };
 
-  const EditCell = ({ row }) => {
+  const ActionButtons = ({ row }) => {
     return (
-      <Button outline color="primary" onClick={() => onEdit(row.original.sectionId)}>
-        Edit
-      </Button>
-    );
-  };
-
-  const DeleteCell = ({ row }) => {
-    return (
-      <Button color="danger" onClick={() => onDelete(row)}>
-        Delete
-      </Button>
+      <>
+        <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.sectionId)}>
+          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+        </Button>
+        <Button color="danger" size="sm" onClick={() => onDelete(row)} className="ms-3">
+          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+        </Button>
+      </>
     );
   };
 
@@ -49,19 +46,11 @@ const AssessmentSectionList = ({
         Header: "Name",
         accessor: "name",
       },
-
       {
-        Header: "Edit",
-        accessor: "questionBankId",
-        id: "editQuestionBank",
-        Cell: EditCell,
-      },
-      {
-        Header: "Delete",
-        id: "deleteInstitute",
-        accessor: "questionBankId",
-        key: "deleteQuestionBank",
-        Cell: DeleteCell,
+        Header: "Actions",
+        id: "actions",
+        accessor: "sectionId",
+        Cell: ActionButtons,
       },
     ],
     []
