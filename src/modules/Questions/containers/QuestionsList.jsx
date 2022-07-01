@@ -69,10 +69,6 @@ export const QuestionsList = (props) => {
     []
   );
 
-  const table = useTable({
-    columns,
-    data: data,
-  });
   return (
     <>
       <ContentLayout title="Questions" subtitle="List">
@@ -81,7 +77,7 @@ export const QuestionsList = (props) => {
             Create New
           </Button>
         </div>
-        <TableLayout table={table} />
+        <TableLayout columns={columns} data={data} />
         <ModalLayout
           isOpen={isConfirmDelete}
           title="Confirm"

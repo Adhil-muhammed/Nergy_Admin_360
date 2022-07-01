@@ -83,10 +83,6 @@ const AssessmentList = (props) => {
     []
   );
 
-  const table = useTable({
-    columns,
-    data: data,
-  });
   return (
     <>
       <ContentLayout title="Assessments" subtitle="List">
@@ -95,7 +91,7 @@ const AssessmentList = (props) => {
             Create New
           </Button>
         </div>
-        <TableLayout table={table} />
+        <TableLayout columns={columns} data={data} />
         <ModalLayout
           isOpen={isConfirmDelete}
           title="Confirm"

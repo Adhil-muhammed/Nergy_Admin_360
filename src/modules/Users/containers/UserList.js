@@ -63,15 +63,10 @@ export const UserList = (props) => {
     ],
     []
   );
-  const table = useTable({
-    columns,
-    data: users,
-  });
-
   return (
     <ContentLayout title={"Users"} subtitle={"List"}>
       <UserIdFilter />
-      <TableLayout table={table} />
+      <TableLayout columns={columns} data={users} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}

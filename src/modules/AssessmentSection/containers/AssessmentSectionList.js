@@ -67,11 +67,6 @@ const AssessmentSectionList = ({
     []
   );
 
-  const table = useTable({
-    columns,
-    data: data,
-  });
-
   return (
     <>
       <ContentLayout title="Questions" subtitle="List">
@@ -80,7 +75,7 @@ const AssessmentSectionList = ({
             Create New
           </Button>
         </div>
-        <TableLayout table={table} />
+        <TableLayout columns={columns} data={data} />
         <ModalLayout
           isOpen={isConfirmDelete}
           title="Confirm"

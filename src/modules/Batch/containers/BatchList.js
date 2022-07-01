@@ -55,15 +55,10 @@ export const BatchList = (props) => {
     ],
     []
   );
-  const table = useTable({
-    columns,
-    data: batches,
-  });
-
   return (
     <ContentLayout title={"Batches"} subtitle={"List"}>
       <BatchFilter />
-      <TableLayout table={table} />
+      <TableLayout columns={columns} data={batches} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}

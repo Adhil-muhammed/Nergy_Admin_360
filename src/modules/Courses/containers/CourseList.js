@@ -20,17 +20,15 @@ export const CourseList = (props) => {
 
   const CheckMarker = ({ value }) => {
     return (
-      <span style={{ color: value ? "#3fba2d" : "#da1a1a", fontSize: '24px' }}>
+      <span style={{ color: value ? "#3fba2d" : "#da1a1a", fontSize: "24px" }}>
         <i className={`bi ${value ? "bi-check" : "bi-x"}`}></i>
       </span>
     );
   };
 
-  const Thumbnail =({value}) => {
-    return (
-      value ? <img style={{height: '40px'}} src={value} /> : <span>No Thumbnail</span>
-    )
-  }
+  const Thumbnail = ({ value }) => {
+    return value ? <img style={{ height: "40px" }} src={value} /> : <span>No Thumbnail</span>;
+  };
 
   const ActionButtons = ({ value }) => {
     return (
@@ -91,7 +89,7 @@ export const CourseList = (props) => {
   return (
     <ContentLayout title={"Courses"} subtitle={"List"}>
       <CourseIdFilter />
-      <TableLayout table={table} />
+      <TableLayout columns={columns} data={courses} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}

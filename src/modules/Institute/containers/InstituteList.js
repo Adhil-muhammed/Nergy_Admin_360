@@ -47,15 +47,11 @@ export const InstituteList = (props) => {
     ],
     []
   );
-  const table = useTable({
-    columns,
-    data: institutes,
-  });
 
   return (
     <ContentLayout title={"Institutes"} subtitle={"List"}>
       <InstituteIdFilter />
-      <TableLayout table={table} />
+      <TableLayout columns={columns} data={institutes} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}
