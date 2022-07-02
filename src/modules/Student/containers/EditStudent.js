@@ -35,13 +35,13 @@ export const EditStudent = (props) => {
       })
     : [];
 
-  let { studentUserId } = useParams();
+  let { studentId } = useParams();
 
   React.useEffect(() => {
-    if (studentUserId) {
-      onEdit(studentUserId);
+    if (studentId) {
+      onEdit(studentId);
     }
-  }, [onEdit, studentUserId]);
+  }, [onEdit, studentId]);
 
   const onDateOfBirthChange = (m) => {
     const date = m.format("YYYY-MM-DD").toString();

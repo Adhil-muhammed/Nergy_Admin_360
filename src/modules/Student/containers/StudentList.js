@@ -12,11 +12,11 @@ export const StudentList = (props) => {
   const history = useNavigate();
   const location = useLocation();
   const onConfirm = () => {
-    deleteStudent.mutate(student.studentUserId);
+    deleteStudent.mutate(student.studentId);
   };
 
-  const onEdit = (studentUserId) => {
-    history(`${location.pathname}/edit/${studentUserId}`);
+  const onEdit = (studentId) => {
+    history(`${location.pathname}/edit/${studentId}`);
   };
 
   const ActionButtons = ({ value }) => {
@@ -49,7 +49,7 @@ export const StudentList = (props) => {
 
       {
         Header: "Actions",
-        accessor: "studentUserId",
+        accessor: "studentId",
         id: "actions",
         Cell: ActionButtons,
       },

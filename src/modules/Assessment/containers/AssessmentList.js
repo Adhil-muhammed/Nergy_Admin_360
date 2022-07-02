@@ -14,7 +14,7 @@ const AssessmentList = (props) => {
   };
 
   const onConfirm = () => {
-    onDeleteAssessment.mutate(assessment.assesmentId);
+    onDeleteAssessment.mutate(assessment.assessmentId);
   };
 
   const onEdit = (id) => {
@@ -24,7 +24,7 @@ const AssessmentList = (props) => {
   const ActionButtons = ({ row }) => {
     return (
       <>
-        <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.assesmentId)}>
+        <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.assessmentId)}>
           <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
         </Button>
         <Button color="danger" size="sm" onClick={() => onDelete(row)} className="ms-3">
@@ -65,7 +65,7 @@ const AssessmentList = (props) => {
       {
         Header: "Actions",
         id: "actions",
-        accessor: "assesmentId",
+        accessor: "assessmentId",
         Cell: ActionButtons,
       },
     ],

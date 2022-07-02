@@ -38,7 +38,7 @@ export const useStudent = () => {
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [student, setStudent] = useImmer({
-    studentUserId: "",
+    studentId: "",
     instituteId: -1,
     batchId: -1,
     registrationId: "",
@@ -109,8 +109,8 @@ export const useStudent = () => {
       queryClient.setQueryData([GetStudentKey, page], (prevData) => {
         let updatedValue = prevData.value.map((p) => {
           let newData = { ...p };
-          if (p.studentUserId === update.studentUserId) {
-            newData.studentUserId = update.studentUserId;
+          if (p.studentId === update.studentId) {
+            newData.studentId = update.studentId;
             newData.instituteId = update.instituteId;
             newData.batchId = update.batchId;
             newData.registrationId = update.registrationId;
@@ -157,9 +157,9 @@ export const useStudent = () => {
 
   const getSelectedStudent = React.useCallback(
     (id) => {
-      const selectedStudent = studentsQuery.data.value.filter((s) => s.studentUserId === id)[0];
+      const selectedStudent = studentsQuery.data.value.filter((s) => s.studentId === id)[0];
       setStudent((draft) => {
-        draft.studentUserId = selectedStudent.studentUserId;
+        draft.studentId = selectedStudent.studentId;
         draft.instituteId = selectedStudent.instituteId;
         draft.batchId = selectedStudent.batchId;
         draft.registrationId = selectedStudent.registrationId;
@@ -179,9 +179,9 @@ export const useStudent = () => {
   );
 
   const onEdit = React.useCallback(
-    (studentUserId) => {
-      if (studentUserId) {
-        getSelectedStudent(studentUserId);
+    (studentId) => {
+      if (studentId) {
+        getSelectedStudent(studentId);
       }
     },
     [getSelectedStudent]

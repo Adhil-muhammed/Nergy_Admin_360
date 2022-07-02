@@ -13,7 +13,7 @@ export const useAssessment = () => {
   const navigate = useNavigate();
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
-  const [assessment, setAssessment] = useImmer({ assesmentId: "", name: "" });
+  const [assessment, setAssessment] = useImmer({ assessmentId: "", name: "" });
 
   const assessmentQuery = useQuery(GetAssessments, getAssessments, {
     staleTime: Infinity,
@@ -56,7 +56,7 @@ export const useAssessment = () => {
       await queryClient.cancelQueries(GetAssessments);
       const data = queryClient.getQueryData(GetAssessments);
       queryClient.setQueryData(GetAssessments, (prevData) => {
-        let updatedData = [...prevData.filter((n) => n.assesmentId !== id)];
+        let updatedData = [...prevData.filter((n) => n.assessmentId !== id)];
         return updatedData;
       });
       return data;
@@ -79,7 +79,7 @@ export const useAssessment = () => {
         return draft;
       });
       setAssessment((draft) => {
-        draft.assesmentId = value.original.assesmentId;
+        draft.assessmentId = value.original.assessmentId;
         draft.name = value.original.name;
       });
     },

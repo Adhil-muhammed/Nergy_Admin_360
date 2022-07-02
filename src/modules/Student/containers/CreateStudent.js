@@ -6,7 +6,7 @@ import Select from "react-select";
 export const CreateStudent = (props) => {
   const { student, setStudent, createStudent, batchesQuery, institutesQuery, courses } = props;
   const {
-    studentUserId,
+    studentId,
     instituteId,
     batchId,
     registrationId,
