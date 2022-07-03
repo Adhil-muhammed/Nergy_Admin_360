@@ -6,12 +6,12 @@ import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const CourseList = (props) => {
-  const { course, courses, onDelete, onToggleModal, isConfirmDelete, deleteCourse } = props;
+  const { courses, currentCourse, onDelete, onToggleModal, isConfirmDelete, deleteCourse } = props;
 
   const history = useNavigate();
   const location = useLocation();
   const onConfirm = () => {
-    deleteCourse.mutate(course.courseId);
+    deleteCourse.mutate(currentCourse.courseId);
   };
 
   const onEdit = (courseId) => {
@@ -20,17 +20,15 @@ export const CourseList = (props) => {
 
   const CheckMarker = ({ value }) => {
     return (
-      <span style={{ color: value ? "#3fba2d" : "#da1a1a", fontSize: '24px' }}>
+      <span style={{ color: value ? "#3fba2d" : "#da1a1a", fontSize: "24px" }}>
         <i className={`bi ${value ? "bi-check" : "bi-x"}`}></i>
       </span>
     );
   };
 
-  const Thumbnail =({value}) => {
-    return (
-      value ? <img style={{height: '40px'}} src={value} /> : <span>No Thumbnail</span>
-    )
-  }
+  const Thumbnail = ({ value }) => {
+    return value ? <img style={{ height: "40px" }} src={value} /> : <span>No Thumbnail</span>;
+  };
 
   const ActionButtons = ({ value }) => {
     return (
@@ -71,7 +69,7 @@ export const CourseList = (props) => {
       },
       {
         Header: "Thumbnail",
-        accessor: "courseImage",
+        accessor: "courseImageURL",
         Cell: Thumbnail,
       },
       {
@@ -95,7 +93,7 @@ export const CourseList = (props) => {
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}
-        message={`Are you sure? Do you want to delete ${course.name}`}
+        message={`Are you sure? Do you want to delete ${currentCourse.name}`}
         onConfirm={() => {
           onConfirm();
         }}

@@ -8,7 +8,7 @@ export const EditCourse = (props) => {
   const history = useNavigate();
   const location = useLocation();
   const { course, setCourse, editCourse, onEdit } = props;
-  const { name, description, instructions, hasExam, isContentEnabled, courseImage } = course;
+  const { name, description, instructions, hasExam, isContentEnabled, courseImageFile } = course;
   let { courseId } = useParams();
 
   React.useEffect(() => {
@@ -33,14 +33,14 @@ export const EditCourse = (props) => {
 
   const handleUpload = (e) => {
     const file = e.target.files[0];
-    const name = e.target.name
+    const name = e.target.name;
     if (file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (evt) => {
-        const result = evt.target.result
+        const result = evt.target.result;
         setCourse((draft) => {
-          draft[name] = result
+          draft[name] = result;
         });
       };
     }
@@ -114,19 +114,17 @@ export const EditCourse = (props) => {
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label htmlFor="courseImage" className="form-label">
+                        <label htmlFor="CourseImageFile" className="form-label">
                           Course image
                         </label>
                         <input
-                          id="courseImage"
+                          id="CourseImageFile"
                           type="file"
                           className="form-control"
-                          name="courseImage"
+                          name="CourseImageFile"
                           accept=".jpeg, .png, .jpg"
                           onChange={handleUpload}
                         />
-                        {courseImage && <img style={{ height: "100px" }} src={courseImage} />}
-                        {/* <div style={{fontSize: '10px', width:'400px', height: '40px', overflow: 'auto'}}>{JSON.stringify(courseImage)}</div> */}
                       </div>
                     </div>
                   </div>

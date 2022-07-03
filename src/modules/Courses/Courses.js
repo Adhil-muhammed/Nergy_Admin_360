@@ -7,6 +7,9 @@ export const Courses = () => {
   const {
     course,
     setCourse,
+    currentCourse,
+    courseContent,
+    setCourseContent,
     coursesQuery,
     createCourse,
     editCourse,
@@ -28,7 +31,8 @@ export const Courses = () => {
             path="/"
             element={
               <CourseList
-                course={course}
+                // course={course}
+                currentCourse={currentCourse}
                 isConfirmDelete={isConfirmDelete}
                 deleteCourse={deleteCourse}
                 courses={data}
@@ -38,23 +42,32 @@ export const Courses = () => {
             }
           />
           <Route
-            path="/create"
+            path="/create/new"
             element={
               <CreateCourse
-                course={course}
+                // course={course}
                 setCourse={setCourse}
                 createCourse={createCourse}
+                editCourse={editCourse}
               />
             }
           />
           <Route
             path="/edit/:courseId"
             element={
-              <EditCourse
-                course={course}
-                setCourse={setCourse}
+              // <EditCourse
+              //   course={course}
+              //   setCourse={setCourse}
+              //   editCourse={editCourse}
+              //   onEdit={onEdit}
+              // />
+              <CreateCourse
+                createCourse={createCourse}
                 editCourse={editCourse}
-                onEdit={onEdit}
+                // onEdit={onEdit}
+                // course={course}
+                // courseContent={courseContent}
+                // setCourseContent={setCourseContent}
               />
             }
           />
@@ -63,4 +76,3 @@ export const Courses = () => {
     </>
   );
 };
-

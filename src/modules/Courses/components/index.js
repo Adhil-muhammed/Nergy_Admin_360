@@ -1,1 +1,2 @@
-export * from './CourseFilter'
+export * from "./CourseFilter";
+export * from "./CourseContentModal";
