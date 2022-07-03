@@ -19,7 +19,7 @@ export const UserList = (props) => {
   };
 
   const StatusIndicator = ({ value }) => {
-    return <Badge color={value ? "success" : "secondary"}>{value ? "Active" : "Inactive"}</Badge>;
+    return <Badge color={value === "Active" ? "success" : "secondary"}>{value}</Badge>;
   };
 
   const ActionButtons = ({ value }) => {
@@ -50,8 +50,8 @@ export const UserList = (props) => {
         accessor: "email",
       },
       {
-        Header: "Is active",
-        accessor: "isActive",
+        Header: "Status",
+        accessor: "userStatusStr",
         Cell: StatusIndicator,
       },
       {
@@ -63,15 +63,10 @@ export const UserList = (props) => {
     ],
     []
   );
-  const table = useTable({
-    columns,
-    data: users,
-  });
-
   return (
     <ContentLayout title={"Users"} subtitle={"List"}>
       <UserIdFilter />
-      <TableLayout table={table} />
+      <TableLayout columns={columns} data={users} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}

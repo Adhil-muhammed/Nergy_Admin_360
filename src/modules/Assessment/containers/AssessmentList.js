@@ -3,10 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
 import { Button } from "reactstrap";
 import { ContentLayout, ModalLayout, TableLayout } from "shared";
-import { useImmer } from "use-immer";
 
-export const QuestionsList = (props) => {
-  const { data, isConfirmDelete, onToggleModal, onDelete, onDeleteQuestion, question } = props;
+const AssessmentList = (props) => {
+  const { data, isConfirmDelete, onToggleModal, onDelete, assessment, onDeleteAssessment } = props;
   const history = useNavigate();
   const location = useLocation();
 
@@ -15,17 +14,17 @@ export const QuestionsList = (props) => {
   };
 
   const onConfirm = () => {
-    onDeleteQuestion.mutate(question.questionId);
+    onDeleteAssessment.mutate(assessment.assesmentId);
   };
 
-  const onEdit = (questionBankId) => {
-    history(`${location.pathname}/edit/${questionBankId}`);
+  const onEdit = (id) => {
+    history(`${location.pathname}/edit/${id}`);
   };
 
   const ActionButtons = ({ row }) => {
     return (
       <>
-        <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.questionId)}>
+        <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.assesmentId)}>
           <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
         </Button>
         <Button color="danger" size="sm" onClick={() => onDelete(row)} className="ms-3">
@@ -38,21 +37,35 @@ export const QuestionsList = (props) => {
   const columns = useMemo(
     () => [
       {
-        Header: "Description",
-        accessor: "description",
+        Header: "Name",
+        accessor: "name",
       },
       {
-        Header: "Difficulty Level",
-        accessor: "difficultyLevel",
+        Header: "Mock",
+        accessor: (row) => {
+          return row.isMock ? "Yes" : "No";
+        },
       },
       {
-        Header: "Question Bank",
-        accessor: (row) => row.questionBank.name,
+        Header: "Max Attempt",
+        accessor: "maxAttempt",
+      },
+      {
+        Header: "Max Time",
+        accessor: "maxTime",
+      },
+      {
+        Header: "Total Questions",
+        accessor: "noOfQuestions",
+      },
+      {
+        Header: "Pass Mark",
+        accessor: "passMark",
       },
       {
         Header: "Actions",
         id: "actions",
-        accessor: "questionId",
+        accessor: "assesmentId",
         Cell: ActionButtons,
       },
     ],
@@ -61,7 +74,7 @@ export const QuestionsList = (props) => {
 
   return (
     <>
-      <ContentLayout title="Questions" subtitle="List">
+      <ContentLayout title="Assessments" subtitle="List">
         <div className="mb-4">
           <Button color="primary" size="sm" onClick={gotoCreate}>
             Create New
@@ -81,3 +94,4 @@ export const QuestionsList = (props) => {
     </>
   );
 };
+export default AssessmentList;

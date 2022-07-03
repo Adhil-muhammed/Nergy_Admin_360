@@ -3,69 +3,65 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useImmer } from "use-immer";
 import { errorMessage, successDeletedMessage, successMessage } from "utils";
-import { createNewQuestion, deleteQuestion, getQuestions, updateQuestion } from "../api";
+import { createAssessments, deleteAssessment, getAssessments, updateAssessments } from "../api";
 
-const GetQuestionKey = "GET_QUESTION_API";
+const GetAssessments = "GET_ASSESSMENTS";
 
-export const useQuestion = () => {
+export const useAssessment = () => {
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
-  const [question, setQuestion] = useImmer({ questionId: 0, name: "" });
+  const [assessment, setAssessment] = useImmer({ assesmentId: "", name: "" });
 
-  const questionsQuery = useQuery(GetQuestionKey, getQuestions, {
+  const assessmentQuery = useQuery(GetAssessments, getAssessments, {
     staleTime: Infinity,
   });
 
-  const createQuestion = useMutation(createNewQuestion, {
+  const createAssessment = useMutation(createAssessments, {
     onMutate: async (update) => {
-      await queryClient.cancelQueries(GetQuestionKey);
-      const data = queryClient.getQueryData(GetQuestionKey);
+      await queryClient.cancelQueries(GetAssessments);
     },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetQuestionKey, previousData);
       errorMessage();
     },
     onSuccess: () => {
       successMessage();
-      navigate("../questions", { replace: true });
+      navigate("../assessments", { replace: true });
     },
     onSettled: () => {
-      queryClient.invalidateQueries(GetQuestionKey);
+      queryClient.invalidateQueries(GetAssessments);
     },
   });
 
-  const editQuestion = useMutation(updateQuestion, {
+  const editAssessment = useMutation(updateAssessments, {
     onMutate: async (update) => {
-      await queryClient.cancelQueries(GetQuestionKey);
+      await queryClient.cancelQueries(GetAssessments);
     },
     onSuccess: () => {
       successMessage();
-      navigate("../questions", { replace: true });
+      navigate("../assessments", { replace: true });
     },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetQuestionKey, previousData);
       errorMessage();
     },
     onSettled: () => {
-      queryClient.invalidateQueries(GetQuestionKey);
+      queryClient.invalidateQueries(GetAssessments);
     },
   });
 
-  const onDeleteQuestion = useMutation(deleteQuestion, {
-    onMutate: async (questionId) => {
-      await queryClient.cancelQueries(GetQuestionKey);
-      const data = queryClient.getQueryData(GetQuestionKey);
-      queryClient.setQueryData(GetQuestionKey, (prevData) => {
-        let updatedData = [...prevData.filter((n) => n.questionId !== questionId)];
+  const onDeleteAssessment = useMutation(deleteAssessment, {
+    onMutate: async (id) => {
+      await queryClient.cancelQueries(GetAssessments);
+      const data = queryClient.getQueryData(GetAssessments);
+      queryClient.setQueryData(GetAssessments, (prevData) => {
+        let updatedData = [...prevData.filter((n) => n.assesmentId !== id)];
         return updatedData;
       });
       return data;
     },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetQuestionKey, previousData);
       errorMessage();
     },
     onSuccess: () => {
@@ -76,16 +72,15 @@ export const useQuestion = () => {
     },
   });
 
-  const getQuestion = () => {};
-
   const onDelete = React.useCallback(
     (value) => {
       setIsConfirmDelete((draft) => {
         draft = true;
         return draft;
       });
-      setQuestion((draft) => {
-        draft.questionId = value.original.questionId;
+      setAssessment((draft) => {
+        draft.assesmentId = value.original.assesmentId;
+        draft.name = value.original.name;
       });
     },
     [setIsConfirmDelete]
@@ -102,14 +97,13 @@ export const useQuestion = () => {
   );
 
   return {
-    questionsQuery,
+    assessmentQuery,
     isConfirmDelete,
     onToggleModal,
     onDelete,
-    onDeleteQuestion,
-    question,
-    createQuestion,
-    editQuestion,
-    getQuestion,
+    onDeleteAssessment,
+    assessment,
+    createAssessment,
+    editAssessment,
   };
 };

@@ -5,6 +5,11 @@ export const getBatches = async () => {
   return res.data;
 };
 
+export const getBatchById = async (batchId) => {
+  const res = await Axios.get(`/batches/${batchId}`);
+  return res.data;
+};
+
 export const createBatches = async (batch) => {
   const res = await Axios.post("/Batches", batch);
   return res.data;

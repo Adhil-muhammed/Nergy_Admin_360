@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
-import { getBatches, createBatches, updateBatches, deteleBatches } from "..";
+import { getBatches, createBatches, updateBatches, deteleBatches, getBatchById } from "..";
 import { useNavigate } from "react-router-dom";
-import { successMessage, successDeletedMessage } from "utils";
+import { successMessage, successDeletedMessage, errorMessage } from "utils";
 
-const GetBatchKey = "GET_BATCHES_API";
+const GET_BATCHES = "GET_BATCHES";
+const GET_BATCH_BY_ID = "BATCH_BY_ID";
 
-export const useBatch = () => {
+export const useBatch = ({ load = false, batchId = 0 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const batchesQuery = useQuery(GetBatchKey, getBatches, { staleTime: Infinity });
+
+  const batchesQuery = useQuery(GET_BATCHES, getBatches, {
+    refetchOnWindowFocus: false,
+    enabled: load,
+    staleTime: Infinity,
+  });
+  const batchInfo = useQuery(`${GET_BATCH_BY_ID}_${batchId}`, () => getBatchById(batchId), {
+    refetchOnWindowFocus: false,
+    enabled: batchId > 0,
+  });
+
+  useEffect(() => {
+    if (batchInfo.data) {
+      setBatch(batchInfo.data);
+    }
+  }, [batchInfo.data]);
+
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [batch, setBatch] = useImmer({
     batchId: 0,
@@ -20,111 +37,57 @@ export const useBatch = () => {
     status: 0,
   });
 
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setBatch((draft) => {
+      draft[name] = value;
+    });
+  };
+
   const createBatch = useMutation(createBatches, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetBatchKey);
-      const data = queryClient.getQueryData(GetBatchKey);
-      queryClient.setQueryData(GetBatchKey, (prevData) => {
-        let updatedData = [...prevData, update];
-        return updatedData;
-      });
-      return data;
-    },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetBatchKey, previousData);
+      errorMessage("Unable to create!");
     },
     onSuccess: () => {
       successMessage();
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
+      queryClient.invalidateQueries(GET_BATCHES);
+      navigate("..", { replace: true });
     },
   });
 
   const editBatch = useMutation(updateBatches, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetBatchKey);
-      const data = queryClient.getQueryData(GetBatchKey);
-      queryClient.setQueryData(GetBatchKey, (prevData) => {
-        let updatedData = prevData.map((p) => {
-          let newData = { ...p };
-          if (p.batchId === update.batchId) {
-            newData.name = update.name;
-            newData.startDate = update.startDate;
-            newData.endDate = update.endDate;
-          }
-          return newData;
-        });
-        return updatedData;
-      });
-      return data;
-    },
     onSuccess: () => {
       successMessage();
+      queryClient.invalidateQueries(GET_BATCHES);
+      navigate("..", { replace: true });
     },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetBatchKey, previousData);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
-      navigate("../batch", { replace: true });
+      errorMessage("Unable to edit!");
     },
   });
 
   const deleteBatch = useMutation(deteleBatches, {
-    onMutate: async (batchId) => {
-      await queryClient.cancelQueries(GetBatchKey);
-      const data = queryClient.getQueryData(GetBatchKey);
-      queryClient.setQueryData(GetBatchKey, (prevData) => {
-        let updatedData = [...prevData.filter((n) => n.batchId !== batchId)];
-        return updatedData;
-      });
-      return data;
-    },
-    onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetBatchKey, previousData);
-    },
     onSuccess: () => {
       successDeletedMessage();
+      queryClient.invalidateQueries(GET_BATCHES);
+    },
+    onError: (e, newData, previousData) => {
+      errorMessage("Unable to delete!");
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
       onToggleModal(false);
     },
   });
 
-  const getSelectedBatch = React.useCallback(
-    (id) => {
-      const selectedBatch = batchesQuery.data.filter((s) => s.batchId === id)[0];
-      setBatch((draft) => {
-        draft.batchId = selectedBatch.batchId;
-        draft.endDate = selectedBatch.endDate;
-        draft.startDate = selectedBatch.startDate;
-        draft.name = selectedBatch.name;
-        draft.status = selectedBatch.status;
-        return draft;
-      });
-    },
-    [batchesQuery.data, setBatch]
-  );
+  const onDelete = (id) => {
+    const selectedBatch = batchesQuery.data.find((c) => c.batchId === id);
+    if (selectedBatch) setBatch(selectedBatch);
 
-  const onEdit = React.useCallback(
-    (batchId) => {
-      getSelectedBatch(batchId);
-    },
-    [getSelectedBatch]
-  );
-
-  const onDelete = React.useCallback(
-    (id) => {
-      getSelectedBatch(id);
-      setIsConfirmDelete((draft) => {
-        draft = true;
-        return draft;
-      });
-    },
-    [getSelectedBatch, setIsConfirmDelete]
-  );
+    setIsConfirmDelete((draft) => {
+      draft = true;
+      return draft;
+    });
+  };
 
   const onToggleModal = React.useCallback(
     (isOpen) => {
@@ -140,10 +103,11 @@ export const useBatch = () => {
     batch,
     setBatch,
     batchesQuery,
+    batchInfo,
     createBatch,
     editBatch,
-    onEdit,
     onDelete,
+    onChange,
     isConfirmDelete,
     onToggleModal,
     deleteBatch,

@@ -53,15 +53,10 @@ export const QuestionBanksList = (props) => {
     ],
     []
   );
-  const table = useTable({
-    columns,
-    data: questionBanks,
-  });
-
   return (
     <ContentLayout title={"Question Banks"} subtitle={"List"}>
       <QuestionBanksFilter />
-      <TableLayout table={table} />
+      <TableLayout columns={columns} data={questionBanks} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}

@@ -4,10 +4,14 @@ import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
 import { BatchFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useBatch } from "../hooks";
 
 export const BatchList = (props) => {
-  const { batch, batches, onDelete, onToggleModal, isConfirmDelete, deleteBatch } = props;
+  const { batch, batchesQuery, onDelete, onToggleModal, isConfirmDelete, deleteBatch } = useBatch({
+    load: true,
+  });
 
+  const { data, isLoading } = batchesQuery;
   const history = useNavigate();
   const location = useLocation();
   const onConfirm = () => {
@@ -31,39 +35,32 @@ export const BatchList = (props) => {
     );
   };
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Name",
-        accessor: "name",
-      },
-      {
-        Header: "Start",
-        accessor: "startDate",
-      },
-      {
-        Header: "End",
-        accessor: "endDate",
-      },
+  const columns = [
+    {
+      Header: "Name",
+      accessor: "name",
+    },
+    {
+      Header: "Start",
+      accessor: "startDate",
+    },
+    {
+      Header: "End",
+      accessor: "endDate",
+    },
 
-      {
-        Header: "Actions",
-        accessor: "batchId",
-        id: "actions",
-        Cell: ActionButtons,
-      },
-    ],
-    []
-  );
-  const table = useTable({
-    columns,
-    data: batches,
-  });
+    {
+      Header: "Actions",
+      accessor: "batchId",
+      id: "actions",
+      Cell: ActionButtons,
+    },
+  ];
 
   return (
-    <ContentLayout title={"Batches"} subtitle={"List"}>
+    <ContentLayout title={"Batches"} subtitle={"List"} isLoading={isLoading}>
       <BatchFilter />
-      <TableLayout table={table} />
+      <TableLayout columns={columns} data={data} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}

@@ -81,15 +81,11 @@ export const CourseList = (props) => {
     ],
     []
   );
-  const table = useTable({
-    columns,
-    data: courses,
-  });
 
   return (
     <ContentLayout title={"Courses"} subtitle={"List"}>
       <CourseIdFilter />
-      <TableLayout table={table} />
+      <TableLayout columns={columns} data={courses} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}

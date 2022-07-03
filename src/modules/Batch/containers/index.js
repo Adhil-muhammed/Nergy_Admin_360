@@ -1,3 +1,2 @@
 export * from "./BatchList";
-export * from "./CreateBatch";
-export * from "./EditBatch";
+export * from "./AddOrEditBatch";
