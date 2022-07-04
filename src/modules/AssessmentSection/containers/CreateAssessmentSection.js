@@ -3,11 +3,12 @@ import React, { useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, FormFeedback } from "reactstrap";
-import { ContentLayout } from "shared";
+import { ContentLayout, ModalLayout, TableLayout } from "shared";
 import InputControl from "shared/components/InputControl";
 import SimpleReactValidator from "simple-react-validator";
 import { useImmer } from "use-immer";
 import { Axios } from "utils";
+import QuestionsPreview from "../components/QuestionsPreview";
 
 const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSection }) => {
   const { id } = useParams();
@@ -22,8 +23,14 @@ const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSectio
     })
   );
   const [assessmentSection, setAssessmentSection] = useImmer({
-    data: { name: "", questions: [] },
+    modal: { isOpen: false },
+    data: {
+      name: "",
+      questions: [],
+    },
   });
+
+  console.log("assessmentSection", assessmentSection.data.questions);
 
   const getAssessmentById = async () => {
     const res = await Axios.get(`/AssessmentSections/${id}`);
@@ -35,44 +42,12 @@ const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSectio
   const { data } = useQuery(["AssessmentSectionDetails", id], getAssessmentById, {
     enabled: !!id,
   });
-  const questionsList = React.useMemo(() => {
-    return questions
-      ? questions.map((c) => {
-          return { value: c.questionId, label: c.description };
-        })
-      : [];
-  }, [questions]);
+
   const onChange = (e) => {
     const { name, value } = e.target;
     setAssessmentSection((draft) => {
       draft.data[name] = value;
     });
-  };
-  const onSelectChange = (e) => {
-    const requiredFormat = e.map((c) => {
-      return { questionId: c.value, score: 1 };
-    });
-
-    setAssessmentSection((draft) => {
-      draft.data.questions = requiredFormat;
-    });
-  };
-  const res = questions?.filter((el) => {
-    return assessmentSection?.data.questions.find((element) => {
-      return element.questionId === el.questionId;
-    });
-  });
-
-  const getValue = () => {
-    let res = [];
-    questionsList.forEach((element) => {
-      assessmentSection.data.questions.forEach((el) => {
-        if (element.value === el.questionId) {
-          res.push(element);
-        }
-      });
-    });
-    return res;
   };
 
   const onSubmit = () => {
@@ -86,6 +61,84 @@ const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSectio
     }
   };
 
+  const toggleQuestionListModal = () => {
+    setAssessmentSection((draft) => {
+      draft.modal.isOpen = !draft.modal.isOpen;
+    });
+  };
+
+  const onDeleteQuestions = (id) => {
+    setAssessmentSection((draft) => {
+      draft.data.questions = draft.data.questions.filter((item) => item.questionId !== id);
+    });
+  };
+
+  const ActionButtons = ({ row }) => {
+    return (
+      <>
+        <Button
+          color="danger"
+          size="sm"
+          onClick={() => onDeleteQuestions(row.original.questionId)}
+          className="ms-3"
+        >
+          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+        </Button>
+      </>
+    );
+  };
+
+  const onChangeScore = (e, index) => {
+    setAssessmentSection((draft) => {
+      draft.data.questions[index].score = e.target.value;
+    });
+  };
+
+  const ScoreInput = ({ row, index }) => {
+    console.log("row", row);
+    return (
+      <div className="col-10">
+        <div className="form-group">
+          <label htmlFor="first-name-vertical">Score</label>
+          <InputControl
+            type="number"
+            name="score"
+            placeholder="score"
+            value={row.score}
+            onChange={(e) => onChangeScore(e, index)}
+            invalid={validator.current.message("score", row.score, "required")}
+          />
+          <FormFeedback>{validator.current.message("score", row.score, "required")}</FormFeedback>
+        </div>
+      </div>
+    );
+  };
+
+  const columns = [
+    {
+      Header: "Question",
+      accessor: "description",
+    },
+    {
+      Header: "score",
+      accessor: (row, index) => {
+        return <ScoreInput row={row} index={index} />;
+      },
+    },
+    {
+      Header: "Actions",
+      accessor: "batchId",
+      id: "actions",
+      Cell: ActionButtons,
+    },
+  ];
+
+  const onConfirmQuestions = (questions) => {
+    setAssessmentSection((draft) => {
+      draft.modal.isOpen = false;
+      draft.data.questions = [...draft.data.questions, ...questions];
+    });
+  };
   return (
     <ContentLayout title={updateMode ? "Edit" : "Create New"}>
       <section id="basic-vertical-layouts">
@@ -121,32 +174,26 @@ const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSectio
                             </FormFeedback>
                           </div>
                         </div>
-                        <div className="col-6">
+
+                        <div className="col-12">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Name*</label>
-                            <InputControl
-                              type="react-select"
-                              isMulti
-                              options={questionsList}
-                              name="questionId"
-                              value={getValue()}
-                              isValid={
-                                !validator.current.message(
-                                  "Questions",
-                                  assessmentSection.data.questions,
-                                  "required"
-                                )
-                              }
-                              onChange={(e) => onSelectChange(e)}
+                            <label htmlFor="first-name-vertical">Questions</label>
+                            <TableLayout
+                              columns={columns}
+                              data={assessmentSection.data.questions}
                             />
-                            <div className="text-danger">
-                              {validator.current.message(
-                                "Questions",
-                                assessmentSection.data.questions,
-                                "required"
-                              )}
-                            </div>
                           </div>
+                        </div>
+                        <div className="col-12 d-flex justify-content-end mb-5">
+                          <Button
+                            className="me-1 mb-1"
+                            color="secondary"
+                            onClick={() => {
+                              toggleQuestionListModal();
+                            }}
+                          >
+                            Add Question
+                          </Button>
                         </div>
 
                         <div className="col-12 d-flex justify-content-end">
@@ -176,6 +223,12 @@ const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSectio
           </div>
         </div>
       </section>
+      <QuestionsPreview
+        isOpen={assessmentSection.modal.isOpen}
+        onCancel={toggleQuestionListModal}
+        existingQuestions={assessmentSection.data.questions}
+        onConfirmQuestions={onConfirmQuestions}
+      />
     </ContentLayout>
   );
 };
