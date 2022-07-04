@@ -1,62 +1,32 @@
 import React from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ContentLayout } from "shared/components";
 import { Input, Button, Table } from "reactstrap";
-import { CourseContentModal, useCourse } from "..";
-import { useQuery } from "react-query";
-import { Axios } from "utils";
-import { useImmer } from "use-immer";
+import { CourseContentModal } from "..";
+import { useCourse } from "../hooks";
 
-export const CreateCourse = (props) => {
-  const { createCourse, editCourse } = props;
-
-  const [course, setCourse] = useImmer({
-    courseId: 0,
-    name: "",
-    description: "",
-    instructions: "",
-    certificateFile: "",
-    hasExam: false,
-    isContentEnabled: false,
-    courseImageFile: "",
-    courseContentFile: "",
-  });
-
-  const [courseContent, setCourseContent] = useImmer([
-    {
-      courseId: 0,
-      title: "",
-      contentFile: "",
-      fileName: "",
-    },
-  ]);
-
-  const { isModalOpen, setIsModalOpen, createCourseContent } = useCourse();
+export const AddOrEditCourse = (props) => {
   const { courseId } = useParams();
-  const updateMode = courseId !== undefined ? true : false;
+  const editMode = courseId > 0;
 
-  console.log("C_ID: ", courseId);
-
-  const getCourseById = async () => {
-    const res = await Axios.get(`/Courses/${courseId}`);
-    console.log("C_byID", res.data);
-    setCourse((draft) => {
-      // draft = res.data;
-      draft.courseId = res.data.courseId;
-      draft.name = res.data.name;
-      draft.description = res.data.description;
-      draft.instructions = res.data.instructions;
-      draft.hasExam = res.data.hasExam;
-      draft.isContentEnabled = res.data.isContentEnabled;
-      return draft;
-    });
-  };
-
-  const { isIdle, data } = useQuery(["details", courseId], getCourseById, {
-    enabled: !!courseId,
+  const {
+    course,
+    setCourse,
+    createCourse,
+    editCourse,
+    courseInfo,
+    isModalOpen,
+    setIsModalOpen,
+    courseContent,
+    setCourseContent,
+    createCourseContent,
+    courseContentInfo,
+  } = useCourse({
+    load: false,
+    courseId: courseId,
   });
 
-  console.log("COURSE_STATE: ", course);
+  const navigate = useNavigate();
 
   const onHandleChange = (e, index, isContent = false) => {
     const { name, value } = e.target;
@@ -92,22 +62,18 @@ export const CreateCourse = (props) => {
     }
   };
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const onSubmit = (isContent = false) => {
     if (isContent) {
       createCourseContent.mutate(courseContent);
-      setIsModalOpen(false);
+      // setIsModalOpen(false);
     } else {
-      updateMode ? editCourse.mutate(course) : createCourse.mutate(course);
+      editMode ? editCourse.mutate(course) : createCourse.mutate(course);
     }
   };
 
-  // const onCancel = () => {
-  //   // navigate(`${location.pathname}`.replace("/create", ""));
-  //   navigate("/courses", { replace: true });
-  // };
+  const onCancel = () => {
+    navigate("..", { replace: true });
+  };
 
   const addMoreContent = () => {
     setCourseContent((draft) => {
@@ -124,8 +90,6 @@ export const CreateCourse = (props) => {
     });
   };
 
-  // console.log(courseContent);
-
   const onRemoveContent = (index) => {
     setCourseContent((draft) => {
       draft = draft.filter((c, idx) => idx !== index);
@@ -134,7 +98,11 @@ export const CreateCourse = (props) => {
   };
 
   return (
-    <ContentLayout title={"Courses"} subtitle={updateMode ? "Update" : "Create new"}>
+    <ContentLayout
+      title={"Courses"}
+      subtitle={editMode ? "Update" : "Create new"}
+      isLoading={courseInfo.isLoading}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -206,9 +174,6 @@ export const CreateCourse = (props) => {
                           onChange={handleUpload}
                         />
                       </div>
-                      {course?.courseImageURL && (
-                        <img src={course.courseImageURL} style={{ height: "40px" }} />
-                      )}
                     </div>
                   </div>
                   <div className="mt-4">
@@ -238,7 +203,7 @@ export const CreateCourse = (props) => {
                     </div>
                   </div>
                   <div className="col-12 d-flex justify-content-between mt-4">
-                    {updateMode && (
+                    {editMode && (
                       <div>
                         <Button
                           className="me-1 mb-1"
@@ -257,15 +222,15 @@ export const CreateCourse = (props) => {
                           onSubmit(false);
                         }}
                       >
-                        {updateMode ? "Update" : "Save & close"}
+                        {editMode ? "Update" : "Save & close"}
                       </Button>
                       <button
                         type="reset"
                         className="btn btn-light-secondary me-1 mb-1"
-                        // onClick={() => {
-                        //   onCancel();
-                        // }}
-                        onClick={() => navigate(-1)}
+                        onClick={() => {
+                          onCancel();
+                        }}
+                        // onClick={() => navigate(-1)}
                       >
                         Cancel
                       </button>
@@ -292,7 +257,7 @@ export const CreateCourse = (props) => {
             ))} */}
         </div>
       </section>
-      {updateMode && (
+      {editMode && (
         <CourseContentModal
           size={"xl"}
           isOpen={isModalOpen}

@@ -5,6 +5,11 @@ export const getCourses = async () => {
   return res.data;
 };
 
+export const getCourseById = async (courseId) => {
+  const res = await Axios.get(`/Courses/${courseId}`);
+  return res.data;
+};
+
 export const createCourses = async (course) => {
   const res = await Axios.post("/Courses", course, {
     headers: {
@@ -28,7 +33,9 @@ export const deteleCourses = async (courseId) => {
   return res.data;
 };
 
-export const getCoursesContent = async (id) => {
+// COURSE CONTENT API
+
+export const getCourseContentById = async (id) => {
   const res = await Axios.get(`/Courses/content/${id}`);
   return res.data;
 };
@@ -41,12 +48,3 @@ export const createCoursesContent = async (content) => {
   });
   return res.data;
 };
-
-// export const editCoursesContent = async (id) => {
-//   const res = await Axios.post("/Courses/content", id, {
-//     headers: {
-//       "Content-Type": "multipart/form-data",
-//     },
-//   });
-//   return res.data;
-// };

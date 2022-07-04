@@ -4,14 +4,19 @@ import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
 import { CourseIdFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useCourse } from "../hooks";
 
 export const CourseList = (props) => {
-  const { courses, currentCourse, onDelete, onToggleModal, isConfirmDelete, deleteCourse } = props;
-
+  const { course, coursesQuery, onDelete, onToggleModal, isConfirmDelete, deleteCourse } =
+    useCourse({
+      load: true,
+    });
+  const { data, isLoading } = coursesQuery;
   const history = useNavigate();
   const location = useLocation();
+
   const onConfirm = () => {
-    deleteCourse.mutate(currentCourse.courseId);
+    deleteCourse.mutate(course.courseId);
   };
 
   const onEdit = (courseId) => {
@@ -81,15 +86,14 @@ export const CourseList = (props) => {
     ],
     []
   );
-
   return (
-    <ContentLayout title={"Courses"} subtitle={"List"}>
+    <ContentLayout title={"Courses"} subtitle={"List"} isLoading={isLoading}>
       <CourseIdFilter />
-      <TableLayout columns={columns} data={courses} />
+      <TableLayout columns={columns} data={data} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}
-        message={`Are you sure? Do you want to delete ${currentCourse.name}`}
+        message={`Are you sure? Do you want to delete ${course.name}`}
         onConfirm={() => {
           onConfirm();
         }}

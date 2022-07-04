@@ -1,4 +1,2 @@
 export * from "./CourseList";
-export * from "./CreateCourse";
-export * from "./EditCourse";
-
+export * from "./AddOrEditCourse";
