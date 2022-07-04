@@ -1,146 +1,135 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
-import { getCourses, createCourses, updateCourses, deteleCourses } from "..";
-import { useLocation, useNavigate } from "react-router-dom";
-import { successMessage, successDeletedMessage } from "utils";
+import {
+  getCourses,
+  getCourseById,
+  createCourses,
+  updateCourses,
+  deteleCourses,
+  createCoursesContent,
+  getCourseContentById,
+} from "..";
+import { useNavigate } from "react-router-dom";
+import { successMessage, successDeletedMessage, errorMessage } from "utils";
 
-const GetCourseKey = "GET_COURSES_API";
+const GET_COURSES = "GET_COURSES";
+const GET_COURSE_BY_ID = "GET_COURSE_BY_ID";
+const GET_COURSE_CONTENT_BY_ID = "GET_COURSE_CONTENT_BY_ID";
 
-export const useCourse = () => {
-  const location = useLocation();
+export const useCourse = ({ load = false, courseId = 0 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const coursesQuery = useQuery(GetCourseKey, getCourses, { staleTime: Infinity });
-  const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
+  const coursesQuery = useQuery(GET_COURSES, getCourses, {
+    refetchOnWindowFocus: false,
+    enabled: load,
+    staleTime: Infinity,
+  });
+  const courseInfo = useQuery(`${GET_COURSE_BY_ID}_${courseId}`, () => getCourseById(courseId), {
+    refetchOnWindowFocus: false,
+    enabled: courseId > 0,
+  });
+
+  const courseContentInfo = useQuery(
+    `${GET_COURSE_CONTENT_BY_ID}_${courseId}`,
+    () => getCourseContentById(courseId),
+    {
+      refetchOnWindowFocus: false,
+      enabled: courseId > 0,
+    }
+  );
+
+  useEffect(() => {
+    if (courseInfo.data) {
+      setCourse(courseInfo.data);
+    }
+  }, [courseInfo.data]);
+
+  useEffect(() => {
+    if (courseContentInfo.data) {
+      setCourseContent(courseContentInfo.data);
+    }
+  }, [courseContentInfo.data]);
+
   const [course, setCourse] = useImmer({
     courseId: 0,
     name: "",
     description: "",
     instructions: "",
-    courseImage: "",
+    courseContentFile: "",
+    CourseImageFile: "",
     certificateFile: "",
     contentPath: "",
-    hasExam: false,
-    isContentEnabled: false
   });
 
-  const createCourse = useMutation(createCourses, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetCourseKey);
-      const data = queryClient.getQueryData(GetCourseKey);
-      queryClient.setQueryData(GetCourseKey, (prevData) => {
-        let updatedData = [...prevData, update];
-        return updatedData;
-      });
-      return data;
+  const [courseContent, setCourseContent] = useImmer([
+    {
+      courseId: 0,
+      title: "",
+      contentFile: "",
+      fileName: "",
     },
+  ]);
+
+  const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
+  const [isModalOpen, setIsModalOpen] = useImmer(false);
+
+  const createCourse = useMutation(createCourses, {
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetCourseKey, previousData);
+      errorMessage("Unable to create!");
     },
     onSuccess: () => {
       successMessage();
-      navigate(`${location.pathname}`.replace("/create", ""));
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
+      queryClient.invalidateQueries(GET_COURSES);
+      navigate("..", { replace: true });
     },
   });
 
   const editCourse = useMutation(updateCourses, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetCourseKey);
-      const data = queryClient.getQueryData(GetCourseKey);
-      queryClient.setQueryData(GetCourseKey, (prevData) => {
-        let updatedData = prevData.map((p) => {
-          let newData = { ...p };
-          if (p.courseId === update.courseId) {
-            newData.name = update.name;
-            newData.description = update.description;
-            newData.instructions = update.instructions;
-            newData.courseImage = update.courseImage;
-            newData.certificateFile = update.certificateFile;
-            newData.contentPath = update.contentPath;
-            newData.hasExam = update.hasExam;
-            newData.isContentEnabled = update.isContentEnabled;
-          }
-          return newData;
-        });
-        return updatedData;
-      });
-      return data;
-    },
     onSuccess: () => {
       successMessage();
+      queryClient.invalidateQueries(GET_COURSES);
+      navigate("..", { replace: true });
     },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetCourseKey, previousData);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
-      // navigate(`${location.pathname}`.replace("/create", ""));
-      navigate("../courses", { replace: true });
+      errorMessage("Unable to edit!");
     },
   });
 
   const deleteCourse = useMutation(deteleCourses, {
-    onMutate: async (courseId) => {
-      await queryClient.cancelQueries(GetCourseKey);
-      const data = queryClient.getQueryData(GetCourseKey);
-      queryClient.setQueryData(GetCourseKey, (prevData) => {
-        let updatedData = [...prevData.filter((n) => n.courseId !== courseId)];
-        return updatedData;
-      });
-      return data;
-    },
-    onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetCourseKey, previousData);
-    },
     onSuccess: () => {
       successDeletedMessage();
+      queryClient.invalidateQueries(GET_COURSES);
+    },
+    onError: (e, newData, previousData) => {
+      errorMessage("Unable to delete!");
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
       onToggleModal(false);
     },
   });
+  // GET_COURSE_CONTENT_BY_ID
 
-  const getSelectedCourse = React.useCallback(
-    (id) => {
-      const selectedCourse = coursesQuery.data.filter((s) => s.courseId === id)[0];
-      setCourse((draft) => {
-        draft.courseId = selectedCourse.courseId;
-        draft.name = selectedCourse.name;
-        draft.description = selectedCourse.description;
-        draft.instructions = selectedCourse.instructions;
-        draft.courseImage = selectedCourse.courseImage;
-        draft.certificateFile = selectedCourse.certificateFile;
-        draft.contentPath = selectedCourse.contentPath;
-        draft.hasExam = selectedCourse.hasExam;
-        draft.isContentEnabled = selectedCourse.isContentEnabled;
-        return draft;
-      });
+  const createCourseContent = useMutation(createCoursesContent, {
+    onError: (e, newData, previousData) => {
+      errorMessage("Unable to create!");
     },
-    [coursesQuery.data, setCourse]
-  );
+    onSuccess: () => {
+      successMessage();
+      queryClient.invalidateQueries(GET_COURSE_CONTENT_BY_ID);
+      setIsModalOpen(false);
+    },
+  });
 
-  const onEdit = React.useCallback(
-    (courseId) => {
-      getSelectedCourse(courseId);
-    },
-    [getSelectedCourse]
-  );
+  const onDelete = (courseId) => {
+    const selectedCourse = coursesQuery.data.find((c) => c.courseId === courseId);
+    if (selectedCourse) setCourse(selectedCourse);
 
-  const onDelete = React.useCallback(
-    (id) => {
-      getSelectedCourse(id);
-      setIsConfirmDelete((draft) => {
-        draft = true;
-        return draft;
-      });
-    },
-    [getSelectedCourse, setIsConfirmDelete]
-  );
+    setIsConfirmDelete((draft) => {
+      draft = true;
+      return draft;
+    });
+  };
 
   const onToggleModal = React.useCallback(
     (isOpen) => {
@@ -155,13 +144,19 @@ export const useCourse = () => {
   return {
     course,
     setCourse,
+    courseInfo,
+    courseContent,
+    setCourseContent,
+    createCourseContent,
+    courseContentInfo,
     coursesQuery,
     createCourse,
     editCourse,
-    onEdit,
     onDelete,
     isConfirmDelete,
     onToggleModal,
     deleteCourse,
+    isModalOpen,
+    setIsModalOpen,
   };
 };

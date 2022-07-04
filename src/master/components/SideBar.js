@@ -72,7 +72,7 @@ export function SideBar() {
             </li>
             <li className="sidebar-item  ">
               <NavLink to={"questions"} className="sidebar-link">
-                <i className="bi bi-people-fill" />
+                <i className="bi bi-question-circle-fill" />
                 <span>Questions</span>
               </NavLink>
             </li>

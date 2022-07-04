@@ -6,7 +6,6 @@ export function ResetPassword() {
   const { resetPasswordState, setResetPasswordState, resetPasswordAuth } = useAuthenticate();
   const { mutate, isLoading } = resetPasswordAuth;
   const resetToken = localStorage.getItem('passwordResetToken')
-  // const formatted = JSON.stringify(resetToken)
   const onHandleChange = (e) => {
     const { name, value } = e.target;
     setResetPasswordState((draft) => {

@@ -67,6 +67,7 @@ export const useAuthenticate = () => {
       });
       if (data) {
         navigate("/", { replace: true });
+        localStorage.removeItem('passwordResetToken')
       } else {
         navigate("/forgotPassword", { replace: true });
       }

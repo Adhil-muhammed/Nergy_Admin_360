@@ -4,12 +4,17 @@ import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
 import { CourseIdFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useCourse } from "../hooks";
 
 export const CourseList = (props) => {
-  const { course, courses, onDelete, onToggleModal, isConfirmDelete, deleteCourse } = props;
-
+  const { course, coursesQuery, onDelete, onToggleModal, isConfirmDelete, deleteCourse } =
+    useCourse({
+      load: true,
+    });
+  const { data, isLoading } = coursesQuery;
   const history = useNavigate();
   const location = useLocation();
+
   const onConfirm = () => {
     deleteCourse.mutate(course.courseId);
   };
@@ -69,7 +74,7 @@ export const CourseList = (props) => {
       },
       {
         Header: "Thumbnail",
-        accessor: "courseImage",
+        accessor: "courseImageURL",
         Cell: Thumbnail,
       },
       {
@@ -81,11 +86,10 @@ export const CourseList = (props) => {
     ],
     []
   );
-
   return (
-    <ContentLayout title={"Courses"} subtitle={"List"}>
+    <ContentLayout title={"Courses"} subtitle={"List"} isLoading={isLoading}>
       <CourseIdFilter />
-      <TableLayout columns={columns} data={courses} />
+      <TableLayout columns={columns} data={data} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}
