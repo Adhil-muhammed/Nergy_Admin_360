@@ -111,7 +111,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
     } else {
       const { value } = e;
       setAssessment((draft) => {
-        draft.data[name] = `${value}`;
+        draft.data[name] = value;
       });
     }
   };
@@ -328,7 +328,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                               value={
                                 assessment.data.assessmentStatus &&
                                 assessmentStatusList.find(
-                                  (c) => c.value === `${assessment.data.assessmentStatus}`
+                                  (c) => c.value == assessment.data.assessmentStatus
                                 )
                               }
                               isValid={
