@@ -40,7 +40,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
       instructions: "",
       assessmentConfig: "",
       isMock: false,
-      assesmentStatus: "",
+      assessmentStatus: "",
       assessmentBatches: [],
       assessmentSections: [
         {
@@ -140,7 +140,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
     });
   };
 
-  const assesmentStatusList = [
+  const assessmentStatusList = [
     { label: "Draft", value: 0 },
     { label: "Published", value: 1 },
     { label: "Inactive", value: 2 },
@@ -213,22 +213,22 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                                 courseList.length > 0 &&
                                 courseList.find((c) => c.value === assessment.data.courseId)
                               }
-                              isValid={
-                                !validator.current.message(
-                                  "Course",
-                                  assessment.data.courseId,
-                                  "required"
-                                )
-                              }
+                              // isValid={
+                              //   !validator.current.message(
+                              //     "Course",
+                              //     assessment.data.courseId,
+                              //     "required"
+                              //   )
+                              // }
                               onChange={(e) => onSelectChange(e, "courseId")}
                             />
-                            <div className="text-danger">
+                            {/* <div className="text-danger">
                               {validator.current.message(
                                 "Course",
                                 assessment.data.courseId,
                                 "required"
                               )}
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                         <div className="col-6">
@@ -332,27 +332,27 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                             <label htmlFor="first-name-vertical">Assessment Status*</label>
                             <InputControl
                               type="react-select"
-                              options={assesmentStatusList}
-                              name="assesmentStatus"
+                              options={assessmentStatusList}
+                              name="assessmentStatus"
                               value={
-                                assessment.data.assesmentStatus &&
-                                assesmentStatusList.find(
-                                  (c) => c.value === assessment.data.assesmentStatus
+                                assessment.data.assessmentStatus &&
+                                assessmentStatusList.find(
+                                  (c) => c.value === assessment.data.assessmentStatus
                                 )
                               }
                               isValid={
                                 !validator.current.message(
-                                  "assesmentStatus",
-                                  assessment.data.assesmentStatus,
+                                  "assessmentStatus",
+                                  assessment.data.assessmentStatus,
                                   "required"
                                 )
                               }
-                              onChange={(e) => onSelectChange(e, "assesmentStatus")}
+                              onChange={(e) => onSelectChange(e, "assessmentStatus")}
                             />
                             <div className="text-danger">
                               {validator.current.message(
                                 "ass",
-                                assessment.data.assesmentStatus,
+                                assessment.data.assessmentStatus,
                                 "required"
                               )}
                             </div>
