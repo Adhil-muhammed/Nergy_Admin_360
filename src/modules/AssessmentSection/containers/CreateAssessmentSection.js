@@ -30,8 +30,6 @@ const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSectio
     },
   });
 
-  console.log("assessmentSection", assessmentSection.data.questions);
-
   const getAssessmentById = async () => {
     const res = await Axios.get(`/AssessmentSections/${id}`);
     setAssessmentSection((draft) => {
@@ -95,7 +93,6 @@ const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSectio
   };
 
   const ScoreInput = ({ row, index }) => {
-    console.log("row", row);
     return (
       <div className="col-10">
         <div className="form-group">

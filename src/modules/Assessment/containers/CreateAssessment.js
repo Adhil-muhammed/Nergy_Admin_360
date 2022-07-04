@@ -207,7 +207,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                         </div>
                         <div className="col-6">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Course*</label>
+                            <label htmlFor="first-name-vertical">Course</label>
                             <InputControl
                               type="react-select"
                               options={courseList}
@@ -217,22 +217,9 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                                 courseList.length > 0 &&
                                 courseList.find((c) => c.value === assessment.data.courseId)
                               }
-                              isValid={
-                                !validator.current.message(
-                                  "Course",
-                                  assessment.data.courseId,
-                                  "required"
-                                )
-                              }
+                              isValid={true}
                               onChange={(e) => onSelectChange(e, "courseId")}
                             />
-                            <div className="text-danger">
-                              {validator.current.message(
-                                "Course",
-                                assessment.data.courseId,
-                                "required"
-                              )}
-                            </div>
                           </div>
                         </div>
                         <div className="col-6">
