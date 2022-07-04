@@ -326,7 +326,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                               options={assessmentStatusList}
                               name="assessmentStatus"
                               value={
-                                assessment.data.assessmentStatus &&
+                                assessment.data.assessmentStatus !== "" &&
                                 assessmentStatusList.find(
                                   (c) => c.value === `${assessment.data.assessmentStatus}`
                                 )
