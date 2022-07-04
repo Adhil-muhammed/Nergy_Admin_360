@@ -17,7 +17,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const updateMode = id !== undefined ? true : false;
-  const { coursesQuery } = useCourse();
+  const { coursesQuery } = useCourse({ load: true });
   const { batchesQuery } = useBatch({ load: true });
   const { assessmentSectionQuery } = useAssessmentSection();
   const { data: courses } = coursesQuery;
@@ -46,12 +46,11 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
         {
           sectionId: "",
           passMark: "",
+          noOfQuestions: "",
         },
       ],
     },
   });
-
-  console.log("assessment", assessment.data);
 
   const getAssessmentById = async () => {
     const res = await Axios.get(`/Assessments/${id}`);
@@ -62,6 +61,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
 
   const { data } = useQuery(["AssessmentDetails", id], getAssessmentById, {
     enabled: !!id,
+    refetchOnWindowFocus: false,
   });
 
   const courseList = React.useMemo(() => {
@@ -111,7 +111,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
     } else {
       const { value } = e;
       setAssessment((draft) => {
-        draft.data[name] = value;
+        draft.data[name] = `${value}`;
       });
     }
   };
@@ -121,12 +121,17 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
       draft.data.assessmentSections[index].sectionId = e.value;
     });
   };
-
   const onSubmit = () => {
     if (validator.current.allValid()) {
       updateMode
-        ? editAssessment.mutate(assessment.data)
-        : createAssessment.mutate(assessment.data);
+        ? editAssessment.mutate({
+            ...assessment.data,
+            assessmentStatus: +assessment.data.assessmentStatus,
+          })
+        : createAssessment.mutate({
+            ...assessment.data,
+            assessmentStatus: +assessment.data.assessmentStatus,
+          });
     } else {
       validator.current.showMessages();
       forceUpdate(1);
@@ -141,9 +146,9 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
   };
 
   const assessmentStatusList = [
-    { label: "Draft", value: 0 },
-    { label: "Published", value: 1 },
-    { label: "Inactive", value: 2 },
+    { label: "Draft", value: "0" },
+    { label: "Published", value: "1" },
+    { label: "Inactive", value: "2" },
   ];
 
   const onDeleteSection = (index) => {
@@ -158,13 +163,12 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
     setAssessment((draft) => {
       draft.data.assessmentSections = [
         ...draft.data.assessmentSections,
-        { sectionId: "", passMark: "" },
+        { sectionId: "", passMark: "", noOfQuestions: "" },
       ];
     });
   };
 
   const handleInstrcutionsChange = (value) => {
-    console.log("value", value);
     setAssessment((draft) => {
       draft.data.instructions = value;
     });
@@ -213,29 +217,29 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                                 courseList.length > 0 &&
                                 courseList.find((c) => c.value === assessment.data.courseId)
                               }
-                              // isValid={
-                              //   !validator.current.message(
-                              //     "Course",
-                              //     assessment.data.courseId,
-                              //     "required"
-                              //   )
-                              // }
+                              isValid={
+                                !validator.current.message(
+                                  "Course",
+                                  assessment.data.courseId,
+                                  "required"
+                                )
+                              }
                               onChange={(e) => onSelectChange(e, "courseId")}
                             />
-                            {/* <div className="text-danger">
+                            <div className="text-danger">
                               {validator.current.message(
                                 "Course",
                                 assessment.data.courseId,
                                 "required"
                               )}
-                            </div> */}
+                            </div>
                           </div>
                         </div>
                         <div className="col-6">
                           <div className="form-group">
                             <label htmlFor="first-name-vertical">Maximum Time*</label>
                             <InputControl
-                              type="text"
+                              type="number"
                               name="maxTime"
                               placeholder="Max time"
                               value={assessment.data.maxTime}
@@ -259,7 +263,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                           <div className="form-group">
                             <label htmlFor="first-name-vertical">Maximum Attempt*</label>
                             <InputControl
-                              type="text"
+                              type="number"
                               name="maxAttempt"
                               placeholder="Max Attempt"
                               value={assessment.data.maxAttempt}
@@ -283,7 +287,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                           <div className="form-group">
                             <label htmlFor="first-name-vertical">Number Of Questions*</label>
                             <InputControl
-                              type="text"
+                              type="number"
                               name="noOfQuestions"
                               placeholder="Number of questions"
                               value={assessment.data.noOfQuestions}
@@ -307,7 +311,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                           <div className="form-group">
                             <label htmlFor="first-name-vertical">Pass Mark*</label>
                             <InputControl
-                              type="text"
+                              type="number"
                               name="passMark"
                               placeholder="passMark"
                               value={assessment.data.passMark}
@@ -337,7 +341,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                               value={
                                 assessment.data.assessmentStatus &&
                                 assessmentStatusList.find(
-                                  (c) => c.value === assessment.data.assessmentStatus
+                                  (c) => c.value === `${assessment.data.assessmentStatus}`
                                 )
                               }
                               isValid={
@@ -351,7 +355,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                             />
                             <div className="text-danger">
                               {validator.current.message(
-                                "ass",
+                                "assessmentStatus",
                                 assessment.data.assessmentStatus,
                                 "required"
                               )}
@@ -409,6 +413,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                                   <th>#</th>
                                   <th>Section</th>
                                   <th>Passmark</th>
+                                  <th>No. of questions</th>
 
                                   <th></th>
                                 </tr>
@@ -454,7 +459,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                                         <div className="col-6">
                                           <div className="form-group">
                                             <InputControl
-                                              type="text"
+                                              type="number"
                                               id="first-name-vertical"
                                               className="form-control"
                                               name="passMark"
@@ -470,6 +475,32 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                                               {validator.current.message(
                                                 "PassMark",
                                                 item.passMark,
+                                                "required"
+                                              )}
+                                            </FormFeedback>
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div className="col-6">
+                                          <div className="form-group">
+                                            <InputControl
+                                              type="number"
+                                              id="first-name-vertical"
+                                              className="form-control"
+                                              name="noOfQuestions"
+                                              value={item.noOfQuestions}
+                                              onChange={(e) => onChange(e, index, true)}
+                                              invalid={validator.current.message(
+                                                "No of questions",
+                                                item.noOfQuestions,
+                                                "required"
+                                              )}
+                                            />
+                                            <FormFeedback>
+                                              {validator.current.message(
+                                                "No of questions",
+                                                item.noOfQuestions,
                                                 "required"
                                               )}
                                             </FormFeedback>
@@ -513,7 +544,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                               id="first-content-vertical"
                               className="form-check-input"
                               name="isMock"
-                              value={assessment.data.isMock}
+                              checked={assessment.data.isMock}
                               onChange={handleChecked}
                             />
                           </div>

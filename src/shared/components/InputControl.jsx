@@ -31,7 +31,9 @@ const InputControl = forwardRef((props, ref) => {
       );
       break;
     default:
-      inputElement = <Input className="form-control" type={type} {...rest} ref={ref} />;
+      inputElement = (
+        <Input className="form-control" value={value} type={type} {...rest} ref={ref} />
+      );
       break;
   }
   return (
