@@ -2,7 +2,7 @@ import { useQuestion } from "modules/Questions";
 import React, { useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, FormFeedback } from "reactstrap";
+import { Button, FormFeedback, Table } from "reactstrap";
 import { ContentLayout, ModalLayout, TableLayout } from "shared";
 import InputControl from "shared/components/InputControl";
 import SimpleReactValidator from "simple-react-validator";
@@ -71,64 +71,11 @@ const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSectio
     });
   };
 
-  const ActionButtons = ({ row }) => {
-    return (
-      <>
-        <Button
-          color="danger"
-          size="sm"
-          onClick={() => onDeleteQuestions(row.original.questionId)}
-          className="ms-3"
-        >
-          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
-        </Button>
-      </>
-    );
-  };
-
   const onChangeScore = (e, index) => {
     setAssessmentSection((draft) => {
       draft.data.questions[index].score = e.target.value;
     });
   };
-
-  const ScoreInput = ({ row, index }) => {
-    return (
-      <div className="col-10">
-        <div className="form-group">
-          <label htmlFor="first-name-vertical">Score</label>
-          <InputControl
-            type="number"
-            name="score"
-            placeholder="score"
-            value={row.score}
-            onChange={(e) => onChangeScore(e, index)}
-            invalid={validator.current.message("score", row.score, "required")}
-          />
-          <FormFeedback>{validator.current.message("score", row.score, "required")}</FormFeedback>
-        </div>
-      </div>
-    );
-  };
-
-  const columns = [
-    {
-      Header: "Question",
-      accessor: "description",
-    },
-    {
-      Header: "score",
-      accessor: (row, index) => {
-        return <ScoreInput row={row} index={index} />;
-      },
-    },
-    {
-      Header: "Actions",
-      accessor: "batchId",
-      id: "actions",
-      Cell: ActionButtons,
-    },
-  ];
 
   const onConfirmQuestions = (questions) => {
     setAssessmentSection((draft) => {
@@ -175,10 +122,76 @@ const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSectio
                         <div className="col-12">
                           <div className="form-group">
                             <label htmlFor="first-name-vertical">Questions</label>
-                            <TableLayout
-                              columns={columns}
-                              data={assessmentSection.data.questions}
-                            />
+
+                            <Table responsive size="">
+                              <thead>
+                                <tr>
+                                  <th>#</th>
+                                  <th>Question</th>
+                                  <th>Score</th>
+                                  <th></th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {assessmentSection.data.questions.map((item, index) => {
+                                  return (
+                                    <tr key={index}>
+                                      <td>
+                                        <div className="col-6">
+                                          <div className="form-group">{index + 1}</div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div className="col-6">
+                                          <div className="form-group">{item.description}</div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div className="col-10">
+                                          <div className="form-group">
+                                            <label htmlFor="first-name-vertical">Score</label>
+                                            <InputControl
+                                              type="number"
+                                              name="score"
+                                              placeholder="score"
+                                              value={item.score}
+                                              onChange={(e) => onChangeScore(e, index)}
+                                              invalid={validator.current.message(
+                                                "score",
+                                                item.score,
+                                                "required"
+                                              )}
+                                            />
+                                            <FormFeedback>
+                                              {validator.current.message(
+                                                "score",
+                                                item.score,
+                                                "required"
+                                              )}
+                                            </FormFeedback>
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <Button
+                                          color="danger"
+                                          size="sm"
+                                          onClick={() => onDeleteQuestions(item.questionId)}
+                                          className="ms-3"
+                                        >
+                                          <i
+                                            className="bi bi-trash"
+                                            style={{ fontSize: "10px" }}
+                                          ></i>{" "}
+                                          <span>Delete</span>
+                                        </Button>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </Table>
                           </div>
                         </div>
                         <div className="col-12 d-flex justify-content-end mb-5">
