@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ContentLayout } from "shared/components";
+import { ContentLayout, ModalLayout } from "shared/components";
 import { Input, Button, Table } from "reactstrap";
 import { CourseContentModal } from "..";
 import { useCourse } from "../hooks";
@@ -17,14 +17,20 @@ export const AddOrEditCourse = (props) => {
     courseInfo,
     isModalOpen,
     setIsModalOpen,
-    courseContent,
+    courseContents,
     setCourseContent,
     createCourseContent,
-    courseContentInfo,
+    courseContent,
+    onDelete,
+    onToggleModal,
+    isConfirmDelete,
+    deleteCourseContent,
   } = useCourse({
     load: false,
     courseId: courseId,
   });
+
+  const { title, fileName } = courseContent;
 
   const navigate = useNavigate();
 
@@ -40,14 +46,6 @@ export const AddOrEditCourse = (props) => {
       });
     }
   };
-
-  const handleChecked = (e) => {
-    const { name, checked } = e.target;
-    setCourse((draft) => {
-      draft[name] = checked;
-    });
-  };
-
   const handleUpload = (e, index, isContent = false) => {
     const file = e.target.files[0];
     const name = e.target.name;
@@ -62,10 +60,19 @@ export const AddOrEditCourse = (props) => {
     }
   };
 
+  const handleChecked = (e) => {
+    const { name, checked } = e.target;
+    setCourse((draft) => {
+      draft[name] = checked;
+    });
+  };
+
   const onSubmit = (isContent = false) => {
     if (isContent) {
-      createCourseContent.mutate(courseContent);
-      // setIsModalOpen(false);
+      courseContent.forEach((item, index) => {
+        createCourseContent.mutate(item);
+      });
+      setIsModalOpen(false);
     } else {
       editMode ? editCourse.mutate(course) : createCourse.mutate(course);
     }
@@ -88,6 +95,12 @@ export const AddOrEditCourse = (props) => {
       ];
       return draft;
     });
+  };
+
+  const onEditContent = () => {};
+
+  const onConfirm = () => {
+    deleteCourseContent.mutate(courseContents.contentId);
   };
 
   const onRemoveContent = (index) => {
@@ -202,6 +215,59 @@ export const AddOrEditCourse = (props) => {
                       />
                     </div>
                   </div>
+                  <div className="col-12 mt-4">
+                    {course.courseContents.length > 0 && (
+                      <Table responsive size="">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>File name</th>
+                            <td>Thumbnail</td>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {course.courseContents?.map((content, index) => {
+                            return (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>
+                                  {content.title} {content.contentId}
+                                </td>
+                                <td>{content.fileName}</td>
+                                <td>
+                                  {content.fileURL ? (
+                                    <img src={content.fileURL} style={{ height: "40px" }} />
+                                  ) : (
+                                    <span>No thumbnail</span>
+                                  )}
+                                </td>
+                                <td>
+                                  <Button
+                                    color="primary"
+                                    className="mt-4 me-3"
+                                    // disabled={courseContent.length < 2}
+                                    onClick={() => onEditContent(index)}
+                                  >
+                                    Edit
+                                  </Button>
+                                  <Button
+                                    color="danger"
+                                    className="mt-4"
+                                    // disabled={courseContent.length < 2}
+                                    onClick={() => onDelete(content.contentId, true)}
+                                  >
+                                    Delete
+                                  </Button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </Table>
+                    )}
+                  </div>
                   <div className="col-12 d-flex justify-content-between mt-4">
                     {editMode && (
                       <div>
@@ -230,7 +296,6 @@ export const AddOrEditCourse = (props) => {
                         onClick={() => {
                           onCancel();
                         }}
-                        // onClick={() => navigate(-1)}
                       >
                         Cancel
                       </button>
@@ -240,23 +305,19 @@ export const AddOrEditCourse = (props) => {
               </div>
             </form>
           </div>
-          {/* {data ||
-            (!isLoading && (
-              <div className="col-12 mt-4">
-                <h3>Contents</h3>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>{data.title}</td>
-                      <td>{data.title}</td>
-                      <td>{data.title}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            ))} */}
         </div>
       </section>
+
+      <ModalLayout
+        isOpen={isConfirmDelete}
+        title={"Confirm"}
+        message={`Are you sure? Do you want to delete?`}
+        onConfirm={() => {
+          onConfirm();
+        }}
+        onCancel={() => onToggleModal(false)}
+      />
+
       {editMode && (
         <CourseContentModal
           size={"xl"}
@@ -280,7 +341,7 @@ export const AddOrEditCourse = (props) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {courseContent?.map((content, index) => {
+                  {courseContent?.map((item, index) => {
                     return (
                       <tr key={index}>
                         <td>{index + 1}</td>
@@ -295,7 +356,7 @@ export const AddOrEditCourse = (props) => {
                               className="form-control"
                               name="title"
                               placeholder="Title"
-                              value={content.title}
+                              value={item.title}
                               onChange={(e) => onHandleChange(e, index, true)}
                             />
                           </div>
@@ -311,7 +372,7 @@ export const AddOrEditCourse = (props) => {
                               className="form-control"
                               name="fileName"
                               placeholder="File name"
-                              value={content.fileName}
+                              value={item.fileName}
                               onChange={(e) => onHandleChange(e, index, true)}
                             />
                           </div>
@@ -335,7 +396,9 @@ export const AddOrEditCourse = (props) => {
                             color="danger"
                             className="mt-4"
                             disabled={courseContent.length < 2}
-                            onClick={() => onRemoveContent(index)}
+                            onClick={() => {
+                              onRemoveContent(index);
+                            }}
                           >
                             Remove
                           </Button>
@@ -349,7 +412,7 @@ export const AddOrEditCourse = (props) => {
             <div className="col-12 d-flex justify-content-start mt-4">
               <Button
                 color="primary"
-                disabled={courseContent.length > 3}
+                disabled={courseContent.length > 5}
                 onClick={() => {
                   addMoreContent();
                 }}

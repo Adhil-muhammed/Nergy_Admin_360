@@ -48,3 +48,8 @@ export const createCoursesContent = async (content) => {
   });
   return res.data;
 };
+
+export const deleteCoursesContentById = async (id) => {
+  const res = await Axios.delete(`/Courses/content/${id}`);
+  return res.data;
+};

@@ -8,14 +8,15 @@ import {
   updateCourses,
   deteleCourses,
   createCoursesContent,
-  getCourseContentById,
+  // getCourseContentById,
+  deleteCoursesContentById,
 } from "..";
 import { useNavigate } from "react-router-dom";
 import { successMessage, successDeletedMessage, errorMessage } from "utils";
 
 const GET_COURSES = "GET_COURSES";
 const GET_COURSE_BY_ID = "GET_COURSE_BY_ID";
-const GET_COURSE_CONTENT_BY_ID = "GET_COURSE_CONTENT_BY_ID";
+// const GET_COURSE_CONTENT_BY_ID = "GET_COURSE_CONTENT_BY_ID";
 
 export const useCourse = ({ load = false, courseId = 0 }) => {
   const navigate = useNavigate();
@@ -30,26 +31,14 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     enabled: courseId > 0,
   });
 
-  const courseContentInfo = useQuery(
-    `${GET_COURSE_CONTENT_BY_ID}_${courseId}`,
-    () => getCourseContentById(courseId),
-    {
-      refetchOnWindowFocus: false,
-      enabled: courseId > 0,
-    }
-  );
-
-  useEffect(() => {
-    if (courseInfo.data) {
-      setCourse(courseInfo.data);
-    }
-  }, [courseInfo.data]);
-
-  useEffect(() => {
-    if (courseContentInfo.data) {
-      setCourseContent(courseContentInfo.data);
-    }
-  }, [courseContentInfo.data]);
+  // const courseContentInfo = useQuery(
+  //   `${GET_COURSE_CONTENT_BY_ID}_${courseId}`,
+  //   () => getCourseContentById(courseId),
+  //   {
+  //     refetchOnWindowFocus: false,
+  //     enabled: courseId > 0,
+  //   }
+  // );
 
   const [course, setCourse] = useImmer({
     courseId: 0,
@@ -60,7 +49,19 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     CourseImageFile: "",
     certificateFile: "",
     contentPath: "",
+    courseContents: [],
   });
+
+  const [courseContents, setCourseContents] = useImmer([
+    {
+      contentId: 0,
+      title: "",
+      fileName: "",
+      fileURL: "",
+      isExternal: false,
+      isVideo: false,
+    },
+  ]);
 
   const [courseContent, setCourseContent] = useImmer([
     {
@@ -70,6 +71,12 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
       fileName: "",
     },
   ]);
+
+  useEffect(() => {
+    if (courseInfo.data) {
+      setCourse(courseInfo.data);
+    }
+  }, [courseInfo.data]);
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [isModalOpen, setIsModalOpen] = useImmer(false);
@@ -108,7 +115,6 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
       onToggleModal(false);
     },
   });
-  // GET_COURSE_CONTENT_BY_ID
 
   const createCourseContent = useMutation(createCoursesContent, {
     onError: (e, newData, previousData) => {
@@ -116,19 +122,41 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     },
     onSuccess: () => {
       successMessage();
-      queryClient.invalidateQueries(GET_COURSE_CONTENT_BY_ID);
+    },
+    onSettled: () => {
       setIsModalOpen(false);
     },
   });
 
-  const onDelete = (courseId) => {
-    const selectedCourse = coursesQuery.data.find((c) => c.courseId === courseId);
-    if (selectedCourse) setCourse(selectedCourse);
+  const deleteCourseContent = useMutation(deleteCoursesContentById, {
+    onError: (e, newData, previousData) => {
+      errorMessage("Unable to delete!");
+    },
+    onSuccess: () => {
+      successMessage();
+    },
+    onSettled: () => {
+      onToggleModal(false);
+    },
+  });
 
-    setIsConfirmDelete((draft) => {
-      draft = true;
-      return draft;
-    });
+  const onDelete = (id, isContent = false) => {
+    if (isContent) {
+      const selected = course.courseContents.find((item) => item.contentId === id);
+      if (selected) setCourseContents(selected);
+      setIsConfirmDelete((draft) => {
+        draft = true;
+        return draft;
+      });
+    } else {
+      const selectedCourse = coursesQuery.data.find((c) => c.courseId === id);
+      if (selectedCourse) setCourse(selectedCourse);
+
+      setIsConfirmDelete((draft) => {
+        draft = true;
+        return draft;
+      });
+    }
   };
 
   const onToggleModal = React.useCallback(
@@ -145,10 +173,10 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     course,
     setCourse,
     courseInfo,
+    courseContents,
+    createCourseContent,
     courseContent,
     setCourseContent,
-    createCourseContent,
-    courseContentInfo,
     coursesQuery,
     createCourse,
     editCourse,
@@ -156,6 +184,7 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     isConfirmDelete,
     onToggleModal,
     deleteCourse,
+    deleteCourseContent,
     isModalOpen,
     setIsModalOpen,
   };
