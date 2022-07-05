@@ -143,7 +143,9 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
   const onDelete = (id, isContent = false) => {
     if (isContent) {
       const selected = course.courseContents.find((item) => item.contentId === id);
-      if (selected) setCourseContents(selected);
+      if (selected) {
+        setCourseContents(selected);
+      }
       setIsConfirmDelete((draft) => {
         draft = true;
         return draft;
