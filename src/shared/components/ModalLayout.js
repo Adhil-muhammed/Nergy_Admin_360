@@ -1,9 +1,9 @@
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
 
 export const ModalLayout = (props) => {
-  const { isOpen, title, message, onConfirm, onCancel } = props;
+  const { isOpen, title, message, onConfirm, onCancel, centered = false, size = "md" } = props;
   return (
-    <Modal isOpen={isOpen} toggle={onCancel}>
+    <Modal isOpen={isOpen} toggle={onCancel} centered={centered} size={size}>
       <ModalHeader toggle={onCancel}>{title}</ModalHeader>
       <ModalBody>{message}</ModalBody>
       <ModalFooter>

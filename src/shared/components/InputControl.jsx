@@ -17,21 +17,15 @@ const InputControl = forwardRef((props, ref) => {
   const { label, type, value, ...rest } = props;
   let inputElement = null;
   switch (type) {
-    case "textarea":
-      inputElement = <Input className="form-control" type={type} {...rest} ref={ref} />;
-      break;
-    case "text":
-      inputElement = (
-        <Input className="form-control" value={value} type={type} {...rest} ref={ref} />
-      );
-      break;
     case "react-select":
       inputElement = (
         <Select styles={customStyles} closeMenuOnSelect {...rest} value={value} ref={ref} />
       );
       break;
     default:
-      inputElement = <Input className="form-control" type={type} {...rest} ref={ref} />;
+      inputElement = (
+        <Input className="form-control" value={value} type={type} {...rest} ref={ref} />
+      );
       break;
   }
   return (

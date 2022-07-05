@@ -25,3 +25,8 @@ export const deleteAssessmentSections = async (id) => {
   const res = await Axios.delete(`/AssessmentSections/${id}`);
   return res.data;
 };
+
+export const getQuestionBankById = async (id) => {
+  const res = await Axios.get(`/QuestionBanks/${id}`);
+  return res.data;
+};
