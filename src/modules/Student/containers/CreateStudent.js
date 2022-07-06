@@ -1,9 +1,18 @@
+import React, { useState, useRef } from "react";
 import { ContentLayout } from "shared/components";
-import { Input, Button } from "reactstrap";
+import { Input, Button, FormFeedback } from "reactstrap";
 import Datetime from "react-datetime";
 import Select from "react-select";
+import SimpleReactValidator from "simple-react-validator";
+import moment from "moment";
 
 export const CreateStudent = (props) => {
+  const [update, forceUpdate] = useState();
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
   const { student, setStudent, createStudent, batchesQuery, institutesQuery, courses } = props;
   const {
     studentId,
@@ -21,6 +30,7 @@ export const CreateStudent = (props) => {
     selectedCourses,
   } = student;
 
+  const dob = moment(dateOfBirth, "YYYY-MM-DD");
   const selectedCoursesArray = courses.filter((el) => {
     return selectedCourses.some((f) => {
       return f === el.courseId;
@@ -35,7 +45,12 @@ export const CreateStudent = (props) => {
   };
 
   const onSubmit = () => {
-    createStudent.mutate(student);
+    if (validator.current.allValid()) {
+      createStudent.mutate(student);
+    } else {
+      validator.current.showMessages();
+      forceUpdate(1);
+    }
   };
 
   return (
@@ -64,7 +79,15 @@ export const CreateStudent = (props) => {
                               draft.registrationId = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message(
+                            "Registration Id",
+                            registrationId,
+                            "required"
+                          )}
                         />
+                        <FormFeedback>
+                          {validator.current.message("Registration Id", registrationId, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -75,13 +98,14 @@ export const CreateStudent = (props) => {
                         <Input
                           value={instituteId}
                           id="first-name-vertical"
-                          name="select"
+                          name="instituteId"
                           type="select"
                           onChange={(e) => {
                             setStudent((draft) => {
                               draft.instituteId = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("Institute", instituteId, "required")}
                         >
                           <option value={-1}>---Select---</option>
                           {institutesQuery.data.map((institute) => {
@@ -95,6 +119,12 @@ export const CreateStudent = (props) => {
                             );
                           })}
                         </Input>
+                        <FormFeedback>
+                          {validator.current.message("Institute", instituteId, "required")}
+                        </FormFeedback>
+                        {/* <div className="text-danger">
+                          {validator.current.message("Institute", instituteId, "required")}
+                        </div> */}
                       </div>
                     </div>
                   </div>
@@ -107,13 +137,14 @@ export const CreateStudent = (props) => {
                         <Input
                           value={batchId}
                           id="first-name-vertical"
-                          name="select"
+                          name="batchId"
                           type="select"
                           onChange={(e) => {
                             setStudent((draft) => {
                               draft.batchId = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("batchId", batchId, "required")}
                         >
                           <option value={-1}>---Select---</option>
                           {batchesQuery.data.map((batch) => {
@@ -124,6 +155,9 @@ export const CreateStudent = (props) => {
                             );
                           })}
                         </Input>
+                        <FormFeedback>
+                          {validator.current.message("batchId", batchId, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -135,7 +169,7 @@ export const CreateStudent = (props) => {
                           type="text"
                           id="first-name-vertical"
                           className="form-control"
-                          name="firstname"
+                          name="firstName"
                           placeholder="First Name"
                           value={firstName}
                           onChange={(e) => {
@@ -143,7 +177,11 @@ export const CreateStudent = (props) => {
                               draft.firstName = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("firstName", firstName, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("firstName", firstName, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
@@ -157,7 +195,7 @@ export const CreateStudent = (props) => {
                           type="text"
                           id="first-name-vertical"
                           className="form-control"
-                          name="lastname"
+                          name="lastName"
                           placeholder="Last Name"
                           value={lastName}
                           onChange={(e) => {
@@ -165,7 +203,11 @@ export const CreateStudent = (props) => {
                               draft.lastName = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("lastName", lastName, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("lastName", lastName, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -176,18 +218,22 @@ export const CreateStudent = (props) => {
                         <Input
                           value={gender}
                           id="first-name-vertical"
-                          name="select"
+                          name="gender"
                           type="select"
                           onChange={(e) => {
                             setStudent((draft) => {
                               draft.gender = parseInt(e.target.value, 10);
                             });
                           }}
+                          invalid={validator.current.message("Gender", gender, "required")}
                         >
                           <option value={-1}>---Select---</option>
                           <option value={0}>Male</option>
                           <option value={1}>Female</option>
                         </Input>
+                        <FormFeedback>
+                          {validator.current.message("Gender", gender, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
@@ -201,7 +247,7 @@ export const CreateStudent = (props) => {
                           type="text"
                           id="first-name-vertical"
                           className="form-control"
-                          name="email"
+                          name="emailAddress"
                           placeholder="Email Address"
                           value={emailAddress}
                           onChange={(e) => {
@@ -209,7 +255,11 @@ export const CreateStudent = (props) => {
                               draft.emailAddress = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("Email", emailAddress, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("Email", emailAddress, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -229,7 +279,15 @@ export const CreateStudent = (props) => {
                               draft.qualification = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message(
+                            "qualification",
+                            qualification,
+                            "required"
+                          )}
                         />
+                        <FormFeedback>
+                          {validator.current.message("qualification", qualification, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
@@ -243,10 +301,15 @@ export const CreateStudent = (props) => {
                         <Datetime
                           dateformat="YYYY-MM-DD"
                           timeformat="{false}"
-                          name="dateofbirth"
-                          selected={dateOfBirth}
+                          name="dateofBirth"
+                          selected={dob}
                           onChange={onDateOfBirthChange}
                         />
+                        <div className="text-danger">
+                          {update && dob.toString() === "Invalid date"
+                            ? "Please select date of birth"
+                            : ""}
+                        </div>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -266,7 +329,11 @@ export const CreateStudent = (props) => {
                               draft.mobile = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("mobile", mobile, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("mobile", mobile, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
@@ -288,7 +355,11 @@ export const CreateStudent = (props) => {
                               draft.region = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("region", region, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("region", region, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -308,7 +379,13 @@ export const CreateStudent = (props) => {
                               });
                             });
                           }}
+                          // isValid={
+                          //   !validator.current.message("Courses", selectedCourses, "required")
+                          // }
                         />
+                        <div className="text-danger">
+                          {validator.current.message("Courses", selectedCourses, "required")}
+                        </div>
                       </div>
                     </div>
                   </div>

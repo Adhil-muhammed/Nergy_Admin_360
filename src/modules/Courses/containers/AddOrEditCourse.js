@@ -30,8 +30,6 @@ export const AddOrEditCourse = (props) => {
     courseId: courseId,
   });
 
-  const { title, fileName } = courseContent;
-
   const navigate = useNavigate();
 
   const onHandleChange = (e, index, isContent = false) => {

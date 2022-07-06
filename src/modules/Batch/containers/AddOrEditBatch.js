@@ -1,12 +1,19 @@
 import { ContentLayout } from "shared/components";
-import { Input, Button } from "reactstrap";
+import { Input, Button, FormFeedback } from "reactstrap";
 import Datetime from "react-datetime";
-import React from "react";
+import React, { useState, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment";
 import { useBatch } from "../hooks";
+import SimpleReactValidator from "simple-react-validator";
 
 export const AddOrEditBatch = (props) => {
+  const [update, forceUpdate] = useState();
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
   let { batchId } = useParams();
 
   const editMode = batchId > 0;
@@ -34,8 +41,12 @@ export const AddOrEditBatch = (props) => {
     });
   };
   const onSubmit = () => {
-    if (editMode) editBatch.mutate(batch);
-    else createBatch.mutate(batch);
+    if (validator.current.allValid()) {
+      editMode ? editBatch.mutate(batch) : createBatch.mutate(batch);
+    } else {
+      validator.current.showMessages();
+      forceUpdate(1);
+    }
   };
   const onCancel = () => {
     navigate("..", { replace: true });
@@ -62,7 +73,11 @@ export const AddOrEditBatch = (props) => {
                           placeholder="Batch Name"
                           value={name}
                           onChange={onChange}
+                          invalid={validator.current.message("Name", name, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("Name", name, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -78,6 +93,11 @@ export const AddOrEditBatch = (props) => {
                           value={startDateVal}
                           onChange={onStartDateChange}
                         />
+                        <div className="text-danger">
+                          {update && startDateVal.toString() === "Invalid date"
+                            ? "Please select start date"
+                            : ""}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -95,6 +115,11 @@ export const AddOrEditBatch = (props) => {
                           value={endDateVal}
                           onChange={onEndDateChange}
                         />
+                        <div className="text-danger">
+                          {update && endDateVal.toString() === "Invalid date"
+                            ? "Please select end date"
+                            : ""}
+                        </div>
                       </div>
                     </div>
                   </div>
