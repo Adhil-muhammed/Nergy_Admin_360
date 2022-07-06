@@ -95,6 +95,7 @@ export const CreateStudent = (props) => {
                         <label className="mb-2" htmlFor="first-name-vertical">
                           Institute
                         </label>
+                        {instituteId}
                         <Input
                           value={instituteId}
                           id="first-name-vertical"
@@ -105,7 +106,11 @@ export const CreateStudent = (props) => {
                               draft.instituteId = e.target.value;
                             });
                           }}
-                          invalid={validator.current.message("Institute", instituteId, "required")}
+                          invalid={validator.current.message(
+                            "instituteId",
+                            instituteId,
+                            "required"
+                          )}
                         >
                           <option value={-1}>---Select---</option>
                           {institutesQuery.data.map((institute) => {
@@ -120,11 +125,8 @@ export const CreateStudent = (props) => {
                           })}
                         </Input>
                         <FormFeedback>
-                          {validator.current.message("Institute", instituteId, "required")}
+                          {validator.current.message("instituteId", instituteId, "required")}
                         </FormFeedback>
-                        {/* <div className="text-danger">
-                          {validator.current.message("Institute", instituteId, "required")}
-                        </div> */}
                       </div>
                     </div>
                   </div>

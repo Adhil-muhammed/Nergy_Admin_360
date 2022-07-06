@@ -41,7 +41,7 @@ export const AddOrEditBatch = (props) => {
     });
   };
   const onSubmit = () => {
-    if (validator.current.allValid()) {
+    if (validator.current.allValid() && startDateVal.isValid() && endDateVal.isValid()) {
       editMode ? editBatch.mutate(batch) : createBatch.mutate(batch);
     } else {
       validator.current.showMessages();
@@ -94,9 +94,7 @@ export const AddOrEditBatch = (props) => {
                           onChange={onStartDateChange}
                         />
                         <div className="text-danger">
-                          {update && startDateVal.toString() === "Invalid date"
-                            ? "Please select start date"
-                            : ""}
+                          {update && !startDateVal.isValid() ? "Please select start date" : ""}
                         </div>
                       </div>
                     </div>
@@ -116,9 +114,7 @@ export const AddOrEditBatch = (props) => {
                           onChange={onEndDateChange}
                         />
                         <div className="text-danger">
-                          {update && endDateVal.toString() === "Invalid date"
-                            ? "Please select end date"
-                            : ""}
+                          {update && !endDateVal.isValid() ? "Please select end date" : ""}
                         </div>
                       </div>
                     </div>
