@@ -19,3 +19,8 @@ export const deteleInstitutes = async (batchId) => {
   const res = await Axios.delete(`/Institutes/${batchId}`);
   return res.data;
 };
+
+export const getInstituteById = async (id) => {
+  const res = await Axios.get(`/Institutes/${id}`);
+  return res.data;
+};

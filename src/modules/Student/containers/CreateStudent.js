@@ -225,14 +225,14 @@ export const CreateStudent = (props) => {
                               draft.gender = parseInt(e.target.value, 10);
                             });
                           }}
-                          invalid={validator.current.message("Gender", gender, "required")}
+                          invalid={validator.current.message("gender", gender, "required")}
                         >
                           <option value={-1}>---Select---</option>
                           <option value={0}>Male</option>
                           <option value={1}>Female</option>
                         </Input>
                         <FormFeedback>
-                          {validator.current.message("Gender", gender, "required")}
+                          {validator.current.message("gender", gender, "required")}
                         </FormFeedback>
                       </div>
                     </div>
@@ -379,13 +379,7 @@ export const CreateStudent = (props) => {
                               });
                             });
                           }}
-                          // isValid={
-                          //   !validator.current.message("Courses", selectedCourses, "required")
-                          // }
                         />
-                        <div className="text-danger">
-                          {validator.current.message("Courses", selectedCourses, "required")}
-                        </div>
                       </div>
                     </div>
                   </div>

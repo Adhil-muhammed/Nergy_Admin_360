@@ -1,16 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
-import { getInstitutes, createInstitutes, updateInstitutes, deteleInstitutes } from "..";
+import {
+  getInstitutes,
+  createInstitutes,
+  updateInstitutes,
+  deteleInstitutes,
+  getInstituteById,
+} from "..";
 import { useNavigate } from "react-router-dom";
-import { successMessage, successDeletedMessage } from "utils";
+import { successMessage, successDeletedMessage, errorMessage } from "utils";
 
-const GetInstituteKey = "GET_INSTITUTE_API";
+const GET_INSTITUTES = "GET_INSTITUTES";
+const GET_INSTITUTE_BY_ID = "GET_INSTITUTE_BY_ID";
 
-export const useInstitute = () => {
+export const useInstitute = ({ load = false, instituteId = 0 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const institutesQuery = useQuery(GetInstituteKey, getInstitutes, { staleTime: Infinity });
+  const institutesQuery = useQuery(GET_INSTITUTES, getInstitutes, {
+    refetchOnWindowFocus: false,
+    enabled: load,
+    staleTime: Infinity,
+  });
+  const instituteInfo = useQuery(
+    `${GET_INSTITUTE_BY_ID}_${instituteId}`,
+    () => getInstituteById(instituteId),
+    {
+      refetchOnWindowFocus: false,
+      enabled: instituteId > 0,
+    }
+  );
+  useEffect(() => {
+    console.log(instituteInfo.data);
+    if (instituteInfo.data) {
+      setInstitute(instituteInfo.data);
+    }
+  }, [instituteInfo.data]);
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [institute, setInstitute] = useImmer({
     instituteId: 0,
@@ -18,20 +43,13 @@ export const useInstitute = () => {
   });
 
   const createInstitute = useMutation(createInstitutes, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetInstituteKey);
-      const data = queryClient.getQueryData(GetInstituteKey);
-      queryClient.setQueryData(GetInstituteKey, (prevData) => {
-        let updatedData = [...prevData, update];
-        return updatedData;
-      });
-      return data;
-    },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetInstituteKey, previousData);
+      errorMessage("Unable to create!");
     },
     onSuccess: () => {
       successMessage();
+      queryClient.invalidateQueries(GET_INSTITUTES);
+      navigate("..", { replace: true });
     },
     onSettled: () => {
       queryClient.invalidateQueries("create");
@@ -39,84 +57,38 @@ export const useInstitute = () => {
   });
 
   const editInstitute = useMutation(updateInstitutes, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetInstituteKey);
-      const data = queryClient.getQueryData(GetInstituteKey);
-      queryClient.setQueryData(GetInstituteKey, (prevData) => {
-        let updatedData = prevData.map((p) => {
-          let newData = { ...p };
-          if (p.instituteId === update.instituteId) {
-            newData.name = update.name;
-          }
-          return newData;
-        });
-        return updatedData;
-      });
-      return data;
-    },
     onSuccess: () => {
       successMessage();
+      queryClient.invalidateQueries(GET_INSTITUTES);
+      navigate("..", { replace: true });
     },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetInstituteKey, previousData);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
-      navigate("../institute", { replace: true });
+      errorMessage("Unable to edit!");
     },
   });
 
   const deleteInstitute = useMutation(deteleInstitutes, {
-    onMutate: async (instituteId) => {
-      await queryClient.cancelQueries(GetInstituteKey);
-      const data = queryClient.getQueryData(GetInstituteKey);
-      queryClient.setQueryData(GetInstituteKey, (prevData) => {
-        let updatedData = [...prevData.filter((n) => n.instituteId !== instituteId)];
-        return updatedData;
-      });
-      return data;
-    },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetInstituteKey, previousData);
+      errorMessage("Unable to delete!");
     },
     onSuccess: () => {
       successDeletedMessage();
+      queryClient.invalidateQueries(GET_INSTITUTES);
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
       onToggleModal(false);
     },
   });
 
-  const getSelectedInstitute = React.useCallback(
-    (id) => {
-      const selectedInstitute = institutesQuery.data.filter((s) => s.instituteId === id)[0];
-      setInstitute((draft) => {
-        draft.instituteId = selectedInstitute.instituteId;
-        draft.name = selectedInstitute.name;
-        return draft;
-      });
-    },
-    [institutesQuery.data, setInstitute]
-  );
+  const onDelete = (id) => {
+    const selectedInstitute = institutesQuery.data.find((c) => c.instituteId === id);
+    if (selectedInstitute) setInstitute(selectedInstitute);
 
-  const onEdit = React.useCallback(
-    (instituteId) => {
-      getSelectedInstitute(instituteId);
-    },
-    [getSelectedInstitute]
-  );
-
-  const onDelete = React.useCallback(
-    (id) => {
-      getSelectedInstitute(id);
-      setIsConfirmDelete((draft) => {
-        draft = true;
-        return draft;
-      });
-    },
-    [getSelectedInstitute, setIsConfirmDelete]
-  );
+    setIsConfirmDelete((draft) => {
+      draft = true;
+      return draft;
+    });
+  };
 
   const onToggleModal = React.useCallback(
     (isOpen) => {
@@ -132,9 +104,9 @@ export const useInstitute = () => {
     institute,
     setInstitute,
     institutesQuery,
+    instituteInfo,
     createInstitute,
     editInstitute,
-    onEdit,
     onDelete,
     isConfirmDelete,
     onToggleModal,

@@ -1,24 +1,43 @@
+import React, { useState, useRef } from "react";
 import { ContentLayout } from "shared/components";
-import { Input, Button } from "reactstrap";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Input, Button, FormFeedback } from "reactstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import SimpleReactValidator from "simple-react-validator";
+import { useInstitute } from "../hooks";
 
-export const CreateInstitute = (props) => {
-  const { institute, setInstitute, createInstitute } = props;
+export const AddOrEditInstitute = () => {
+  const [update, forceUpdate] = useState();
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
+  let { instituteId } = useParams();
+
+  const editMode = instituteId > 0;
+  const { institute, setInstitute, createInstitute, instituteInfo, editInstitute } = useInstitute({
+    load: false,
+    instituteId: instituteId,
+  });
   const { name } = institute;
 
-  const history = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate();
 
   const onSubmit = () => {
-    createInstitute.mutate(institute);
+    if (validator.current.allValid()) {
+      editMode ? editInstitute.mutate(institute) : createInstitute.mutate(institute);
+    } else {
+      validator.current.showMessages();
+      forceUpdate(1);
+    }
   };
 
   const onCancel = () => {
-    history(`${location.pathname}`.replace("/create", ""));
+    navigate("..", { replace: true });
   };
 
   return (
-    <ContentLayout title={"Create New"}>
+    <ContentLayout title={editMode ? "Update" : "Create New"} isLoading={instituteInfo.isLoading}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -28,7 +47,9 @@ export const CreateInstitute = (props) => {
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Name</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Name
+                        </label>
                         <Input
                           type="text"
                           id="first-name-vertical"
@@ -41,7 +62,11 @@ export const CreateInstitute = (props) => {
                               draft.name = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("name", name, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("name", name, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
@@ -54,7 +79,7 @@ export const CreateInstitute = (props) => {
                       onSubmit();
                     }}
                   >
-                    Create
+                    {editMode ? "Update" : "Create"}
                   </Button>
                   <button
                     type="reset"

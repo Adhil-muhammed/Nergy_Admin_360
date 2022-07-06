@@ -4,11 +4,12 @@ import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
 import { InstituteIdFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useInstitute } from "../hooks";
 
-export const InstituteList = (props) => {
-  const { institute, institutes, onDelete, onToggleModal, isConfirmDelete, deleteInstitute } =
-    props;
-
+export const InstituteList = () => {
+  const { institute, institutesQuery, onDelete, onToggleModal, isConfirmDelete, deleteInstitute } =
+    useInstitute({ load: true });
+  const { data, isLoading } = institutesQuery;
   const history = useNavigate();
   const location = useLocation();
   const onConfirm = () => {
@@ -32,26 +33,23 @@ export const InstituteList = (props) => {
     );
   };
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Name",
-        accessor: "name",
-      },
-      {
-        Header: "Actions",
-        accessor: "instituteId",
-        id: "actions",
-        Cell: ActionButtons,
-      },
-    ],
-    []
-  );
+  const columns = [
+    {
+      Header: "Name",
+      accessor: "name",
+    },
+    {
+      Header: "Actions",
+      accessor: "instituteId",
+      id: "actions",
+      Cell: ActionButtons,
+    },
+  ];
 
   return (
-    <ContentLayout title={"Institutes"} subtitle={"List"}>
+    <ContentLayout title={"Institutes"} subtitle={"List"} isLoading={isLoading}>
       <InstituteIdFilter />
-      <TableLayout columns={columns} data={institutes} />
+      <TableLayout columns={columns} data={data} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}
