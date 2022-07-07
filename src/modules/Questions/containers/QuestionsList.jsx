@@ -1,14 +1,17 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
 import { Button } from "reactstrap";
 import { ContentLayout, ModalLayout, TableLayout } from "shared";
 import { useImmer } from "use-immer";
-
+import { useQuestion } from "../hooks";
 export const QuestionsList = (props) => {
-  const { data, isConfirmDelete, onToggleModal, onDelete, onDeleteQuestion, question } = props;
+  const { questionsQuery, isConfirmDelete, onToggleModal, onDelete, onDeleteQuestion, question } =
+    useQuestion({ load: true });
   const history = useNavigate();
   const location = useLocation();
+
+  const { data, isLoading } = questionsQuery;
 
   const gotoCreate = () => {
     history(`${location.pathname}/create/new`);
@@ -35,33 +38,30 @@ export const QuestionsList = (props) => {
     );
   };
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Description",
-        accessor: "description",
-      },
-      {
-        Header: "Difficulty Level",
-        accessor: "difficultyLevel",
-      },
-      {
-        Header: "Question Bank",
-        accessor: (row) => row.questionBank.name,
-      },
-      {
-        Header: "Actions",
-        id: "actions",
-        accessor: "questionId",
-        Cell: ActionButtons,
-      },
-    ],
-    []
-  );
+  const columns = [
+    {
+      Header: "Description",
+      accessor: "description",
+    },
+    {
+      Header: "Difficulty Level",
+      accessor: "difficultyLevel",
+    },
+    {
+      Header: "Question Bank",
+      accessor: (row) => row.questionBank.name,
+    },
+    {
+      Header: "Actions",
+      id: "actions",
+      accessor: "questionId",
+      Cell: ActionButtons,
+    },
+  ];
 
   return (
     <>
-      <ContentLayout title="Questions" subtitle="List">
+      <ContentLayout title="Questions" subtitle="List" isLoading={isLoading}>
         <div className="mb-4">
           <Button color="primary" size="sm" onClick={gotoCreate}>
             Create New

@@ -9,41 +9,23 @@ import { Axios } from "utils";
 import Select from "react-select";
 import { useQuestionBanks } from "modules/QuestionBanks";
 import InputControl from "shared/components/InputControl";
+import { useQuestion } from "../hooks";
 
-export const CreateQuestion = (props) => {
-  const { createQuestion, editQuestion } = props;
-  const { questionBanksQuery } = useQuestionBanks();
+export const CreateQuestion = () => {
   const { id } = useParams();
+  const updateMode = id > 0;
+  const { question, setQuestion, createQuestion, editQuestion, questionsInfo } = useQuestion({
+    load: false,
+    questionId: id,
+  });
+  const { questionBanksQuery } = useQuestionBanks({ load: true });
   const navigate = useNavigate();
-  const updateMode = id !== undefined ? true : false;
   const [update, forceUpdate] = useState();
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },
     })
   );
-  const [state, setState] = useImmer({
-    data: {
-      description: "",
-      shuffleChoice: false,
-      difficultyLevelCode: "",
-      questionBankId: "",
-      review: false,
-      choices: [
-        {
-          code: "",
-          description: "",
-          isAnswer: false,
-        },
-        {
-          code: "",
-          description: "",
-          isAnswer: false,
-        },
-      ],
-    },
-  });
-
   const questionBanks = React.useMemo(() => {
     return questionBanksQuery.data
       ? questionBanksQuery.data.map((c) => {
@@ -52,20 +34,9 @@ export const CreateQuestion = (props) => {
       : [];
   }, [questionBanksQuery.data]);
 
-  const getQuestionById = async () => {
-    const res = await Axios.get(`/Questions/${id}`);
-    setState((draft) => {
-      draft.data = res.data;
-    });
-  };
-
-  const { isIdle, data } = useQuery(["details", id], getQuestionById, {
-    enabled: !!id,
-  });
-
   const onSubmit = () => {
     if (validator.current.allValid()) {
-      updateMode ? editQuestion.mutate(state.data) : createQuestion.mutate(state.data);
+      updateMode ? editQuestion.mutate(question.data) : createQuestion.mutate(question.data);
     } else {
       validator.current.showMessages();
       forceUpdate(1);
@@ -73,7 +44,7 @@ export const CreateQuestion = (props) => {
   };
 
   const onSelectChange = (e, name) => {
-    setState((draft) => {
+    setQuestion((draft) => {
       draft.data[name] = e.value;
     });
   };
@@ -81,12 +52,12 @@ export const CreateQuestion = (props) => {
   const onChange = (e, index, isChoice = false) => {
     const { name, value } = e.target;
     if (isChoice) {
-      setState((draft) => {
+      setQuestion((draft) => {
         draft.data.choices[index][name] = value;
         return draft;
       });
     } else {
-      setState((draft) => {
+      setQuestion((draft) => {
         draft.data[name] = value;
       });
     }
@@ -94,12 +65,12 @@ export const CreateQuestion = (props) => {
   const handleChecked = (e, index, isChoice = false) => {
     const { name, checked } = e.target;
     if (isChoice) {
-      setState((draft) => {
+      setQuestion((draft) => {
         draft.data.choices[index][name] = checked;
         return draft;
       });
     } else {
-      setState((draft) => {
+      setQuestion((draft) => {
         draft.data[name] = checked;
       });
     }
@@ -111,7 +82,7 @@ export const CreateQuestion = (props) => {
   ];
 
   const handleIsAnswer = (e, index) => {
-    let choices = JSON.parse(JSON.stringify(state.data.choices));
+    let choices = JSON.parse(JSON.stringify(question.data.choices));
     choices.forEach((choice, i) => {
       if (i === index) {
         choice.isAnswer = !choice.isAnswer;
@@ -119,14 +90,14 @@ export const CreateQuestion = (props) => {
         choice.isAnswer = false;
       }
     });
-    setState((draft) => {
+    setQuestion((draft) => {
       draft.data.choices = choices;
       return draft;
     });
   };
 
   const addChoice = () => {
-    setState((draft) => {
+    setQuestion((draft) => {
       draft.data.choices = [
         ...draft.data.choices,
         {
@@ -140,14 +111,14 @@ export const CreateQuestion = (props) => {
   };
 
   const onDeleteChoice = (index) => {
-    setState((draft) => {
+    setQuestion((draft) => {
       draft.data.choices = draft.data.choices.filter((n, i) => i !== index);
       return draft;
     });
   };
 
   return (
-    <ContentLayout title={updateMode ? "Edit" : "Create New"}>
+    <ContentLayout title={updateMode ? "Edit" : "Create New"} isLoading={questionsInfo.isLoading}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -166,18 +137,18 @@ export const CreateQuestion = (props) => {
                               className="form-control"
                               name="description"
                               placeholder="Question description"
-                              value={state.data.description}
+                              value={question.data.description}
                               onChange={onChange}
                               invalid={validator.current.message(
                                 "Description",
-                                state.data.description,
+                                question.data.description,
                                 "required"
                               )}
                             />
                             <FormFeedback>
                               {validator.current.message(
                                 "Description",
-                                state.data.description,
+                                question.data.description,
                                 "required"
                               )}
                             </FormFeedback>
@@ -190,11 +161,11 @@ export const CreateQuestion = (props) => {
                               id="first-name-vertical"
                               name="difficultyLevelCode"
                               type="select"
-                              value={state.data.difficultyLevelCode}
+                              value={question.data.difficultyLevelCode}
                               onChange={onChange}
                               invalid={validator.current.message(
                                 "Difficulty Level",
-                                state.data.difficultyLevelCode,
+                                question.data.difficultyLevelCode,
                                 "required"
                               )}
                             >
@@ -211,7 +182,7 @@ export const CreateQuestion = (props) => {
                             <FormFeedback>
                               {validator.current.message(
                                 "Difficulty Level",
-                                state.data.difficultyLevelCode,
+                                question.data.difficultyLevelCode,
                                 "required"
                               )}
                             </FormFeedback>
@@ -226,15 +197,15 @@ export const CreateQuestion = (props) => {
                               name="questionBankId"
                               value={
                                 questionBanks.length > 0 &&
-                                state.data.questionBankId &&
+                                question.data.questionBankId &&
                                 questionBanks.find(
-                                  (item) => item.value === state.data.questionBankId
+                                  (item) => item.value === question.data.questionBankId
                                 )
                               }
                               isValid={
                                 !validator.current.message(
                                   "Question Bank",
-                                  state.data.questionBankId,
+                                  question.data.questionBankId,
                                   "required"
                                 )
                               }
@@ -244,7 +215,7 @@ export const CreateQuestion = (props) => {
                             <div className="text-danger">
                               {validator.current.message(
                                 "Question Bank",
-                                state.data.questionBankId,
+                                question.data.questionBankId,
                                 "required"
                               )}
                             </div>
@@ -262,7 +233,7 @@ export const CreateQuestion = (props) => {
                             </tr>
                           </thead>
                           <tbody>
-                            {state.data.choices.map((item, index) => {
+                            {question.data.choices.map((item, index) => {
                               return (
                                 <tr key={index}>
                                   <th scope="row">{index + 1}</th>
@@ -335,7 +306,7 @@ export const CreateQuestion = (props) => {
                                   <td>
                                     <Button
                                       color="danger"
-                                      disabled={state.data.choices.length < 3}
+                                      disabled={question.data.choices.length < 3}
                                       onClick={() => onDeleteChoice(index)}
                                     >
                                       Delete
@@ -348,7 +319,7 @@ export const CreateQuestion = (props) => {
                         </Table>
                         <div className="text-danger">
                           {update &&
-                            (state.data.choices.some((item) => item.isAnswer)
+                            (question.data.choices.some((item) => item.isAnswer)
                               ? ""
                               : "Please select an answer")}
                         </div>
@@ -357,9 +328,9 @@ export const CreateQuestion = (props) => {
                           <Button
                             className="me-1 mb-1"
                             color="secondary"
-                            disabled={state.data.choices.length > 3}
+                            disabled={question.data.choices.length > 3}
                             onClick={() => {
-                              state.data.choices.length < 4 && addChoice();
+                              question.data.choices.length < 4 && addChoice();
                             }}
                           >
                             Add Choice
@@ -374,7 +345,7 @@ export const CreateQuestion = (props) => {
                               id="first-exam-vertical"
                               className="form-check-input"
                               name="shuffleChoice"
-                              value={state.data.shuffleChoice}
+                              value={question.data.shuffleChoice}
                               onChange={handleChecked}
                             />
                           </div>
@@ -385,7 +356,7 @@ export const CreateQuestion = (props) => {
                               id="first-content-vertical"
                               className="form-check-input"
                               name="review"
-                              value={state.data.review}
+                              value={question.data.review}
                               onChange={handleChecked}
                             />
                           </div>
