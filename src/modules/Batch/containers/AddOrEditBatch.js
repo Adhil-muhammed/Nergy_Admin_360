@@ -89,6 +89,7 @@ export const AddOrEditBatch = (props) => {
                           dateformat="YYYY-MM-DD"
                           timeformat="{false}"
                           name="startDate"
+                          closeOnSelect={true}
                           selected={startDateVal}
                           value={startDateVal}
                           onChange={onStartDateChange}
@@ -109,6 +110,7 @@ export const AddOrEditBatch = (props) => {
                           dateformat="YYYY-MM-DD"
                           timeformat="{false}"
                           name="endDate"
+                          closeOnSelect={true}
                           selected={endDateVal}
                           value={endDateVal}
                           onChange={onEndDateChange}

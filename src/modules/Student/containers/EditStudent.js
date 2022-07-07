@@ -1,12 +1,19 @@
 import { ContentLayout } from "shared/components";
-import { Input, Button } from "reactstrap";
+import { Input, Button, FormFeedback } from "reactstrap";
 import Datetime from "react-datetime";
-import React from "react";
+import React, { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Select from "react-select";
 import moment from "moment";
+import SimpleReactValidator from "simple-react-validator";
 
 export const EditStudent = (props) => {
+  const [update, forceUpdate] = useState();
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
   const { student, setStudent, editStudent, batchesQuery, institutesQuery, onEdit, courses } =
     props;
   const {
@@ -51,7 +58,12 @@ export const EditStudent = (props) => {
   };
 
   const onSubmit = () => {
-    editStudent.mutate(student);
+    if (validator.current.allValid()) {
+      editStudent.mutate(student);
+    } else {
+      validator.current.showMessages();
+      forceUpdate(1);
+    }
   };
 
   return (
@@ -80,7 +92,15 @@ export const EditStudent = (props) => {
                               draft.registrationId = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message(
+                            "Registration Id",
+                            registrationId,
+                            "required"
+                          )}
                         />
+                        <FormFeedback>
+                          {validator.current.message("Registration Id", registrationId, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -98,6 +118,11 @@ export const EditStudent = (props) => {
                               draft.instituteId = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message(
+                            "instituteId",
+                            instituteId,
+                            "required"
+                          )}
                         >
                           <option value={-1}>---Select---</option>
                           {institutesQuery.data.map((institute) => {
@@ -111,6 +136,9 @@ export const EditStudent = (props) => {
                             );
                           })}
                         </Input>
+                        <FormFeedback>
+                          {validator.current.message("instituteId", instituteId, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
@@ -130,6 +158,7 @@ export const EditStudent = (props) => {
                               draft.batchId = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("batchId", batchId, "required")}
                         >
                           <option value={-1}>---Select---</option>
                           {batchesQuery.data.map((batch) => {
@@ -140,6 +169,9 @@ export const EditStudent = (props) => {
                             );
                           })}
                         </Input>
+                        <FormFeedback>
+                          {validator.current.message("batchId", batchId, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -159,7 +191,11 @@ export const EditStudent = (props) => {
                               draft.firstName = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("firstName", firstName, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("firstName", firstName, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
@@ -181,7 +217,11 @@ export const EditStudent = (props) => {
                               draft.lastName = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("lastName", lastName, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("lastName", lastName, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -199,11 +239,15 @@ export const EditStudent = (props) => {
                               draft.gender = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("gender", gender, "required")}
                         >
                           <option value={-1}>---Select---</option>
                           <option value={0}>Male</option>
                           <option value={1}>Female</option>
                         </Input>
+                        <FormFeedback>
+                          {validator.current.message("gender", gender, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
@@ -225,7 +269,15 @@ export const EditStudent = (props) => {
                               draft.emailAddress = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message(
+                            "Email",
+                            emailAddress,
+                            "required|email"
+                          )}
                         />
+                        <FormFeedback>
+                          {validator.current.message("Email", emailAddress, "required|email")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -245,7 +297,15 @@ export const EditStudent = (props) => {
                               draft.qualification = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message(
+                            "qualification",
+                            qualification,
+                            "required"
+                          )}
                         />
+                        <FormFeedback>
+                          {validator.current.message("qualification", qualification, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
@@ -259,10 +319,17 @@ export const EditStudent = (props) => {
                           dateformat="YYYY-MM-DD"
                           timeformat="{false}"
                           name="dateofbirth"
+                          closeOnSelect={true}
                           selected={dateOfBirthVal}
                           value={dateOfBirthVal}
                           onChange={onDateOfBirthChange}
+                          className={
+                            update && !dateOfBirthVal.isValid() && "form-control is-invalid"
+                          }
                         />
+                        <div className="text-danger">
+                          {update && !dateOfBirthVal.isValid() ? "Please select date of birth" : ""}
+                        </div>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -282,7 +349,11 @@ export const EditStudent = (props) => {
                               draft.mobile = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("mobile", mobile, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("mobile", mobile, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
@@ -304,7 +375,11 @@ export const EditStudent = (props) => {
                               draft.region = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("region", region, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("region", region, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">

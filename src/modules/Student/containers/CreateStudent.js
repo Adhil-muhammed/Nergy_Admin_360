@@ -95,7 +95,6 @@ export const CreateStudent = (props) => {
                         <label className="mb-2" htmlFor="first-name-vertical">
                           Institute
                         </label>
-                        {instituteId}
                         <Input
                           value={instituteId}
                           id="first-name-vertical"
@@ -257,10 +256,14 @@ export const CreateStudent = (props) => {
                               draft.emailAddress = e.target.value;
                             });
                           }}
-                          invalid={validator.current.message("Email", emailAddress, "required")}
+                          invalid={validator.current.message(
+                            "Email",
+                            emailAddress,
+                            "required|email"
+                          )}
                         />
                         <FormFeedback>
-                          {validator.current.message("Email", emailAddress, "required")}
+                          {validator.current.message("Email", emailAddress, "required|email")}
                         </FormFeedback>
                       </div>
                     </div>
@@ -304,13 +307,13 @@ export const CreateStudent = (props) => {
                           dateformat="YYYY-MM-DD"
                           timeformat="{false}"
                           name="dateofBirth"
+                          closeOnSelect={true}
                           selected={dob}
                           onChange={onDateOfBirthChange}
+                          className={update && !dob.isValid() && "form-control is-invalid"}
                         />
                         <div className="text-danger">
-                          {update && dob.toString() === "Invalid date"
-                            ? "Please select date of birth"
-                            : ""}
+                          {update && !dob.isValid() ? "Please select date of birth" : ""}
                         </div>
                       </div>
                     </div>

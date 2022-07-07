@@ -4,17 +4,18 @@ import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
 import { QuestionBanksFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useQuestionBanks } from "../hooks";
 
-export const QuestionBanksList = (props) => {
+export const QuestionBanksList = () => {
   const {
     questionBank,
-    questionBanks,
+    questionBanksQuery,
     onDelete,
     onToggleModal,
     isConfirmDelete,
     deleteQuestionBank,
-  } = props;
-
+  } = useQuestionBanks({ load: true });
+  const { data, isLoading } = questionBanksQuery;
   const history = useNavigate();
   const location = useLocation();
   const onConfirm = () => {
@@ -54,9 +55,9 @@ export const QuestionBanksList = (props) => {
     []
   );
   return (
-    <ContentLayout title={"Question Banks"} subtitle={"List"}>
+    <ContentLayout title={"Question Banks"} subtitle={"List"} isLoading={isLoading}>
       <QuestionBanksFilter />
-      <TableLayout columns={columns} data={questionBanks} />
+      <TableLayout columns={columns} data={data} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}

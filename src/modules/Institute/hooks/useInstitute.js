@@ -31,7 +31,6 @@ export const useInstitute = ({ load = false, instituteId = 0 }) => {
     }
   );
   useEffect(() => {
-    console.log(instituteInfo.data);
     if (instituteInfo.data) {
       setInstitute(instituteInfo.data);
     }
@@ -50,9 +49,6 @@ export const useInstitute = ({ load = false, instituteId = 0 }) => {
       successMessage();
       queryClient.invalidateQueries(GET_INSTITUTES);
       navigate("..", { replace: true });
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
     },
   });
 

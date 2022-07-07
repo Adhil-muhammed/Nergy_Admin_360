@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
 import {
@@ -6,128 +6,84 @@ import {
   createQuestionBanks,
   updateQuestionBanks,
   deteleQuestionBanks,
+  getQuestionBanksById,
 } from "..";
 import { useNavigate } from "react-router-dom";
-import { successMessage, successDeletedMessage } from "utils";
+import { successMessage, successDeletedMessage, errorMessage } from "utils";
 
-const GetQuestionBanksKey = "GET_QUESTIONBANK_API";
+const GET_QUESTIONBANK = "GET_QUESTIONBANK";
+const GET_QUESTIONBANK_BY_ID = "GET_QUESTIONBANK_BY_ID";
 
-export const useQuestionBanks = () => {
+export const useQuestionBanks = ({ load = false, questionBankId = 0 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const questionBanksQuery = useQuery(GetQuestionBanksKey, getQuestionBanks, {
+  const questionBanksQuery = useQuery(GET_QUESTIONBANK, getQuestionBanks, {
     staleTime: Infinity,
   });
+  const questionBankInfo = useQuery(
+    `${GET_QUESTIONBANK_BY_ID}_${questionBankId}`,
+    () => getQuestionBanksById(questionBankId),
+    {
+      refetchOnWindowFocus: false,
+      enabled: questionBankId > 0,
+    }
+  );
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [questionBank, setQuestionBank] = useImmer({
     questionBankId: 0,
     name: "",
   });
 
+  useEffect(() => {
+    if (questionBankInfo.data) {
+      setQuestionBank(questionBankInfo.data);
+    }
+  }, [questionBankInfo.data]);
+
   const createQuestionBank = useMutation(createQuestionBanks, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetQuestionBanksKey);
-      const data = queryClient.getQueryData(GetQuestionBanksKey);
-      queryClient.setQueryData(GetQuestionBanksKey, (prevData) => {
-        let updatedData = [...prevData, update];
-        return updatedData;
-      });
-      return data;
-    },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetQuestionBanksKey, previousData);
+      errorMessage("Unable to create!");
     },
     onSuccess: () => {
       successMessage();
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
-      navigate("../questionbanks", { replace: true });
+      queryClient.invalidateQueries(GET_QUESTIONBANK);
+      navigate("..", { replace: true });
     },
   });
 
   const editQuestionBank = useMutation(updateQuestionBanks, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetQuestionBanksKey);
-      const data = queryClient.getQueryData(GetQuestionBanksKey);
-      queryClient.setQueryData(GetQuestionBanksKey, (prevData) => {
-        let updatedData = prevData.map((p) => {
-          let newData = { ...p };
-          if (p.questionBankId === update.questionBankId) {
-            newData.name = update.name;
-          }
-          return newData;
-        });
-        return updatedData;
-      });
-      return data;
-    },
     onSuccess: () => {
       successMessage();
+      queryClient.invalidateQueries(GET_QUESTIONBANK);
+      navigate("..", { replace: true });
     },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetQuestionBanksKey, previousData);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
-      navigate("../questionbanks", { replace: true });
+      errorMessage("Unable to edit!");
     },
   });
 
   const deleteQuestionBank = useMutation(deteleQuestionBanks, {
-    onMutate: async (questionBankId) => {
-      await queryClient.cancelQueries(GetQuestionBanksKey);
-      const data = queryClient.getQueryData(GetQuestionBanksKey);
-      queryClient.setQueryData(GetQuestionBanksKey, (prevData) => {
-        let updatedData = [...prevData.filter((n) => n.questionBankId !== questionBankId)];
-        return updatedData;
-      });
-      return data;
-    },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetQuestionBanksKey, previousData);
+      errorMessage("Unable to delete!");
     },
     onSuccess: () => {
       successDeletedMessage();
+      queryClient.invalidateQueries(GET_QUESTIONBANK);
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
       onToggleModal(false);
     },
   });
 
-  const getSelectedQuestionBank = React.useCallback(
-    (id) => {
-      const selectedQuestionBank = questionBanksQuery.data.filter(
-        (s) => s.questionBankId === id
-      )[0];
-      setQuestionBank((draft) => {
-        draft.questionBankId = selectedQuestionBank.questionBankId;
-        draft.name = selectedQuestionBank.name;
-        return draft;
-      });
-    },
-    [questionBanksQuery.data, setQuestionBank]
-  );
+  const onDelete = (id) => {
+    const selectedQuestionBank = questionBanksQuery.data.find((c) => c.questionBankId === id);
+    if (selectedQuestionBank) setQuestionBank(selectedQuestionBank);
 
-  const onEdit = React.useCallback(
-    (questionBankId) => {
-      getSelectedQuestionBank(questionBankId);
-    },
-    [getSelectedQuestionBank]
-  );
-
-  const onDelete = React.useCallback(
-    (id) => {
-      getSelectedQuestionBank(id);
-      setIsConfirmDelete((draft) => {
-        draft = true;
-        return draft;
-      });
-    },
-    [getSelectedQuestionBank, setIsConfirmDelete]
-  );
-
+    setIsConfirmDelete((draft) => {
+      draft = true;
+      return draft;
+    });
+  };
   const onToggleModal = React.useCallback(
     (isOpen) => {
       setIsConfirmDelete((draft) => {
@@ -141,10 +97,10 @@ export const useQuestionBanks = () => {
   return {
     questionBank,
     setQuestionBank,
+    questionBankInfo,
     questionBanksQuery,
     createQuestionBank,
     editQuestionBank,
-    onEdit,
     onDelete,
     isConfirmDelete,
     onToggleModal,

@@ -1,24 +1,45 @@
+import React, { useState, useRef } from "react";
 import { ContentLayout } from "shared/components";
-import { Input, Button } from "reactstrap";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Input, Button, FormFeedback } from "reactstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import SimpleReactValidator from "simple-react-validator";
+import { useQuestionBanks } from "../hooks";
 
-export const CreateQuestionBanks = (props) => {
-  const { questionBank, setQuestionBank, createQuestionBank } = props;
+export const CreateOrEditQuestionBanks = () => {
+  let { questionBankId } = useParams();
+  const { questionBank, setQuestionBank, createQuestionBank, questionBankInfo, editQuestionBank } =
+    useQuestionBanks({
+      load: false,
+      questionBankId: questionBankId,
+    });
+  const editMode = questionBankId > 0;
   const { name } = questionBank;
-
-  const history = useNavigate();
-  const location = useLocation();
+  const [update, forceUpdate] = useState();
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
+  const navigate = useNavigate();
 
   const onSubmit = () => {
-    createQuestionBank.mutate(questionBank);
+    if (validator.current.allValid()) {
+      editMode ? editQuestionBank.mutate(questionBank) : createQuestionBank.mutate(questionBank);
+    } else {
+      validator.current.showMessages();
+      forceUpdate(1);
+    }
   };
 
   const onCancel = () => {
-    history(`${location.pathname}`.replace("/create", ""));
+    navigate("..", { replace: true });
   };
 
   return (
-    <ContentLayout title={"Create New"}>
+    <ContentLayout
+      title={editMode ? "Update" : "Create New"}
+      isLoading={questionBankInfo.isLoading}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -28,7 +49,9 @@ export const CreateQuestionBanks = (props) => {
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">Name</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Name
+                        </label>
                         <Input
                           type="text"
                           id="first-name-vertical"
@@ -41,7 +64,11 @@ export const CreateQuestionBanks = (props) => {
                               draft.name = e.target.value;
                             });
                           }}
+                          invalid={validator.current.message("name", name, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("name", name, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
@@ -53,7 +80,7 @@ export const CreateQuestionBanks = (props) => {
                         onSubmit();
                       }}
                     >
-                      Create
+                      {editMode ? "Update" : "Create"}
                     </Button>
                     <button
                       type="reset"

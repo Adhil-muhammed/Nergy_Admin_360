@@ -31,7 +31,6 @@ export const AddOrEditInstitute = () => {
       forceUpdate(1);
     }
   };
-
   const onCancel = () => {
     navigate("..", { replace: true });
   };
