@@ -18,6 +18,8 @@ export const useQuestionBanks = ({ load = false, questionBankId = 0 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const questionBanksQuery = useQuery(GET_QUESTIONBANK, getQuestionBanks, {
+    refetchOnWindowFocus: false,
+    enabled: load,
     staleTime: Infinity,
   });
   const questionBankInfo = useQuery(

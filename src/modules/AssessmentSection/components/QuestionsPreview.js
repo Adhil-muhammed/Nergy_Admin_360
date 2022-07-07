@@ -10,7 +10,7 @@ import { getQuestionBankById } from "../api";
 const GET_QUESTIONBANK_BY_ID_DETAILS = "GET_QUESTIONBANK_BY_ID_DETAILS";
 const QuestionsPreview = ({ isOpen, onCancel, existingQuestions, onConfirmQuestions }) => {
   const queryClient = useQueryClient();
-  const { questionBanksQuery } = useQuestionBanks();
+  const { questionBanksQuery } = useQuestionBanks({ load: true });
   const { data: questionBanks } = questionBanksQuery;
   const [state, setState] = useImmer({
     questionBank: { value: 0, label: "" },

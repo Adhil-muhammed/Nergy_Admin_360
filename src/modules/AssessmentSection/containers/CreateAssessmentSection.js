@@ -14,7 +14,7 @@ const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSectio
   const { id } = useParams();
   const navigate = useNavigate();
   const updateMode = id !== undefined ? true : false;
-  const { questionsQuery } = useQuestion();
+  const { questionsQuery } = useQuestion({ load: false });
   const { data: questions } = questionsQuery;
   const [, forceUpdate] = useState();
   const validator = useRef(
