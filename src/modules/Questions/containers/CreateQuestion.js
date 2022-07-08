@@ -1,11 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useQuery } from "react-query";
+import React, { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, FormFeedback, Input, Table } from "reactstrap";
 import { ContentLayout } from "shared";
 import SimpleReactValidator from "simple-react-validator";
-import { useImmer } from "use-immer";
-import { Axios } from "utils";
 import Select from "react-select";
 import { useQuestionBanks } from "modules/QuestionBanks";
 import InputControl from "shared/components/InputControl";
@@ -300,6 +297,11 @@ export const CreateQuestion = () => {
                                         name="isAnswer"
                                         checked={item.isAnswer}
                                         onChange={(e) => handleIsAnswer(e, index)}
+                                        invalid={validator.current.message(
+                                          "Answer",
+                                          question.data.choices.some((item) => item.isAnswer),
+                                          "required|accepted"
+                                        )}
                                       />
                                     </div>
                                   </td>

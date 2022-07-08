@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
-import { getUsers, createUsers, updateUsers, deteleUsers } from "..";
-import { useLocation, useNavigate } from "react-router-dom";
-import { successMessage, successDeletedMessage } from "utils";
+import { getUsers, createUsers, updateUsers, deteleUsers, getUserById } from "..";
+import { useNavigate } from "react-router-dom";
+import { successMessage, successDeletedMessage, errorMessage } from "utils";
 
-const GetUsersKey = "GET_USERS_API";
+const GET_USERS = "GET_USERS";
+const GET_USERS_BY_ID = "GET_USERS_BY_ID";
 
-export const useUser = () => {
-  const location = useLocation();
+export const useUser = ({ load = false, userId = 0 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const usersQuery = useQuery(GetUsersKey, getUsers, { staleTime: Infinity });
+  const usersQuery = useQuery(GET_USERS, getUsers, {
+    refetchOnWindowFocus: false,
+    enabled: load,
+    staleTime: Infinity,
+  });
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [user, setUser] = useImmer({
     userId: "",
@@ -20,119 +24,70 @@ export const useUser = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    isActive: true
   });
 
-  const createUser = useMutation(createUsers, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetUsersKey);
-      const data = queryClient.getQueryData(GetUsersKey);
-      queryClient.setQueryData(GetUsersKey, (prevData) => {
-        let updatedData = [...prevData, update];
-        return updatedData;
+  const userInfo = useQuery(`${GET_USERS_BY_ID}_${userId}`, () => getUserById(userId), {
+    refetchOnWindowFocus: false,
+    enabled: userId ? true : false,
+  });
+  useEffect(() => {
+    if (userInfo.data) {
+      setUser((draft) => {
+        draft.userId = userInfo.data.userId;
+        draft.firstName = userInfo.data.firstName;
+        draft.lastName = userInfo.data.lastName;
+        draft.email = userInfo.data.email;
+        draft.password = "";
+        draft.confirmPassword = "";
+        return draft;
       });
-      return data;
-    },
+    }
+  }, [userInfo.data]);
+
+  const createUser = useMutation(createUsers, {
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetUsersKey, previousData);
+      errorMessage("Unable to create!");
     },
     onSuccess: () => {
       successMessage();
-      navigate(`${location.pathname}`.replace("/create", ""));
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
+      queryClient.invalidateQueries(GET_USERS);
+      navigate("..", { replace: true });
     },
   });
 
   const editUser = useMutation(updateUsers, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetUsersKey);
-      const data = queryClient.getQueryData(GetUsersKey);
-      queryClient.setQueryData(GetUsersKey, (prevData) => {
-        let updatedData = prevData.map((p) => {
-          let newData = { ...p };
-          if (p.userId === update.userId) {
-            newData.firstName = update.firstName;
-            newData.lastName = update.lastName;
-            newData.email = update.email;
-            newData.password = update.password;
-            newData.confirmPassword = update.confirmPassword;
-          }
-          return newData;
-        });
-        return updatedData;
-      });
-      return data;
-    },
     onSuccess: () => {
       successMessage();
+      queryClient.invalidateQueries(GET_USERS);
+      navigate("..", { replace: true });
     },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetUsersKey, previousData);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
-      // navigate(`${location.pathname}`.replace("/create", ""));
-      navigate("../users", { replace: true });
+      errorMessage("Unable to edit!");
     },
   });
 
   const deleteUser = useMutation(deteleUsers, {
-    onMutate: async (userId) => {
-      await queryClient.cancelQueries(GetUsersKey);
-      const data = queryClient.getQueryData(GetUsersKey);
-      queryClient.setQueryData(GetUsersKey, (prevData) => {
-        let updatedData = [...prevData.filter((n) => n.userId !== userId)];
-        return updatedData;
-      });
-      return data;
-    },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetUsersKey, previousData);
+      errorMessage("Unable to delete!");
     },
     onSuccess: () => {
       successDeletedMessage();
+      queryClient.invalidateQueries(GET_USERS);
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
       onToggleModal(false);
     },
   });
 
-  const getSelectedUser = React.useCallback(
-    (id) => {
-      const selectedUser = usersQuery.data.filter((s) => s.userId === id)[0];
-      setUser((draft) => {
-        draft.userId = selectedUser.userId;
-        draft.firstName = selectedUser.firstName;
-        draft.lastName = selectedUser.lastName;
-        draft.email = selectedUser.email;
-        draft.password = selectedUser.password;
-        draft.confirmPassword = selectedUser.confirmPassword;
-        return draft;
-      });
-    },
-    [usersQuery.data, setUser]
-  );
+  const onDelete = (id) => {
+    const selectedUser = usersQuery.data.find((c) => c.userId === id);
+    if (selectedUser) setUser(selectedUser);
 
-  const onEdit = React.useCallback(
-    (userId) => {
-      getSelectedUser(userId);
-    },
-    [getSelectedUser]
-  );
-
-  const onDelete = React.useCallback(
-    (id) => {
-      getSelectedUser(id);
-      setIsConfirmDelete((draft) => {
-        draft = true;
-        return draft;
-      });
-    },
-    [getSelectedUser, setIsConfirmDelete]
-  );
+    setIsConfirmDelete((draft) => {
+      draft = true;
+      return draft;
+    });
+  };
 
   const onToggleModal = React.useCallback(
     (isOpen) => {
@@ -147,10 +102,10 @@ export const useUser = () => {
   return {
     user,
     setUser,
+    userInfo,
     usersQuery,
     createUser,
     editUser,
-    onEdit,
     onDelete,
     isConfirmDelete,
     onToggleModal,
