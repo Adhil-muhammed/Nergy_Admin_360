@@ -1,13 +1,11 @@
 import { useImmer } from "use-immer";
-import {
-  authenticate,
-  getForgotPassword,
-  resetPassword
-} from "..";
+import { authenticate, getForgotPassword, resetPassword } from "..";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
+import { useAppStore } from "store/AppStore";
 
 export const useAuthenticate = () => {
+  const { setAppState } = useAppStore();
   const [authenticateState, setAuthenticateState] = useImmer({
     credential: { userName: "", password: "" },
     isValidate: false,
@@ -30,7 +28,7 @@ export const useAuthenticate = () => {
         draft.isValidate = true;
       });
       if (data.token) {
-        localStorage.setItem("token", data.token);
+        setAppState((draft) => data);
         navigate("../admin", { replace: true });
       }
     },
@@ -67,7 +65,7 @@ export const useAuthenticate = () => {
       });
       if (data) {
         navigate("/", { replace: true });
-        localStorage.removeItem('passwordResetToken')
+        localStorage.removeItem("passwordResetToken");
       } else {
         navigate("/forgotPassword", { replace: true });
       }

@@ -3,10 +3,8 @@ import { getToken } from ".";
 
 export const Axios = axios.create({
   baseURL: "http://n360-dev.azurewebsites.net/api/",
-  //baseURL: "https://localhost:5001/api/",
   headers: {
     "Content-Type": "application/json",
-    // "Content-Type": "multipart/form-data",
   },
 });
 
@@ -29,7 +27,12 @@ Axios.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
-    return Promise.reject(error);
+  async (err) => {
+    const originalRequest = err.config;
+    if (err.response.status === 401 && !originalRequest._retry) {
+      localStorage.removeItem("localData");
+      window.location.href = "/";
+    }
+    return Promise.reject(err);
   }
 );

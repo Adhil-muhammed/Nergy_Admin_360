@@ -1,7 +1,12 @@
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 
-export const getToken = () => localStorage.getItem("token") || "";
+export const getToken = () => {
+  let token = "";
+  var localData = JSON.parse(localStorage.getItem("localData"));
+  token = localData?.token;
+  return token;
+};
 
 export const successMessage = async (text) => {
   if (text === null || text === undefined || text === "") text = "Data saved successfully!";

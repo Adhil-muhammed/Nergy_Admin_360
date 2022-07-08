@@ -1,9 +1,13 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "reactstrap";
+import { useAppStore } from "store/AppStore";
 import { useAuthenticate } from "..";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
 export function Login() {
   const { authenticateState, setAuthenticateState, mutation } = useAuthenticate();
+  const { AppState } = useAppStore();
+  const navigate = useNavigate();
   const { mutate, isLoading } = mutation;
   const onsubmit = () => {
     setAuthenticateState((draft) => {
@@ -11,6 +15,10 @@ export function Login() {
     });
     mutate(authenticateState.credential);
   };
+
+  useEffect(() => {
+    if (AppState.token) return navigate("/admin");
+  }, [AppState.token]);
 
   return (
     <div>
@@ -94,7 +102,9 @@ export function Login() {
                   .
                 </p>
                 <p>
-                  <Link className="font-bold" to="/forgotPassword">Forgot password?</Link>
+                  <Link className="font-bold" to="/forgotPassword">
+                    Forgot password?
+                  </Link>
                   .
                 </p>
               </div>
