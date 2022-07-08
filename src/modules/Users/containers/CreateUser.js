@@ -1,10 +1,24 @@
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { ContentLayout } from "shared/components";
-import { Input, Button } from "reactstrap";
+import { Input, Button, FormFeedback } from "reactstrap";
+import { useUser } from "../hooks";
+import SimpleReactValidator from "simple-react-validator";
 
-export const CreateUser = (props) => {
-  const { user, setUser, createUser } = props;
+export const CreateUser = () => {
+  const [update, forceUpdate] = useState();
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
+  let { userId } = useParams();
+  const editMode = userId ? true : false;
+
+  const { user, setUser, createUser, editUser, userInfo } = useUser({
+    load: false,
+    userId: userId,
+  });
   const { firstName, lastName, email, password, confirmPassword } = user;
 
   const onHandleChange = (e) => {
@@ -14,19 +28,27 @@ export const CreateUser = (props) => {
     });
   };
 
-  const history = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate();
 
   const onSubmit = () => {
-    createUser.mutate(user);
+    if (validator.current.allValid()) {
+      editMode ? editUser.mutate(user) : createUser.mutate(user);
+    } else {
+      validator.current.showMessages();
+      forceUpdate(1);
+    }
   };
 
   const onCancel = () => {
-    history(`${location.pathname}`.replace("/create", ""));
+    navigate("..", { replace: true });
   };
 
   return (
-    <ContentLayout title={"Users"} subtitle={"New"}>
+    <ContentLayout
+      title={editMode ? "Update" : "Create"}
+      subtitle={"New"}
+      isLoading={userInfo.isLoading}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -47,7 +69,11 @@ export const CreateUser = (props) => {
                           placeholder="First Name"
                           value={firstName}
                           onChange={onHandleChange}
+                          invalid={validator.current.message("firstName", firstName, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("firstName", firstName, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -63,7 +89,11 @@ export const CreateUser = (props) => {
                           placeholder="Last name"
                           value={lastName}
                           onChange={onHandleChange}
+                          invalid={validator.current.message("lastName", lastName, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("lastName", lastName, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
@@ -81,7 +111,11 @@ export const CreateUser = (props) => {
                           placeholder="Email address"
                           value={email}
                           onChange={onHandleChange}
+                          invalid={validator.current.message("email", email, "required|email")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("email", email, "required|email")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -106,40 +140,68 @@ export const CreateUser = (props) => {
                       </div>
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label htmlFor="first-password-vertical" className="mb-2">
-                          Password
-                        </label>
-                        <Input
-                          type="email"
-                          id="first-password-vertical"
-                          className="form-control"
-                          name="password"
-                          placeholder="Password"
-                          value={password}
-                          onChange={onHandleChange}
-                        />
+                  {!editMode && (
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label htmlFor="first-password-vertical" className="mb-2">
+                            Password
+                          </label>
+                          <Input
+                            type="email"
+                            id="first-password-vertical"
+                            className="form-control"
+                            name="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={onHandleChange}
+                            invalid={validator.current.message(
+                              "password",
+                              password,
+                              "required|min:8"
+                            )}
+                          />
+                          <FormFeedback>
+                            {validator.current.message("password", password, "required|min:8")}
+                          </FormFeedback>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label htmlFor="first-confirm-password-vertical" className="mb-2">
+                            Confirm Password
+                          </label>
+                          <Input
+                            type="email"
+                            id="first-confirm-password-vertical"
+                            className="form-control"
+                            name="confirmPassword"
+                            placeholder="Confirm Password"
+                            value={confirmPassword}
+                            onChange={onHandleChange}
+                            invalid={
+                              (confirmPassword && confirmPassword !== password) ||
+                              validator.current.message(
+                                "confirmPassword",
+                                confirmPassword,
+                                "required"
+                              )
+                            }
+                          />
+                          {confirmPassword && confirmPassword !== password && (
+                            <div className="text-danger">Password must be same</div>
+                          )}
+                          <FormFeedback>
+                            {validator.current.message(
+                              "confirmPassword",
+                              confirmPassword,
+                              "required"
+                            )}
+                          </FormFeedback>
+                        </div>
                       </div>
                     </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label htmlFor="first-confirm-password-vertical" className="mb-2">
-                          Confirm Password
-                        </label>
-                        <Input
-                          type="email"
-                          id="first-confirm-password-vertical"
-                          className="form-control"
-                          name="confirmPassword"
-                          placeholder="Confirm Password"
-                          value={confirmPassword}
-                          onChange={onHandleChange}
-                        />
-                      </div>
-                    </div>
-                  </div>
+                  )}
                   <div className="col-12 d-flex justify-content-end">
                     <Button
                       className="me-1 mb-1"
@@ -148,7 +210,7 @@ export const CreateUser = (props) => {
                         onSubmit();
                       }}
                     >
-                      Create
+                      {editMode ? "Update" : "Create"}
                     </Button>
                     <button
                       type="reset"

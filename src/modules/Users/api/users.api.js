@@ -19,3 +19,8 @@ export const deteleUsers = async (userId) => {
   const res = await Axios.delete(`/Users/${userId}`);
   return res.data;
 };
+
+export const getUserById = async (userId) => {
+  const res = await Axios.get(`/Users/${userId}`);
+  return res.data;
+};
