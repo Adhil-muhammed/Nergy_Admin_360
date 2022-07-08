@@ -12,14 +12,20 @@ import { useImmer } from "use-immer";
 import { Axios } from "utils";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useAssessment } from "../hooks";
 
-const CreateAssessment = ({ createAssessment, editAssessment }) => {
+export const CreateAssessment = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const updateMode = id !== undefined ? true : false;
+  const updateMode = id > 0;
+  const { createAssessment, editAssessment, assessment, setAssessment, assessmentInfo } =
+    useAssessment({
+      load: false,
+      assessmentId: id,
+    });
   const { coursesQuery } = useCourse({ load: true });
   const { batchesQuery } = useBatch({ load: true });
-  const { assessmentSectionQuery } = useAssessmentSection();
+  const { assessmentSectionQuery } = useAssessmentSection({ load: true });
   const { data: courses } = coursesQuery;
   const { data: batches } = batchesQuery;
   const { data: assessmentSections } = assessmentSectionQuery;
@@ -29,40 +35,6 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
       autoForceUpdate: { forceUpdate: forceUpdate },
     })
   );
-  const [assessment, setAssessment] = useImmer({
-    data: {
-      courseId: "",
-      name: "",
-      maxTime: "",
-      maxAttempt: "",
-      noOfQuestions: "",
-      passMark: "",
-      instructions: "",
-      assessmentConfig: "",
-      isMock: false,
-      assessmentStatus: "",
-      assessmentBatches: [],
-      assessmentSections: [
-        {
-          sectionId: "",
-          passMark: "",
-          noOfQuestions: "",
-        },
-      ],
-    },
-  });
-
-  const getAssessmentById = async () => {
-    const res = await Axios.get(`/Assessments/${id}`);
-    setAssessment((draft) => {
-      draft.data = res.data;
-    });
-  };
-
-  const { data } = useQuery(["AssessmentDetails", id], getAssessmentById, {
-    enabled: !!id,
-    refetchOnWindowFocus: false,
-  });
 
   const courseList = React.useMemo(() => {
     return courses
@@ -174,8 +146,12 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
     });
   };
 
+  const onCancel = () => {
+    navigate("..", { replace: true });
+  };
+
   return (
-    <ContentLayout title={updateMode ? "Edit" : "Create New"}>
+    <ContentLayout title={updateMode ? "Edit" : "Create New"} isLoading={assessmentInfo.isLoading}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -548,7 +524,7 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
                             {updateMode ? "Update" : "Create"}
                           </Button>
                           <button
-                            onClick={() => navigate(-1)}
+                            onClick={() => onCancel()}
                             type="reset"
                             className="btn btn-light-secondary me-1 mb-1"
                           >
@@ -567,5 +543,3 @@ const CreateAssessment = ({ createAssessment, editAssessment }) => {
     </ContentLayout>
   );
 };
-
-export default CreateAssessment;

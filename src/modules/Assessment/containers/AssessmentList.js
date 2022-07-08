@@ -1,11 +1,22 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
 import { Button } from "reactstrap";
 import { ContentLayout, ModalLayout, TableLayout } from "shared";
+import { useAssessment } from "../hooks";
 
-const AssessmentList = (props) => {
-  const { data, isConfirmDelete, onToggleModal, onDelete, assessment, onDeleteAssessment } = props;
+export const AssessmentList = (props) => {
+  const {
+    assessmentQuery,
+    isConfirmDelete,
+    onToggleModal,
+    onDelete,
+    assessment,
+    onDeleteAssessment,
+  } = useAssessment({
+    load: true,
+  });
+  const { data, isLoading } = assessmentQuery;
   const history = useNavigate();
   const location = useLocation();
 
@@ -34,47 +45,44 @@ const AssessmentList = (props) => {
     );
   };
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Name",
-        accessor: "name",
+  const columns = [
+    {
+      Header: "Name",
+      accessor: "name",
+    },
+    {
+      Header: "Mock",
+      accessor: (row) => {
+        return row.isMock ? "Yes" : "No";
       },
-      {
-        Header: "Mock",
-        accessor: (row) => {
-          return row.isMock ? "Yes" : "No";
-        },
-      },
-      {
-        Header: "Max Attempt",
-        accessor: "maxAttempt",
-      },
-      {
-        Header: "Max Time",
-        accessor: "maxTime",
-      },
-      {
-        Header: "Total Questions",
-        accessor: "noOfQuestions",
-      },
-      {
-        Header: "Pass Mark",
-        accessor: "passMark",
-      },
-      {
-        Header: "Actions",
-        id: "actions",
-        accessor: "assessmentId",
-        Cell: ActionButtons,
-      },
-    ],
-    []
-  );
+    },
+    {
+      Header: "Max Attempt",
+      accessor: "maxAttempt",
+    },
+    {
+      Header: "Max Time",
+      accessor: "maxTime",
+    },
+    {
+      Header: "Total Questions",
+      accessor: "noOfQuestions",
+    },
+    {
+      Header: "Pass Mark",
+      accessor: "passMark",
+    },
+    {
+      Header: "Actions",
+      id: "actions",
+      accessor: "assessmentId",
+      Cell: ActionButtons,
+    },
+  ];
 
   return (
     <>
-      <ContentLayout title="Assessments" subtitle="List">
+      <ContentLayout title="Assessments" subtitle="List" isLoading={isLoading}>
         <div className="mb-4">
           <Button color="primary" size="sm" onClick={gotoCreate}>
             Create New
@@ -94,4 +102,3 @@ const AssessmentList = (props) => {
     </>
   );
 };
-export default AssessmentList;

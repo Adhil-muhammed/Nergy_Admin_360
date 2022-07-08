@@ -1,90 +1,117 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useImmer } from "use-immer";
 import { errorMessage, successDeletedMessage, successMessage } from "utils";
-import { createAssessments, deleteAssessment, getAssessments, updateAssessments } from "../api";
+import {
+  createAssessments,
+  deleteAssessment,
+  getAssessments,
+  updateAssessments,
+  getAssessmentById,
+} from "..";
 
-const GetAssessments = "GET_ASSESSMENTS";
+const GET_ASSESSMENTS = "GET_ASSESSMENTS";
+const GET_ASSESSMENT_BY_ID = "GET_ASSESSMENT_BY_ID";
 
-export const useAssessment = () => {
+export const useAssessment = ({ load = false, assessmentId = 0 }) => {
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
-  const [assessment, setAssessment] = useImmer({ assessmentId: "", name: "" });
+  const [assessment, setAssessment] = useImmer({
+    data: {
+      courseId: "",
+      name: "",
+      maxTime: "",
+      maxAttempt: "",
+      noOfQuestions: "",
+      passMark: "",
+      instructions: "",
+      assessmentConfig: "",
+      isMock: false,
+      assessmentStatus: "",
+      assessmentBatches: [],
+      assessmentSections: [
+        {
+          sectionId: "",
+          passMark: "",
+          noOfQuestions: "",
+        },
+      ],
+    },
+  });
 
-  const assessmentQuery = useQuery(GetAssessments, getAssessments, {
+  const assessmentQuery = useQuery(GET_ASSESSMENTS, getAssessments, {
+    refetchOnWindowFocus: false,
+    enabled: load,
     staleTime: Infinity,
   });
 
+  const assessmentInfo = useQuery(
+    `${GET_ASSESSMENT_BY_ID}_${assessmentId}`,
+    () => getAssessmentById(assessmentId),
+    {
+      refetchOnWindowFocus: false,
+      enabled: assessmentId > 0,
+    }
+  );
+  useEffect(() => {
+    if (assessmentInfo.data) {
+      setAssessment((draft) => {
+        draft.data = assessmentInfo.data;
+        return draft;
+      });
+    }
+  }, [assessmentInfo.data]);
+
   const createAssessment = useMutation(createAssessments, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetAssessments);
-    },
     onError: (e, newData, previousData) => {
-      errorMessage();
+      errorMessage("Unable to create!");
     },
     onSuccess: () => {
       successMessage();
-      navigate("../assessments", { replace: true });
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries(GetAssessments);
+      queryClient.invalidateQueries(GET_ASSESSMENTS);
+      navigate("..", { replace: true });
     },
   });
 
   const editAssessment = useMutation(updateAssessments, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetAssessments);
-    },
     onSuccess: () => {
       successMessage();
-      navigate("../assessments", { replace: true });
+      queryClient.invalidateQueries(GET_ASSESSMENTS);
+      navigate("..", { replace: true });
     },
     onError: (e, newData, previousData) => {
-      errorMessage();
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries(GetAssessments);
+      errorMessage("Unable to edit!");
     },
   });
 
   const onDeleteAssessment = useMutation(deleteAssessment, {
-    onMutate: async (id) => {
-      await queryClient.cancelQueries(GetAssessments);
-      const data = queryClient.getQueryData(GetAssessments);
-      queryClient.setQueryData(GetAssessments, (prevData) => {
-        let updatedData = [...prevData.filter((n) => n.assessmentId !== id)];
-        return updatedData;
-      });
-      return data;
-    },
     onError: (e, newData, previousData) => {
-      errorMessage();
+      errorMessage("Unable to delete!");
     },
     onSuccess: () => {
       successDeletedMessage();
+      queryClient.invalidateQueries(GET_ASSESSMENTS);
     },
     onSettled: () => {
       onToggleModal(false);
     },
   });
 
-  const onDelete = React.useCallback(
-    (value) => {
-      setIsConfirmDelete((draft) => {
-        draft = true;
-        return draft;
-      });
-      setAssessment((draft) => {
-        draft.assessmentId = value.original.assessmentId;
-        draft.name = value.original.name;
-      });
-    },
-    [setIsConfirmDelete]
-  );
+  const onDelete = (value) => {
+    const selectedAssessment = assessmentQuery.data.find(
+      (c) => c.assessmentId === value.original.assessmentId
+    );
+    if (selectedAssessment) setAssessment(selectedAssessment);
+
+    setIsConfirmDelete((draft) => {
+      draft = true;
+      return draft;
+    });
+  };
 
   const onToggleModal = React.useCallback(
     (isOpen) => {
@@ -98,11 +125,13 @@ export const useAssessment = () => {
 
   return {
     assessmentQuery,
+    assessmentInfo,
     isConfirmDelete,
     onToggleModal,
     onDelete,
     onDeleteAssessment,
     assessment,
+    setAssessment,
     createAssessment,
     editAssessment,
   };
