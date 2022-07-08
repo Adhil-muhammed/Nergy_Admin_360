@@ -19,3 +19,8 @@ export const deteleRoles = async (roleId) => {
   const res = await Axios.delete(`/UserRoles/${roleId}`);
   return res.data;
 };
+
+export const getRoleById = async (roleId) => {
+  const res = await Axios.get(`/UserRoles/${roleId}`);
+  return res.data;
+};

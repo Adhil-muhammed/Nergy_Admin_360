@@ -1,15 +1,20 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useTable } from "react-table";
 import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
 import { RoleFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useRole } from "../hooks";
 
-export const RoleList = (props) => {
-  const { role, roles, onDelete, onToggleModal, isConfirmDelete, deleteRole } = props;
+export const RoleList = () => {
+  const { role, rolesQuery, onDelete, onToggleModal, isConfirmDelete, deleteRole } = useRole({
+    load: true,
+  });
 
   const history = useNavigate();
   const location = useLocation();
+
+  const { data, isLoading } = rolesQuery;
 
   const onConfirm = () => {
     deleteRole.mutate(role.roleId);
@@ -32,31 +37,24 @@ export const RoleList = (props) => {
     );
   };
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Name",
-        accessor: "name",
-      },
-      {
-        Header: "Actions",
-        id: "actions",
-        accessor: "roleId",
-        key: "actions",
-        Cell: ActionButtons,
-      },
-    ],
-    []
-  );
-  const table = useTable({
-    columns,
-    data: roles,
-  });
+  const columns = [
+    {
+      Header: "Name",
+      accessor: "name",
+    },
+    {
+      Header: "Actions",
+      id: "actions",
+      accessor: "roleId",
+      key: "actions",
+      Cell: ActionButtons,
+    },
+  ];
 
   return (
-    <ContentLayout title={"Roles"} subtitle={"List"}>
+    <ContentLayout title={"Roles"} subtitle={"List"} isLoading={isLoading}>
       <RoleFilter />
-      <TableLayout table={table} />
+      <TableLayout columns={columns} data={data} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}

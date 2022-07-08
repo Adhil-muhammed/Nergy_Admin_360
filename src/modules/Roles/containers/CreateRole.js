@@ -1,16 +1,34 @@
 import { ContentLayout } from "shared/components";
-import { Input, Button } from "reactstrap";
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Input, Button, FormFeedback } from "reactstrap";
+import React, { useState, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import SimpleReactValidator from "simple-react-validator";
+import { useRole } from "../hooks";
 
 export const CreateRole = (props) => {
-  const history = useNavigate();
-  const location = useLocation();
-  const { role, setRole, createRole } = props;
+  const navigate = useNavigate();
+  const [update, forceUpdate] = useState();
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
+  let { roleId } = useParams();
+
+  const editMode = roleId ? true : false;
+  const { role, setRole, createRole, editRole, roleInfo } = useRole({
+    load: false,
+    roleId: roleId,
+  });
   const { name } = role;
 
   const onSubmit = () => {
-    createRole.mutate(role);
+    if (validator.current.allValid()) {
+      editMode ? editRole.mutate(role) : createRole.mutate(role);
+    } else {
+      validator.current.showMessages();
+      forceUpdate(1);
+    }
   };
 
   const onReset = () => {
@@ -21,15 +39,11 @@ export const CreateRole = (props) => {
   };
 
   const onCancel = () => {
-    history(`${location.pathname}`.replace("/create",""));
+    navigate("..", { replace: true });
   };
 
-  React.useEffect(() => {
-    onReset();
-  }, [setRole]);
-
   return (
-    <ContentLayout title={"Create New"}>
+    <ContentLayout title={editMode ? "Update" : "Create New"} isLoading={roleInfo.isLoading}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-md-6 col-12">
@@ -54,7 +68,11 @@ export const CreateRole = (props) => {
                                   draft.name = e.target.value;
                                 });
                               }}
+                              invalid={validator.current.message("name", name, "required")}
                             />
+                            <FormFeedback>
+                              {validator.current.message("name", name, "required")}
+                            </FormFeedback>
                           </div>
                         </div>
                         <div className="col-12 d-flex justify-content-end">
@@ -65,18 +83,24 @@ export const CreateRole = (props) => {
                               onSubmit();
                             }}
                           >
-                            Create
+                            {editMode ? "Update" : "Create"}
                           </Button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1"
+                          <button
+                            type="reset"
+                            className="btn btn-light-secondary me-1 mb-1"
                             onClick={() => {
                               onReset();
-                            }}>
+                            }}
+                          >
                             Reset
                           </button>
-                          <button type="reset" className="btn btn-light-secondary me-1 mb-1"
+                          <button
+                            type="reset"
+                            className="btn btn-light-secondary me-1 mb-1"
                             onClick={() => {
                               onCancel();
-                            }}>
+                            }}
+                          >
                             Cancel
                           </button>
                         </div>

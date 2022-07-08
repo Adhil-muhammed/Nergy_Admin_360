@@ -1,125 +1,82 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
-import { getRoles, createRoles, updateRoles, deteleRoles } from "..";
-import { useNavigate, useLocation } from "react-router-dom";
-import { successMessage, successDeletedMessage } from "utils";
+import { getRoles, createRoles, updateRoles, deteleRoles, getRoleById } from "..";
+import { useNavigate } from "react-router-dom";
+import { successMessage, successDeletedMessage, errorMessage } from "utils";
 
-const GetRolesKey = "GET_ROLES_API";
+const GET_ROLES = "GET_ROLES";
+const GET_ROLE_BY_ID = "GET_ROLE_BY_ID";
 
-export const useRole = () => {
-  const history = useNavigate();
-  const location = useLocation();
+export const useRole = ({ load = false, roleId = 0 }) => {
+  const navigate = useNavigate();
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [role, setRole] = useImmer({
     roleId: "",
-    name: ""
+    name: "",
   });
 
   const queryClient = useQueryClient();
-  const rolesQuery = useQuery(GetRolesKey, getRoles, { staleTime: Infinity });
+  const rolesQuery = useQuery(GET_ROLES, getRoles, {
+    refetchOnWindowFocus: false,
+    enabled: load,
+    staleTime: Infinity,
+  });
+
+  const roleInfo = useQuery(`${GET_ROLE_BY_ID}_${roleId}`, () => getRoleById(roleId), {
+    refetchOnWindowFocus: false,
+    enabled: roleId ? true : false,
+  });
+
+  useEffect(() => {
+    if (roleInfo.data) {
+      setRole(roleInfo.data);
+    }
+  }, [roleInfo.data]);
 
   const createRole = useMutation(createRoles, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetRolesKey);
-      const data = queryClient.getQueryData(GetRolesKey);
-      queryClient.setQueryData(GetRolesKey, (prevData) => {
-        let updatedData = [...prevData, update];
-        return updatedData;
-      });
-      return data;
-    },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetRolesKey, previousData);
+      errorMessage("Unable to create!");
     },
     onSuccess: () => {
       successMessage();
-      history(`${location.pathname}`.replace("/create", ""));
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
+      queryClient.invalidateQueries(GET_ROLES);
+      navigate("..", { replace: true });
     },
   });
 
   const editRole = useMutation(updateRoles, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetRolesKey);
-      const data = queryClient.getQueryData(GetRolesKey);
-      queryClient.setQueryData(GetRolesKey, (prevData) => {
-        let updatedData = prevData.map((p) => {
-          let newData = { ...p };
-          if (p.roleId === update.roleId) {
-            newData.name = update.name;
-          }
-          return newData;
-        });
-        return updatedData;
-      });
-      return data;
-    },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetRolesKey, previousData);
+      errorMessage("Unable to edit!");
     },
     onSuccess: () => {
       successMessage();
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
+      queryClient.invalidateQueries(GET_ROLES);
+      navigate("..", { replace: true });
     },
   });
 
   const deleteRole = useMutation(deteleRoles, {
-    onMutate: async (roleId) => {
-      await queryClient.cancelQueries(GetRolesKey);
-      const data = queryClient.getQueryData(GetRolesKey);
-      queryClient.setQueryData(GetRolesKey, (prevData) => {
-        let updatedData = [...prevData.filter((n) => n.roleId !== roleId)];
-        return updatedData;
-      });
-      return data;
-    },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData(GetRolesKey, previousData);
+      errorMessage("Unable to delete!");
     },
     onSuccess: () => {
       successDeletedMessage();
+      queryClient.invalidateQueries(GET_ROLES);
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
       onToggleModal(false);
     },
   });
 
-  const getSelectedRole = React.useCallback(
-    (id) => {
-      const selectedRole = rolesQuery.data.filter((s) => s.roleId === id)[0];
-      setRole((draft) => {
-        draft.roleId = selectedRole.roleId;
-        draft.name = selectedRole.name;
-        return draft;
-      });
-    },
-    [rolesQuery.data, setRole]
-  );
-
-  const onEdit = React.useCallback(
-    (roleId) => {
-      getSelectedRole(roleId);
-    },
-    [getSelectedRole]
-  );
-
-
-  const onDelete = React.useCallback(
-    (id) => {
-      getSelectedRole(id);
-      setIsConfirmDelete((draft) => {
-        draft = true;
-        return draft;
-      });
-    },
-    [getSelectedRole, setIsConfirmDelete]
-  );
+  const onDelete = (roleId) => {
+    const selectedRole = rolesQuery.data.find((c) => c.roleId === roleId);
+    if (selectedRole) setRole(selectedRole);
+    setIsConfirmDelete((draft) => {
+      draft = true;
+      return draft;
+    });
+  };
 
   const onToggleModal = React.useCallback(
     (isOpen) => {
@@ -132,8 +89,15 @@ export const useRole = () => {
   );
 
   return {
-    role, setRole, rolesQuery, createRole, editRole, onEdit, onDelete, isConfirmDelete,
+    role,
+    setRole,
+    roleInfo,
+    rolesQuery,
+    createRole,
+    editRole,
+    onDelete,
+    isConfirmDelete,
     onToggleModal,
-    deleteRole
+    deleteRole,
   };
 };
