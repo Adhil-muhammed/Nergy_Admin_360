@@ -94,13 +94,6 @@ export function Login() {
                 </button>
               </form>
               <div className="text-center mt-5 text-lg fs-4">
-                <p className="text-gray-600">
-                  Don't have an account?{" "}
-                  <a href="auth-register.html" className="font-bold">
-                    Sign up
-                  </a>
-                  .
-                </p>
                 <p>
                   <Link className="font-bold" to="/forgotPassword">
                     Forgot password?
