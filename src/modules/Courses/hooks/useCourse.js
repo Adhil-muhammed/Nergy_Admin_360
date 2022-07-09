@@ -63,14 +63,14 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     },
   ]);
 
-  const [courseContent, setCourseContent] = useImmer([
-    {
-      courseId: 0,
-      title: "",
-      contentFile: "",
-      fileName: "",
-    },
-  ]);
+  const [courseContent, setCourseContent] = useImmer({
+    courseId: 0,
+    title: "",
+    contentFile: "",
+    fileName: "",
+    isExternal: false,
+    isVideo: false,
+  });
 
   useEffect(() => {
     if (courseInfo.data) {

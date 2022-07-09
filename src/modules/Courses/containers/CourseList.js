@@ -55,14 +55,6 @@ export const CourseList = (props) => {
         accessor: "name",
       },
       {
-        Header: "Description",
-        accessor: "description",
-      },
-      {
-        Header: "Instructions",
-        accessor: "instructions",
-      },
-      {
         Header: "Exam",
         accessor: "hasExam",
         Cell: CheckMarker,
