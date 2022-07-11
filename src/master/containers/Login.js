@@ -4,6 +4,7 @@ import { Spinner } from "reactstrap";
 import { useAppStore } from "store/AppStore";
 import { useAuthenticate } from "..";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
+import appInfo from "../../../package.json";
 export function Login() {
   const { authenticateState, setAuthenticateState, mutation } = useAuthenticate();
   const { AppState } = useAppStore();
@@ -22,7 +23,6 @@ export function Login() {
 
   return (
     <div>
-      <title>Login - Mazer Admin Dashboard</title>
       <div id="auth">
         <div className="row h-100">
           <div className="col-lg-5 col-12">
@@ -100,6 +100,7 @@ export function Login() {
                   </Link>
                   .
                 </p>
+                <small>v {appInfo.version}</small>
               </div>
             </div>
           </div>
@@ -107,10 +108,10 @@ export function Login() {
             {/* <div id="auth-right"></div> */}
             <div id="auth-right">
               <div className="fade-over"></div>
-              <div className="right-wrap-c">
+              {/* <div className="right-wrap-c">
                 <h1>Nulla hendrerit dictum justo, non efficitur turpis faucibus eget.</h1>
                 <h4>Vivamus imperdiet volutpat eros, vel aliquet sapien sagittis id.</h4>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
