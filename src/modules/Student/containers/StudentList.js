@@ -7,7 +7,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 export const StudentList = (props) => {
   const { student, data, onDelete, onToggleModal, isConfirmDelete, deleteStudent, fetchData } =
     props;
-  const { value: students, paging } = data;
+  const {
+    data: students,
+    currentPage,
+    totalPages,
+    hasNext,
+    hasPrevious,
+    pageSize,
+    totalCount,
+  } = data;
 
   const history = useNavigate();
   const location = useLocation();
@@ -63,9 +71,9 @@ export const StudentList = (props) => {
       <PaginationTableLayout
         columns={columns}
         data={students}
-        controlledPageCount={paging.pageCount}
-        controlledpageNo={paging.pageNo}
-        controlledpageSize={paging.pageSize}
+        controlledPageCount={totalPages}
+        controlledpageNo={currentPage}
+        controlledpageSize={pageSize}
         fetchData={fetchData}
       />
       <ModalLayout
