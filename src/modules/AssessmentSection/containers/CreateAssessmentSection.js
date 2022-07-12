@@ -1,45 +1,35 @@
 import { useQuestion } from "modules/Questions";
 import React, { useRef, useState } from "react";
-import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, FormFeedback, Table } from "reactstrap";
 import { ContentLayout, ModalLayout, TableLayout } from "shared";
 import InputControl from "shared/components/InputControl";
 import SimpleReactValidator from "simple-react-validator";
-import { useImmer } from "use-immer";
-import { Axios } from "utils";
 import QuestionsPreview from "../components/QuestionsPreview";
+import { useAssessmentSection } from "../hooks";
 
-const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSection }) => {
+const CreateAssessmentSection = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const updateMode = id !== undefined ? true : false;
+  const updateMode = id > 0;
+  const {
+    assessmentSection,
+    setAssessmentSection,
+    createAssessmentSection,
+    editAssessmentSection,
+    assessmentSectionInfo,
+  } = useAssessmentSection({
+    load: false,
+    sectionId: id,
+  });
   const { questionsQuery } = useQuestion({ load: false });
   const { data: questions } = questionsQuery;
-  const [, forceUpdate] = useState();
+  const [update, forceUpdate] = useState();
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },
     })
   );
-  const [assessmentSection, setAssessmentSection] = useImmer({
-    modal: { isOpen: false },
-    data: {
-      name: "",
-      questions: [],
-    },
-  });
-
-  const getAssessmentById = async () => {
-    const res = await Axios.get(`/AssessmentSections/${id}`);
-    setAssessmentSection((draft) => {
-      draft.data = res.data;
-    });
-  };
-
-  const { data } = useQuery(["AssessmentSectionDetails", id], getAssessmentById, {
-    enabled: !!id,
-  });
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -84,7 +74,10 @@ const CreateAssessmentSection = ({ createAssessmentSection, editAssessmentSectio
     });
   };
   return (
-    <ContentLayout title={updateMode ? "Edit" : "Create New"}>
+    <ContentLayout
+      title={updateMode ? "Edit" : "Create New"}
+      isLoading={assessmentSectionInfo.isLoading}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

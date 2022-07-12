@@ -325,7 +325,7 @@ export const AddOrEditCourse = (props) => {
 
       {editMode && (
         <CourseContentModal
-          size={"xl"}
+          size={"lg"}
           isOpen={isModalOpen}
           title={"Add course content"}
           onSave={() => {

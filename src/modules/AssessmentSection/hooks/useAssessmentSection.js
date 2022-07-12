@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useImmer } from "use-immer";
@@ -8,88 +8,95 @@ import {
   deleteAssessmentSections,
   getAssessmentSections,
   updateAssessmentSections,
+  findAssessmentSection,
 } from "../api";
 
-const GetAssessmentSections = "GET_ASSESSMENTSECTIONS";
+const GET_ASSESSMENTSECTIONS = "GET_ASSESSMENTSECTIONS";
+const GET_ASSESSMENTSECTIONS_BY_ID = "GET_ASSESSMENTSECTIONS_BY_ID";
 
-export const useAssessmentSection = () => {
+export const useAssessmentSection = ({ load = false, sectionId = 0 }) => {
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
-
-  const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
-  const [assessment, setAssessment] = useImmer({ id: 0, name: "" });
-
-  const assessmentSectionQuery = useQuery(GetAssessmentSections, getAssessmentSections, {
+  const assessmentSectionQuery = useQuery(GET_ASSESSMENTSECTIONS, getAssessmentSections, {
+    refetchOnWindowFocus: false,
+    enabled: load,
     staleTime: Infinity,
   });
+  const assessmentSectionInfo = useQuery(
+    `${GET_ASSESSMENTSECTIONS_BY_ID}_${sectionId}`,
+    () => findAssessmentSection(sectionId),
+    {
+      refetchOnWindowFocus: false,
+      enabled: sectionId > 0,
+    }
+  );
+
+  const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
+  const [assessmentSection, setAssessmentSection] = useImmer({
+    modal: { isOpen: false },
+    data: {
+      sectionId: "",
+      name: "",
+      questions: [],
+    },
+  });
+
+  useEffect(() => {
+    if (assessmentSectionInfo.data) {
+      setAssessmentSection((draft) => {
+        draft.data = assessmentSectionInfo.data;
+      });
+    }
+  }, [assessmentSectionInfo.data]);
 
   const createAssessmentSection = useMutation(createAssessmentSections, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetAssessmentSections);
-    },
     onError: (e, newData, previousData) => {
-      errorMessage();
+      errorMessage("Unable to create!");
     },
     onSuccess: () => {
       successMessage();
-      navigate("../assessmentSection", { replace: true });
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries(GetAssessmentSections);
+      queryClient.invalidateQueries(GET_ASSESSMENTSECTIONS);
+      navigate("..", { replace: true });
     },
   });
 
   const editAssessmentSection = useMutation(updateAssessmentSections, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries(GetAssessmentSections);
-    },
     onSuccess: () => {
       successMessage();
-      navigate("../assessmentSection", { replace: true });
+      queryClient.invalidateQueries(GET_ASSESSMENTSECTIONS);
+      navigate("..", { replace: true });
     },
     onError: (e, newData, previousData) => {
-      errorMessage();
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries(GetAssessmentSections);
+      errorMessage("Unable to edit!");
     },
   });
 
   const onDeleteAssessmentSection = useMutation(deleteAssessmentSections, {
-    onMutate: async (id) => {
-      await queryClient.cancelQueries(GetAssessmentSections);
-      const data = queryClient.getQueryData(GetAssessmentSections);
-      queryClient.setQueryData(GetAssessmentSections, (prevData) => {
-        let updatedData = [...prevData.filter((n) => n.sectionId !== id)];
-        return updatedData;
-      });
-      return data;
-    },
     onError: (e, newData, previousData) => {
-      errorMessage();
+      errorMessage("Unable to delete!");
     },
     onSuccess: () => {
       successDeletedMessage();
+      queryClient.invalidateQueries(GET_ASSESSMENTSECTIONS);
     },
     onSettled: () => {
       onToggleModal(false);
     },
   });
 
-  const onDelete = React.useCallback(
-    (value) => {
-      setIsConfirmDelete((draft) => {
-        draft = true;
-        return draft;
+  const onDelete = (id) => {
+    const selectedSection = assessmentSectionQuery.data.find((c) => c.sectionId === id);
+    if (selectedSection)
+      setAssessmentSection((draft) => {
+        draft.data = selectedSection;
       });
-      setAssessment((draft) => {
-        draft.id = value.original.sectionId;
-        draft.name = value.original.name;
-      });
-    },
-    [setIsConfirmDelete]
-  );
+
+    setIsConfirmDelete((draft) => {
+      draft = true;
+      return draft;
+    });
+  };
 
   const onToggleModal = React.useCallback(
     (isOpen) => {
@@ -102,12 +109,14 @@ export const useAssessmentSection = () => {
   );
 
   return {
+    assessmentSectionInfo,
+    assessmentSection,
+    setAssessmentSection,
     assessmentSectionQuery,
     isConfirmDelete,
     onToggleModal,
     onDelete,
     onDeleteAssessmentSection,
-    assessment,
     createAssessmentSection,
     editAssessmentSection,
   };
