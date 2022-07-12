@@ -1,5 +1,29 @@
-import Avatar from '../../assets/images/faces/1.jpg'
+import React from "react";
+import { useAppStore } from "store/AppStore";
+import { Axios } from "utils";
+import { useImmer } from "use-immer";
+import Avatar from "../../assets/images/faces/1.jpg";
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import { useNavigate } from "react-router-dom";
+
 export function Header() {
+  const [isDropDown, setIsDropDown] = useImmer(false);
+  const navigate = useNavigate();
+  const { AppState } = useAppStore();
+  const {
+    user: { email, firstName },
+  } = AppState;
+
+  const signOut = async () => {
+    localStorage.removeItem("localData");
+    await Axios.post("/Accounts/SignOut");
+  };
+  const toggleDropdown = () => {
+    setIsDropDown((state) => !state);
+  };
+  const navigateTo = (path) => {
+    navigate(path, { replace: true });
+  };
   return (
     <header className="mb-3">
       <nav className="navbar navbar-expand navbar-light ">
@@ -65,54 +89,35 @@ export function Header() {
                 </ul>
               </li>
             </ul>
-            <div className="dropdown">
-              <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                <div className="user-menu d-flex">
-                  <div className="user-name text-end me-3">
-                    <h6 className="mb-0 text-gray-600">John Ducky</h6>
-                    <p className="mb-0 text-sm text-gray-600">Administrator</p>
-                  </div>
-                  <div className="user-img d-flex align-items-center">
-                    <div className="avatar">
-                      <img src={Avatar} />
+            <div>
+              <Dropdown className="dropdown" isOpen={isDropDown} toggle={toggleDropdown}>
+                <DropdownToggle tag="a" style={{ cursor: "pointer" }}>
+                  <div className="user-menu d-flex">
+                    <div className="user-name text-end me-3">
+                      <h6 className="mb-0 text-gray-600">{firstName}</h6>
+                      <p className="mb-0 text-sm text-gray-600">{email}</p>
+                    </div>
+                    <div className="user-img d-flex align-items-center">
+                      <div className="avatar">
+                        <img src={Avatar} />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </a>
-              <ul
-                className="dropdown-menu dropdown-menu-end"
-                aria-labelledby="dropdownMenuButton"
-                style={{ minWidth: "11rem" }}
-              >
-                <li>
-                  <h6 className="dropdown-header">Hello, John!</h6>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    <i className="icon-mid bi bi-person me-2" /> My Profile
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    <i className="icon-mid bi bi-gear me-2" />
-                    Settings
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    <i className="icon-mid bi bi-wallet me-2" />
-                    Wallet
-                  </a>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem header>Hello, {firstName}!</DropdownItem>
+                  <DropdownItem onClick={() => navigateTo("/admin")}>
+                    <i className="icon-mid bi bi-house-door me-2" /> Dashboard
+                  </DropdownItem>
+                  <DropdownItem onClick={() => navigateTo("/admin/settings")}>
+                    <i className="icon-mid bi bi-gear me-2" /> Settings
+                  </DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={signOut}>
                     <i className="icon-mid bi bi-box-arrow-left me-2" /> Logout
-                  </a>
-                </li>
-              </ul>
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
             </div>
           </div>
         </div>

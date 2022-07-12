@@ -11,6 +11,6 @@ export const getForgotPassword = async (email) => {
 };
 
 export const resetPassword = async (auth) => {
-  const res = await Axios.post('/Users/ResetPassword', auth);
+  const res = await Axios.post("/Users/ResetPassword", auth);
   return res.data;
 };
