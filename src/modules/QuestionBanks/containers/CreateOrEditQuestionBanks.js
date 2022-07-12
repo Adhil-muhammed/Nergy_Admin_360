@@ -37,7 +37,8 @@ export const CreateOrEditQuestionBanks = () => {
 
   return (
     <ContentLayout
-      title={editMode ? "Update" : "Create New"}
+      subtitle={editMode ? "Update" : "Create"}
+      title={"Question Bank"}
       isLoading={questionBankInfo.isLoading}
     >
       <section id="basic-vertical-layouts">

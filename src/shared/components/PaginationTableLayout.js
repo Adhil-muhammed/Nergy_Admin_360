@@ -154,7 +154,7 @@ export const PaginationTableLayout = (props) => {
               >
                 {">>"}
               </Button>
-              <div className="ms-3">
+              {/* <div className="ms-3">
                 <span className="me-2">
                   Page
                   <strong>
@@ -178,7 +178,7 @@ export const PaginationTableLayout = (props) => {
                     style={{ width: "100px" }}
                   />
                 </span>
-              </div>
+              </div> */}
             </ButtonGroup>
           </ButtonToolbar>
         </div>

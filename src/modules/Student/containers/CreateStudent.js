@@ -54,7 +54,7 @@ export const CreateStudent = (props) => {
   };
 
   return (
-    <ContentLayout title={"Create New"}>
+    <ContentLayout title={"Student"} subtitle="Create">
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

@@ -67,7 +67,7 @@ export const EditStudent = (props) => {
   };
 
   return (
-    <ContentLayout title={"Update"}>
+    <ContentLayout title={"Student"} subtitle="Update">
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

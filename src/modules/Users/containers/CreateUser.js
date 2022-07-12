@@ -47,8 +47,8 @@ export const CreateUser = () => {
   console.log("rolesQuery", rolesQuery);
   return (
     <ContentLayout
-      title={editMode ? "Update" : "Create"}
-      subtitle={"New"}
+      subtitle={editMode ? "Update" : "Create"}
+      title={"Users"}
       isLoading={userInfo.isLoading}
     >
       <section id="basic-vertical-layouts">
