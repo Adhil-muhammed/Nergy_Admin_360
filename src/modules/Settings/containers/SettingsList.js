@@ -1,19 +1,17 @@
 import React from "react";
 import { ContentLayout } from "shared/components";
 import { Button } from "reactstrap";
+import { useSettings } from "../hooks";
 
-export const SettingsList = (props) => {
-  const {
-    settings: { data, isLoading },
-  } = props;
-  // console.log(JSON.stringify(data, null, 2));
+export const SettingsList = () => {
+  const { settingsQuery } = useSettings();
+
+  const { data, isLoading } = settingsQuery;
 
   const inputHandler = () => {};
 
-  if (isLoading || !data) return "Loading...";
-
   return (
-    <ContentLayout title={"Settings"} subtitle={"Setting List"}>
+    <ContentLayout title={"Settings"} subtitle={"Setting List"} isLoading={isLoading}>
       <div className="row">
         <form className="form">
           <div className="row">
@@ -38,18 +36,10 @@ export const SettingsList = (props) => {
             })}
           </div>
           <div className="col-12 d-flex justify-content-end">
-            <Button
-              className="me-1 mb-1"
-              color="success"
-              onClick={() => {}}
-            >
+            <Button className="me-1 mb-1" color="success" onClick={() => {}}>
               Update
             </Button>
-            <button
-              type="reset"
-              className="btn btn-light-secondary me-1 mb-1"
-              onClick={() => {}}
-            >
+            <button type="reset" className="btn btn-light-secondary me-1 mb-1" onClick={() => {}}>
               Reset
             </button>
           </div>

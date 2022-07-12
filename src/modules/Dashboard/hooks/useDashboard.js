@@ -1,12 +1,12 @@
 import { useQuery } from "react-query";
 import { getStats } from "..";
 
-const GetStatsKey = "GET_STATS_API";
+const GET_STATS_API = "GET_STATS_API";
 
 export const useDashboard = () => {
-  const statsQuery = useQuery(GetStatsKey, getStats, { staleTime: Infinity });
+  const statsQuery = useQuery(GET_STATS_API, getStats, { staleTime: Infinity });
 
   return {
-    statsQuery
+    statsQuery,
   };
 };

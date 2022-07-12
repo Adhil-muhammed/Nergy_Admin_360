@@ -65,7 +65,7 @@ const AssessmentSectionList = () => {
 
   return (
     <>
-      <ContentLayout title="Questions" subtitle="List" isLoading={isLoading}>
+      <ContentLayout title="Assessment Section" subtitle="List" isLoading={isLoading}>
         <div className="mb-4">
           <Button color="primary" size="sm" onClick={gotoCreate}>
             Create New

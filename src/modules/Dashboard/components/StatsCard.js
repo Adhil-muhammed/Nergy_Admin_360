@@ -1,5 +1,4 @@
-
-export const StatsCard = ({icon, iconbg, label, value}) => {
+export const StatsCard = ({ iconClass, iconbg, label, value }) => {
   return (
     <>
       <div className="col-6 col-lg-3 col-md-6">
@@ -7,8 +6,8 @@ export const StatsCard = ({icon, iconbg, label, value}) => {
           <div className="card-body px-3 py-4-5">
             <div className="row">
               <div className="col-md-4">
-                <div className="stats-icon" style={{backgroundColor: iconbg}}>
-                  <i className={icon}></i>
+                <div className="stats-icon" style={{ backgroundColor: iconbg }}>
+                  <i className={iconClass}></i>
                 </div>
               </div>
               <div className="col-md-8">
