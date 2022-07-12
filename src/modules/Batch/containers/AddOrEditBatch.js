@@ -52,7 +52,11 @@ export const AddOrEditBatch = (props) => {
     navigate("..", { replace: true });
   };
   return (
-    <ContentLayout title={editMode ? "Update" : "Create"} isLoading={batchInfo.isLoading}>
+    <ContentLayout
+      subtitle={editMode ? "Update" : "Create"}
+      title={"Batch"}
+      isLoading={batchInfo.isLoading}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

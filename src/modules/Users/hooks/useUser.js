@@ -22,6 +22,7 @@ export const useUser = ({ load = false, userId = 0 }) => {
     firstName: "",
     lastName: "",
     email: "",
+    role: "",
     password: "",
     confirmPassword: "",
   });
@@ -32,15 +33,7 @@ export const useUser = ({ load = false, userId = 0 }) => {
   });
   useEffect(() => {
     if (userInfo.data) {
-      setUser((draft) => {
-        draft.userId = userInfo.data.userId;
-        draft.firstName = userInfo.data.firstName;
-        draft.lastName = userInfo.data.lastName;
-        draft.email = userInfo.data.email;
-        draft.password = "";
-        draft.confirmPassword = "";
-        return draft;
-      });
+      setUser(userInfo.data);
     }
   }, [userInfo.data]);
 

@@ -3,9 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ContentLayout } from "shared/components";
 import { Input, Button, FormFeedback } from "reactstrap";
 import { useUser } from "../hooks";
+import { useRole } from "../../Roles/hooks";
 import SimpleReactValidator from "simple-react-validator";
-import { useRole } from "modules/Roles";
-import InputControl from "shared/components/InputControl";
 
 export const CreateUser = () => {
   const [update, forceUpdate] = useState();
@@ -18,31 +17,17 @@ export const CreateUser = () => {
   const editMode = userId ? true : false;
 
   const { rolesQuery } = useRole({ load: true });
-  const { data: roles } = rolesQuery;
-
-  const rolesList = React.useMemo(() => {
-    return roles
-      ? roles.map((c) => {
-          return { value: c.roleId, label: c.name };
-        })
-      : [];
-  }, [roles]);
-
   const { user, setUser, createUser, editUser, userInfo } = useUser({
     load: false,
     userId: userId,
   });
-  const { firstName, lastName, email, password, confirmPassword } = user;
+  const { firstName, lastName, email, password, confirmPassword, role } = user;
 
   const onHandleChange = (e) => {
     const { name, value } = e.target;
     setUser((draft) => {
       draft[name] = value;
     });
-  };
-
-  const onSelectChange = (e, name) => {
-    alert(name + " : " + e.value);
   };
 
   const navigate = useNavigate();
@@ -140,37 +125,25 @@ export const CreateUser = () => {
                         <label htmlFor="user-role-select" className="mb-2">
                           Role
                         </label>
-                        {/* <select className="form-select">
-                          <option selected>--Select Role--</option>
-                          <option value="0">Admin</option>
-                          <option value="1">Role 1</option>
-                        </select> */}
-                        <InputControl
-                          type="react-select"
-                          options={rolesList}
-                          // value={
-                          //   assessment.data.assessmentBatches?.length > 0 &&
-                          //   batchesList.filter((item) => {
-                          //     return assessment.data.assessmentBatches?.indexOf(item.value) > -1;
-                          //   })
-                          // }
-                          // isValid={
-                          //   !validator.current.message(
-                          //     "Batches",
-                          //     assessment.data.assessmentBatches,
-                          //     "required"
-                          //   )
-                          // }
-                          isValid={true}
-                          onChange={(e) => onSelectChange(e, "rolesList")}
-                        />
-                        {/* <div className="text-danger">
-                          {validator.current.message(
-                            "Batches",
-                            assessment.data.assessmentBatches,
-                            "required"
-                          )}
-                        </div> */}
+                        <Input
+                          value={role}
+                          id="first-name-vertical"
+                          name="role"
+                          type="select"
+                          onChange={onHandleChange}
+                        >
+                          <option value={""}>Select</option>
+                          {rolesQuery.isSuccess &&
+                            rolesQuery.data
+                              .filter((c) => c.name !== "Student")
+                              .map((role) => {
+                                return (
+                                  <option key={`role_${role.roleId}`} value={role.name}>
+                                    {role.name}
+                                  </option>
+                                );
+                              })}
+                        </Input>
                       </div>
                     </div>
                   </div>

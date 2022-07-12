@@ -230,6 +230,7 @@ export const useStudent = () => {
     onToggleModal,
     deleteStudent,
     page,
+    setPage,
     fetchData,
     batchesQuery,
     institutesQuery,
