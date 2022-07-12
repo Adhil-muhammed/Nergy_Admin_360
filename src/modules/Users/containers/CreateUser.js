@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ContentLayout } from "shared/components";
 import { Input, Button, FormFeedback } from "reactstrap";
 import { useUser } from "../hooks";
+import { useRole } from "../../Roles/hooks";
 import SimpleReactValidator from "simple-react-validator";
 
 export const CreateUser = () => {
@@ -15,11 +16,12 @@ export const CreateUser = () => {
   let { userId } = useParams();
   const editMode = userId ? true : false;
 
+  const { rolesQuery } = useRole({ load: true });
   const { user, setUser, createUser, editUser, userInfo } = useUser({
     load: false,
     userId: userId,
   });
-  const { firstName, lastName, email, password, confirmPassword } = user;
+  const { firstName, lastName, email, password, confirmPassword, role } = user;
 
   const onHandleChange = (e) => {
     const { name, value } = e.target;
@@ -42,7 +44,7 @@ export const CreateUser = () => {
   const onCancel = () => {
     navigate("..", { replace: true });
   };
-
+  console.log("rolesQuery", rolesQuery);
   return (
     <ContentLayout
       title={editMode ? "Update" : "Create"}
@@ -123,20 +125,25 @@ export const CreateUser = () => {
                         <label htmlFor="user-role-select" className="mb-2">
                           Role
                         </label>
-                        <select className="form-select">
-                          <option selected>--Select Role--</option>
-                          <option value="0">Admin</option>
-                          <option value="1">Role 1</option>
-                        </select>
-                        {/* <Input
-                          type="email"
-                          id="user-role-select"
-                          className="form-control"
-                          name="password"
-                          placeholder="Password"
-                          value={password}
+                        <Input
+                          value={role}
+                          id="first-name-vertical"
+                          name="role"
+                          type="select"
                           onChange={onHandleChange}
-                        /> */}
+                        >
+                          <option value={""}>Select</option>
+                          {rolesQuery.isSuccess &&
+                            rolesQuery.data
+                              .filter((c) => c.name !== "Student")
+                              .map((role) => {
+                                return (
+                                  <option key={`role_${role.roleId}`} value={role.name}>
+                                    {role.name}
+                                  </option>
+                                );
+                              })}
+                        </Input>
                       </div>
                     </div>
                   </div>
