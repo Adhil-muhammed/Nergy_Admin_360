@@ -5,17 +5,18 @@ import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const StudentList = (props) => {
-  const { student, data, onDelete, onToggleModal, isConfirmDelete, deleteStudent, fetchData } =
-    props;
   const {
-    data: students,
-    currentPage,
-    totalPages,
-    hasNext,
-    hasPrevious,
-    pageSize,
-    totalCount,
-  } = data;
+    student,
+    data,
+    onDelete,
+    onToggleModal,
+    isConfirmDelete,
+    deleteStudent,
+    fetchData,
+    page,
+    setPage,
+  } = props;
+  const { data: students, totalPages, hasNext, hasPrevious, totalCount } = data;
 
   const history = useNavigate();
   const location = useLocation();
@@ -72,9 +73,12 @@ export const StudentList = (props) => {
         columns={columns}
         data={students}
         controlledPageCount={totalPages}
-        controlledpageNo={currentPage}
-        controlledpageSize={pageSize}
+        controlledpageNo={page.pageIndex}
+        controlledpageSize={page.pageSize}
         fetchData={fetchData}
+        setPage={setPage}
+        hasNext={hasNext}
+        hasPrevious={hasPrevious}
       />
       <ModalLayout
         isOpen={isConfirmDelete}
