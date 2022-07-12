@@ -131,6 +131,7 @@ export const CreateUser = () => {
                           name="role"
                           type="select"
                           onChange={onHandleChange}
+                          invalid={validator.current.message("role", role, "required")}
                         >
                           <option value={""}>Select</option>
                           {rolesQuery.isSuccess &&
@@ -144,6 +145,9 @@ export const CreateUser = () => {
                                 );
                               })}
                         </Input>
+                        <FormFeedback>
+                          {validator.current.message("role", role, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
