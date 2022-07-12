@@ -21,8 +21,8 @@ export function Header() {
   const toggleDropdown = () => {
     setIsDropDown((state) => !state);
   };
-  const goToHome = () => {
-    navigate("/admin", { replace: true });
+  const navigateTo = (path) => {
+    navigate(path, { replace: true });
   };
   return (
     <header className="mb-3">
@@ -106,10 +106,10 @@ export function Header() {
                 </DropdownToggle>
                 <DropdownMenu>
                   <DropdownItem header>Hello, {firstName}!</DropdownItem>
-                  <DropdownItem onClick={goToHome}>
+                  <DropdownItem onClick={() => navigateTo("/admin")}>
                     <i className="icon-mid bi bi-house-door me-2" /> Dashboard
                   </DropdownItem>
-                  <DropdownItem onClick={signOut}>
+                  <DropdownItem onClick={() => navigateTo("/admin/settings")}>
                     <i className="icon-mid bi bi-gear me-2" /> Settings
                   </DropdownItem>
                   <DropdownItem divider />
