@@ -19,6 +19,8 @@ export const Student = () => {
     batchesQuery,
     institutesQuery,
     courses,
+    page,
+    setPage,
   } = useStudent();
 
   const { data, isLoading } = studentsQuery;
@@ -39,6 +41,8 @@ export const Student = () => {
                 onDelete={onDelete}
                 onToggleModal={onToggleModal}
                 fetchData={fetchData}
+                page={page}
+                setPage={setPage}
               />
             }
           />
