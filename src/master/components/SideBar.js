@@ -34,12 +34,6 @@ export function SideBar() {
                 <span>Batch</span>
               </NavLink>
             </li>
-            {/* <li className="sidebar-item  ">
-              <NavLink to={"role"} className="sidebar-link">
-                <i className="bi bi-pen-fill" />
-                <span>Role</span>
-              </NavLink>
-            </li> */}
             <li className="sidebar-item  ">
               <NavLink to={"student"} className="sidebar-link">
                 <i className="bi bi-person-fill" />

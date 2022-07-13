@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ContentLayout, ModalLayout } from "shared/components";
-import { Input, Button, Table } from "reactstrap";
+import { Input, Button, Table, FormFeedback } from "reactstrap";
 import { CourseContentModal } from "..";
 import { useCourse } from "../hooks";
 import InputControl from "shared/components/InputControl";
 import { QuillEditor } from "shared/components/QuillEditor";
+import SimpleReactValidator from "simple-react-validator";
 
 export const AddOrEditCourse = (props) => {
   const { courseId } = useParams();
   const editMode = courseId > 0;
+  const [update, forceUpdate] = useState();
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
 
   const {
     course,
@@ -31,7 +38,6 @@ export const AddOrEditCourse = (props) => {
     load: false,
     courseId: courseId,
   });
-
   const navigate = useNavigate();
 
   const onHandleChange = (e, isContent = false) => {
@@ -46,12 +52,12 @@ export const AddOrEditCourse = (props) => {
       });
     }
   };
-  const handleUpload = (e, index, isContent = false) => {
+  const handleUpload = (e, isContent = false) => {
     const file = e.target.files[0];
     const name = e.target.name;
     if (isContent) {
       setCourseContent((draft) => {
-        draft[index][name] = file;
+        draft[name] = file;
       });
     } else {
       setCourse((draft) => {
@@ -77,11 +83,16 @@ export const AddOrEditCourse = (props) => {
   };
 
   const onSubmit = (isContent = false) => {
-    if (isContent) {
-      createCourseContent.mutate({ ...courseContent, courseId });
-      setIsModalOpen(false);
+    if (validator.current.allValid()) {
+      if (isContent) {
+        createCourseContent.mutate({ ...courseContent, courseId });
+        setIsModalOpen(false);
+      } else {
+        editMode ? editCourse.mutate(course) : createCourse.mutate(course);
+      }
     } else {
-      editMode ? editCourse.mutate(course) : createCourse.mutate(course);
+      validator.current.showMessages();
+      forceUpdate(1);
     }
   };
 
@@ -89,32 +100,8 @@ export const AddOrEditCourse = (props) => {
     navigate("..", { replace: true });
   };
 
-  const addMoreContent = () => {
-    setCourseContent((draft) => {
-      draft = [
-        ...draft,
-        {
-          courseId,
-          title: "",
-          contentFile: "",
-          fileName: "",
-        },
-      ];
-      return draft;
-    });
-  };
-
-  const onEditContent = () => {};
-
   const onConfirm = () => {
     deleteCourseContent.mutate(courseContents.contentId);
-  };
-
-  const onRemoveContent = (index) => {
-    setCourseContent((draft) => {
-      draft = draft.filter((c, idx) => idx !== index);
-      return draft;
-    });
   };
 
   return (
@@ -133,7 +120,7 @@ export const AddOrEditCourse = (props) => {
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label htmlFor="first-name-vertical" className="mb-2">
-                          Name
+                          Name*
                         </label>
                         <Input
                           type="text"
@@ -143,22 +130,34 @@ export const AddOrEditCourse = (props) => {
                           placeholder="Course Name"
                           value={course.name}
                           onChange={onHandleChange}
+                          invalid={validator.current.message("Name", course.name, "required")}
                         />
+                        <FormFeedback>
+                          {validator.current.message("Name", course.name, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label htmlFor="courseImageFile" className="form-label">
-                          Course image
+                          Course image*
                         </label>
-                        <input
+                        <Input
                           id="courseImageFile"
                           type="file"
                           className="form-control"
                           name="courseImageFile"
                           accept=".jpeg, .png, .jpg, .JPG, .JPEG, .PNG"
                           onChange={handleUpload}
+                          // invalid={validator.current.message(
+                          //   "File",
+                          //   course.courseImageFile,
+                          //   "required"
+                          // )}
                         />
+                        {/* <FormFeedback>
+                          {validator.current.message("File", course.courseImageFile, "required")}
+                        </FormFeedback> */}
                       </div>
                     </div>
                   </div>
@@ -240,23 +239,50 @@ export const AddOrEditCourse = (props) => {
                               <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td>{content.title}</td>
-                                <td>{content.fileName}</td>
+                                {/* <td>{content.fileName}</td>
                                 <td>
                                   {content.fileURL ? (
                                     <img src={content.fileURL} style={{ height: "40px" }} />
                                   ) : (
                                     <span>No thumbnail</span>
                                   )}
+                                </td> */}
+                                <td>
+                                  {content.fileName && !content.isExternal ? (
+                                    <span>{content.fileName}</span>
+                                  ) : (
+                                    <a href={content.fileName} target="_blank">
+                                      {content.fileName}
+                                    </a>
+                                  )}
                                 </td>
                                 <td>
-                                  <Button
+                                  {content.fileURL && !content.isVideo ? (
+                                    <img src={content.fileURL} style={{ height: "40px" }} />
+                                  ) : content.fileURL && content.isVideo ? (
+                                    <video controls width="240" height="">
+                                      <source src={content.fileURL} type="video/mp4"></source>
+                                    </video>
+                                  ) : content.fileURL && content.isVideo && content.isExternal ? (
+                                    <iframe
+                                      width="240"
+                                      height=""
+                                      frameborder="0"
+                                      src={content.fileURL}
+                                    ></iframe>
+                                  ) : (
+                                    <span>No files</span>
+                                  )}
+                                </td>
+                                <td>
+                                  {/* <Button
                                     color="primary"
                                     className="mt-4 me-3"
                                     // disabled={courseContent.length < 2}
                                     onClick={() => onEditContent(index)}
                                   >
                                     Edit
-                                  </Button>
+                                  </Button> */}
                                   <Button
                                     color="danger"
                                     className="mt-4"
@@ -316,7 +342,7 @@ export const AddOrEditCourse = (props) => {
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}
-        message={`Are you sure? Do you want to delete?`}
+        message={`Are you sure? Do you want to delete ${courseContents.title}?`}
         onConfirm={() => {
           onConfirm();
         }}
@@ -356,8 +382,8 @@ export const AddOrEditCourse = (props) => {
                   label="File"
                   type="file"
                   placeholder="File"
-                  value={courseContent.fileName}
-                  onChange={(e) => onHandleChange(e, true)}
+                  name="contentFile"
+                  onChange={(e) => handleUpload(e, true)}
                 />
               )}
 
@@ -389,84 +415,6 @@ export const AddOrEditCourse = (props) => {
                   />
                 </div>
               </div>
-              {/* <Table responsive size="">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>File name</th>
-                    <th>Content file</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {courseContent?.map((item, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>
-                          <div className="form-group">
-                            <label htmlFor="first-title-vertical" className="mb-2">
-                              Title
-                            </label>
-                            <Input
-                              type="text"
-                              id="first-title-vertical"
-                              className="form-control"
-                              name="title"
-                              placeholder="Title"
-                              value={item.title}
-                              onChange={(e) => onHandleChange(e, index, true)}
-                            />
-                          </div>
-                        </td>
-                        <td>
-                          <div className="form-group">
-                            <label htmlFor="first-filename-vertical" className="mb-2">
-                              File name
-                            </label>
-                            <Input
-                              type="text"
-                              id="first-filename-vertical"
-                              className="form-control"
-                              name="fileName"
-                              placeholder="File name"
-                              value={item.fileName}
-                              onChange={(e) => onHandleChange(e, index, true)}
-                            />
-                          </div>
-                        </td>
-                        <td>
-                          <div className="form-group">
-                            <label htmlFor="contentFile" className="form-label">
-                              Content file
-                            </label>
-                            <input
-                              id="contentFile"
-                              type="file"
-                              className="form-control"
-                              name="contentFile"
-                              onChange={(e) => handleUpload(e, index, true)}
-                            />
-                          </div>
-                        </td>
-                        <td>
-                          <Button
-                            color="danger"
-                            className="mt-4"
-                            disabled={courseContent.length < 2}
-                            onClick={() => {
-                              onRemoveContent(index);
-                            }}
-                          >
-                            Remove
-                          </Button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table> */}
             </div>
           </form>
         </CourseContentModal>
