@@ -3,11 +3,12 @@ import { ContentLayout, PaginationTableLayout, ModalLayout } from "shared/compon
 import { StudentFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useStudent } from "../hooks";
 
-export const StudentList = (props) => {
+export const StudentList = () => {
   const {
     student,
-    data,
+    studentsQuery,
     onDelete,
     onToggleModal,
     isConfirmDelete,
@@ -15,8 +16,11 @@ export const StudentList = (props) => {
     fetchData,
     page,
     setPage,
-  } = props;
-  const { data: students, totalPages, hasNext, hasPrevious, totalCount } = data;
+  } = useStudent({
+    load: true,
+  });
+  const { data, isLoading } = studentsQuery;
+  const { data: students, totalPages, hasNext, hasPrevious, totalCount } = !isLoading && data;
 
   const history = useNavigate();
   const location = useLocation();
@@ -67,7 +71,7 @@ export const StudentList = (props) => {
   );
 
   return (
-    <ContentLayout title={"Student"} subtitle={"List"}>
+    <ContentLayout title={"Student"} subtitle={"List"} isLoading={isLoading}>
       <StudentFilter />
       <PaginationTableLayout
         columns={columns}

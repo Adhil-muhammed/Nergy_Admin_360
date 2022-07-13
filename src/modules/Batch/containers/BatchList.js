@@ -6,7 +6,7 @@ import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useBatch } from "../hooks";
 
-export const BatchList = (props) => {
+export const BatchList = () => {
   const { batch, batchesQuery, onDelete, onToggleModal, isConfirmDelete, deleteBatch } = useBatch({
     load: true,
   });

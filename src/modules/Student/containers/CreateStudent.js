@@ -5,17 +5,23 @@ import Datetime from "react-datetime";
 import Select from "react-select";
 import SimpleReactValidator from "simple-react-validator";
 import moment from "moment";
+import { useStudent } from "../hooks";
+import { useParams } from "react-router-dom";
+import InputControl from "shared/components/InputControl";
 
-export const CreateStudent = (props) => {
+export const CreateStudent = () => {
+  const { studentId } = useParams();
+
   const [update, forceUpdate] = useState();
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },
     })
   );
-  const { student, setStudent, createStudent, batchesQuery, institutesQuery, courses } = props;
+  const { student, setStudent, createStudent, batchesQuery, institutesQuery, courses } = useStudent(
+    { load: false, studentId: studentId }
+  );
   const {
-    studentId,
     instituteId,
     batchId,
     registrationId,
@@ -30,17 +36,17 @@ export const CreateStudent = (props) => {
     selectedCourses,
   } = student;
 
-  const dob = moment(dateOfBirth, "YYYY-MM-DD");
-  const selectedCoursesArray = courses.filter((el) => {
-    return selectedCourses.some((f) => {
-      return f === el.courseId;
-    });
-  });
-
-  const onDateOfBirthChange = (m) => {
-    const date = m.format("YYYY-MM-DD").toString();
+  const onChangeDate = (e) => {
+    const { name, value } = e.target;
     setStudent((draft) => {
-      draft.dateOfBirth = date;
+      draft.dateOfBirth = moment(value, "YYYY-MM-DD").format("YYYY-MM-DDTHH:mm:ss");
+    });
+  };
+
+  const onSelectChange = (e, name) => {
+    const requiredFormat = e.map((item) => item.value);
+    setStudent((draft) => {
+      draft[name] = requiredFormat;
     });
   };
 
@@ -112,7 +118,7 @@ export const CreateStudent = (props) => {
                           )}
                         >
                           <option value={-1}>---Select---</option>
-                          {institutesQuery.data.map((institute) => {
+                          {institutesQuery?.data?.map((institute) => {
                             return (
                               <option
                                 key={`institute_${institute.instituteId}`}
@@ -148,7 +154,7 @@ export const CreateStudent = (props) => {
                           invalid={validator.current.message("batchId", batchId, "required")}
                         >
                           <option value={-1}>---Select---</option>
-                          {batchesQuery.data.map((batch) => {
+                          {batchesQuery?.data?.map((batch) => {
                             return (
                               <option key={`batch_${batch.batchId}`} value={batch.batchId}>
                                 {batch.name}
@@ -303,18 +309,20 @@ export const CreateStudent = (props) => {
                         <label className="mb-2" htmlFor="contact-info-vertical">
                           Date of birth
                         </label>
-                        <Datetime
-                          dateformat="YYYY-MM-DD"
-                          timeformat="{false}"
+                        <InputControl
+                          type="date"
                           name="dateofBirth"
-                          closeOnSelect={true}
-                          selected={dob}
-                          onChange={onDateOfBirthChange}
-                          className={update && !dob.isValid() && "form-control is-invalid"}
+                          value={moment(dateOfBirth, "YYYY-MM-DDTHH:mm:ss").format("YYYY-MM-DD")}
+                          onChange={onChangeDate}
+                          invalid={validator.current.message(
+                            "date Of Birth",
+                            dateOfBirth,
+                            "required"
+                          )}
                         />
-                        <div className="text-danger">
-                          {update && !dob.isValid() ? "Please select date of birth" : ""}
-                        </div>
+                        <FormFeedback>
+                          {validator.current.message("date Of Birth", dateOfBirth, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -367,24 +375,34 @@ export const CreateStudent = (props) => {
                         </FormFeedback>
                       </div>
                     </div>
-                    <div className="col-sm-6">
+                    <div className="col-6">
                       <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">
-                          Courses
-                        </label>
-                        <Select
-                          closeMenuOnSelect={false}
-                          defaultValue={selectedCoursesArray}
+                        <label htmlFor="first-name-vertical">Courses*</label>
+                        <InputControl
+                          type="react-select"
                           isMulti
                           options={courses}
-                          onChange={(selectedOption) => {
-                            setStudent((draft) => {
-                              draft.selectedCourses = selectedOption.map((o) => {
-                                return parseInt(o.value, 10);
-                              });
-                            });
-                          }}
+                          name="selectedCourses"
+                          value={
+                            selectedCourses.length > 0 &&
+                            courses.filter((item) => selectedCourses.indexOf(item.value) > -1)
+                          }
+                          isValid={
+                            !validator.current.message(
+                              "selectedCourses",
+                              selectedCourses,
+                              "required"
+                            )
+                          }
+                          onChange={(e) => onSelectChange(e, "selectedCourses")}
                         />
+                        <div className="text-danger">
+                          {validator.current.message(
+                            "assessmentStatus",
+                            selectedCourses,
+                            "required"
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

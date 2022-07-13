@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
-import { getStudents, createStudents, updateStudents, deteleStudents } from "..";
+import { getStudents, createStudents, updateStudents, deteleStudents, getStudentById } from "..";
 import { useNavigate } from "react-router-dom";
-import { successMessage, successDeletedMessage } from "utils";
+import { successMessage, successDeletedMessage, errorMessage } from "utils";
 import { getInstitutes } from "modules/Institute";
 import { getBatches } from "modules/Batch";
 import { getCourses } from "modules/Courses";
@@ -12,8 +12,9 @@ const GetStudentKey = "GET_BATCHES_API";
 const GetBatchKey = "GET_BATCHES_FOR_CREATE_STUDENT";
 const GetInstituteKey = "GET_INSTITUTES_FOR_CREATE_STUDENT";
 const GetCourseKey = "GET_COURSE_FOR_CREATE_STUDENT";
+const Get_STUDENT_BY_ID = "GET_STUDENT_BY_ID";
 
-export const useStudent = () => {
+export const useStudent = ({ load = false, studentId = 0 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [page, setPage] = useImmer({
@@ -22,6 +23,7 @@ export const useStudent = () => {
   });
   const studentsQuery = useQuery([GetStudentKey, page], () => getStudents(page), {
     keepPreviousData: true,
+    enabled: load,
     staleTime: Infinity,
   });
   const batchesQuery = useQuery(GetBatchKey, getBatches, { staleTime: Infinity });
@@ -53,149 +55,72 @@ export const useStudent = () => {
     selectedCourses: [],
   });
 
+  const studentInfo = useQuery(
+    `${Get_STUDENT_BY_ID}_${studentId}`,
+    () => getStudentById(studentId),
+    {
+      refetchOnWindowFocus: false,
+      enabled: studentId !== 0,
+    }
+  );
+
+  useEffect(() => {
+    if (studentInfo.data) {
+      setStudent(studentInfo.data);
+    }
+  }, [studentInfo.data]);
+
   const createStudent = useMutation(createStudents, {
-    // onMutate: async (update) => {
-    //   await queryClient.cancelQueries([
-    //     GetStudentKey,
-    //     {
-    //       pageIndex: 1,
-    //       pageSize: 2,
-    //     },
-    //   ]);
-    //   const data = queryClient.getQueryData([
-    //     GetStudentKey,
-    //     {
-    //       pageIndex: 1,
-    //       pageSize: 2,
-    //     },
-    //   ]);
-    //   queryClient.setQueryData(
-    //     [
-    //       GetStudentKey,
-    //       {
-    //         pageIndex: 1,
-    //         pageSize: 2,
-    //       },
-    //     ],
-    //     (prevData) => {
-    //       let updatedData = {
-    //         paging: { pageNo: 1, ...prevData.paging },
-    //         value: [...prevData, update],
-    //       };
-    //       return updatedData;
-    //     }
-    //   );
-    //   return data;
-    // },
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData([GetStudentKey, page], previousData);
+      errorMessage();
     },
     onSuccess: () => {
       successMessage();
+      queryClient.invalidateQueries(GetStudentKey);
+      navigate("..", { replace: true });
     },
     onSettled: () => {
       setPage((draft) => {
         draft.pageIndex = 1;
         draft.pageSize = 2;
       });
-      navigate("../student", { replace: true });
     },
   });
 
   const editStudent = useMutation(updateStudents, {
-    onMutate: async (update) => {
-      await queryClient.cancelQueries([GetStudentKey, page]);
-      const data = queryClient.getQueryData([GetStudentKey, page]);
-      queryClient.setQueryData([GetStudentKey, page], (prevData) => {
-        let updatedValue = prevData.value.map((p) => {
-          let newData = { ...p };
-          if (p.studentId === update.studentId) {
-            newData.studentId = update.studentId;
-            newData.instituteId = update.instituteId;
-            newData.batchId = update.batchId;
-            newData.registrationId = update.registrationId;
-            newData.firstName = update.firstName;
-            newData.lastName = update.lastName;
-            newData.gender = update.gender;
-            newData.emailAddress = update.emailAddress;
-            newData.qualification = update.qualification;
-            newData.dateOfBirth = update.dateOfBirth;
-            newData.mobile = update.mobile;
-            newData.region = update.region;
-            newData.selectedCourses = update.selectedCourses;
-          }
-          return newData;
-        });
-        let updatedData = { ...prevData, value: updatedValue };
-        return updatedData;
-      });
-      return data;
-    },
     onSuccess: () => {
       successMessage();
+      navigate("..", { replace: true });
+      queryClient.invalidateQueries(GetStudentKey);
     },
-    onError: (e, newData, previousData) => {
-      queryClient.setQueryData([GetStudentKey, page], previousData);
-    },
-    onSettled: () => {
-      navigate("../student", { replace: true });
-    },
+    onError: (e, newData, previousData) => {},
   });
 
   const deleteStudent = useMutation(deteleStudents, {
     onError: (e, newData, previousData) => {
-      queryClient.setQueryData([GetStudentKey, page], previousData);
+      errorMessage();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries([GetStudentKey, page]);
       successDeletedMessage();
+      queryClient.invalidateQueries(GetStudentKey);
     },
     onSettled: () => {
       onToggleModal(false);
     },
   });
 
-  const getSelectedStudent = React.useCallback(
-    (id) => {
-      const selectedStudent = studentsQuery.data.value.filter((s) => s.studentId === id)[0];
-      setStudent((draft) => {
-        draft.studentId = selectedStudent.studentId;
-        draft.instituteId = selectedStudent.instituteId;
-        draft.batchId = selectedStudent.batchId;
-        draft.registrationId = selectedStudent.registrationId;
-        draft.firstName = selectedStudent.firstName;
-        draft.lastName = selectedStudent.lastName;
-        draft.gender = selectedStudent.gender;
-        draft.emailAddress = selectedStudent.emailAddress;
-        draft.qualification = selectedStudent.qualification;
-        draft.dateOfBirth = selectedStudent.dateOfBirth;
-        draft.mobile = selectedStudent.mobile;
-        draft.region = selectedStudent.region;
-        draft.selectedCourses = selectedStudent.selectedCourses;
-        return draft;
-      });
-    },
-    [studentsQuery.data, setStudent]
-  );
-
-  const onEdit = React.useCallback(
-    (studentId) => {
-      if (studentId) {
-        getSelectedStudent(studentId);
-      }
-    },
-    [getSelectedStudent]
-  );
-
   const onDelete = React.useCallback(
     (id) => {
-      getSelectedStudent(id);
       setIsConfirmDelete((draft) => {
         draft = true;
         return draft;
       });
+      setStudent((draft) => {
+        draft.studentId = id;
+        return draft;
+      });
     },
-    [getSelectedStudent, setIsConfirmDelete]
+    [setIsConfirmDelete]
   );
 
   const onToggleModal = React.useCallback(
@@ -224,7 +149,6 @@ export const useStudent = () => {
     studentsQuery,
     createStudent,
     editStudent,
-    onEdit,
     onDelete,
     isConfirmDelete,
     onToggleModal,
