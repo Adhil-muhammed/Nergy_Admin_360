@@ -15,6 +15,7 @@ import {
 import AssessmentSection from "modules/AssessmentSection/AssessmentSection";
 import Assessment from "modules/Assessment/Assessment";
 import Report from "modules/Reports/Report";
+import AssessmentSchedule from "modules/AssessmentSchedule/AssessmentSchedule";
 
 export function Dashboard() {
   return (
@@ -37,6 +38,7 @@ export function Dashboard() {
             <Route element={<AssessmentSection />} path={"/assessmentSection/*"} />
             <Route element={<Assessment />} path={"/assessments/*"} />
             <Route element={<Report />} path={"/reports/*"} />
+            <Route element={<AssessmentSchedule />} path={"/assessment-schedule/*"} />
           </Routes>
           <Footer />
         </div>
