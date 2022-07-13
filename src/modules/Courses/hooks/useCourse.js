@@ -8,7 +8,6 @@ import {
   updateCourses,
   deteleCourses,
   createCoursesContent,
-  // getCourseContentById,
   deleteCoursesContentById,
 } from "..";
 import { useNavigate } from "react-router-dom";
@@ -31,14 +30,11 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     enabled: courseId > 0,
   });
 
-  // const courseContentInfo = useQuery(
-  //   `${GET_COURSE_CONTENT_BY_ID}_${courseId}`,
-  //   () => getCourseContentById(courseId),
-  //   {
-  //     refetchOnWindowFocus: false,
-  //     enabled: courseId > 0,
-  //   }
-  // );
+  useEffect(() => {
+    if (courseInfo.data) {
+      setCourse(courseInfo.data);
+    }
+  }, [courseInfo.data]);
 
   const [course, setCourse] = useImmer({
     courseId: 0,
@@ -46,7 +42,7 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     description: "",
     instructions: "",
     courseContentFile: "",
-    CourseImageFile: "",
+    courseImageFile: "",
     certificateFile: "",
     contentPath: "",
     courseContents: [],
@@ -71,12 +67,6 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     isExternal: false,
     isVideo: false,
   });
-
-  useEffect(() => {
-    if (courseInfo.data) {
-      setCourse(courseInfo.data);
-    }
-  }, [courseInfo.data]);
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [isModalOpen, setIsModalOpen] = useImmer(false);
@@ -125,6 +115,7 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     },
     onSettled: () => {
       setIsModalOpen(false);
+      window.location.reload();
     },
   });
 
@@ -133,7 +124,8 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
       errorMessage("Unable to delete!");
     },
     onSuccess: () => {
-      successMessage();
+      successDeletedMessage();
+      window.location.reload();
     },
     onSettled: () => {
       onToggleModal(false);
@@ -151,7 +143,7 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
         return draft;
       });
     } else {
-      const selectedCourse = coursesQuery.data.find((c) => c.courseId === id);
+      const selectedCourse = coursesQuery?.data.find((c) => c.courseId === id);
       if (selectedCourse) setCourse(selectedCourse);
 
       setIsConfirmDelete((draft) => {
