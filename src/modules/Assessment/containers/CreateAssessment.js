@@ -148,7 +148,11 @@ export const CreateAssessment = () => {
   };
 
   return (
-    <ContentLayout title={updateMode ? "Edit" : "Create New"} isLoading={assessmentInfo.isLoading}>
+    <ContentLayout
+      subtitle={updateMode ? "Update" : "Create"}
+      title={"Assessments"}
+      isLoading={assessmentInfo.isLoading}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

@@ -67,7 +67,7 @@ export const StudentList = (props) => {
   );
 
   return (
-    <ContentLayout title={"Students"} subtitle={"List"}>
+    <ContentLayout title={"Student"} subtitle={"List"}>
       <StudentFilter />
       <PaginationTableLayout
         columns={columns}

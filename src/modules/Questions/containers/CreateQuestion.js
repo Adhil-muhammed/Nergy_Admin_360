@@ -115,7 +115,11 @@ export const CreateQuestion = () => {
   };
 
   return (
-    <ContentLayout title={updateMode ? "Edit" : "Create New"} isLoading={questionsInfo.isLoading}>
+    <ContentLayout
+      title={"Questions"}
+      subtitle={updateMode ? "Edit" : "Create"}
+      isLoading={questionsInfo.isLoading}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

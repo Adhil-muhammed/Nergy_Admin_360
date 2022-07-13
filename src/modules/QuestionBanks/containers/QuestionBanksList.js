@@ -55,7 +55,7 @@ export const QuestionBanksList = () => {
     []
   );
   return (
-    <ContentLayout title={"Question Banks"} subtitle={"List"} isLoading={isLoading}>
+    <ContentLayout title={"Question Bank"} subtitle={"List"} isLoading={isLoading}>
       <QuestionBanksFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout

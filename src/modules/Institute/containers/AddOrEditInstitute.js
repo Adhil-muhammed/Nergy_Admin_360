@@ -36,7 +36,11 @@ export const AddOrEditInstitute = () => {
   };
 
   return (
-    <ContentLayout title={editMode ? "Update" : "Create New"} isLoading={instituteInfo.isLoading}>
+    <ContentLayout
+      title={"Institutes"}
+      subtitle={editMode ? "Update" : "Create"}
+      isLoading={instituteInfo.isLoading}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

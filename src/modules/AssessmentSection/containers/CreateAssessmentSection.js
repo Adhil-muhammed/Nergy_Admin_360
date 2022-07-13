@@ -75,7 +75,8 @@ const CreateAssessmentSection = () => {
   };
   return (
     <ContentLayout
-      title={updateMode ? "Edit" : "Create New"}
+      title={"Assessment Section"}
+      subtitle={updateMode ? "Update" : "Create"}
       isLoading={assessmentSectionInfo.isLoading}
     >
       <section id="basic-vertical-layouts">

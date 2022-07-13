@@ -59,6 +59,12 @@ export function SideBar() {
               </NavLink>
             </li>
             <li className="sidebar-item  ">
+              <NavLink to={"assessment-schedule"} className="sidebar-link">
+                <i className="bi bi-archive-fill" />
+                <span>Assessment Schedule</span>
+              </NavLink>
+            </li>
+            <li className="sidebar-item  ">
               <NavLink to={"questionbanks"} className="sidebar-link">
                 <i className="bi bi-archive-fill" />
                 <span>QuestionBanks</span>
@@ -74,6 +80,12 @@ export function SideBar() {
               <NavLink to={"courses"} className="sidebar-link">
                 <i className="bi bi-book-fill" />
                 <span>Courses</span>
+              </NavLink>
+            </li>
+            <li className="sidebar-item  ">
+              <NavLink to={"reports"} className="sidebar-link">
+                <i className="bi bi-book-fill" />
+                <span>Reports</span>
               </NavLink>
             </li>
             <li className="sidebar-item  ">
