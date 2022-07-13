@@ -40,14 +40,14 @@ export const useAssessmentSchedule = ({ load = false, scheduleId = 0 }) => {
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [assesmentSchedule, setAssessmentSchedule] = useImmer({
-    assessmentId: 0,
+    assessmentId: "",
     scheduledDate: "",
     slots: [
-      //   {
-      //     userLimit: 10,
-      //     startAt: "2022-07-13T05:03:25.419Z",
-      //     endAt: "2022-07-13T05:03:25.419Z",
-      //   },
+      {
+        userLimit: 1,
+        startAt: "",
+        endAt: "",
+      },
     ],
   });
 

@@ -28,14 +28,15 @@ export const AssessmentScheduleList = (props) => {
   };
 
   const onEdit = (scheduleId) => {
-    history(`${location.pathname}/edit/${scheduleId}`);
+    history(`${location.pathname}/slots/${scheduleId}`);
   };
 
   const ActionButtons = ({ value }) => {
     return (
       <>
         <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
-          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i>{" "}
+          <span>View Slots</span>
         </Button>
         <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
           <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
