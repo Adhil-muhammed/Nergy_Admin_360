@@ -7,6 +7,7 @@ export const AssessmentScheduleFilter = () => {
   const gotoCreate = () => {
     history(`${location.pathname}/create`);
   };
+
   return (
     <div>
       <div className="mb-4">

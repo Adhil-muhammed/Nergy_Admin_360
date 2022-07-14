@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { AssessmentScheduleFilter } from "../components/AssessmentScheduleFilter";
 import { useAssessmentSchedule } from "../hooks";
 import { useAssessment } from "modules/Assessment/hooks";
+import { GenerateAssessmentSchedule } from "./GenerateAssessmentSchedule";
 
 export const AssessmentScheduleList = (props) => {
   const { assessmentQuery } = useAssessment({ load: true });
@@ -81,6 +82,8 @@ export const AssessmentScheduleList = (props) => {
   return (
     <ContentLayout title={"Assessment Schedule"} subtitle={"List"} isLoading={isLoading}>
       <AssessmentScheduleFilter />
+      <GenerateAssessmentSchedule />
+
       <TableLayout columns={columns} data={data} />
       <ModalLayout
         isOpen={isConfirmDelete}
