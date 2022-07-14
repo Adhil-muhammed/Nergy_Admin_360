@@ -11,16 +11,22 @@ import InputControl from "shared/components/InputControl";
 
 export const CreateStudent = () => {
   const { studentId } = useParams();
-
+  const editMode = studentId !== undefined;
   const [update, forceUpdate] = useState();
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },
     })
   );
-  const { student, setStudent, createStudent, batchesQuery, institutesQuery, courses } = useStudent(
-    { load: false, studentId: studentId }
-  );
+  const {
+    student,
+    setStudent,
+    createStudent,
+    batchesQuery,
+    institutesQuery,
+    courses,
+    editStudent,
+  } = useStudent({ load: false, studentId: studentId });
   const {
     instituteId,
     batchId,
@@ -52,7 +58,8 @@ export const CreateStudent = () => {
 
   const onSubmit = () => {
     if (validator.current.allValid()) {
-      createStudent.mutate(student);
+      if (editMode) editStudent.mutate(student);
+      else createStudent.mutate(student);
     } else {
       validator.current.showMessages();
       forceUpdate(1);
@@ -60,7 +67,7 @@ export const CreateStudent = () => {
   };
 
   return (
-    <ContentLayout title={"Student"} subtitle="Create">
+    <ContentLayout title={"Student"} subtitle={editMode ? "Update" : "Create"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
