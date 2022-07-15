@@ -3,6 +3,7 @@ import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
 import { Button } from "reactstrap";
 import { useParams } from "react-router-dom";
 import { useAssessmentSlots } from "../hooks/useAssessmentSlots";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const AssessmentSlots = () => {
   const { scheduleId } = useParams();
@@ -52,8 +53,12 @@ export const AssessmentSlots = () => {
     },
   ];
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <ContentLayout title={"Assessment Slots"} subtitle={"List"} isLoading={isLoading}>
+    <ContentLayout title={"Assessment Slots"} subtitle={"List"}>
       {/* <AssessmentScheduleFilter /> */}
       <TableLayout columns={columns} data={data} />
       <ModalLayout

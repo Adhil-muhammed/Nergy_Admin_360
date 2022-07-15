@@ -10,6 +10,8 @@ import SimpleReactValidator from "simple-react-validator";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useAssessment } from "../hooks";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { LoadingButton } from "shared/components/LoadingButton";
 
 export const CreateAssessment = () => {
   const { id } = useParams();
@@ -147,12 +149,12 @@ export const CreateAssessment = () => {
     navigate("..", { replace: true });
   };
 
+  if (assessmentInfo.isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <ContentLayout
-      subtitle={updateMode ? "Update" : "Create"}
-      title={"Assessments"}
-      isLoading={assessmentInfo.isLoading}
-    >
+    <ContentLayout subtitle={updateMode ? "Update" : "Create"} title={"Assessments"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -515,7 +517,8 @@ export const CreateAssessment = () => {
                         </div>
 
                         <div className="col-12 d-flex justify-content-end">
-                          <Button
+                          <LoadingButton
+                            isLoading={createAssessment.isLoading || editAssessment.isLoading}
                             className="me-1 mb-1"
                             color="success"
                             onClick={() => {
@@ -523,8 +526,9 @@ export const CreateAssessment = () => {
                             }}
                           >
                             {updateMode ? "Update" : "Create"}
-                          </Button>
+                          </LoadingButton>
                           <button
+                            disabled={createAssessment.isLoading || editAssessment.isLoading}
                             onClick={() => onCancel()}
                             type="reset"
                             className="btn btn-light-secondary me-1 mb-1"

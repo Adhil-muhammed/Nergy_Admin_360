@@ -6,6 +6,7 @@ import { AssessmentScheduleFilter } from "../components/AssessmentScheduleFilter
 import { useAssessmentSchedule } from "../hooks";
 import { useAssessment } from "modules/Assessment/hooks";
 import { GenerateAssessmentSchedule } from "./GenerateAssessmentSchedule";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const AssessmentScheduleList = (props) => {
   const { assessmentQuery } = useAssessment({ load: true });
@@ -79,8 +80,12 @@ export const AssessmentScheduleList = (props) => {
     },
   ];
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <ContentLayout title={"Assessment Schedule"} subtitle={"List"} isLoading={isLoading}>
+    <ContentLayout title={"Assessment Schedule"} subtitle={"List"}>
       <AssessmentScheduleFilter />
       <GenerateAssessmentSchedule />
 

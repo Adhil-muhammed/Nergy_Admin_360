@@ -5,6 +5,7 @@ import { RoleFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useRole } from "../hooks";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const RoleList = () => {
   const { role, rolesQuery, onDelete, onToggleModal, isConfirmDelete, deleteRole } = useRole({
@@ -51,8 +52,12 @@ export const RoleList = () => {
     },
   ];
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <ContentLayout title={"Roles"} subtitle={"List"} isLoading={isLoading}>
+    <ContentLayout title={"Roles"} subtitle={"List"}>
       <RoleFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout

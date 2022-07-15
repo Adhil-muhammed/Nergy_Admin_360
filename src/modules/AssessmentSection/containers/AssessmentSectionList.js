@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
 import { Button } from "reactstrap";
 import { ContentLayout, ModalLayout, TableLayout } from "shared";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { useAssessmentSection } from "../hooks";
 
 const AssessmentSectionList = () => {
@@ -62,6 +63,10 @@ const AssessmentSectionList = () => {
       Cell: ActionButtons,
     },
   ];
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <>

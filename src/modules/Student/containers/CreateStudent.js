@@ -8,6 +8,8 @@ import moment from "moment";
 import { useStudent } from "../hooks";
 import { useParams } from "react-router-dom";
 import InputControl from "shared/components/InputControl";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { LoadingButton } from "shared/components/LoadingButton";
 
 export const CreateStudent = () => {
   const { studentId } = useParams();
@@ -26,6 +28,7 @@ export const CreateStudent = () => {
     institutesQuery,
     courses,
     editStudent,
+    studentInfo,
   } = useStudent({ load: false, studentId: studentId });
   const {
     instituteId,
@@ -65,6 +68,10 @@ export const CreateStudent = () => {
       forceUpdate(1);
     }
   };
+
+  if (studentInfo.isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <ContentLayout title={"Student"} subtitle={editMode ? "Update" : "Create"}>
@@ -414,7 +421,8 @@ export const CreateStudent = () => {
                     </div>
                   </div>
                   <div className="col-12 d-flex justify-content-end">
-                    <Button
+                    <LoadingButton
+                      isLoading={createStudent.isLoading || editStudent.isLoading}
                       className="me-1 mb-1"
                       color="success"
                       onClick={() => {
@@ -422,8 +430,12 @@ export const CreateStudent = () => {
                       }}
                     >
                       Save
-                    </Button>
-                    <button type="reset" className="btn btn-light-secondary me-1 mb-1">
+                    </LoadingButton>
+                    <button
+                      disabled={createStudent.isLoading || editStudent.isLoading}
+                      type="reset"
+                      className="btn btn-light-secondary me-1 mb-1"
+                    >
                       Reset
                     </button>
                   </div>

@@ -7,6 +7,8 @@ import { useCourse } from "../hooks";
 import InputControl from "shared/components/InputControl";
 import { QuillEditor } from "shared/components/QuillEditor";
 import SimpleReactValidator from "simple-react-validator";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { LoadingButton } from "shared/components/LoadingButton";
 
 export const AddOrEditCourse = (props) => {
   const { courseId } = useParams();
@@ -104,12 +106,12 @@ export const AddOrEditCourse = (props) => {
     deleteCourseContent.mutate(courseContents.contentId);
   };
 
+  if (courseInfo.isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <ContentLayout
-      title={"Courses"}
-      subtitle={editMode ? "Update" : "Create new"}
-      isLoading={courseInfo.isLoading}
-    >
+    <ContentLayout title={"Courses"} subtitle={editMode ? "Update" : "Create new"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -312,7 +314,8 @@ export const AddOrEditCourse = (props) => {
                       </div>
                     )}
                     <div>
-                      <Button
+                      <LoadingButton
+                        isLoading={createCourse.isLoading || editCourse.isLoading}
                         className="me-1 mb-1"
                         color="success"
                         onClick={() => {
@@ -320,8 +323,9 @@ export const AddOrEditCourse = (props) => {
                         }}
                       >
                         {editMode ? "Update" : "Save & close"}
-                      </Button>
+                      </LoadingButton>
                       <button
+                        disabled={createCourse.isLoading || editCourse.isLoading}
                         type="reset"
                         className="btn btn-light-secondary me-1 mb-1"
                         onClick={() => {

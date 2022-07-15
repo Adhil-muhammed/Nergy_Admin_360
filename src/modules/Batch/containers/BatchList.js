@@ -5,6 +5,7 @@ import { BatchFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useBatch } from "../hooks";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const BatchList = () => {
   const { batch, batchesQuery, onDelete, onToggleModal, isConfirmDelete, deleteBatch } = useBatch({
@@ -57,8 +58,12 @@ export const BatchList = () => {
     },
   ];
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <ContentLayout title={"Batch"} subtitle={"List"} isLoading={isLoading}>
+    <ContentLayout title={"Batch"} subtitle={"List"}>
       <BatchFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout

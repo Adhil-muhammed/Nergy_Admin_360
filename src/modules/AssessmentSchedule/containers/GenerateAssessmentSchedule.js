@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, FormFeedback } from "reactstrap";
 import { ContentLayout, ModalLayout, TableLayout } from "shared";
 import InputControl from "shared/components/InputControl";
+import { LoadingButton } from "shared/components/LoadingButton";
 import SimpleReactValidator from "simple-react-validator";
 import { useGenerateAssessmentSchedule } from "../hooks";
 
@@ -22,8 +23,16 @@ export const GenerateAssessmentSchedule = () => {
     value: item.assessmentId,
     label: item.name,
   }));
-  const { state, reset, generateSchedules, onChange, onSelectChange, onChangeDate, onChangeTime } =
-    useGenerateAssessmentSchedule();
+  const {
+    state,
+    reset,
+    generateSchedules,
+    onChange,
+    onSelectChange,
+    onChangeDate,
+    onChangeTime,
+    createSchedule,
+  } = useGenerateAssessmentSchedule();
   const { assessmentId, date, startAt, timeBetweenSlots, noOfSlots, duration, userLimit } = state;
 
   return (
@@ -190,7 +199,8 @@ export const GenerateAssessmentSchedule = () => {
                       </div>
                     </div>
                     <div className="col-12 d-flex justify-content-end">
-                      <Button
+                      <LoadingButton
+                        isLoading={createSchedule.isLoading}
                         className="me-1 mb-1"
                         color="success"
                         onClick={() => {
@@ -203,8 +213,9 @@ export const GenerateAssessmentSchedule = () => {
                         }}
                       >
                         Generate Schedules
-                      </Button>
+                      </LoadingButton>
                       <button
+                        disabled={createSchedule.isLoading}
                         type="reset"
                         className="btn btn-light-secondary me-1 mb-1"
                         onClick={() => {

@@ -8,6 +8,8 @@ import SimpleReactValidator from "simple-react-validator";
 import { useAssessmentSchedule } from "../hooks";
 import { useAssessment } from "modules/Assessment/hooks";
 import InputControl from "shared/components/InputControl";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { LoadingButton } from "shared/components/LoadingButton";
 
 export const AddorEditAssessmentSchedule = (props) => {
   const { assessmentQuery } = useAssessment({ load: true });
@@ -91,12 +93,12 @@ export const AddorEditAssessmentSchedule = (props) => {
   };
 
   const assessmentList = data?.map((item) => ({ value: item.assessmentId, label: item.name }));
+
+  if (assessmentScheduleInfo.isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
-    <ContentLayout
-      subtitle={editMode ? "Update" : "Create"}
-      title={"Assesment Schedule"}
-      isLoading={assessmentScheduleInfo.isLoading}
-    >
+    <ContentLayout subtitle={editMode ? "Update" : "Create"} title={"Assesment Schedule"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -271,7 +273,10 @@ export const AddorEditAssessmentSchedule = (props) => {
                     </div>
                   </div>
                   <div className="col-12 d-flex justify-content-end mt-5">
-                    <Button
+                    <LoadingButton
+                      isLoading={
+                        createAssessmentSchedule.isLoading || editAssessmentSchedule.isLoading
+                      }
                       className="me-1 mb-1"
                       color="success"
                       onClick={() => {
@@ -279,8 +284,11 @@ export const AddorEditAssessmentSchedule = (props) => {
                       }}
                     >
                       {editMode ? "Update" : "Save"}
-                    </Button>
+                    </LoadingButton>
                     <button
+                      disabled={
+                        createAssessmentSchedule.isLoading || editAssessmentSchedule.isLoading
+                      }
                       type="reset"
                       className="btn btn-light-secondary me-1 mb-1"
                       onClick={() => {

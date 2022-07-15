@@ -4,6 +4,8 @@ import { Input, Button, FormFeedback } from "reactstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
 import { useQuestionBanks } from "../hooks";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { LoadingButton } from "shared/components/LoadingButton";
 
 export const CreateOrEditQuestionBanks = () => {
   let { questionBankId } = useParams();
@@ -35,12 +37,11 @@ export const CreateOrEditQuestionBanks = () => {
     navigate("..", { replace: true });
   };
 
+  if (questionBankInfo.isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
-    <ContentLayout
-      subtitle={editMode ? "Update" : "Create"}
-      title={"Question Bank"}
-      isLoading={questionBankInfo.isLoading}
-    >
+    <ContentLayout subtitle={editMode ? "Update" : "Create"} title={"Question Bank"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -74,7 +75,8 @@ export const CreateOrEditQuestionBanks = () => {
                     </div>
                   </div>
                   <div className="col-12 d-flex justify-content-end">
-                    <Button
+                    <LoadingButton
+                      isLoading={createQuestionBank.isLoading || editQuestionBank.isLoading}
                       className="me-1 mb-1"
                       color="success"
                       onClick={() => {
@@ -82,8 +84,9 @@ export const CreateOrEditQuestionBanks = () => {
                       }}
                     >
                       {editMode ? "Update" : "Create"}
-                    </Button>
+                    </LoadingButton>
                     <button
+                      disabled={createQuestionBank.isLoading || editQuestionBank.isLoading}
                       type="reset"
                       className="btn btn-light-secondary me-1 mb-1"
                       onClick={() => {

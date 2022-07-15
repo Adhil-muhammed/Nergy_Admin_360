@@ -4,6 +4,8 @@ import React, { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
 import { useRole } from "../hooks";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { LoadingButton } from "shared/components/LoadingButton";
 
 export const CreateRole = (props) => {
   const navigate = useNavigate();
@@ -42,8 +44,12 @@ export const CreateRole = (props) => {
     navigate("..", { replace: true });
   };
 
+  if (roleInfo.isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <ContentLayout title={editMode ? "Update" : "Create New"} isLoading={roleInfo.isLoading}>
+    <ContentLayout title={editMode ? "Update" : "Create New"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-md-6 col-12">
@@ -76,7 +82,8 @@ export const CreateRole = (props) => {
                           </div>
                         </div>
                         <div className="col-12 d-flex justify-content-end">
-                          <Button
+                          <LoadingButton
+                            isLoading={createRole.isLoading || editRole.isLoading}
                             className="me-1 mb-1"
                             color="success"
                             onClick={() => {
@@ -84,8 +91,9 @@ export const CreateRole = (props) => {
                             }}
                           >
                             {editMode ? "Update" : "Create"}
-                          </Button>
+                          </LoadingButton>
                           <button
+                            disabled={createRole.isLoading || editRole.isLoading}
                             type="reset"
                             className="btn btn-light-secondary me-1 mb-1"
                             onClick={() => {

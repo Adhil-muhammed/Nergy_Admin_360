@@ -4,6 +4,7 @@ import { StudentFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useStudent } from "../hooks";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const StudentList = () => {
   const {
@@ -70,8 +71,12 @@ export const StudentList = () => {
     []
   );
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <ContentLayout title={"Student"} subtitle={"List"} isLoading={isLoading}>
+    <ContentLayout title={"Student"} subtitle={"List"}>
       <StudentFilter />
       <PaginationTableLayout
         columns={columns}

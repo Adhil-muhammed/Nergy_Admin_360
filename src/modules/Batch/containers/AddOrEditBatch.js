@@ -6,6 +6,8 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment";
 import { useBatch } from "../hooks";
 import SimpleReactValidator from "simple-react-validator";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { LoadingButton } from "shared/components/LoadingButton";
 
 export const AddOrEditBatch = (props) => {
   const [update, forceUpdate] = useState();
@@ -51,12 +53,11 @@ export const AddOrEditBatch = (props) => {
   const onCancel = () => {
     navigate("..", { replace: true });
   };
+  if (batchInfo.isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
-    <ContentLayout
-      subtitle={editMode ? "Update" : "Create"}
-      title={"Batch"}
-      isLoading={batchInfo.isLoading}
-    >
+    <ContentLayout subtitle={editMode ? "Update" : "Create"} title={"Batch"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -126,7 +127,8 @@ export const AddOrEditBatch = (props) => {
                     </div>
                   </div>
                   <div className="col-12 d-flex justify-content-end">
-                    <Button
+                    <LoadingButton
+                      isLoading={createBatch.isLoading || editBatch.isLoading}
                       className="me-1 mb-1"
                       color="success"
                       onClick={() => {
@@ -134,8 +136,9 @@ export const AddOrEditBatch = (props) => {
                       }}
                     >
                       {editMode ? "Update" : "Save"}
-                    </Button>
+                    </LoadingButton>
                     <button
+                      disabled={createBatch.isLoading || editBatch.isLoading}
                       type="reset"
                       className="btn btn-light-secondary me-1 mb-1"
                       onClick={() => {

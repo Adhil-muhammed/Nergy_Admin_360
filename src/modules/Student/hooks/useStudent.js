@@ -159,5 +159,6 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     batchesQuery,
     institutesQuery,
     courses,
+    studentInfo,
   };
 };

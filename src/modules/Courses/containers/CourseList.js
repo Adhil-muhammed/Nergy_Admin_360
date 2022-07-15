@@ -5,6 +5,7 @@ import { CourseIdFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useCourse } from "../hooks";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const CourseList = (props) => {
   const { course, coursesQuery, onDelete, onToggleModal, isConfirmDelete, deleteCourse } =
@@ -78,8 +79,11 @@ export const CourseList = (props) => {
     ],
     []
   );
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
-    <ContentLayout title={"Courses"} subtitle={"List"} isLoading={isLoading}>
+    <ContentLayout title={"Courses"} subtitle={"List"}>
       <CourseIdFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout

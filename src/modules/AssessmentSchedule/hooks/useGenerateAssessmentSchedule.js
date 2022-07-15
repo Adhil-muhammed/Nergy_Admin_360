@@ -74,5 +74,6 @@ export const useGenerateAssessmentSchedule = () => {
     onSelectChange,
     onChangeDate,
     onChangeTime,
+    createSchedule,
   };
 };
