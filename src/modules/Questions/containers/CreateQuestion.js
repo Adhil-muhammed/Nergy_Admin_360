@@ -7,6 +7,8 @@ import Select from "react-select";
 import { useQuestionBanks } from "modules/QuestionBanks";
 import InputControl from "shared/components/InputControl";
 import { useQuestion } from "../hooks";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { LoadingButton } from "shared/components/LoadingButton";
 
 export const CreateQuestion = () => {
   const { id } = useParams();
@@ -114,12 +116,12 @@ export const CreateQuestion = () => {
     });
   };
 
+  if (questionsInfo.isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <ContentLayout
-      title={"Questions"}
-      subtitle={updateMode ? "Edit" : "Create"}
-      isLoading={questionsInfo.isLoading}
-    >
+    <ContentLayout title={"Questions"} subtitle={updateMode ? "Edit" : "Create"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -368,7 +370,8 @@ export const CreateQuestion = () => {
                           </div>
                         </div>
                         <div className="col-12 d-flex justify-content-end">
-                          <Button
+                          <LoadingButton
+                            isLoading={createQuestion.isLoading || editQuestion.isLoading}
                             className="me-1 mb-1"
                             color="success"
                             onClick={() => {
@@ -376,8 +379,9 @@ export const CreateQuestion = () => {
                             }}
                           >
                             {updateMode ? "Update" : "Create"}
-                          </Button>
+                          </LoadingButton>
                           <button
+                            disabled={createQuestion.isLoading || editQuestion.isLoading}
                             onClick={() => navigate(-1)}
                             type="reset"
                             className="btn btn-light-secondary me-1 mb-1"

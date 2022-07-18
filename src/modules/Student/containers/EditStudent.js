@@ -6,8 +6,9 @@ import { useParams } from "react-router-dom";
 import Select from "react-select";
 import moment from "moment";
 import SimpleReactValidator from "simple-react-validator";
+import { useStudent } from "../hooks";
 
-export const EditStudent = (props) => {
+export const EditStudent = () => {
   const [update, forceUpdate] = useState();
   const validator = useRef(
     new SimpleReactValidator({
@@ -15,7 +16,7 @@ export const EditStudent = (props) => {
     })
   );
   const { student, setStudent, editStudent, batchesQuery, institutesQuery, onEdit, courses } =
-    props;
+    useStudent();
   const {
     instituteId,
     batchId,
@@ -30,7 +31,6 @@ export const EditStudent = (props) => {
     region,
     selectedCourses,
   } = student;
-  console.log("selectedCourses", selectedCourses, "courses", courses);
 
   const dateOfBirthVal = moment(dateOfBirth, "YYYY-MM-DD");
 

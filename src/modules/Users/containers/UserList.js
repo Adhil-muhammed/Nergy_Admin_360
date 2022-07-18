@@ -5,6 +5,7 @@ import { UserIdFilter } from "..";
 import { Button, Badge } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "../hooks";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const UserList = (props) => {
   const { user, onDelete, onToggleModal, isConfirmDelete, deleteUser, usersQuery } = useUser({
@@ -63,8 +64,11 @@ export const UserList = (props) => {
       Cell: ActionButtons,
     },
   ];
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
-    <ContentLayout title={"Users"} subtitle={"List"} isLoading={isLoading}>
+    <ContentLayout title={"Users"} subtitle={"List"}>
       <UserIdFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout

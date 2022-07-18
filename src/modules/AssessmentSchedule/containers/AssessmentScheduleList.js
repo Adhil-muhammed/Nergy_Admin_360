@@ -5,6 +5,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { AssessmentScheduleFilter } from "../components/AssessmentScheduleFilter";
 import { useAssessmentSchedule } from "../hooks";
 import { useAssessment } from "modules/Assessment/hooks";
+import { GenerateAssessmentSchedule } from "./GenerateAssessmentSchedule";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const AssessmentScheduleList = (props) => {
   const { assessmentQuery } = useAssessment({ load: true });
@@ -28,14 +30,15 @@ export const AssessmentScheduleList = (props) => {
   };
 
   const onEdit = (scheduleId) => {
-    history(`${location.pathname}/edit/${scheduleId}`);
+    history(`${location.pathname}/slots/${scheduleId}`);
   };
 
   const ActionButtons = ({ value }) => {
     return (
       <>
         <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
-          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i>{" "}
+          <span>View Slots</span>
         </Button>
         <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
           <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
@@ -77,9 +80,15 @@ export const AssessmentScheduleList = (props) => {
     },
   ];
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <ContentLayout title={"Assessment Schedule"} subtitle={"List"} isLoading={isLoading}>
+    <ContentLayout title={"Assessment Schedule"} subtitle={"List"}>
       <AssessmentScheduleFilter />
+      <GenerateAssessmentSchedule />
+
       <TableLayout columns={columns} data={data} />
       <ModalLayout
         isOpen={isConfirmDelete}

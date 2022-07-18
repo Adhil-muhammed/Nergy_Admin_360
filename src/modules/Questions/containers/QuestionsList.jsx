@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
 import { Button } from "reactstrap";
 import { ContentLayout, ModalLayout, TableLayout } from "shared";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { useImmer } from "use-immer";
 import { useQuestion } from "../hooks";
 export const QuestionsList = (props) => {
@@ -59,9 +60,13 @@ export const QuestionsList = (props) => {
     },
   ];
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <>
-      <ContentLayout title="Questions" subtitle="List" isLoading={isLoading}>
+      <ContentLayout title="Questions" subtitle="List">
         <div className="mb-4">
           <Button color="primary" size="sm" onClick={gotoCreate}>
             Create New

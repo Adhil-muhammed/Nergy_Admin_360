@@ -16,6 +16,11 @@ export const updateStudents = async (student) => {
   return res.data;
 };
 
+export const getStudentById = async (studentId) => {
+  const res = await Axios.get(`/Students/${studentId}`);
+  return res.data;
+};
+
 export const deteleStudents = async (studentId) => {
   const res = await Axios.delete(`/Students/${studentId}`);
   return res.data;

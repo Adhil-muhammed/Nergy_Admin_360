@@ -5,6 +5,7 @@ import { InstituteIdFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useInstitute } from "../hooks";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const InstituteList = () => {
   const { institute, institutesQuery, onDelete, onToggleModal, isConfirmDelete, deleteInstitute } =
@@ -46,8 +47,12 @@ export const InstituteList = () => {
     },
   ];
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <ContentLayout title={"Institutes"} subtitle={"List"} isLoading={isLoading}>
+    <ContentLayout title={"Institutes"} subtitle={"List"}>
       <InstituteIdFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout

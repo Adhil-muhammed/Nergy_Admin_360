@@ -5,6 +5,8 @@ import { Input, Button, FormFeedback } from "reactstrap";
 import { useUser } from "../hooks";
 import { useRole } from "../../Roles/hooks";
 import SimpleReactValidator from "simple-react-validator";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { LoadingButton } from "shared/components/LoadingButton";
 
 export const CreateUser = () => {
   const [update, forceUpdate] = useState();
@@ -45,12 +47,12 @@ export const CreateUser = () => {
     navigate("..", { replace: true });
   };
 
+  if (userInfo.isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <ContentLayout
-      subtitle={editMode ? "Update" : "Create"}
-      title={"Users"}
-      isLoading={userInfo.isLoading}
-    >
+    <ContentLayout subtitle={editMode ? "Update" : "Create"} title={"Users"}>
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -214,7 +216,8 @@ export const CreateUser = () => {
                     </div>
                   )}
                   <div className="col-12 d-flex justify-content-end">
-                    <Button
+                    <LoadingButton
+                      isLoading={createUser.isLoading || editUser.isLoading}
                       className="me-1 mb-1"
                       color="success"
                       onClick={() => {
@@ -222,8 +225,9 @@ export const CreateUser = () => {
                       }}
                     >
                       {editMode ? "Update" : "Create"}
-                    </Button>
+                    </LoadingButton>
                     <button
+                      disabled={createUser.isLoading || editUser.isLoading}
                       type="reset"
                       className="btn btn-light-secondary me-1 mb-1"
                       onClick={() => {

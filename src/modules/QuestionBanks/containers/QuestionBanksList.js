@@ -5,6 +5,7 @@ import { QuestionBanksFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useQuestionBanks } from "../hooks";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const QuestionBanksList = () => {
   const {
@@ -54,8 +55,12 @@ export const QuestionBanksList = () => {
     ],
     []
   );
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
-    <ContentLayout title={"Question Bank"} subtitle={"List"} isLoading={isLoading}>
+    <ContentLayout title={"Question Bank"} subtitle={"List"}>
       <QuestionBanksFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout
