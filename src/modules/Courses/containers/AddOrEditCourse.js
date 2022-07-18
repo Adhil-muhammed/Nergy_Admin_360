@@ -162,7 +162,7 @@ export const AddOrEditCourse = (props) => {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-sm-12">
+                    <div className="col-sm-6">
                       <div className="form-group">
                         <label htmlFor="first-description-vertical" className="mb-2">
                           Description
@@ -177,9 +177,7 @@ export const AddOrEditCourse = (props) => {
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-sm-12">
+                    <div className="col-sm-6">
                       <div className="form-group">
                         <label htmlFor="Instructions" className="mb-2">
                           Instructions
