@@ -11,6 +11,7 @@ import {
   DashboardCanvas,
   Settings,
   Questions,
+  Certificates,
 } from "modules";
 import AssessmentSection from "modules/AssessmentSection/AssessmentSection";
 import Assessment from "modules/Assessment/Assessment";
@@ -39,6 +40,7 @@ export function Dashboard() {
             <Route element={<Assessment />} path={"/assessments/*"} />
             <Route element={<Report />} path={"/reports/*"} />
             <Route element={<AssessmentSchedule />} path={"/assessment-schedule/*"} />
+            <Route element={<Certificates />} path={"/certificates/*"} />
           </Routes>
           <Footer />
         </div>
