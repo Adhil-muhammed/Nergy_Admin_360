@@ -1,5 +1,7 @@
+import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
+import SidebarMenu from "./SidebarMenu";
 
 export function SideBar() {
   return (
@@ -20,8 +22,10 @@ export function SideBar() {
           </div>
         </div>
         <div className="sidebar-menu">
-          <ul className="menu">
+          <SidebarMenu title="Menu" />
+          {/* <ul className="menu">
             <li className="sidebar-title">Menu</li>
+            
             <li className="sidebar-item">
               <NavLink to={"/admin"} className="sidebar-link">
                 <i className="bi bi-grid-fill" />
@@ -100,7 +104,8 @@ export function SideBar() {
                 <span>Users</span>
               </NavLink>
             </li>
-            {/* <li className="sidebar-item has-sub">
+            //
+            <li className="sidebar-item has-sub">
               <NavLink to={"users"} className="sidebar-link">
                 <i className="bi bi-people-fill" />
                 <span>Users</span>
@@ -113,14 +118,15 @@ export function SideBar() {
                   <a href="extra-component-sweetalert.html">Sweet Alert</a>
                 </li>
               </ul>
-            </li> */}
+            </li> 
+            //
             <li className="sidebar-item  ">
               <NavLink to={"settings"} className="sidebar-link">
                 <i className="bi bi-gear-fill" />
                 <span>Settings</span>
               </NavLink>
-            </li>
-          </ul>
+            </li> 
+          </ul>*/}
         </div>
         <button className="sidebar-toggler btn x">
           <i data-feather="x" />
