@@ -59,6 +59,13 @@ const SidebarMenu = ({ title }) => {
       { id: 9, name: "Reports", pathName: "reports", icon: "bi-book-fill", children: [] },
       {
         id: 10,
+        name: "Certificates",
+        pathName: "certificates",
+        icon: "bi-book-fill",
+        children: [],
+      },
+      {
+        id: 11,
         name: "User",
         pathName: "users",
         icon: "bi-people-fill",
@@ -79,7 +86,7 @@ const SidebarMenu = ({ title }) => {
           },
         ],
       },
-      { id: 11, name: "Settings", pathName: "settings", icon: "bi-gear-fill", children: [] },
+      { id: 12, name: "Settings", pathName: "settings", icon: "bi-gear-fill", children: [] },
     ];
 
     const returnMenuItem = (item, i) => {
