@@ -41,12 +41,12 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [student, setStudent] = useImmer({
     studentId: "",
-    instituteId: -1,
-    batchId: -1,
+    instituteId: "",
+    batchId: "",
     registrationId: "",
     firstName: "",
     lastName: "",
-    gender: -1,
+    gender: "",
     emailAddress: "",
     qualification: "",
     dateOfBirth: "",

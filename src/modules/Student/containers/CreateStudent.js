@@ -131,7 +131,7 @@ export const CreateStudent = () => {
                             "required"
                           )}
                         >
-                          <option value={-1}>---Select---</option>
+                          <option value="">---Select---</option>
                           {institutesQuery?.data?.map((institute) => {
                             return (
                               <option
@@ -167,7 +167,7 @@ export const CreateStudent = () => {
                           }}
                           invalid={validator.current.message("batchId", batchId, "required")}
                         >
-                          <option value={-1}>---Select---</option>
+                          <option value="">---Select---</option>
                           {batchesQuery?.data?.map((batch) => {
                             return (
                               <option key={`batch_${batch.batchId}`} value={batch.batchId}>
@@ -248,7 +248,7 @@ export const CreateStudent = () => {
                           }}
                           invalid={validator.current.message("gender", gender, "required")}
                         >
-                          <option value={-1}>---Select---</option>
+                          <option value="">---Select---</option>
                           <option value={0}>Male</option>
                           <option value={1}>Female</option>
                         </Input>
