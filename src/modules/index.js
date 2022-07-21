@@ -8,3 +8,4 @@ export * from "./Users";
 export * from "./Dashboard";
 export * from "./Settings";
 export * from "./Questions";
+export * from "./Certificates";
