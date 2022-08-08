@@ -13,14 +13,14 @@
 //   );
 // };
 
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const Breadcrumb = ({ breadcrumb }) => {
   return (
     <nav aria-label="breadcrumb" className="breadcrumb-header float-start float-lg-end">
       <ol className="breadcrumb">
         <li className="breadcrumb-item">
-          <NavLink to="/">Dashboard</NavLink>
+          <Link to="/">Dashboard</Link>
         </li>
         {breadcrumb?.map((item, idx) => {
           if (breadcrumb?.length <= 1) {
@@ -32,7 +32,7 @@ export const Breadcrumb = ({ breadcrumb }) => {
           }
           return (
             <li key={idx} className={`${item?.location ? "" : "active"} breadcrumb-item`}>
-              {item.location ? <NavLink to={item.location}>{item.label}</NavLink> : item.label}
+              {item.location ? <Link to={item.location}>{item.label}</Link> : item.label}
             </li>
           );
         })}
