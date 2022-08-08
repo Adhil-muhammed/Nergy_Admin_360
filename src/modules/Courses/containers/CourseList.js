@@ -83,7 +83,7 @@ export const CourseList = (props) => {
     return <LoadingSpinner />;
   }
   return (
-    <ContentLayout title={"Courses"} subtitle={"List"}>
+    <ContentLayout title={"Courses"} subtitle={"List"} breadcrumb={[{ label: "Courses" }]}>
       <CourseIdFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout

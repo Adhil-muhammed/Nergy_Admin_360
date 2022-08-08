@@ -121,7 +121,14 @@ export const CreateQuestion = () => {
   }
 
   return (
-    <ContentLayout title={"Questions"} subtitle={updateMode ? "Edit" : "Create"}>
+    <ContentLayout
+      title={"Questions"}
+      subtitle={updateMode ? "Edit" : "Create"}
+      breadcrumb={[
+        { label: "Questions", location: "/admin/questions" },
+        { label: `${updateMode ? "Edit" : "Create"}` },
+      ]}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

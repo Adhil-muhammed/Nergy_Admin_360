@@ -74,7 +74,14 @@ export const AddorEditCertificates = () => {
     return <LoadingSpinner />;
   }
   return (
-    <ContentLayout subtitle={"Create"} title={"Certificate"}>
+    <ContentLayout
+      subtitle={"Create"}
+      title={"Certificate"}
+      breadcrumb={[
+        { label: "Certificates", location: "/admin/certificates" },
+        { label: `${editMode ? "Edit" : "Create"}` },
+      ]}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

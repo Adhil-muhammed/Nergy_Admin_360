@@ -41,7 +41,14 @@ export const AddOrEditInstitute = () => {
   }
 
   return (
-    <ContentLayout title={"Institutes"} subtitle={editMode ? "Update" : "Create"}>
+    <ContentLayout
+      title={"Institutes"}
+      subtitle={editMode ? "Update" : "Create"}
+      breadcrumb={[
+        { label: "Institute", location: "/admin/institute" },
+        { label: `${editMode ? "Edit" : "Create"}` },
+      ]}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

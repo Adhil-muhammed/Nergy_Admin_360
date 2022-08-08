@@ -79,7 +79,14 @@ const CreateAssessmentSection = () => {
     return <LoadingSpinner />;
   }
   return (
-    <ContentLayout title={"Assessment Section"} subtitle={updateMode ? "Update" : "Create"}>
+    <ContentLayout
+      title={"Assessment Section"}
+      subtitle={updateMode ? "Update" : "Create"}
+      breadcrumb={[
+        { label: "Assessment Section", location: "/admin/assessmentSection" },
+        { label: `${updateMode ? "Edit" : "Create"}` },
+      ]}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

@@ -60,7 +60,11 @@ export const QuestionBanksList = () => {
     return <LoadingSpinner />;
   }
   return (
-    <ContentLayout title={"Question Bank"} subtitle={"List"}>
+    <ContentLayout
+      title={"Question Bank"}
+      subtitle={"List"}
+      breadcrumb={[{ label: "Question Bank" }]}
+    >
       <QuestionBanksFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout

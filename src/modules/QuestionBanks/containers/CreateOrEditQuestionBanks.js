@@ -41,7 +41,14 @@ export const CreateOrEditQuestionBanks = () => {
     return <LoadingSpinner />;
   }
   return (
-    <ContentLayout subtitle={editMode ? "Update" : "Create"} title={"Question Bank"}>
+    <ContentLayout
+      subtitle={editMode ? "Update" : "Create"}
+      title={"Question Bank"}
+      breadcrumb={[
+        { label: "Question Bank", location: "/admin/questionbanks" },
+        { label: `${editMode ? "Edit" : "Create"}` },
+      ]}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

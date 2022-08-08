@@ -49,7 +49,13 @@ export const CreateRole = (props) => {
   }
 
   return (
-    <ContentLayout title={editMode ? "Update" : "Create New"}>
+    <ContentLayout
+      title={editMode ? "Update" : "Create New"}
+      breadcrumb={[
+        { label: "Roles", location: "/admin/role" },
+        { label: `${editMode ? "Edit" : "Create"}` },
+      ]}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-md-6 col-12">

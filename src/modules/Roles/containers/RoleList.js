@@ -57,7 +57,7 @@ export const RoleList = () => {
   }
 
   return (
-    <ContentLayout title={"Roles"} subtitle={"List"}>
+    <ContentLayout title={"Roles"} subtitle={"List"} breadcrumb={[{ label: "Roles" }]}>
       <RoleFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout

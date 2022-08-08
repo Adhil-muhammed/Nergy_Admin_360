@@ -57,7 +57,14 @@ export const AddOrEditBatch = (props) => {
     return <LoadingSpinner />;
   }
   return (
-    <ContentLayout subtitle={editMode ? "Update" : "Create"} title={"Batch"}>
+    <ContentLayout
+      subtitle={editMode ? "Update" : "Create"}
+      title={"Batch"}
+      breadcrumb={[
+        { label: "Batch", location: "/admin/batch" },
+        { label: `${editMode ? "Edit" : "Create"}` },
+      ]}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

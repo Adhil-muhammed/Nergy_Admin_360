@@ -52,10 +52,10 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     {
       contentId: 0,
       title: "",
-      fileName: "",
-      fileURL: "",
-      isExternal: false,
-      isVideo: false,
+      // fileName: "",
+      // fileURL: "",
+      // isExternal: false,
+      // isVideo: false,
     },
   ]);
 
@@ -131,7 +131,6 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
       onToggleModal(false);
     },
   });
-
   const onDelete = (id, isContent = false) => {
     if (isContent) {
       const selected = course.courseContents.find((item) => item.contentId === id);

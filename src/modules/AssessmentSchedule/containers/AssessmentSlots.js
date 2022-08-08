@@ -58,7 +58,14 @@ export const AssessmentSlots = () => {
   }
 
   return (
-    <ContentLayout title={"Assessment Slots"} subtitle={"List"}>
+    <ContentLayout
+      title={"Assessment Slots"}
+      subtitle={"List"}
+      breadcrumb={[
+        { label: "Assessment Schedule", location: "/admin/assessment-schedule" },
+        { label: `Assessment slot ${scheduleId}` },
+      ]}
+    >
       {/* <AssessmentScheduleFilter /> */}
       <TableLayout columns={columns} data={data} />
       <ModalLayout

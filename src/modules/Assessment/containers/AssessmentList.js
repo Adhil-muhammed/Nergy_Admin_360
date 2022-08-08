@@ -87,7 +87,7 @@ export const AssessmentList = (props) => {
 
   return (
     <>
-      <ContentLayout title="Assessments" subtitle="List">
+      <ContentLayout title="Assessments" subtitle="List" breadcrumb={[{ label: "Assessments" }]}>
         <div className="mb-4">
           <Button color="primary" size="sm" onClick={gotoCreate}>
             Create New

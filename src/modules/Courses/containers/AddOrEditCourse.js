@@ -111,7 +111,14 @@ export const AddOrEditCourse = (props) => {
   }
 
   return (
-    <ContentLayout title={"Courses"} subtitle={editMode ? "Update" : "Create new"}>
+    <ContentLayout
+      title={"Courses"}
+      subtitle={editMode ? "Update" : "Create new"}
+      breadcrumb={[
+        { label: "Courses", location: "/admin/courses" },
+        { label: `${editMode ? "Edit" : "Create"}` },
+      ]}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">
@@ -167,7 +174,7 @@ export const AddOrEditCourse = (props) => {
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label htmlFor="first-description-vertical" className="mb-2">
-                          Description
+                          Description*
                         </label>
                         <QuillEditor
                           value={course.description}
@@ -177,12 +184,15 @@ export const AddOrEditCourse = (props) => {
                             })
                           }
                         />
+                        <div className="text-danger">
+                          {validator.current.message("Description", course.description, "required")}
+                        </div>
                       </div>
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label htmlFor="Instructions" className="mb-2">
-                          Instructions
+                          Instructions*
                         </label>
                         <QuillEditor
                           value={course.instructions}
@@ -192,6 +202,13 @@ export const AddOrEditCourse = (props) => {
                             })
                           }
                         />
+                        <div className="text-danger">
+                          {validator.current.message(
+                            "Instructions",
+                            course.instructions,
+                            "required"
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -203,7 +220,7 @@ export const AddOrEditCourse = (props) => {
                         id="first-exam-vertical"
                         className="form-check-input"
                         name="hasExam"
-                        value={course.hasExam}
+                        // value={course.hasExam}
                         checked={course.hasExam}
                         onChange={handleChecked}
                       />
@@ -215,7 +232,7 @@ export const AddOrEditCourse = (props) => {
                         id="first-content-vertical"
                         className="form-check-input"
                         name="isContentEnabled"
-                        value={course.isContentEnabled}
+                        // value={course.isContentEnabled}
                         checked={course.isContentEnabled}
                         onChange={handleChecked}
                       />
@@ -230,7 +247,7 @@ export const AddOrEditCourse = (props) => {
                             <th>Title</th>
                             <th>File name</th>
                             <td>Thumbnail</td>
-                            <th></th>
+                            <th style={{ width: "220px" }}>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -279,7 +296,7 @@ export const AddOrEditCourse = (props) => {
                                     color="primary"
                                     className="mt-4 me-3"
                                     // disabled={courseContent.length < 2}
-                                    onClick={() => onEditContent(index)}
+                                    // onClick={() => onEditContent(index)}
                                   >
                                     Edit
                                   </Button> */}
@@ -397,7 +414,7 @@ export const AddOrEditCourse = (props) => {
                     id="isVideo"
                     className="form-check-input"
                     name="isVideo"
-                    value={courseContent.isVideo}
+                    // value={courseContent.isVideo}
                     checked={courseContent.isVideo}
                     onChange={handleContentChecked}
                   />
@@ -411,7 +428,7 @@ export const AddOrEditCourse = (props) => {
                     id="isExternal"
                     className="form-check-input"
                     name="isExternal"
-                    value={courseContent.isExternal}
+                    // value={courseContent.isExternal}
                     checked={courseContent.isExternal}
                     onChange={handleContentChecked}
                   />

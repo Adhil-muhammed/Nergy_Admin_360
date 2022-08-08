@@ -154,7 +154,14 @@ export const CreateAssessment = () => {
   }
 
   return (
-    <ContentLayout subtitle={updateMode ? "Update" : "Create"} title={"Assessments"}>
+    <ContentLayout
+      subtitle={updateMode ? "Update" : "Create"}
+      title={"Assessments"}
+      breadcrumb={[
+        { label: "Assessments", location: "/admin/assessments" },
+        { label: `${updateMode ? "Edit" : "Create"}` },
+      ]}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

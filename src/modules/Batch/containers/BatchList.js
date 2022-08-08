@@ -63,7 +63,11 @@ export const BatchList = () => {
   }
 
   return (
-    <ContentLayout title={"Batch"} subtitle={"List"}>
+    <ContentLayout
+      title={"Batch"}
+      subtitle={"List"}
+      breadcrumb={[{ label: "Batch", location: "/batch" }]}
+    >
       <BatchFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout

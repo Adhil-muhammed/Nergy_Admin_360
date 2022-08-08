@@ -1,7 +1,6 @@
 import { Loading } from "./Loading";
-
+import { Breadcrumb } from "./Breadcrumb";
 export const ContentLayout = ({ title, subtitle, breadcrumb, children, isLoading }) => {
-  // const { title, subtitle, breadcrumb, children, isLoading } = prop;
   return (
     <>
       {isLoading ? (
@@ -14,7 +13,9 @@ export const ContentLayout = ({ title, subtitle, breadcrumb, children, isLoading
                 <h3>{title}</h3>
               </div>
               {breadcrumb && (
-                <div className="col-12 col-md-6 order-md-2 order-first">{breadcrumb}</div>
+                <div className="col-12 col-md-6 order-md-2 order-first">
+                  <Breadcrumb breadcrumb={breadcrumb} />
+                </div>
               )}
             </div>
           </div>

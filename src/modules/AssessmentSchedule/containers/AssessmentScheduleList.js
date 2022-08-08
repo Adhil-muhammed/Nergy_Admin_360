@@ -85,7 +85,11 @@ export const AssessmentScheduleList = (props) => {
   }
 
   return (
-    <ContentLayout title={"Assessment Schedule"} subtitle={"List"}>
+    <ContentLayout
+      title={"Assessment Schedule"}
+      subtitle={"List"}
+      breadcrumb={[{ label: "Assessment Schedule" }]}
+    >
       <AssessmentScheduleFilter />
       <GenerateAssessmentSchedule />
 

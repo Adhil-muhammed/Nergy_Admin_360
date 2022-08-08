@@ -76,7 +76,7 @@ export const StudentList = () => {
   }
 
   return (
-    <ContentLayout title={"Student"} subtitle={"List"}>
+    <ContentLayout title={"Student"} subtitle={"List"} breadcrumb={[{ label: "Student" }]}>
       <StudentFilter />
       <PaginationTableLayout
         columns={columns}

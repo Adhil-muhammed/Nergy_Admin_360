@@ -74,7 +74,14 @@ export const CreateStudent = () => {
   }
 
   return (
-    <ContentLayout title={"Student"} subtitle={editMode ? "Update" : "Create"}>
+    <ContentLayout
+      title={"Student"}
+      subtitle={editMode ? "Update" : "Create"}
+      breadcrumb={[
+        { label: "Student", location: "/admin/student" },
+        { label: `${editMode ? "Edit" : "Create"}` },
+      ]}
+    >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
           <div className="col-12">

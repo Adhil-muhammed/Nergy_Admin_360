@@ -81,7 +81,11 @@ export const CertificateList = () => {
   }
 
   return (
-    <ContentLayout title={"Certificates"} subtitle={"List"}>
+    <ContentLayout
+      title={"Certificates"}
+      subtitle={"List"}
+      breadcrumb={[{ label: "Certificates" }]}
+    >
       <CertificateFilter />
       {/* <TableLayout columns={columns} data={data} /> */}
       <ModalLayout

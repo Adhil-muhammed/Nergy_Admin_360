@@ -11,7 +11,12 @@ export const SettingsList = () => {
   const inputHandler = () => {};
 
   return (
-    <ContentLayout title={"Settings"} subtitle={"Setting List"} isLoading={isLoading}>
+    <ContentLayout
+      title={"Settings"}
+      subtitle={"Setting List"}
+      isLoading={isLoading}
+      breadcrumb={[{ label: "Settings" }]}
+    >
       <div className="row">
         <form className="form">
           <div className="row">

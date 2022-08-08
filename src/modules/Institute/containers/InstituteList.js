@@ -52,7 +52,7 @@ export const InstituteList = () => {
   }
 
   return (
-    <ContentLayout title={"Institutes"} subtitle={"List"}>
+    <ContentLayout title={"Institutes"} subtitle={"List"} breadcrumb={[{ label: "Institute" }]}>
       <InstituteIdFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout

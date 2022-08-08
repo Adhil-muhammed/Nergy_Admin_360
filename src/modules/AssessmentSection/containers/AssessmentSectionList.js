@@ -70,7 +70,12 @@ const AssessmentSectionList = () => {
 
   return (
     <>
-      <ContentLayout title="Assessment Section" subtitle="List" isLoading={isLoading}>
+      <ContentLayout
+        title="Assessment Section"
+        subtitle="List"
+        isLoading={isLoading}
+        breadcrumb={[{ label: "Assessment Section" }]}
+      >
         <div className="mb-4">
           <Button color="primary" size="sm" onClick={gotoCreate}>
             Create New

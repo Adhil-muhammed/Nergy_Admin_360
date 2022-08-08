@@ -68,7 +68,7 @@ export const UserList = (props) => {
     return <LoadingSpinner />;
   }
   return (
-    <ContentLayout title={"Users"} subtitle={"List"}>
+    <ContentLayout title={"Users"} subtitle={"List"} breadcrumb={[{ label: "Users" }]}>
       <UserIdFilter />
       <TableLayout columns={columns} data={data} />
       <ModalLayout

@@ -66,7 +66,7 @@ export const QuestionsList = (props) => {
 
   return (
     <>
-      <ContentLayout title="Questions" subtitle="List">
+      <ContentLayout title="Questions" subtitle="List" breadcrumb={[{ label: "Questions" }]}>
         <div className="mb-4">
           <Button color="primary" size="sm" onClick={gotoCreate}>
             Create New
