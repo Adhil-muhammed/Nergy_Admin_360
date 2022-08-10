@@ -1,4 +1,4 @@
-import { StudentList, useStudent, CreateStudent, EditStudent } from ".";
+import { StudentList, CreateStudent } from ".";
 import { Routes, Route } from "react-router-dom";
 
 import React from "react";

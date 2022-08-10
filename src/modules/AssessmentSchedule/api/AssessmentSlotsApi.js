@@ -6,7 +6,11 @@ export const getAllSlotsByScheduleID = async (scheduleId) => {
 };
 
 export const deleteAssessmentSlot = async ({ scheduleId, slotId }) => {
-  console.log("deleteAssessmentSlot-api", scheduleId, slotId);
   const res = await Axios.delete(`AssessmentSchedule/${scheduleId}/slots/${slotId}`);
+  return res.data;
+};
+
+export const editAssessmentSlot = async ({ deleteProperties: { scheduleId }, slotProperties }) => {
+  const res = await Axios.put(`AssessmentSchedule/${scheduleId}/slots`, slotProperties);
   return res.data;
 };

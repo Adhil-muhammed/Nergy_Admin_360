@@ -1,7 +1,14 @@
 import React, { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useImmer } from "use-immer";
-import { getStudents, createStudents, updateStudents, deteleStudents, getStudentById } from "..";
+import {
+  getStudents,
+  createStudents,
+  updateStudents,
+  deteleStudents,
+  getStudentById,
+  importStudents,
+} from "..";
 import { useNavigate } from "react-router-dom";
 import { successMessage, successDeletedMessage, errorMessage } from "utils";
 import { getInstitutes } from "modules/Institute";
@@ -15,6 +22,7 @@ const GetCourseKey = "GET_COURSE_FOR_CREATE_STUDENT";
 const Get_STUDENT_BY_ID = "GET_STUDENT_BY_ID";
 
 export const useStudent = ({ load = false, studentId = 0 }) => {
+  const [isTemplateModalShow, setIsTemplateModalShow] = useImmer(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [page, setPage] = useImmer({
@@ -39,6 +47,9 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
   }, [coursesQuery.data]);
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
+  const [studentCsv, setStudentCsv] = useImmer({
+    templateFile: "",
+  });
   const [student, setStudent] = useImmer({
     studentId: "",
     instituteId: "",
@@ -109,6 +120,19 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     },
   });
 
+  const uploadStudentTemplate = useMutation(importStudents, {
+    onError: () => {
+      errorMessage();
+    },
+    onSuccess: () => {
+      successDeletedMessage();
+      // queryClient.invalidateQueries(GetStudentKey);
+    },
+    onSettled: () => {
+      setIsTemplateModalShow(false);
+    },
+  });
+
   const onDelete = React.useCallback(
     (id) => {
       setIsConfirmDelete((draft) => {
@@ -160,5 +184,10 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     institutesQuery,
     courses,
     studentInfo,
+    isTemplateModalShow,
+    setIsTemplateModalShow,
+    uploadStudentTemplate,
+    studentCsv,
+    setStudentCsv,
   };
 };

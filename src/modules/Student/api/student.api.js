@@ -25,3 +25,12 @@ export const deteleStudents = async (studentId) => {
   const res = await Axios.delete(`/Students/${studentId}`);
   return res.data;
 };
+
+export const importStudents = async (content) => {
+  const res = await Axios.post("/Students/ImportStudents", content, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
+};

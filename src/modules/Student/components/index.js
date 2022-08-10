@@ -1,1 +1,1 @@
-export * from "./StudentFilter";
+export * from "./StudentTemplateModal";
