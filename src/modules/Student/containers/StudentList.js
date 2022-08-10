@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { ContentLayout, PaginationTableLayout, ModalLayout } from "shared/components";
 import { StudentTemplateModal } from "..";
 import { Button } from "reactstrap";
@@ -51,35 +51,36 @@ export const StudentList = () => {
     marginBottom: "30px",
   };
 
-  const FileUploader = (props) => {
-    const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-      onDrop: (files) => {
-        setStudentCsv((draft) => {
-          draft.templateFile = files;
-          return draft;
-        });
-      },
+  const onDrop = useCallback(
+    (files) => {
+      if (files.length > 0) {
+        setStudentCsv(files);
+      }
+    },
+    [setStudentCsv]
+  );
+
+  const FileDrop = (props) => {
+    const { getRootProps, getInputProps } = useDropzone({
+      onDrop,
       accept: {
         "text/csv": [".csv"],
       },
       maxFiles: 1,
     });
 
-    const selectedFiles = acceptedFiles?.map((file) => (
-      <li key={file.path}>
-        {file.path} - {file.size} bytes
-      </li>
-    ));
-
     return (
       <section className="container">
         <div {...getRootProps({ className: "dropzone" })} style={dropzone}>
           <input {...getInputProps()} />
-          <p style={{ marginBottom: 0 }}>Drag 'n' drop some files here, or click to select files</p>
+          <p style={{ marginBottom: 0 }}>
+            {studentCsv && studentCsv[0].name ? (
+              <strong style={{ color: "black" }}>{studentCsv[0].name}</strong>
+            ) : (
+              "Drag 'n' drop some files here, or click to select files"
+            )}
+          </p>
         </div>
-        <aside>
-          <ul>{selectedFiles}</ul>
-        </aside>
       </section>
     );
   };
@@ -95,12 +96,10 @@ export const StudentList = () => {
   };
 
   const onUpload = () => {
-    if (studentCsv.templateFile) {
-      uploadStudentTemplate.mutate(studentCsv.templateFile);
+    if (studentCsv) {
+      uploadStudentTemplate.mutate(studentCsv);
     }
   };
-
-  console.log(studentCsv.templateFile);
 
   const ActionButtons = ({ value }) => {
     return (
@@ -191,7 +190,7 @@ export const StudentList = () => {
         size={"lg"}
         onCancel={() => setIsTemplateModalShow(false)}
       >
-        <FileUploader />
+        <FileDrop />
         <div style={{ textAlign: "center" }}>
           <Button color="success" onClick={onUpload}>
             Upload file

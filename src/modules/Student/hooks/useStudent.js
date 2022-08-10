@@ -47,9 +47,7 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
   }, [coursesQuery.data]);
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
-  const [studentCsv, setStudentCsv] = useImmer({
-    templateFile: "",
-  });
+  const [studentCsv, setStudentCsv] = useImmer(undefined);
   const [student, setStudent] = useImmer({
     studentId: "",
     instituteId: "",
