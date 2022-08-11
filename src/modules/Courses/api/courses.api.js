@@ -35,10 +35,10 @@ export const deteleCourses = async (courseId) => {
 
 // COURSE CONTENT API
 
-export const getCourseContentById = async (id) => {
-  const res = await Axios.get(`/Courses/content/${id}`);
-  return res.data;
-};
+// export const getCourseContentById = async (id) => {
+//   const res = await Axios.get(`/Courses/content/${id}`);
+//   return res.data;
+// };
 
 export const createCoursesContent = async (content) => {
   const res = await Axios.post("/Courses/content", content, {

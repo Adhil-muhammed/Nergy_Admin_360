@@ -14,7 +14,8 @@ import "react-datetime/css/react-datetime.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <>
+    {/* <React.StrictMode> */}
     <meta charSet="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
@@ -22,7 +23,8 @@ root.render(
       rel="stylesheet"
     />
     <Master />
-  </React.StrictMode>
+    {/* </React.StrictMode> */}
+  </>
 );
 
 // If you want to start measuring performance in your app, pass a function

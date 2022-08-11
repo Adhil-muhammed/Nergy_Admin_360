@@ -15,7 +15,6 @@ import { successMessage, successDeletedMessage, errorMessage } from "utils";
 
 const GET_COURSES = "GET_COURSES";
 const GET_COURSE_BY_ID = "GET_COURSE_BY_ID";
-// const GET_COURSE_CONTENT_BY_ID = "GET_COURSE_CONTENT_BY_ID";
 
 export const useCourse = ({ load = false, courseId = 0 }) => {
   const navigate = useNavigate();
@@ -52,15 +51,10 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     {
       contentId: 0,
       title: "",
-      // fileName: "",
-      // fileURL: "",
-      // isExternal: false,
-      // isVideo: false,
     },
   ]);
 
   const [courseContent, setCourseContent] = useImmer({
-    courseId: 0,
     title: "",
     contentFile: "",
     fileName: "",
@@ -70,7 +64,6 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [isModalOpen, setIsModalOpen] = useImmer(false);
-
   const createCourse = useMutation(createCourses, {
     onError: (e, newData, previousData) => {
       errorMessage("Unable to create!");
@@ -112,10 +105,10 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     },
     onSuccess: () => {
       successMessage();
+      queryClient.invalidateQueries(`${GET_COURSE_BY_ID}_${courseId}`);
     },
     onSettled: () => {
       setIsModalOpen(false);
-      window.location.reload();
     },
   });
 
@@ -125,18 +118,23 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     },
     onSuccess: () => {
       successDeletedMessage();
-      window.location.reload();
+      queryClient.invalidateQueries(`${GET_COURSE_BY_ID}_${courseId}`);
     },
     onSettled: () => {
       onToggleModal(false);
     },
   });
+
+  const selectedCourseContentInfo = (id) => {
+    const selected = courseInfo.data.courseContents.find((item) => item.contentId === id);
+    if (selected) {
+      setCourseContents(selected);
+    }
+  };
+
   const onDelete = (id, isContent = false) => {
     if (isContent) {
-      const selected = course.courseContents.find((item) => item.contentId === id);
-      if (selected) {
-        setCourseContents(selected);
-      }
+      selectedCourseContentInfo(id);
       setIsConfirmDelete((draft) => {
         draft = true;
         return draft;

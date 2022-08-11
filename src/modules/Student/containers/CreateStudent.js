@@ -6,13 +6,14 @@ import Select from "react-select";
 import SimpleReactValidator from "simple-react-validator";
 import moment from "moment";
 import { useStudent } from "../hooks";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import InputControl from "shared/components/InputControl";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { LoadingButton } from "shared/components/LoadingButton";
 
 export const CreateStudent = () => {
   const { studentId } = useParams();
+  const navigate = useNavigate();
   const editMode = studentId !== undefined;
   const [update, forceUpdate] = useState();
   const validator = useRef(
@@ -67,6 +68,10 @@ export const CreateStudent = () => {
       validator.current.showMessages();
       forceUpdate(1);
     }
+  };
+
+  const onCancel = () => {
+    navigate("..", { replace: true });
   };
 
   if (studentInfo.isLoading) {
@@ -444,6 +449,15 @@ export const CreateStudent = () => {
                       className="btn btn-light-secondary me-1 mb-1"
                     >
                       Reset
+                    </button>
+                    <button
+                      type="reset"
+                      className="btn btn-light-secondary me-1 mb-1"
+                      onClick={() => {
+                        onCancel();
+                      }}
+                    >
+                      Cancel
                     </button>
                   </div>
                 </div>

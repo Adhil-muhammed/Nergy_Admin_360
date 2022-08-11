@@ -292,21 +292,14 @@ export const AddOrEditCourse = (props) => {
                                   )}
                                 </td>
                                 <td>
-                                  {/* <Button
-                                    color="primary"
-                                    className="mt-4 me-3"
-                                    // disabled={courseContent.length < 2}
-                                    // onClick={() => onEditContent(index)}
-                                  >
-                                    Edit
-                                  </Button> */}
                                   <Button
                                     color="danger"
                                     className="mt-4"
-                                    // disabled={courseContent.length < 2}
+                                    size="sm"
                                     onClick={() => onDelete(content.contentId, true)}
                                   >
-                                    Delete
+                                    <i className="bi bi-trash" style={{ fontSize: "10px" }}></i>{" "}
+                                    <span>Delete</span>
                                   </Button>
                                 </td>
                               </tr>
