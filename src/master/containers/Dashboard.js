@@ -12,6 +12,7 @@ import {
   Settings,
   Questions,
   Certificates,
+  Notifications,
 } from "modules";
 import AssessmentSection from "modules/AssessmentSection/AssessmentSection";
 import Assessment from "modules/Assessment/Assessment";
@@ -41,6 +42,7 @@ export function Dashboard() {
             <Route element={<Report />} path={"/reports/*"} />
             <Route element={<AssessmentSchedule />} path={"/assessment-schedule/*"} />
             <Route element={<Certificates />} path={"/certificates/*"} />
+            <Route element={<Notifications />} path={"/notifications/*"} />
           </Routes>
           <Footer />
         </div>

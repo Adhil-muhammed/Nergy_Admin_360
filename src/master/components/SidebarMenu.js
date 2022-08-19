@@ -87,6 +87,13 @@ const SidebarMenu = ({ title }) => {
         ],
       },
       { id: 12, name: "Settings", pathName: "settings", icon: "bi-gear-fill", children: [] },
+      {
+        id: 13,
+        name: "Notifications",
+        pathName: "notifications",
+        icon: "bi-chat-right-text-fill",
+        children: [],
+      },
     ];
 
     const returnMenuItem = (item, i) => {
