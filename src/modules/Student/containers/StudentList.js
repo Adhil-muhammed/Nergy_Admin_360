@@ -151,7 +151,7 @@ export const StudentList = () => {
             Create New
           </Button>
           <Button className="ms-3" color="success" size="sm" onClick={getStudentsTemplate}>
-            <i style={{ fontSize: "12px" }} class="bi bi-file-earmark-arrow-down"></i>{" "}
+            <i style={{ fontSize: "12px" }} className="bi bi-file-earmark-arrow-down"></i>{" "}
             <span>
               Download template {"("}.csv{")"}
             </span>
@@ -163,7 +163,7 @@ export const StudentList = () => {
             size="sm"
             onClick={() => setIsTemplateModalShow(true)}
           >
-            <i style={{ fontSize: "12px" }} class="bi bi-file-earmark-arrow-up"></i>{" "}
+            <i style={{ fontSize: "12px" }} className="bi bi-file-earmark-arrow-up"></i>{" "}
             <span>
               Upload template {"("}.csv{")"}
             </span>

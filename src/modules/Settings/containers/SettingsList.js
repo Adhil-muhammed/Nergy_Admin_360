@@ -16,6 +16,8 @@ export const SettingsList = () => {
     navigate("/admin", { replace: true });
   };
 
+  console.log(data);
+
   return (
     <ContentLayout
       title={"Settings"}
