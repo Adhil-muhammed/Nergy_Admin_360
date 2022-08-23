@@ -23,7 +23,7 @@ export const CreateUser = () => {
     load: false,
     userId: userId,
   });
-  const { firstName, lastName, email, password, confirmPassword, role } = user;
+  const { firstName, lastName, email, password, confirmPassword, role, userStatus } = user;
 
   const onHandleChange = (e) => {
     const { name, value } = e.target;
@@ -129,7 +129,7 @@ export const CreateUser = () => {
                         </FormFeedback>
                       </div>
                     </div>
-                    <div className="col-sm-6">
+                    <div className={editMode ? "col-sm-3" : "col-sm-6"}>
                       <div className="form-group">
                         <label htmlFor="user-role-select" className="mb-2">
                           Role
@@ -159,6 +159,34 @@ export const CreateUser = () => {
                         </FormFeedback>
                       </div>
                     </div>
+                    {editMode && (
+                      <div className="col-sm-3">
+                        <div className="form-group">
+                          <label htmlFor="user-userStatus-select" className="mb-2">
+                            Status
+                          </label>
+                          <Input
+                            value={userStatus}
+                            id="first-userStatus-vertical"
+                            name="userStatus"
+                            type="select"
+                            onChange={(e) => {
+                              setUser((draft) => {
+                                draft.userStatus = parseInt(e.target.value, 10);
+                              });
+                            }}
+                            invalid={validator.current.message("Status", userStatus, "required")}
+                          >
+                            <option value={""}>Select</option>
+                            <option value={0}>Active</option>
+                            <option value={1}>Inctive</option>
+                          </Input>
+                          <FormFeedback>
+                            {validator.current.message("Status", userStatus, "required")}
+                          </FormFeedback>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   {!editMode && (
                     <div className="row">
