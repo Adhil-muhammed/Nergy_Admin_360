@@ -43,7 +43,9 @@ export const AddOrEditNotification = () => {
 
   const onSubmit = () => {
     if (validator.current.allValid()) {
-      editMode ? editNotification.mutate(notification) : createNotification.mutate(notification);
+      editMode
+        ? editNotification.mutate({ ...notification, notificationId })
+        : createNotification.mutate(notification);
     } else {
       validator.current.showMessages();
       forceUpdate(1);

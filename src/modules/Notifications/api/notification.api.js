@@ -15,8 +15,8 @@ export const createNotifications = async (notification) => {
   return res.data;
 };
 
-export const updateNotifications = async (notification) => {
-  const res = await Axios.put("/Notifications", notification);
+export const updateNotifications = async (content) => {
+  const res = await Axios.put(`/Notifications/${content.notificationId}`, content);
   return res.data;
 };
 
