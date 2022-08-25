@@ -128,6 +128,10 @@ export const StudentList = () => {
         Header: "Last Name",
         accessor: "lastName",
       },
+      {
+        Header: "Email",
+        accessor: "emailAddress",
+      },
 
       {
         Header: "Actions",
