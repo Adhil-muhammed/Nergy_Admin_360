@@ -54,10 +54,6 @@ export const NotificationList = () => {
       accessor: "title",
     },
     {
-      Header: "Content",
-      accessor: "content",
-    },
-    {
       Header: "Status",
       accessor: "isActive",
       Cell: StatusIndicator,

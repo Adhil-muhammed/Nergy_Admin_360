@@ -73,7 +73,7 @@ export const AddOrEditNotification = () => {
               <div className="form-body">
                 <div className="col-12">
                   <div className="row">
-                    <div className="col-sm-6">
+                    <div className="col-12">
                       <div className="form-group">
                         <label className="mb-2" htmlFor="first-title-vertical">
                           Title
@@ -93,12 +93,12 @@ export const AddOrEditNotification = () => {
                         </FormFeedback>
                       </div>
                     </div>
-                    <div className="col-sm-6">
+                    <div className="col-12">
                       <div className="form-group">
                         <label className="mb-2" htmlFor="first-content-vertical">
                           Content
                         </label>
-                        <Input
+                        {/* <Input
                           type="text"
                           id="first-content-vertical"
                           className="form-control"
@@ -110,8 +110,8 @@ export const AddOrEditNotification = () => {
                         />
                         <FormFeedback>
                           {validator.current.message("Content", content, "required")}
-                        </FormFeedback>
-                        {/* <QuillEditor
+                        </FormFeedback> */}
+                        <QuillEditor
                           value={content}
                           onChange={(value) => {
                             setNotification((draft) => {
@@ -121,7 +121,7 @@ export const AddOrEditNotification = () => {
                         />
                         <div className="text-danger">
                           {validator.current.message("Content", content, "required")}
-                        </div> */}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -133,7 +133,6 @@ export const AddOrEditNotification = () => {
                         id="first-active-vertical"
                         className="form-check-input"
                         name="isActive"
-                        // value={course.hasExam}
                         checked={isActive}
                         onChange={handleChecked}
                       />
