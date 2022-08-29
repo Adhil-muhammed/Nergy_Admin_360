@@ -147,13 +147,13 @@ export const StudentList = () => {
         accessor: "lastName",
       },
       {
+        Header: "Email",
+        accessor: "emailAddress",
+      },
+      {
         Header: "Status",
         accessor: "userStatus",
         Cell: StatusIndicator,
-      },
-      {
-        Header: "Email",
-        accessor: "emailAddress",
       },
       {
         Header: "Actions",
