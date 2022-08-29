@@ -152,6 +152,10 @@ export const StudentList = () => {
         Cell: StatusIndicator,
       },
       {
+        Header: "Email",
+        accessor: "emailAddress",
+      },
+      {
         Header: "Actions",
         accessor: "studentId",
         id: "actions",
