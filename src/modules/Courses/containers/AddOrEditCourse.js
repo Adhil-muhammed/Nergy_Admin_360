@@ -379,7 +379,12 @@ export const AddOrEditCourse = (props) => {
                 placeholder="Title"
                 value={courseContent.title}
                 onChange={(e) => onHandleChange(e, true)}
+                invalid={validator.current.message("Title", courseContent.title, "required")}
               />
+
+              <FormFeedback>
+                {validator.current.message("Title", courseContent.title, "required")}
+              </FormFeedback>
               {courseContent.isExternal === true && (
                 <InputControl
                   label="Content/File URL"
@@ -390,13 +395,27 @@ export const AddOrEditCourse = (props) => {
                 />
               )}
               {courseContent.isExternal === false && (
-                <InputControl
-                  label="File"
-                  type="file"
-                  placeholder="File"
-                  name="contentFile"
-                  onChange={(e) => handleUpload(e, true)}
-                />
+                <>
+                  <InputControl
+                    label="File"
+                    type="file"
+                    placeholder="File"
+                    name="contentFile"
+                    onChange={(e) => handleUpload(e, true)}
+                    invalid={validator.current.message(
+                      "ContentFile",
+                      courseContent.contentFile,
+                      "required"
+                    )}
+                  />
+                  <FormFeedback>
+                    {validator.current.message(
+                      "ContentFile",
+                      courseContent.contentFile,
+                      "required"
+                    )}
+                  </FormFeedback>
+                </>
               )}
 
               <div className="mt-4">
@@ -407,7 +426,6 @@ export const AddOrEditCourse = (props) => {
                     id="isVideo"
                     className="form-check-input"
                     name="isVideo"
-                    // value={courseContent.isVideo}
                     checked={courseContent.isVideo}
                     onChange={handleContentChecked}
                   />
@@ -421,7 +439,6 @@ export const AddOrEditCourse = (props) => {
                     id="isExternal"
                     className="form-check-input"
                     name="isExternal"
-                    // value={courseContent.isExternal}
                     checked={courseContent.isExternal}
                     onChange={handleContentChecked}
                   />

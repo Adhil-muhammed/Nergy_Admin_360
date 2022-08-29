@@ -3,6 +3,7 @@ import { authenticate, getForgotPassword, resetPassword } from "..";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "store/AppStore";
+import { errorMessage, Axios } from "utils";
 
 export const useAuthenticate = () => {
   const { setAppState } = useAppStore();
@@ -32,8 +33,8 @@ export const useAuthenticate = () => {
         navigate("../admin", { replace: true });
       }
     },
-    onError: () => {
-      alert("there was an error");
+    onError: (data) => {
+      errorMessage(data.response.data.errors[0]);
     },
     onSettled: () => {
       queryClient.invalidateQueries("create");
@@ -50,8 +51,8 @@ export const useAuthenticate = () => {
         navigate("../resetPassword", { replace: true });
       }
     },
-    onError: () => {
-      alert("there was an error");
+    onError: (data) => {
+      errorMessage(data.response.data.errors[0]);
     },
     onSettled: () => {
       queryClient.invalidateQueries("create");
@@ -70,13 +71,18 @@ export const useAuthenticate = () => {
         navigate("/forgotPassword", { replace: true });
       }
     },
-    onError: () => {
-      alert("there was an error");
+    onError: (data) => {
+      errorMessage(data.response.data.errors[0]);
     },
     onSettled: () => {
       queryClient.invalidateQueries("create");
     },
   });
+
+  const userSignOut = async () => {
+    localStorage.removeItem("localData");
+    await Axios.post("/Accounts/SignOut");
+  };
 
   return {
     authenticateState,
@@ -88,5 +94,6 @@ export const useAuthenticate = () => {
     resetPasswordState,
     setResetPasswordState,
     resetPasswordAuth,
+    userSignOut,
   };
 };

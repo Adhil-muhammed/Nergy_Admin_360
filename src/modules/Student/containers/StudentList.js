@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react";
 import { ContentLayout, PaginationTableLayout, ModalLayout } from "shared/components";
 import { StudentTemplateModal } from "..";
-import { Button } from "reactstrap";
+import { Button, Badge } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useStudent } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
@@ -101,6 +101,24 @@ export const StudentList = () => {
     }
   };
 
+  const StatusIndicator = ({ value }) => {
+    return (
+      <Badge
+        color={
+          value === 3 ? "warning" : value === 2 ? "primary" : value === 1 ? "secondary" : "success"
+        }
+      >
+        {value === 3
+          ? "Invited"
+          : value === 2
+          ? "Pending Invite"
+          : value === 1
+          ? "Inactive"
+          : "Active"}
+      </Badge>
+    );
+  };
+
   const ActionButtons = ({ value }) => {
     return (
       <>
@@ -128,7 +146,11 @@ export const StudentList = () => {
         Header: "Last Name",
         accessor: "lastName",
       },
-
+      {
+        Header: "Status",
+        accessor: "userStatus",
+        Cell: StatusIndicator,
+      },
       {
         Header: "Actions",
         accessor: "studentId",

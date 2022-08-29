@@ -1,11 +1,11 @@
 import React from "react";
 import { useAppStore } from "store/AppStore";
-import { Axios } from "utils";
 import { useImmer } from "use-immer";
 import Avatar from "../../assets/images/faces/1.jpg";
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { ModalLayout } from "shared/components";
+import { useAuthenticate } from "../hooks";
 
 export function Header() {
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
@@ -16,10 +16,8 @@ export function Header() {
     user: { email, firstName },
   } = AppState;
 
-  const signOut = async () => {
-    localStorage.removeItem("localData");
-    await Axios.post("/Accounts/SignOut");
-  };
+  const { userSignOut } = useAuthenticate();
+
   const toggleDropdown = () => {
     setIsDropDown((state) => !state);
   };
@@ -40,7 +38,7 @@ export function Header() {
       <header className="mb-3">
         <nav className="navbar navbar-expand navbar-light ">
           <div className="container-fluid">
-            <a href="#" className="burger-btn d-block">
+            <a className="burger-btn d-block">
               <i className="bi bi-justify fs-3" />
             </a>
             <button
@@ -139,9 +137,7 @@ export function Header() {
         isOpen={isConfirmDelete}
         title={"Confirm"}
         message={`Are you sure? Do you want to logout?`}
-        onConfirm={() => {
-          signOut();
-        }}
+        onConfirm={() => userSignOut()}
         onCancel={() => onToggleModal(false)}
       />
     </>

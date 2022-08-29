@@ -44,7 +44,10 @@ export const CreateStudent = () => {
     mobile,
     region,
     selectedCourses,
+    userStatus,
   } = student;
+
+  console.log(student);
 
   const onChangeDate = (e) => {
     const { name, value } = e.target;
@@ -401,9 +404,41 @@ export const CreateStudent = () => {
                         </FormFeedback>
                       </div>
                     </div>
+                    <div className="col-sm-6">
+                      <div className="form-group">
+                        <label className="mb-2" htmlFor="first-status-vertical">
+                          Status
+                        </label>
+                        <Input
+                          value={userStatus}
+                          id="first-status-vertical"
+                          name="status"
+                          type="select"
+                          onChange={(e) => {
+                            setStudent((draft) => {
+                              draft.userStatus = parseInt(e.target.value, 10);
+                            });
+                          }}
+                          invalid={validator.current.message("Status", userStatus, "required")}
+                        >
+                          <option value="">---Select---</option>
+                          <option value={0}>Active</option>
+                          <option value={1}>Inactive</option>
+                          <option value={2}>Pending Invite</option>
+                          <option value={3}>Invited</option>
+                        </Input>
+                        <FormFeedback>
+                          {validator.current.message("Status", userStatus, "required")}
+                        </FormFeedback>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
                     <div className="col-6">
                       <div className="form-group">
-                        <label htmlFor="first-name-vertical">Courses*</label>
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Courses*
+                        </label>
                         <InputControl
                           type="react-select"
                           isMulti
