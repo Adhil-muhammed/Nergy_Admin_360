@@ -48,13 +48,6 @@ export const useSupportTicket = ({ load = false, ticketId = 0 }) => {
     status: 0,
   });
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setSupportTicket((draft) => {
-      draft[name] = value;
-    });
-  };
-
   const createSupportTickets = useMutation(createSupportTicket, {
     onError: (e, newData, previousData) => {
       errorMessage("Unable to create!");
@@ -118,7 +111,6 @@ export const useSupportTicket = ({ load = false, ticketId = 0 }) => {
     createSupportTickets,
     editSupportTickets,
     onDelete,
-    onChange,
     isConfirmDelete,
     onToggleModal,
     deteleSupportTicket,

@@ -63,9 +63,6 @@ export const SupportTicketList = () => {
     {
       Header: "Date",
       accessor: "date",
-      // Cell: function (value) {
-      //   return moment(value).format("YYYY-MM-DD");
-      // },
     },
     {
       Header: "Status",

@@ -11,11 +11,9 @@ import { LoadingButton } from "shared/components/LoadingButton";
 import { QuillEditor } from "shared/components/QuillEditor";
 import { useUser } from "modules/Users";
 import { useStudent } from "modules/Student";
-import { useAppStore } from "store/AppStore";
+import InputControl from "shared/components/InputControl";
 
 export const AddOrEditSupportTicket = (props) => {
-  const { AppState } = useAppStore();
-  const { user } = AppState;
   const { usersQuery } = useUser({ load: true });
   const { studentsQuery } = useStudent({ load: true });
   const { data: userData } = usersQuery;
@@ -37,7 +35,6 @@ export const AddOrEditSupportTicket = (props) => {
     createSupportTickets,
     editSupportTickets,
     supportTicketInfo,
-    onChange,
   } = useSupportTicket({
     load: false,
     ticketId: ticketId,
@@ -67,6 +64,13 @@ export const AddOrEditSupportTicket = (props) => {
     const tdate = m.format("YYYY-MM-DDTHH:mm:ss").toString();
     setSupportTicket((draft) => {
       draft.date = tdate;
+    });
+  };
+
+  const onSelectChange = (e, name) => {
+    const { value } = e;
+    setSupportTicket((draft) => {
+      draft[name] = value;
     });
   };
 
@@ -152,43 +156,19 @@ export const AddOrEditSupportTicket = (props) => {
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label className="mb-2" htmlFor="first-userid-vertical">
-                          user Id
+                          User Id
                         </label>
-                        <Input
-                          type="text"
-                          id="first-userid-vertical"
-                          className="form-control"
+                        <InputControl
+                          type="react-select"
+                          options={userIdList}
                           name="userId"
-                          placeholder="User Id"
-                          value={user.userId}
-                          onChange={onChange}
-                          invalid={validator.current.message("userId", userId, "required")}
-                          readOnly
+                          value={userId !== "" && userIdList.find((c) => c.value == userId)}
+                          isValid={!validator.current.message("studentId", userId, "required")}
+                          onChange={(e) => onSelectChange(e, "userId")}
                         />
-                        <FormFeedback>
+                        <div className="text-danger">
                           {validator.current.message("userId", userId, "required")}
-                        </FormFeedback>
-                        {/* <Input
-                          value={userId}
-                          id="first-userid-vertical"
-                          name="userId"
-                          type="select"
-                          onChange={onChange}
-                          invalid={validator.current.message("userId", userId, "required")}
-                        >
-                          <option value={""}>Select</option>
-                          {userIdList &&
-                            userIdList.map((c) => {
-                              return (
-                                <option key={`userId_${c.label}`} value={c.value}>
-                                  {c.label}
-                                </option>
-                              );
-                            })}
-                        </Input>
-                        <FormFeedback>
-                          {validator.current.message("userId", userId, "required")}
-                        </FormFeedback> */}
+                        </div>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -196,40 +176,19 @@ export const AddOrEditSupportTicket = (props) => {
                         <label className="mb-2" htmlFor="first-studentid-vertical">
                           Student Id
                         </label>
-                        {/* <Input
-                          type="text"
-                          id="first-studentid-vertical"
-                          className="form-control"
+                        <InputControl
+                          type="react-select"
+                          options={studentIdList}
                           name="studentId"
-                          placeholder="Student Id"
-                          value={studentId}
-                          onChange={onChange}
-                          invalid={validator.current.message("studentId", studentId, "required")}
+                          value={
+                            studentId !== "" && studentIdList.find((c) => c.value == studentId)
+                          }
+                          isValid={!validator.current.message("studentId", studentId, "required")}
+                          onChange={(e) => onSelectChange(e, "studentId")}
                         />
-                        <FormFeedback>
+                        <div className="text-danger">
                           {validator.current.message("studentId", studentId, "required")}
-                        </FormFeedback> */}
-                        <Input
-                          value={studentId}
-                          id="first-studentid-vertical"
-                          name="studentId"
-                          type="select"
-                          onChange={onChange}
-                          invalid={validator.current.message("studentId", studentId, "required")}
-                        >
-                          <option value={""}>Select</option>
-                          {studentIdList &&
-                            studentIdList.map((s) => {
-                              return (
-                                <option key={`userId_${s.label}`} value={s.value}>
-                                  {s.label}
-                                </option>
-                              );
-                            })}
-                        </Input>
-                        <FormFeedback>
-                          {validator.current.message("studentId", studentId, "required")}
-                        </FormFeedback>
+                        </div>
                       </div>
                     </div>
                   </div>
