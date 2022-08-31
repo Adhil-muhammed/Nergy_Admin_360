@@ -94,6 +94,13 @@ const SidebarMenu = ({ title }) => {
         icon: "bi-chat-right-text-fill",
         children: [],
       },
+      {
+        id: 14,
+        name: "Support Ticket",
+        pathName: "supportTicket",
+        icon: "bi-tools",
+        children: [],
+      },
     ];
 
     const returnMenuItem = (item, i) => {

@@ -47,8 +47,6 @@ export const CreateStudent = () => {
     userStatus,
   } = student;
 
-  console.log(student);
-
   const onChangeDate = (e) => {
     const { name, value } = e.target;
     setStudent((draft) => {

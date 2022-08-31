@@ -10,3 +10,4 @@ export * from "./Settings";
 export * from "./Questions";
 export * from "./Certificates";
 export * from "./Notifications";
+export * from "./SupportTickets";
