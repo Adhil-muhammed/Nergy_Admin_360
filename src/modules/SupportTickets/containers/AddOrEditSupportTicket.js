@@ -11,8 +11,11 @@ import { LoadingButton } from "shared/components/LoadingButton";
 import { QuillEditor } from "shared/components/QuillEditor";
 import { useUser } from "modules/Users";
 import { useStudent } from "modules/Student";
+import { useAppStore } from "store/AppStore";
 
 export const AddOrEditSupportTicket = (props) => {
+  const { AppState } = useAppStore();
+  const { user } = AppState;
   const { usersQuery } = useUser({ load: true });
   const { studentsQuery } = useStudent({ load: true });
   const { data: userData } = usersQuery;
@@ -151,20 +154,21 @@ export const AddOrEditSupportTicket = (props) => {
                         <label className="mb-2" htmlFor="first-userid-vertical">
                           user Id
                         </label>
-                        {/* <Input
+                        <Input
                           type="text"
                           id="first-userid-vertical"
                           className="form-control"
                           name="userId"
                           placeholder="User Id"
-                          value={userId}
+                          value={user.userId}
                           onChange={onChange}
                           invalid={validator.current.message("userId", userId, "required")}
+                          readOnly
                         />
                         <FormFeedback>
                           {validator.current.message("userId", userId, "required")}
-                        </FormFeedback> */}
-                        <Input
+                        </FormFeedback>
+                        {/* <Input
                           value={userId}
                           id="first-userid-vertical"
                           name="userId"
@@ -184,7 +188,7 @@ export const AddOrEditSupportTicket = (props) => {
                         </Input>
                         <FormFeedback>
                           {validator.current.message("userId", userId, "required")}
-                        </FormFeedback>
+                        </FormFeedback> */}
                       </div>
                     </div>
                     <div className="col-sm-6">

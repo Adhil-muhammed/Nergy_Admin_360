@@ -6,7 +6,6 @@ import { Button, Badge } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSupportTicket } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
-import moment from "moment";
 
 export const SupportTicketList = () => {
   const {

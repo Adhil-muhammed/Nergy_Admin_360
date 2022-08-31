@@ -50,7 +50,6 @@ export const useSupportTicket = ({ load = false, ticketId = 0 }) => {
 
   const onChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setSupportTicket((draft) => {
       draft[name] = value;
     });
