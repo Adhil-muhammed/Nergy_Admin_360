@@ -29,3 +29,8 @@ export const createSupportTicketReply = async (reply) => {
   const res = await Axios.post("/SupportTickets/Reply", reply);
   return res.data;
 };
+
+export const deleteTicketsReply = async (id) => {
+  const res = await Axios.delete(`/SupportTickets/Reply/${id}`);
+  return res.data;
+};

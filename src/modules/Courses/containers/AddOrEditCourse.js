@@ -20,6 +20,12 @@ export const AddOrEditCourse = (props) => {
     })
   );
 
+  const contentValidator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
+
   const {
     course,
     setCourse,
@@ -83,17 +89,21 @@ export const AddOrEditCourse = (props) => {
       draft.contentFile = name === "isExternal" ? null : draft.contentFile;
     });
   };
-
-  const onSubmit = (isContent = false) => {
+  const onSubmit = () => {
     if (validator.current.allValid()) {
-      if (isContent) {
-        createCourseContent.mutate({ ...courseContent, courseId });
-        setIsModalOpen(false);
-      } else {
-        editMode ? editCourse.mutate(course) : createCourse.mutate(course);
-      }
+      editMode ? editCourse.mutate(course) : createCourse.mutate(course);
     } else {
       validator.current.showMessages();
+      forceUpdate(1);
+    }
+  };
+
+  const onContentSubmit = () => {
+    if (contentValidator.current.allValid()) {
+      createCourseContent.mutate({ ...courseContent, courseId });
+      setIsModalOpen(false);
+    } else {
+      contentValidator.current.showMessages();
       forceUpdate(1);
     }
   };
@@ -367,7 +377,7 @@ export const AddOrEditCourse = (props) => {
           isOpen={isModalOpen}
           title={"Add course content"}
           onSave={() => {
-            onSubmit(true);
+            onContentSubmit();
           }}
           onCancel={() => setIsModalOpen(false)}
         >
@@ -379,11 +389,11 @@ export const AddOrEditCourse = (props) => {
                 placeholder="Title"
                 value={courseContent.title}
                 onChange={(e) => onHandleChange(e, true)}
-                invalid={validator.current.message("Title", courseContent.title, "required")}
+                invalid={contentValidator.current.message("Title", courseContent.title, "required")}
               />
 
               <FormFeedback>
-                {validator.current.message("Title", courseContent.title, "required")}
+                {contentValidator.current.message("Title", courseContent.title, "required")}
               </FormFeedback>
               {courseContent.isExternal === true && (
                 <InputControl
@@ -402,14 +412,14 @@ export const AddOrEditCourse = (props) => {
                     placeholder="File"
                     name="contentFile"
                     onChange={(e) => handleUpload(e, true)}
-                    invalid={validator.current.message(
+                    invalid={contentValidator.current.message(
                       "ContentFile",
                       courseContent.contentFile,
                       "required"
                     )}
                   />
                   <FormFeedback>
-                    {validator.current.message(
+                    {contentValidator.current.message(
                       "ContentFile",
                       courseContent.contentFile,
                       "required"

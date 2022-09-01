@@ -7,6 +7,8 @@ import {
   createSupportTicket,
   updateSupportTicket,
   deteleSupportTickets,
+  createSupportTicketReply,
+  deleteTicketsReply,
 } from "..";
 import { useNavigate } from "react-router-dom";
 import { successMessage, successDeletedMessage, errorMessage } from "utils";
@@ -46,7 +48,22 @@ export const useSupportTicket = ({ load = false, ticketId = 0 }) => {
     studentId: "",
     userId: "",
     status: 0,
+    replies: [],
   });
+
+  const [reply, setReply] = useImmer({
+    date: "",
+    replyMessage: "",
+    ticketId: "",
+    userId: "",
+  });
+
+  const [ticketReply, setTicketReply] = useImmer({
+    replyId: "",
+    replyMessage: "",
+  });
+
+  const [isModalOpen, setIsModalOpen] = useImmer(false);
 
   const createSupportTickets = useMutation(createSupportTicket, {
     onError: (e, newData, previousData) => {
@@ -83,14 +100,52 @@ export const useSupportTicket = ({ load = false, ticketId = 0 }) => {
     },
   });
 
-  const onDelete = (id) => {
-    const selectedTicket = supportTicketsQuery.data.find((c) => c.ticketId === id);
-    if (selectedTicket) setSupportTicket(selectedTicket);
+  const createSupportTicketsReply = useMutation(createSupportTicketReply, {
+    onError: (e, newData, previousData) => {
+      errorMessage("Unable to create!");
+    },
+    onSuccess: () => {
+      successMessage();
+      queryClient.invalidateQueries(`${GET_SUPPORT_TICKETS_BY_ID}_${ticketId}`);
+      setIsModalOpen(false);
+    },
+  });
 
-    setIsConfirmDelete((draft) => {
-      draft = true;
-      return draft;
-    });
+  const deleteTicketReply = useMutation(deleteTicketsReply, {
+    onSuccess: () => {
+      successDeletedMessage();
+      queryClient.invalidateQueries(`${GET_SUPPORT_TICKETS_BY_ID}_${ticketId}`);
+    },
+    onError: (e, newData, previousData) => {
+      errorMessage("Unable to delete!");
+    },
+    onSettled: () => {
+      onToggleModal(false);
+    },
+  });
+
+  const selectedReplyInfo = (id) => {
+    const selectedReply = supportTicketInfo.data.replies.find((c) => c.replyId === id);
+    console.log(selectedReply);
+    if (selectedReply) setTicketReply(selectedReply);
+  };
+
+  const onDelete = (id, isReply = false) => {
+    if (isReply) {
+      selectedReplyInfo(id);
+      setIsConfirmDelete((draft) => {
+        draft = true;
+        return draft;
+      });
+    } else {
+      const selectedTicket = supportTicketsQuery.data.find((c) => c.ticketId === id);
+      if (selectedTicket) setSupportTicket(selectedTicket);
+
+      setIsConfirmDelete((draft) => {
+        draft = true;
+        return draft;
+      });
+    }
   };
 
   const onToggleModal = React.useCallback(
@@ -110,9 +165,16 @@ export const useSupportTicket = ({ load = false, ticketId = 0 }) => {
     supportTicketInfo,
     createSupportTickets,
     editSupportTickets,
+    createSupportTicketsReply,
     onDelete,
     isConfirmDelete,
     onToggleModal,
     deteleSupportTicket,
+    reply,
+    setReply,
+    isModalOpen,
+    setIsModalOpen,
+    ticketReply,
+    deleteTicketReply,
   };
 };
