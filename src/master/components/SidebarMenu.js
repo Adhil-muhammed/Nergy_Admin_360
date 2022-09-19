@@ -101,6 +101,13 @@ const SidebarMenu = ({ title }) => {
         icon: "bi-tools",
         children: [],
       },
+      {
+        id: 15,
+        name: "Program",
+        pathName: "program",
+        icon: "bi-file-earmark-text-fill",
+        children: [],
+      },
     ];
 
     const returnMenuItem = (item, i) => {

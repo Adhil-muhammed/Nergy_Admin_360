@@ -186,6 +186,7 @@ export const AddOrEditSupportTicket = (props) => {
                             });
                           }}
                           invalid={validator.current.message("Status", status, "required")}
+                          disabled={!editMode}
                         >
                           <option value="">---Select---</option>
                           <option value={0}>Active</option>
