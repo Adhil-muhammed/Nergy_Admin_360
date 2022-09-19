@@ -40,6 +40,7 @@ export const useAssessment = ({ load = false, assessmentId = 0 }) => {
           noOfQuestions: "",
         },
       ],
+      help: "",
     },
   });
 

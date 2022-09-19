@@ -139,9 +139,9 @@ export const CreateAssessment = () => {
     });
   };
 
-  const handleInstrcutionsChange = (value) => {
+  const handleEditorChange = (value, name) => {
     setAssessment((draft) => {
-      draft.data.instructions = value;
+      draft.data[name] = value;
     });
   };
 
@@ -152,6 +152,8 @@ export const CreateAssessment = () => {
   if (assessmentInfo.isLoading) {
     return <LoadingSpinner />;
   }
+
+  console.log(assessment.data);
 
   return (
     <ContentLayout
@@ -173,7 +175,9 @@ export const CreateAssessment = () => {
                       <div className="row">
                         <div className="col-6">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Name*</label>
+                            <label htmlFor="first-name-vertical" className="mb-2">
+                              Name*
+                            </label>
                             <InputControl
                               type="text"
                               name="name"
@@ -193,7 +197,9 @@ export const CreateAssessment = () => {
                         </div>
                         <div className="col-6">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Course</label>
+                            <label htmlFor="first-name-vertical" className="mb-2">
+                              Course
+                            </label>
                             <InputControl
                               type="react-select"
                               options={courseList}
@@ -210,7 +216,9 @@ export const CreateAssessment = () => {
                         </div>
                         <div className="col-6">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Maximum Time*</label>
+                            <label htmlFor="first-name-vertical" className="mb-2">
+                              Maximum Time*
+                            </label>
                             <InputControl
                               type="number"
                               name="maxTime"
@@ -234,7 +242,9 @@ export const CreateAssessment = () => {
                         </div>
                         <div className="col-6">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Maximum Attempt*</label>
+                            <label htmlFor="first-name-vertical" className="mb-2">
+                              Maximum Attempt*
+                            </label>
                             <InputControl
                               type="number"
                               name="maxAttempt"
@@ -258,7 +268,9 @@ export const CreateAssessment = () => {
                         </div>
                         <div className="col-6">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Number Of Questions*</label>
+                            <label htmlFor="first-name-vertical" className="mb-2">
+                              Number Of Questions*
+                            </label>
                             <InputControl
                               type="number"
                               name="noOfQuestions"
@@ -282,7 +294,9 @@ export const CreateAssessment = () => {
                         </div>
                         <div className="col-6">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Pass Mark*</label>
+                            <label htmlFor="first-name-vertical" className="mb-2">
+                              Pass Mark*
+                            </label>
                             <InputControl
                               type="number"
                               name="passMark"
@@ -306,7 +320,9 @@ export const CreateAssessment = () => {
                         </div>
                         <div className="col-6">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Assessment Status*</label>
+                            <label htmlFor="first-name-vertical" className="mb-2">
+                              Assessment Status*
+                            </label>
                             <InputControl
                               type="react-select"
                               options={assessmentStatusList}
@@ -337,7 +353,9 @@ export const CreateAssessment = () => {
                         </div>
                         <div className="col-6">
                           <div className="form-group">
-                            <label htmlFor="first-name-vertical">Batches*</label>
+                            <label htmlFor="first-name-vertical" className="mb-2">
+                              Batches*
+                            </label>
                             <InputControl
                               type="react-select"
                               options={batchesList}
@@ -369,11 +387,24 @@ export const CreateAssessment = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="col-12 mt-4 mb-4">
+                        <div className="col-12 mt-4 mb-3">
+                          <label htmlFor="first-instructions-vertical" className="mb-2">
+                            Instructions
+                          </label>
                           <ReactQuill
                             theme="snow"
                             value={assessment.data.instructions}
-                            onChange={(e) => handleInstrcutionsChange(e)}
+                            onChange={(e) => handleEditorChange(e, "instructions")}
+                          />
+                        </div>
+                        <div className="col-12 mt-4 mb-3">
+                          <label htmlFor="first-help-vertical" className="mb-2">
+                            Help
+                          </label>
+                          <ReactQuill
+                            theme="snow"
+                            value={assessment.data.help}
+                            onChange={(e) => handleEditorChange(e, "help")}
                           />
                         </div>
 
