@@ -37,8 +37,6 @@ export const StudentList = () => {
     deleteStudent.mutate(student.studentId);
   };
 
-  console.log(student);
-
   const gotoCreate = () => {
     history(`${location.pathname}/create`);
   };

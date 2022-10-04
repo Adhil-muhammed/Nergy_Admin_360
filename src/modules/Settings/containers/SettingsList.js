@@ -4,9 +4,10 @@ import { ContentLayout } from "shared/components";
 import { Button } from "reactstrap";
 import { useSettings } from "../hooks";
 import { QuillEditor } from "shared/components/QuillEditor";
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const SettingsList = () => {
-  const { settingsQuery } = useSettings();
+  const { settingsQuery } = useSettings({ load: true });
 
   const { data, isLoading } = settingsQuery;
   const navigate = useNavigate();
@@ -16,19 +17,22 @@ export const SettingsList = () => {
     navigate("/admin", { replace: true });
   };
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <ContentLayout
       title={"Settings"}
       subtitle={"Setting List"}
-      isLoading={isLoading}
       breadcrumb={[{ label: "Settings" }]}
     >
       <div className="row">
         <form className="form">
           <div className="row">
-            {data?.map((field) => {
+            {data.map((field) => {
               return (
-                <div className="col-md-6 col-lg-4" key={field.settingId}>
+                <div className="col-12 mb-3" key={field.settingId}>
                   <div className="form-group">
                     <label htmlFor={"setting-field-" + field.settingId} className="mb-3 fw-bold">
                       {field.key}

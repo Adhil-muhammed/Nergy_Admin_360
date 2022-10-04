@@ -5,17 +5,17 @@ export const getSettings = async () => {
   return res.data;
 };
 
-// export const createUsers = async (user) => {
-//   const res = await Axios.post("/Users", user);
-//   return res.data;
-// };
+export const createSettings = async (setting) => {
+  const res = await Axios.post("/Settings", setting);
+  return res.data;
+};
 
-// export const updateUsers = async (user) => {
-//   const res = await Axios.put("/Users", user);
-//   return res.data;
-// };
+export const updateSettings = async (setting) => {
+  const res = await Axios.put("/Settings", setting);
+  return res.data;
+};
 
-// export const deteleUsers = async (userId) => {
-//   const res = await Axios.delete(`/Users/${userId}`);
-//   return res.data;
-// };
+export const getSettingsById = async (key) => {
+  const res = await Axios.get(`/Settings/${key}`);
+  return res.data;
+};

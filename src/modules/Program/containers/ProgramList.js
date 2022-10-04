@@ -41,7 +41,7 @@ export const ProgramList = () => {
     },
     {
       Header: "Actions",
-      accessor: "instituteId",
+      accessor: "id",
       id: "actions",
       Cell: ActionButtons,
     },

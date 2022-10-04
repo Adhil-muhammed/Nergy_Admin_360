@@ -22,8 +22,8 @@ export const Breadcrumb = ({ breadcrumb }) => {
         <li className="breadcrumb-item">
           <Link to="/admin">Dashboard</Link>
         </li>
-        {breadcrumb?.map((item, idx) => {
-          if (breadcrumb?.length <= 1) {
+        {breadcrumb.map((item, idx) => {
+          if (breadcrumb.length <= 1) {
             return (
               <li key={idx} className="breadcrumb-item active" aria-current="page">
                 {item.label}
@@ -31,7 +31,7 @@ export const Breadcrumb = ({ breadcrumb }) => {
             );
           }
           return (
-            <li key={idx} className={`${item?.location ? "" : "active"} breadcrumb-item`}>
+            <li key={idx} className={`${item.location ? "" : "active"} breadcrumb-item`}>
               {item.location ? <Link to={item.location}>{item.label}</Link> : item.label}
             </li>
           );

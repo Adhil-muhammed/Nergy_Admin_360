@@ -25,13 +25,26 @@ export const RoleList = () => {
     history(`${location.pathname}/edit/${roleId}`);
   };
 
-  const ActionButtons = ({ value }) => {
+  const ActionButtons = ({ row }) => {
     return (
       <>
-        <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
+        {/* <Button
+          color="success"
+          size="sm"
+          onClick={() => onEditPermission(row.original.name)}
+          className="me-3"
+        >
+          <i className="bi bi-gear" style={{ fontSize: "10px" }}></i> <span>Permissions</span>
+        </Button> */}
+        <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.roleId)}>
           <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
         </Button>
-        <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
+        <Button
+          color="danger"
+          size="sm"
+          onClick={() => onDelete(row.original.roleId)}
+          className="ms-3"
+        >
           <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
         </Button>
       </>
