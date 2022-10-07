@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
-import { useAuthenticate } from "..";
+import { useForgotPassword } from "..";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
 
 export function ForgotPassword() {
-  const { forgotPasswordAuth, setForgotPassEmail, forgotPassEmail } = useAuthenticate();
+  const { forgotPasswordAuth, setForgotPassEmail, forgotPassEmail } = useForgotPassword();
   const { mutate, isLoading } = forgotPasswordAuth;
   const onsubmit = () => {
     setForgotPassEmail((draft) => {

@@ -14,12 +14,6 @@ export const useAuthenticate = () => {
     isValidate: false,
   });
 
-  const [forgotPassEmail, setForgotPassEmail] = useImmer({
-    email: "",
-    isValidate: false,
-  }); 
-
-
   const mutation = useMutation(authenticate, {
     onSuccess: (data) => {
       setAuthenticateState((draft) => {
@@ -28,24 +22,6 @@ export const useAuthenticate = () => {
       if (data.token) {
         setAppState((draft) => data);
         navigate("../admin", { replace: true });
-      }
-    },
-    onError: (data) => {
-      errorMessage(data.response.data.errors[0]);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
-    },
-  });
-
-  const forgotPasswordAuth = useMutation(getForgotPassword, {
-    onSuccess: (data) => {
-      setForgotPassEmail((draft) => {
-        draft.isValidate = true;
-      });
-      if (data) {
-        localStorage.setItem("passwordResetToken", data);
-        navigate("../resetPassword", { replace: true });
       }
     },
     onError: (data) => {
@@ -65,9 +41,6 @@ export const useAuthenticate = () => {
     authenticateState,
     setAuthenticateState,
     mutation,
-    forgotPasswordAuth,
-    setForgotPassEmail,
-    forgotPassEmail,
     userSignOut,
   };
 };
