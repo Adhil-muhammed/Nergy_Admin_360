@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
 import { useAuthenticate } from "..";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
+
 export function ForgotPassword() {
   const { forgotPasswordAuth, setForgotPassEmail, forgotPassEmail } = useAuthenticate();
   const { mutate, isLoading } = forgotPasswordAuth;

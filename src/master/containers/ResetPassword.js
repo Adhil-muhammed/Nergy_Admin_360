@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
-import { useAuthenticate } from "..";
+import { useResetPassword } from "..";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
+
 export function ResetPassword() {
-  const { resetPasswordState, setResetPasswordState, resetPasswordAuth } = useAuthenticate();
+  const { resetPasswordState, setResetPasswordState, resetPasswordAuth } = useResetPassword();
   const { mutate, isLoading } = resetPasswordAuth;
-  const resetToken = localStorage.getItem('passwordResetToken')
+  
   const onHandleChange = (e) => {
     const { name, value } = e.target;
     setResetPasswordState((draft) => {
       draft.credential[name] = value;
       draft.isValidate = true;
-      draft.credential['passwordResetToken'] = resetToken
     });
   };
 
@@ -67,8 +67,9 @@ export function ResetPassword() {
                     type="password"
                     className="form-control form-control-xl"
                     placeholder="Confirm Password"
-                    name="newPassword"
+                    name="confirmPassword"
                     disabled={isLoading}
+                    onChange={onHandleChange}
                   />
                   <div className="form-control-icon">
                     <i className="bi bi-shield-lock" />
