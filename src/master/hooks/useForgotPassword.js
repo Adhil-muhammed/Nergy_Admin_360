@@ -18,15 +18,12 @@ export const useForgotPassword = () => {
       setForgotPassEmail((draft) => {
         draft.isValidate = true;
       });
-      if (data) {
-        navigate("/", { replace: true });
-      }
+      navigate("/", { replace: true });
     },
     onError: (data) => {
       errorMessage(data.response.data.errors[0]);
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
     },
   });
 
