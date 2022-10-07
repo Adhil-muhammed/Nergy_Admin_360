@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppStore } from "store/AppStore";
 import { errorMessage, Axios } from "utils";
 
-export const useAuthenticate = () => {  
+export const useAuthenticate = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { setAppState } = useAppStore();

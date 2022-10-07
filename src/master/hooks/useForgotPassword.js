@@ -1,17 +1,17 @@
 import { useImmer } from "use-immer";
-import {  getForgotPassword  } from "..";
+import { getForgotPassword } from "..";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { errorMessage } from "utils";
 
-export const useForgotPassword = () => { 
+export const useForgotPassword = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();    
-  
+  const navigate = useNavigate();
+
   const [forgotPassEmail, setForgotPassEmail] = useImmer({
     email: "",
     isValidate: false,
-  }); 
+  });
 
   const forgotPasswordAuth = useMutation(getForgotPassword, {
     onSuccess: (data) => {
@@ -19,8 +19,7 @@ export const useForgotPassword = () => {
         draft.isValidate = true;
       });
       if (data) {
-        localStorage.setItem("passwordResetToken", data);
-        navigate("../resetPassword", { replace: true });
+        navigate("/", { replace: true });
       }
     },
     onError: (data) => {
@@ -32,10 +31,10 @@ export const useForgotPassword = () => {
   });
 
 
-      return{
-        forgotPassEmail,
-        setForgotPassEmail,
-        forgotPasswordAuth
-      }
+  return {
+    forgotPassEmail,
+    setForgotPassEmail,
+    forgotPasswordAuth
+  }
 
 }
