@@ -6,7 +6,7 @@ import Nergy360Logo from "../../assets/images/logo/360logo.png";
 export function ResetPassword() {
   const { resetPasswordState, setResetPasswordState, resetPasswordAuth } = useResetPassword();
   const { mutate, isLoading } = resetPasswordAuth;
-  
+
   const onHandleChange = (e) => {
     const { name, value } = e.target;
     setResetPasswordState((draft) => {
@@ -51,7 +51,7 @@ export function ResetPassword() {
                 </div>
                 <div className="form-group position-relative has-icon-left mb-4">
                   <input
-                    type="text"
+                    type="password"
                     className="form-control form-control-xl"
                     placeholder="New Password"
                     name="newPassword"
