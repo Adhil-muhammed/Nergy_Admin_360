@@ -10,19 +10,22 @@ export const useResetPassword = () => {
   const navigate = useNavigate();
 
   const passwordResetToken = searchParams.get('token');
+  const emailAddress = searchParams.get('email');
+
   const [resetPasswordState, setResetPasswordState] = useImmer({
     credential: { emailAddress: "", newPassword: "", confirmPassword: "", passwordResetToken: "" },
     isValidate: false,
   });
 
   React.useEffect(() => {
-    if (passwordResetToken) {
+    if (passwordResetToken && emailAddress) {
       setResetPasswordState((draft) => {
         draft.credential.passwordResetToken = passwordResetToken;
+        draft.credential.emailAddress = emailAddress;
         return draft;
       });
     }
-  }, [passwordResetToken]);
+  }, [passwordResetToken, emailAddress]);
 
   const resetPasswordAuth = useMutation(resetPassword, {
     onSuccess: (data) => {

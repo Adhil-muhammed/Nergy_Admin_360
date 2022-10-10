@@ -38,19 +38,6 @@ export function ResetPassword() {
               <form>
                 <div className="form-group position-relative has-icon-left mb-4">
                   <input
-                    type="email"
-                    className="form-control form-control-xl"
-                    placeholder="Email address"
-                    name="emailAddress"
-                    disabled={isLoading}
-                    onChange={onHandleChange}
-                  />
-                  <div className="form-control-icon">
-                    <i className="bi bi-envelope" />
-                  </div>
-                </div>
-                <div className="form-group position-relative has-icon-left mb-4">
-                  <input
                     type="password"
                     className="form-control form-control-xl"
                     placeholder="New Password"
@@ -79,7 +66,7 @@ export function ResetPassword() {
                   className="btn btn-block btn-lg shadow-lg mt-5 btn-success"
                   disabled={isLoading}
                   onClick={(e) => {
-                    onsubmit();
+                    onsubmit(e);
                   }}
                 >
                   {isLoading ? <Spinner type="border" color="light" /> : "Reset password"}
