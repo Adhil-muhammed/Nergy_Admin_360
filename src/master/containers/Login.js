@@ -98,7 +98,7 @@ export function Login() {
                     <i className="bi bi-shield-lock" />
                   </div>
                 </div>
-                <div className="form-check form-check-lg d-flex align-items-end">
+                {/* <div className="form-check form-check-lg d-flex align-items-end">
                   <input
                     className="form-check-input me-2"
                     type="checkbox"
@@ -109,7 +109,7 @@ export function Login() {
                   <label className="form-check-label text-gray-600" htmlFor="flexCheckDefault">
                     Keep me logged in
                   </label>
-                </div>
+                </div> */}
                 <button
                   className="btn btn-block btn-lg shadow-lg mt-5 btn-success"
                   disabled={isLoading}
