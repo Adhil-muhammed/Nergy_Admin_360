@@ -15,7 +15,7 @@ export function Master() {
           <Routes>
             <Route exact element={<Login />} path={"/"} />
             <Route exact element={<ForgotPassword />} path={"/forgotPassword"} />
-            <Route exact element={<ResetPassword />} path={"/resetPassword"} />
+            <Route exact element={<ResetPassword />} path={"/auth/reset"} />
             <Route
               exact
               element={
