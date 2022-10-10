@@ -33,23 +33,5 @@ export const deteleCourses = async (courseId) => {
   return res.data;
 };
 
-// COURSE CONTENT API
 
-// export const getCourseContentById = async (id) => {
-//   const res = await Axios.get(`/Courses/content/${id}`);
-//   return res.data;
-// };
 
-export const createCoursesContent = async (content) => {
-  const res = await Axios.post("/Courses/content", content, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-  return res.data;
-};
-
-export const deleteCoursesContentById = async (id) => {
-  const res = await Axios.delete(`/Courses/content/${id}`);
-  return res.data;
-};
