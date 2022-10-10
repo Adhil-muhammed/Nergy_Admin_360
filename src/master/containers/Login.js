@@ -1,20 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "reactstrap";
 import { useAppStore } from "store/AppStore";
 import { useAuthenticate } from "..";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
 import appInfo from "../../../package.json";
+import SimpleReactValidator from "simple-react-validator";
+import { Input, Button, FormFeedback } from "reactstrap";
+
+
 export function Login() {
   const { authenticateState, setAuthenticateState, mutation } = useAuthenticate();
+  const { userName, password } = authenticateState.credential;
   const { AppState } = useAppStore();
   const navigate = useNavigate();
   const { mutate, isLoading } = mutation;
-  const onsubmit = () => {
-    setAuthenticateState((draft) => {
-      draft.isValidate = true;
-    });
-    mutate(authenticateState.credential);
+  const [update, forceUpdate] = useState();
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
+
+  const onsubmit = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    if (validator.current.allValid()) {
+      mutate(authenticateState.credential);
+    } else {
+      validator.current.showMessages();
+      forceUpdate(1);
+    }
   };
 
   useEffect(() => {
@@ -38,25 +55,31 @@ export function Login() {
               </p>
               <form>
                 <div className="form-group position-relative has-icon-left mb-4">
-                  <input
+                  <Input
                     type="text"
+                    name="userName"
                     className="form-control form-control-xl"
                     placeholder="Username"
-                    value={authenticateState.userName}
+                    value={userName}
                     disabled={isLoading}
                     onChange={(e) => {
                       setAuthenticateState((draft) => {
                         draft.credential.userName = e.target.value;
                       });
                     }}
+                    invalid={validator.current.message("username", userName, "required")}
                   />
+                  <FormFeedback>
+                    {validator.current.message("username", userName, "required")}
+                  </FormFeedback>
                   <div className="form-control-icon">
                     <i className="bi bi-person" />
                   </div>
                 </div>
                 <div className="form-group position-relative has-icon-left mb-4">
-                  <input
+                  <Input
                     type="password"
+                    name="password"
                     className="form-control form-control-xl"
                     placeholder="Password"
                     disabled={isLoading}
@@ -66,7 +89,11 @@ export function Login() {
                         draft.credential.password = e.target.value;
                       });
                     }}
+                    invalid={validator.current.message("password", password, "required")}
                   />
+                  <FormFeedback>
+                    {validator.current.message("password", password, "required")}
+                  </FormFeedback>
                   <div className="form-control-icon">
                     <i className="bi bi-shield-lock" />
                   </div>
@@ -87,12 +114,13 @@ export function Login() {
                   className="btn btn-block btn-lg shadow-lg mt-5 btn-success"
                   disabled={isLoading}
                   onClick={(e) => {
-                    onsubmit();
+                    onsubmit(e);
                   }}
                 >
                   {isLoading ? <Spinner type="border" color="light" /> : "Log in"}
                 </button>
               </form>
+
               <div className="text-center mt-5 text-lg fs-4">
                 <p>
                   <Link className="font-bold" to="/forgotPassword">
@@ -116,6 +144,6 @@ export function Login() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
