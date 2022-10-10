@@ -1,7 +1,11 @@
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
 import { useResetPassword } from "..";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
+import SimpleReactValidator from "simple-react-validator";
+import { Input, FormFeedback } from "reactstrap";
+
 
 export function ResetPassword() {
   const { resetPasswordState, setResetPasswordState, resetPasswordAuth } = useResetPassword();
@@ -15,8 +19,23 @@ export function ResetPassword() {
     });
   };
 
-  const onsubmit = () => {
-    mutate(resetPasswordState.credential);
+  const [update, forceUpdate] = useState();
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
+
+  const onsubmit = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    if (validator.current.allValid()) {
+      mutate(resetPasswordState.credential);
+    } else {
+      validator.current.showMessages();
+      forceUpdate(1);
+    }
   };
 
   return (
@@ -37,27 +56,37 @@ export function ResetPassword() {
               </p>
               <form>
                 <div className="form-group position-relative has-icon-left mb-4">
-                  <input
+                  <Input
                     type="password"
                     className="form-control form-control-xl"
                     placeholder="New Password"
                     name="newPassword"
+                    value={resetPasswordState.credential.newPassword}
                     disabled={isLoading}
                     onChange={onHandleChange}
+                    invalid={validator.current.message("New Password", resetPasswordState.credential.newPassword, "required")}
                   />
+                  <FormFeedback>
+                    {validator.current.message("New Password", resetPasswordState.credential.newPassword, "required")}
+                  </FormFeedback>
                   <div className="form-control-icon">
                     <i className="bi bi-shield-lock" />
                   </div>
                 </div>
                 <div className="form-group position-relative has-icon-left mb-4">
-                  <input
+                  <Input
                     type="password"
                     className="form-control form-control-xl"
                     placeholder="Confirm Password"
                     name="confirmPassword"
+                    value={resetPasswordState.credential.confirmPassword}
                     disabled={isLoading}
                     onChange={onHandleChange}
+                    invalid={validator.current.message("Confirm Password", resetPasswordState.credential.confirmPassword, "required")}
                   />
+                  <FormFeedback>
+                    {validator.current.message("Confirm Password", resetPasswordState.credential.confirmPassword, "required")}
+                  </FormFeedback>
                   <div className="form-control-icon">
                     <i className="bi bi-shield-lock" />
                   </div>
