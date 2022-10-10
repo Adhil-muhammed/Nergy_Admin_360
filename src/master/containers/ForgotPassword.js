@@ -1,16 +1,32 @@
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
 import { useForgotPassword } from "..";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
+import SimpleReactValidator from "simple-react-validator";
+import { Input, FormFeedback } from "reactstrap";
 
 export function ForgotPassword() {
   const { forgotPasswordAuth, setForgotPassEmail, forgotPassEmail } = useForgotPassword();
   const { mutate, isLoading } = forgotPasswordAuth;
-  const onsubmit = () => {
-    setForgotPassEmail((draft) => {
-      draft.isValidate = true;
-    });
-    mutate(forgotPassEmail.email);
+  const { email } = forgotPassEmail;
+  const [update, forceUpdate] = useState();
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
+
+  const onsubmit = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    if (validator.current.allValid()) {
+      mutate(email);
+    } else {
+      validator.current.showMessages();
+      forceUpdate(1);
+    }
   };
 
   return (
@@ -31,17 +47,22 @@ export function ForgotPassword() {
               </p>
               <form>
                 <div className="form-group position-relative has-icon-left mb-4">
-                  <input
+                  <Input
                     type="email"
                     className="form-control form-control-xl"
                     placeholder="Email address"
                     disabled={isLoading}
+                    value={email}
                     onChange={(e) => {
                       setForgotPassEmail((draft) => {
                         draft.email = e.target.value;
                       });
                     }}
+                    invalid={validator.current.message("email", email, "required")}
                   />
+                  <FormFeedback>
+                    {validator.current.message("email", email, "required")}
+                  </FormFeedback>
                   <div className="form-control-icon">
                     <i className="bi bi-envelope" />
                   </div>
@@ -50,7 +71,7 @@ export function ForgotPassword() {
                   className="btn btn-block btn-lg shadow-lg mt-5 btn-success"
                   disabled={isLoading}
                   onClick={(e) => {
-                    onsubmit();
+                    onsubmit(e);
                   }}
                 >
                   {isLoading ? <Spinner type="border" color="light" /> : "Send"}
