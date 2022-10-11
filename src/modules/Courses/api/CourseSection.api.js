@@ -1,9 +1,5 @@
 import { Axios } from "utils";
 
-export const selectCourseSection=async()=>{
-  const res=await Axios.get("/section");
-  return res.data;
-}
 
 export const createCourseSection = async (section) => {
     const res = await Axios.post("/section",section);

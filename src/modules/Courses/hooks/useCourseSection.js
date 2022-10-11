@@ -14,15 +14,19 @@ import { successMessage, successDeletedMessage, errorMessage } from "utils";
 const GET_COURSESECTION = "GET_COURSESECTION";
 const GET_COURSESECTION_BY_ID = "GET_COURSESECTION_BY_ID";
 
-export const useCourseSection = ({ load = false, courseSectionId = 0 }) => {
+export const useCourseSection = ({ load = false, courseSectionId = 0,sections=[] }) => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+    const [courseSections,setCourseSections]=useImmer([]);
+useEffect(()=>{
+  if (sections.length>0){
+    setCourseSections((draft)=>{
+      draft=sections
+    })
+  }
+},[sections.length])
 
-    const selectCourseSections = useQuery(GET_COURSESECTION, selectCourseSection, {
-      refetchOnWindowFocus: false,
-      enabled: load,
-      staleTime: Infinity,
-    });
+
 
     const coursesectionInfo=useQuery(
         `${GET_COURSESECTION_BY_ID}_${courseSectionId}`,
@@ -42,12 +46,7 @@ export const useCourseSection = ({ load = false, courseSectionId = 0 }) => {
       courseSections:[],
     });
 
-    const [courseSections, setCourseSections] = useImmer([
-      {
-        sectionId: 0,
-        title: "",
-      },
-    ]);
+
 
     useEffect(() => {
       if (coursesectionInfo.data) {
@@ -92,7 +91,7 @@ export const useCourseSection = ({ load = false, courseSectionId = 0 }) => {
 
 
       const onDelete = (id) => {
-        const selectedCourseSection = selectCourseSections.data.find((c) => c.sectionId === id);
+        const selectedCourseSection = courseSections.data.find((c) => c.sectionId === id);
         if (selectedCourseSection)
         setCourseSection((draft) => {
             draft.data = selectedCourseSection;
@@ -115,7 +114,6 @@ export const useCourseSection = ({ load = false, courseSectionId = 0 }) => {
       );
 
       return {
-        selectCourseSections,
         courseSection,
         coursesectionInfo,
         setCourseSection,
