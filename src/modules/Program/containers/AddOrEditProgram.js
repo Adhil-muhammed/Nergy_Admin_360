@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { ContentLayout } from "shared/components";
-import { Input, Button, FormFeedback } from "reactstrap";
+import { Input, Button, FormFeedback, Label } from "reactstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
 import { useProgram } from "../hooks";
@@ -23,7 +23,7 @@ export const AddOrEditProgram = () => {
     load: false,
     programId: programId,
   });
-  const { name, description, selectedCourses } = program;
+  const { name, description, selectedCourses, hasAssessment, hasCertificate, hasPracticals, hasOJT, isActive } = program;
   const navigate = useNavigate();
 
   const onChangeHandler = (e) => {
@@ -33,6 +33,12 @@ export const AddOrEditProgram = () => {
     });
   };
 
+  const onCheckBoxChangeHandler = (e) => {
+    const { name, value } = e.target;
+    setProgram((draft) => {
+      draft[name] = !draft[name];
+    });
+  };
   const onSubmit = () => {
     if (validator.current.allValid()) {
       editMode ? editProgram.mutate(program) : createProgram.mutate(program);
@@ -147,6 +153,46 @@ export const AddOrEditProgram = () => {
                             "required"
                           )}
                         </div>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div className="form-group">
+                        <Input type="checkbox" name="hasAssessment" onChange={onCheckBoxChangeHandler} value={hasAssessment} checked={hasAssessment} />
+                        <Label check>
+                          Assessment
+                        </Label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div className="form-group">
+                        <Input type="checkbox" name="hasCertificate" onChange={onCheckBoxChangeHandler} value={hasCertificate} checked={hasCertificate} />
+                        <Label check>
+                          Certificate
+                        </Label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div className="form-group">
+                        <Input type="checkbox" name="hasPracticals" onChange={onCheckBoxChangeHandler} value={hasPracticals} checked={hasPracticals} />
+                        <Label check>
+                          Practicals
+                        </Label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div className="form-group">
+                        <Input type="checkbox" name="hasOJT" onChange={onCheckBoxChangeHandler} value={hasOJT} checked={hasOJT} />
+                        <Label check>
+                          OJT
+                        </Label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div className="form-group">
+                        <Input type="checkbox" name="isActive" onChange={onCheckBoxChangeHandler} value={isActive} checked={isActive} />
+                        <Label check>
+                          Active
+                        </Label>
                       </div>
                     </div>
                   </div>

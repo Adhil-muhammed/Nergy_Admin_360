@@ -20,6 +20,11 @@ export const useProgram = ({ load = false, programId = 0 }) => {
     name: "",
     description: "",
     selectedCourses: [],
+    hasAssessment: false,
+    hasCertificate: false,
+    hasPracticals: false,
+    hasOJT: false,
+    isActive: false
   });
 
   const programsQuery = useQuery(GET_PROGRAMS, getPrograms, {
