@@ -9,6 +9,7 @@ export const Courses = () => {
       <Route path="/" element={<CourseList />} />
       <Route path="/create/new" element={<AddOrEditCourse />} />
       <Route path="/edit/:courseId" element={<AddOrEditCourse />} />
+      <Route path="/coursesection" element={<CourseSectionList />} />
     </Routes>
   );
 };
