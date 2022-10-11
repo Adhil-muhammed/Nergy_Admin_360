@@ -6,6 +6,8 @@ import SimpleReactValidator from "simple-react-validator";
 import { useProgram } from "../hooks";
 import { LoadingButton } from "shared/components/LoadingButton";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import InputControl from "shared/components/InputControl";
+
 
 export const AddOrEditProgram = () => {
   const [update, forceUpdate] = useState();
@@ -17,11 +19,11 @@ export const AddOrEditProgram = () => {
   let { programId } = useParams();
 
   const editMode = !!programId;
-  const { program, setProgram, programInfo, createProgram, editProgram } = useProgram({
+  const { program, setProgram, programInfo, createProgram, editProgram, courses } = useProgram({
     load: false,
     programId: programId,
   });
-  const { name, description } = program;
+  const { name, description, selectedCourses } = program;
   const navigate = useNavigate();
 
   const onChangeHandler = (e) => {
@@ -46,6 +48,14 @@ export const AddOrEditProgram = () => {
   if (programInfo.isLoading) {
     return <LoadingSpinner />;
   }
+
+
+  const onSelectChange = (e, name) => {
+    const requiredFormat = e.map((item) => item.value);
+    setProgram((draft) => {
+      draft[name] = requiredFormat;
+    });
+  };
 
   return (
     <ContentLayout
@@ -105,6 +115,38 @@ export const AddOrEditProgram = () => {
                         <FormFeedback>
                           {validator.current.message("description", description, "required")}
                         </FormFeedback>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div className="form-group">
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Courses*
+                        </label>
+                        <InputControl
+                          type="react-select"
+                          isMulti
+                          options={courses}
+                          name="selectedCourses"
+                          value={
+                            selectedCourses.length > 0 &&
+                            courses.filter((item) => selectedCourses.indexOf(item.value) > -1)
+                          }
+                          isValid={
+                            !validator.current.message(
+                              "selectedCourses",
+                              selectedCourses,
+                              "required"
+                            )
+                          }
+                          onChange={(e) => onSelectChange(e, "selectedCourses")}
+                        />
+                        <div className="text-danger">
+                          {validator.current.message(
+                            "assessmentStatus",
+                            selectedCourses,
+                            "required"
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

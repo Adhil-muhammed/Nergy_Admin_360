@@ -4,9 +4,12 @@ import { useImmer } from "use-immer";
 import { getPrograms, createPrograms, updatePrograms, detelePrograms, getProgramById } from "..";
 import { useNavigate } from "react-router-dom";
 import { successMessage, successDeletedMessage, errorMessage } from "utils";
+import { getCourses } from "modules/Courses"
 
 const GET_PROGRAMS = "GET_PROGRAMS";
 const GET_PROGRAMS_BY_ID = "GET_PROGRAMS_BY_ID";
+const GetCourseKey = "GET_COURSE_FOR_CREATE_STUDENT";
+
 
 export const useProgram = ({ load = false, programId = 0 }) => {
   const navigate = useNavigate();
@@ -16,6 +19,7 @@ export const useProgram = ({ load = false, programId = 0 }) => {
   const [program, setProgram] = useImmer({
     name: "",
     description: "",
+    selectedCourses: [],
   });
 
   const programsQuery = useQuery(GET_PROGRAMS, getPrograms, {
@@ -23,6 +27,7 @@ export const useProgram = ({ load = false, programId = 0 }) => {
     enabled: load,
     staleTime: Infinity,
   });
+
   const programInfo = useQuery(
     `${GET_PROGRAMS_BY_ID}_${programId}`,
     () => getProgramById(programId),
@@ -31,6 +36,17 @@ export const useProgram = ({ load = false, programId = 0 }) => {
       enabled: !!programId,
     }
   );
+
+  const coursesQuery = useQuery(GetCourseKey, getCourses, { staleTime: Infinity });
+  const courses = React.useMemo(() => {
+    return coursesQuery.data
+      ? coursesQuery.data.map((c) => {
+        return { value: c.courseId, label: c.name };
+      })
+      : [];
+  }, [coursesQuery.data]);
+
+
   useEffect(() => {
     if (programInfo.data) {
       setProgram(programInfo.data);
@@ -103,5 +119,6 @@ export const useProgram = ({ load = false, programId = 0 }) => {
     onDelete,
     isConfirmDelete,
     onToggleModal,
+    courses
   };
 };
