@@ -4,7 +4,7 @@ import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useCourseSection } from "..";
 
-export const CourseSectionList = (props) => {
+export const SectionList = (props) => {
   const { sections, courseId } = props;
 
   const history = useNavigate();

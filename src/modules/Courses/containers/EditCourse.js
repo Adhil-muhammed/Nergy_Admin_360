@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ContentLayout, ModalLayout, LoadingButton, LoadingSpinner } from "shared/components";
 import { Input, Button, FormFeedback } from "reactstrap";
-import { CourseContentModal, CourseSectionList } from "..";
+import { CourseContentModal, SectionList } from "..";
 import { useCourse } from "../hooks";
 import { QuillEditor } from "shared/components/QuillEditor";
 import SimpleReactValidator from "simple-react-validator";
@@ -239,7 +239,7 @@ export const EditCourse = () => {
                     </div>
                   </div>
                   <div className="col-12 mt-4">
-                    <CourseSectionList
+                    <SectionList
                       sections={course.courseSections ? course.courseSections : []}
                       courseId={courseId}
                     />
@@ -250,7 +250,7 @@ export const EditCourse = () => {
                         <Button
                           className="me-1 mb-1"
                           color="primary"
-                          onClick={() => navigate(`../sections/create?courseId=${courseId}`)}
+                          onClick={() => navigate(`../section/create?courseId=${courseId}`)}
                         >
                           Add Section
                         </Button>

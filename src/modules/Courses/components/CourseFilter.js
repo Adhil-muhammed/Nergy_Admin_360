@@ -5,7 +5,7 @@ export const CourseIdFilter = () => {
   const history = useNavigate();
   const location = useLocation();
   const gotoCreate = () => {
-    history(`${location.pathname}/create/new`);
+    history(`${location.pathname}/create`);
   };
   return (
     <div>
