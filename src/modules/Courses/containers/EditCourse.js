@@ -241,6 +241,7 @@ export const EditCourse = () => {
                   <div className="col-12 mt-4">
                     <CourseSectionList
                       sections={course.courseSections ? course.courseSections : []}
+                      courseId={courseId}
                     />
                   </div>
                   <div className="col-12 d-flex justify-content-between mt-4">

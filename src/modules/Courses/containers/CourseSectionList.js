@@ -8,7 +8,7 @@ import { useCourseSection } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const CourseSectionList = (props) => {
-  const { sections } = props;
+  const { sections, courseId } = props;
   const { courseSection, onDelete, onDeletecoursesection, isConfirmDelete, onToggleModal } =
     useCourseSection({
       load: true,
@@ -24,7 +24,7 @@ export const CourseSectionList = (props) => {
   };
 
   const onEdit = (sectionId) => {
-    history(`${location.pathname}/edit/${sectionId}`);
+    history(`${location.pathname}/edit?sectionId=${sectionId}&courseId=${courseId}`);
   };
 
   const CheckMarker = ({ value }) => {

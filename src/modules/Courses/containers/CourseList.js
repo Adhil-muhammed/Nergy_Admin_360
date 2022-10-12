@@ -21,7 +21,7 @@ export const CourseList = (props) => {
   };
 
   const onEdit = (courseId) => {
-    history(`${location.pathname}/edit/${courseId}`);
+    history(`${location.pathname}/${courseId}`);
   };
 
   const CheckMarker = ({ value }) => {
