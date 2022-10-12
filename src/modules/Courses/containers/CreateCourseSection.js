@@ -64,7 +64,7 @@ export const CreateCourseSection = () => {
   const onCancel = () => {
     navigate("..", { replace: true });
   };
-  console.log(courseSection);
+
   return (
     <>
       <ContentLayout

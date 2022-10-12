@@ -9,7 +9,6 @@ import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const CourseSectionList = (props) => {
   const { sections } = props;
-  console.log("sections", sections);
   const { courseSection, onDelete, onDeletecoursesection, isConfirmDelete, onToggleModal } =
     useCourseSection({
       load: true,
@@ -68,9 +67,7 @@ export const CourseSectionList = (props) => {
     ],
     []
   );
-  // if (isLoading) {
-  //   return <LoadingSpinner />;
-  // }
+
   return (
     <ContentLayout title={"Courses Section"} breadcrumb={[{ label: "CourseSection" }]}>
       <TableLayout columns={columns} data={sections} />

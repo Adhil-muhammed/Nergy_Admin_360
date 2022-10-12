@@ -37,14 +37,18 @@ export const useCourseSection = ({
     if (sections.length > 0) {
       setCourseSections((draft) => {
         draft = sections;
+        return draft;
       });
     }
+  }, [sections]);
+
+  useEffect(() => {
     if (courseId > 0) {
       setCourseSection((draft) => {
         draft.courseId = courseId;
       });
     }
-  }, [sections, courseId]);
+  }, [courseId]);
 
   const coursesectionInfo = useQuery(
     `${GET_COURSESECTION_BY_ID}_${courseSectionId}`,
@@ -96,18 +100,20 @@ export const useCourseSection = ({
     },
   });
 
-  const onDelete = (id) => {
-    const selectedCourseSection = courseSections.data.find((c) => c.sectionId === id);
-    if (selectedCourseSection)
-      setCourseSection((draft) => {
-        draft.data = selectedCourseSection;
+  const onDelete = React.useCallback(
+    (id) => {
+      const selectedCourseSection = courseSections.find((c) => c.sectionId === id);
+      if (selectedCourseSection)
+        setCourseSection((draft) => {
+          draft = selectedCourseSection;
+        });
+      setIsConfirmDelete((draft) => {
+        draft = true;
+        return draft;
       });
-
-    setIsConfirmDelete((draft) => {
-      draft = true;
-      return draft;
-    });
-  };
+    },
+    [setIsConfirmDelete, courseSections, setCourseSection]
+  );
 
   const onToggleModal = React.useCallback(
     (isOpen) => {
