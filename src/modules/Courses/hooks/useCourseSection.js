@@ -3,9 +3,8 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import {
   createCourseSection,
   updateCourseSectionById,
-  deleteCourseSection,
+  deleteCourseSectionById,
   selectCourseSectionById,
-  selectCourseSection,
 } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useImmer } from "use-immer";
@@ -15,14 +14,12 @@ const GET_COURSESECTION = "GET_COURSESECTION";
 const GET_COURSESECTION_BY_ID = "GET_COURSESECTION_BY_ID";
 
 export const useCourseSection = ({
-  load = false,
   courseSectionId = 0,
-  sections = [],
   courseId = 0,
 }) => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const [courseSections, setCourseSections] = useImmer([]);
+  const queryClient = useQueryClient();
+
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [courseSection, setCourseSection] = useImmer({
     sectionId: 0,
@@ -34,15 +31,6 @@ export const useCourseSection = ({
   });
 
   useEffect(() => {
-    if (sections.length > 0) {
-      setCourseSections((draft) => {
-        draft = sections;
-        return draft;
-      });
-    }
-  }, [sections]);
-
-  useEffect(() => {
     if (courseId > 0) {
       setCourseSection((draft) => {
         draft.courseId = courseId;
@@ -50,7 +38,7 @@ export const useCourseSection = ({
     }
   }, [courseId]);
 
-  const coursesectionInfo = useQuery(
+  const courseSectionInfo = useQuery(
     `${GET_COURSESECTION_BY_ID}_${courseSectionId}`,
     () => selectCourseSectionById(courseSectionId),
     {
@@ -60,10 +48,10 @@ export const useCourseSection = ({
   );
 
   useEffect(() => {
-    if (coursesectionInfo.data) {
-      setCourseSection(coursesectionInfo.data);
+    if (courseSectionInfo.data) {
+      setCourseSection(courseSectionInfo.data);
     }
-  }, [coursesectionInfo.data]);
+  }, [courseSectionInfo.data]);
 
   const createCourseSections = useMutation(createCourseSection, {
     onError: (e, newData, previousData) => {
@@ -76,7 +64,7 @@ export const useCourseSection = ({
     },
   });
 
-  const editcoursesection = useMutation(updateCourseSectionById, {
+  const updateCourseSection = useMutation(updateCourseSectionById, {
     onSuccess: () => {
       successMessage();
       queryClient.invalidateQueries(GET_COURSESECTION);
@@ -87,7 +75,7 @@ export const useCourseSection = ({
     },
   });
 
-  const onDeletecoursesection = useMutation(deleteCourseSection, {
+  const deleteCourseSection = useMutation(deleteCourseSectionById, {
     onError: (e, newData, previousData) => {
       errorMessage("Unable to delete!");
     },
@@ -100,20 +88,21 @@ export const useCourseSection = ({
     },
   });
 
-  const onDelete = React.useCallback(
-    (id) => {
-      const selectedCourseSection = courseSections.find((c) => c.sectionId === id);
-      if (selectedCourseSection)
-        setCourseSection((draft) => {
-          draft = selectedCourseSection;
-        });
-      setIsConfirmDelete((draft) => {
-        draft = true;
-        return draft;
-      });
-    },
-    [setIsConfirmDelete, courseSections, setCourseSection]
-  );
+  const onDelete = () => { }
+  // React.useCallback(
+  //   (id) => {
+  //     const selectedCourseSection = courseSections.find((c) => c.sectionId === id);
+  //     if (selectedCourseSection)
+  //       setCourseSection((draft) => {
+  //         draft = selectedCourseSection;
+  //       });
+  //     setIsConfirmDelete((draft) => {
+  //       draft = true;
+  //       return draft;
+  //     });
+  //   },
+  //   [setIsConfirmDelete, courseSections, setCourseSection]
+  // );
 
   const onToggleModal = React.useCallback(
     (isOpen) => {
@@ -127,12 +116,12 @@ export const useCourseSection = ({
 
   return {
     courseSection,
-    coursesectionInfo,
+    courseSectionInfo,
     setCourseSection,
     onDelete,
     onToggleModal,
-    onDeletecoursesection,
-    editcoursesection,
+    deleteCourseSection,
+    updateCourseSection,
     createCourseSections,
     isConfirmDelete,
   };

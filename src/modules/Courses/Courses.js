@@ -10,10 +10,9 @@ export const Courses = () => {
       <Route path="/create/new" element={<AddCourse />} />
       <Route path="/:courseId" element={<EditCourse />} />
       <Route path="/sections/create" element={<CreateCourseSection />} />
-      <Route path="/sections/edit" element={<div>edit section</div>} />
-      <Route path="/sections/contents" element={<div>contents</div>} />
-      <Route path="/sections/contents" element={<div>contents</div>} />
-      <Route path="/sections/contents/create/new" element={<div>contents</div>} />
+      <Route path="/section/edit" element={<div>edit section</div>} />
+      <Route path="/sections/contents/create" element={<div>create contents</div>} />
+      <Route path="/sections/contents/edit" element={<div>edit contents</div>} />
     </Routes>
   );
 };

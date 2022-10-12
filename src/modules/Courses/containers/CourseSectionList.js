@@ -1,38 +1,27 @@
 import React, { useMemo } from "react";
-import { useTable } from "react-table";
 import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
-import { CourseIdFilter } from "..";
 import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useCourseSection } from "../hooks";
-import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { useCourseSection } from "..";
 
 export const CourseSectionList = (props) => {
   const { sections, courseId } = props;
-  const { courseSection, onDelete, onDeletecoursesection, isConfirmDelete, onToggleModal } =
-    useCourseSection({
-      load: true,
-      courseSectionId: 0,
-      sections,
-    });
 
   const history = useNavigate();
   const location = useLocation();
+  const { courseSection,
+    setCourseSection,
+    onDelete,
+    onToggleModal,
+    deleteCourseSection,
+    isConfirmDelete } = useCourseSection({ courseSectionId: 0, courseId })
 
   const onConfirm = () => {
-    onDeletecoursesection.mutate(courseSection.courseId);
+    deleteCourseSection.mutate(courseSection.courseId);
   };
 
   const onEdit = (sectionId) => {
-    history(`${location.pathname}/edit?sectionId=${sectionId}&courseId=${courseId}`);
-  };
-
-  const CheckMarker = ({ value }) => {
-    return (
-      <span style={{ color: value ? "#3fba2d" : "#da1a1a", fontSize: "24px" }}>
-        <i className={`bi ${value ? "bi-check" : "bi-x"}`}></i>
-      </span>
-    );
+    history(`../section/edit?sectionId=${sectionId}&courseId=${courseId}`);
   };
 
   const ActionButtons = ({ value }) => {

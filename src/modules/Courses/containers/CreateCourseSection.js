@@ -1,9 +1,7 @@
-import { useQuestion } from "modules/Questions";
 import React, { useRef, useState } from "react";
-import { useNavigate, useSearchParams, useParams } from "react-router-dom";
-import { Input, Button, FormFeedback, Table, Label } from "reactstrap";
-import { ContentLayout, ModalLayout, TableLayout } from "shared";
-import InputControl from "shared/components/InputControl";
+import { useNavigate, useSearchParams, } from "react-router-dom";
+import { Input, FormFeedback, Label } from "reactstrap";
+import { ContentLayout, } from "shared";
 import { LoadingButton } from "shared/components/LoadingButton";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import SimpleReactValidator from "simple-react-validator";
@@ -15,24 +13,20 @@ export const CreateCourseSection = () => {
 
   const courseId = searchParams.get("courseId");
 
-  const { createCourseSections, setCourseSection, courseSection, updateCourseSectionById } =
+  const [update, forceUpdate] = useState();
+  const { createCourseSections, setCourseSection, courseSection, } =
     useCourseSection({
       load: false,
       courseSectionId: 0,
       sections: [],
       courseId,
     });
-  const [update, forceUpdate] = useState();
 
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },
     })
   );
-
-  let { sectionId } = useParams();
-
-  //const editMode = !!sectionId;
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
