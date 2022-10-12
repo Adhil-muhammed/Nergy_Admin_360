@@ -1,7 +1,7 @@
 import { useQuestion } from "modules/Questions";
 import React, { useRef, useState } from "react";
 import { useNavigate, useSearchParams, useParams } from "react-router-dom";
-import { Input, Button, FormFeedback, Table } from "reactstrap";
+import { Input, Button, FormFeedback, Table, Label } from "reactstrap";
 import { ContentLayout, ModalLayout, TableLayout } from "shared";
 import InputControl from "shared/components/InputControl";
 import { LoadingButton } from "shared/components/LoadingButton";
@@ -38,6 +38,13 @@ export const CreateCourseSection = () => {
     const { name, value } = e.target;
     setCourseSection((draft) => {
       draft[name] = value;
+    });
+  };
+
+  const onCheckBoxChangeHandler = (e) => {
+    const { name } = e.target;
+    setCourseSection((draft) => {
+      draft[name] = !draft[name];
     });
   };
 
@@ -122,6 +129,47 @@ export const CreateCourseSection = () => {
                             "required"
                           )}
                         </FormFeedback>
+                      </div>
+                    </div>
+
+                    <div className="col-sm-6">
+                      <div className="form-group">
+                        <label className="mb-2" htmlFor="first-description-vertical">
+                          Sort Order
+                        </label>
+                        <Input
+                          type="text"
+                          id="first-description-vertical"
+                          className="form-control"
+                          name="sortOrder"
+                          placeholder="Sortorder"
+                          value={courseSection.sortOrder}
+                          onChange={onChangeHandler}
+                          invalid={validator.current.message(
+                            "sortorder",
+                            courseSection.sortOrder,
+                            "required"
+                          )}
+                        />
+                        <FormFeedback>
+                          {validator.current.message(
+                            "sortorder",
+                            courseSection.sortOrder,
+                            "required"
+                          )}
+                        </FormFeedback>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div className="form-group">
+                        <Input
+                          type="checkbox"
+                          name="isEnable"
+                          onChange={onCheckBoxChangeHandler}
+                          value={courseSection.isEnable}
+                          checked={courseSection.isEnable}
+                        />
+                        <Label check>Enabled</Label>
                       </div>
                     </div>
                   </div>
