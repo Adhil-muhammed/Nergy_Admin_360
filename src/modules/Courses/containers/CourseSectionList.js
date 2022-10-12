@@ -8,14 +8,15 @@ import { useCourseSection } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const CourseSectionList = (props) => {
-  const { selectCourseSections,courseSection, coursesectionInfo, 
-          setCourseSection,onDelete,onDeletecoursesection, 
-          editcoursesection, createCourseSections,isConfirmDelete,onToggleModal} =
-  useCourseSection({
+  const { sections } = props;
+  console.log("sections", sections);
+  const { courseSection, onDelete, onDeletecoursesection, isConfirmDelete, onToggleModal } =
+    useCourseSection({
       load: true,
+      courseSectionId: 0,
+      sections,
     });
-    
-  const { data, isLoading } = selectCourseSections;
+
   const history = useNavigate();
   const location = useLocation();
 
@@ -35,8 +36,6 @@ export const CourseSectionList = (props) => {
     );
   };
 
-
-
   const ActionButtons = ({ value }) => {
     return (
       <>
@@ -46,7 +45,6 @@ export const CourseSectionList = (props) => {
         <Button color="danger" size="sm" onClick={() => onDelete(value, false)} className="ms-3">
           <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
         </Button>
-
       </>
     );
   };
@@ -67,17 +65,15 @@ export const CourseSectionList = (props) => {
         accessor: "sectionId",
         Cell: ActionButtons,
       },
-     
     ],
     []
   );
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
+  // if (isLoading) {
+  //   return <LoadingSpinner />;
+  // }
   return (
     <ContentLayout title={"Courses Section"} breadcrumb={[{ label: "CourseSection" }]}>
-      <CourseIdFilter />
-      <TableLayout columns={columns} data={data} />
+      <TableLayout columns={columns} data={sections} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}

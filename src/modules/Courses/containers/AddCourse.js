@@ -10,7 +10,7 @@ import SimpleReactValidator from "simple-react-validator";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { LoadingButton } from "shared/components/LoadingButton";
 
-export const AddOrEditCourse = (props) => {
+export const AddCourse = () => {
   const { courseId } = useParams();
   const editMode = courseId > 0;
   const [update, forceUpdate] = useState();
@@ -248,7 +248,7 @@ export const AddOrEditCourse = (props) => {
                       />
                     </div>
                   </div>
-                  <div className="col-12 mt-4">
+                  {/* <div className="col-12 mt-4">
                     {course.courseContents.length > 0 && (
                       <Table responsive size="">
                         <thead>
@@ -266,14 +266,6 @@ export const AddOrEditCourse = (props) => {
                               <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td>{content.title}</td>
-                                {/* <td>{content.fileName}</td>
-                                <td>
-                                  {content.fileURL ? (
-                                    <img src={content.fileURL} style={{ height: "40px" }} />
-                                  ) : (
-                                    <span>No thumbnail</span>
-                                  )}
-                                </td> */}
                                 <td>
                                   {content.fileName && !content.isExternal ? (
                                     <span>{content.fileName}</span>
@@ -318,7 +310,7 @@ export const AddOrEditCourse = (props) => {
                         </tbody>
                       </Table>
                     )}
-                  </div>
+                  </div> */}
                   <div className="col-12 d-flex justify-content-between mt-4">
                     {editMode && (
                       <div>

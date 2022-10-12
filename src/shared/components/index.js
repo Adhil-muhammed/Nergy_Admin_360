@@ -5,3 +5,5 @@ export * from "./TableLayout";
 export * from "./ModalLayout";
 export * from "./PaginationTableLayout";
 export * from "./DashboardLayout";
+export * from "./LoadingSpinner";
+export * from "./LoadingButton";

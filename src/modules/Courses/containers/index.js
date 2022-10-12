@@ -1,4 +1,5 @@
 export * from "./CourseList";
-export * from "./AddOrEditCourse";
+export * from "./AddCourse";
+export * from "./EditCourse";
 export * from "./CourseSectionList"
 export * from "./CreateCourseSection"
