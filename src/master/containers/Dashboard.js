@@ -47,6 +47,7 @@ export function Dashboard() {
             <Route element={<Notifications />} path={"/notifications/*"} />
             <Route element={<SupportTicket />} path={"/supportTicket/*"} />
             <Route element={<Program />} path={"/program/*"} />
+            <Route path="/*" element={<h5>Not Found</h5>} />
           </Routes>
           <Footer />
         </div>

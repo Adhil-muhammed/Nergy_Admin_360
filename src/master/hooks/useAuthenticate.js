@@ -21,7 +21,7 @@ export const useAuthenticate = () => {
       });
       if (data.token) {
         setAppState((draft) => data);
-        navigate("../admin", { replace: true });
+        navigate("/", { replace: true });
       }
     },
     onError: (data) => {
@@ -33,8 +33,9 @@ export const useAuthenticate = () => {
   });
 
   const userSignOut = async () => {
+    // await Axios.post("/Accounts/SignOut");
     localStorage.removeItem("localData");
-    await Axios.post("/Accounts/SignOut");
+    window.location.href = "/admin";
   };
 
   return {

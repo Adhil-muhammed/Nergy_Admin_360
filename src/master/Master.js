@@ -11,9 +11,9 @@ export function Master() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppStore>
-        <BrowserRouter>
+        <BrowserRouter basename="admin">
           <Routes>
-            <Route exact element={<Login />} path={"/"} />
+            <Route exact element={<Login />} path={"/auth/login"} />
             <Route exact element={<ForgotPassword />} path={"/forgotPassword"} />
             <Route exact element={<ResetPassword />} path={"/auth/reset"} />
             <Route
@@ -23,7 +23,7 @@ export function Master() {
                   <Dashboard />
                 </ProtectedRoute>
               }
-              path={"/admin/*"}
+              path={"/*"}
             />
           </Routes>
         </BrowserRouter>
