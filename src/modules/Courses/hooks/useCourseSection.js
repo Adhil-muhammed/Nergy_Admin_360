@@ -29,6 +29,8 @@ export const useCourseSection = ({
     courseId: 0,
     sortOrder: 0,
   });
+  const [contents, setContents] = useImmer([]);
+
 
   useEffect(() => {
     if (courseId > 0) {
@@ -49,7 +51,22 @@ export const useCourseSection = ({
 
   useEffect(() => {
     if (courseSectionInfo.data) {
-      setCourseSection(courseSectionInfo.data);
+      const { sectionId,
+        title,
+        description,
+        isEnable,
+        courseId,
+        sortOrder,
+        courseContents } = courseSectionInfo.data;
+      setCourseSection({
+        sectionId,
+        title,
+        description,
+        isEnable,
+        courseId,
+        sortOrder,
+      });
+      setContents(courseContents);
     }
   }, [courseSectionInfo.data]);
 
@@ -124,5 +141,6 @@ export const useCourseSection = ({
     updateCourseSection,
     createCourseSections,
     isConfirmDelete,
+    contents
   };
 };

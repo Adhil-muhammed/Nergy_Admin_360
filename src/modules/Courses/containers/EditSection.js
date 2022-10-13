@@ -15,12 +15,11 @@ export const EditSection = () => {
   const sectionId = searchParams.get("sectionId");
 
   const [update, forceUpdate] = useState();
-  const { createCourseSections, setCourseSection, courseSection, } =
+  const { createCourseSections, setCourseSection, courseSection, contents } =
     useCourseSection({
       sectionId,
       courseId,
     });
-
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },
@@ -175,7 +174,7 @@ export const EditSection = () => {
                       onSubmit();
                     }}
                   >
-                    Create
+                    Update
                   </LoadingButton>
                   <button
                     type="reset"
