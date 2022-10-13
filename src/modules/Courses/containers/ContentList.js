@@ -4,7 +4,6 @@ import { useSearchParams } from "react-router-dom";
 
 export const ContentList = (props) => {
   const { contents } = props;
-  const navigate = useNavigate();
   const history = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
   const courseId = searchParams.get("courseId");
@@ -52,7 +51,12 @@ export const ContentList = (props) => {
                     )}
                   </td>
                   <td>
-                    <Button color="danger" className="mt-4" size="sm" onClick={() => {}}>
+                    <Button color="danger" className="mt-4" size="sm" onClick={() =>
+                      history(`../section/content/edit?sectionId=${sectionId}&courseId=${courseId}&contentId=${content.contentId} `)}>
+                      <i className="bi bi-trash" style={{ fontSize: "10px" }}></i>{" "}
+                      <span>Edit</span>
+                    </Button>
+                    <Button color="danger" className="mt-4" size="sm" onClick={() => { }}>
                       <i className="bi bi-trash" style={{ fontSize: "10px" }}></i>{" "}
                       <span>Delete</span>
                     </Button>
@@ -68,9 +72,8 @@ export const ContentList = (props) => {
         <Button
           className="me-1 mb-1"
           color="primary"
-          //onClick={() => navigate(`../sections/contents/create`)}
           onClick={() =>
-            history(`../sections/contents/create?sectionId=${sectionId}&courseId=${courseId}`)
+            history(`../section/content/create?sectionId=${sectionId}&courseId=${courseId}`)
           }
         >
           Add Content

@@ -10,7 +10,7 @@ import SimpleReactValidator from "simple-react-validator";
 
 export const AddContent = () => {
   const [searchParams] = useSearchParams();
-  const courseId = searchParams.get("courseId");
+
   const sectionId = searchParams.get("sectionId");
   const navigate = useNavigate();
 
@@ -19,13 +19,13 @@ export const AddContent = () => {
     sectionId,
   });
 
-  const [update, forceUpdate] = useState();
+  // const [update, forceUpdate] = useState();
 
-  const validator = useRef(
-    new SimpleReactValidator({
-      autoForceUpdate: { forceUpdate: forceUpdate },
-    })
-  );
+  // const validator = useRef(
+  //   new SimpleReactValidator({
+  //     autoForceUpdate: { forceUpdate: forceUpdate },
+  //   })
+  // );
 
   const handleContentChecked = (e) => {
     const { name, checked } = e.target;
@@ -57,13 +57,12 @@ export const AddContent = () => {
   };
 
   const onSubmit = () => {
-    if (validator.current.allValid()) {
-      console.log("submit");
-      createCourseContent.mutate(courseContent);
-    } else {
-      validator.current.showMessages();
-      forceUpdate(1);
-    }
+    //if (validator.current.allValid()) {
+    createCourseContent.mutate(courseContent);
+    // } else {
+    //   validator.current.showMessages();
+    //   forceUpdate(1);
+    // }
   };
 
   const onCancel = () => {
@@ -86,13 +85,11 @@ export const AddContent = () => {
             placeholder="Title"
             value={courseContent.title}
             onChange={(e) => onChangeHandler(e, true)}
-            invalid={validator.current.message("name", courseContent.title, "required")}
+          //invalid={validator.current.message("name", courseContent.title, "required")}
           />
-
           <FormFeedback>
-            {validator.current.message("Title", courseContent.title, "required")}
+            {/* {validator.current.message("Title", courseContent.title, "required")} */}
           </FormFeedback>
-
           {courseContent.isExternal === true && (
             <InputControl
               label="Content/File URL"
@@ -101,7 +98,6 @@ export const AddContent = () => {
               onChange={(e) => onChangeHandler(e, true)}
             />
           )}
-
           {courseContent.isExternal === false && (
             <>
               <InputControl
@@ -110,14 +106,14 @@ export const AddContent = () => {
                 placeholder="File"
                 name="fileName"
                 onChange={(e) => handleUpload(e, true)}
-                invalid={validator.current.message(
-                  "ContentFile",
-                  courseContent.fileName,
-                  "required"
-                )}
+              // invalid={validator.current.message(
+              //   "ContentFile",
+              //   courseContent.fileName,
+              //   "required"
+              // )}
               />
               <FormFeedback>
-                {validator.current.message("ContentFile", courseContent.fileURL, "required")}
+                {/* {validator.current.message("ContentFile", courseContent.fileURL, "required")} */}
               </FormFeedback>
             </>
           )}
