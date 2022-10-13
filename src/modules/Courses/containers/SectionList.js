@@ -9,7 +9,6 @@ export const SectionList = (props) => {
 
   const history = useNavigate();
   const { courseSection,
-    setCourseSection,
     onDelete,
     onToggleModal,
     deleteCourseSection,
@@ -57,7 +56,7 @@ export const SectionList = (props) => {
   );
 
   return (
-    <ContentLayout title={"Courses Section"} breadcrumb={[{ label: "CourseSection" }]}>
+    <ContentLayout title={"Courses Section"} >
       <TableLayout columns={columns} data={sections} />
       <ModalLayout
         isOpen={isConfirmDelete}

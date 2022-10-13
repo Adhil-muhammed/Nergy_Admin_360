@@ -10,7 +10,6 @@ import InputControl from "shared/components/InputControl";
 
 export const EditCourse = () => {
   const { courseId } = useParams();
-  const editMode = courseId > 0;
   const [update, forceUpdate] = useState();
   const validator = useRef(
     new SimpleReactValidator({
@@ -89,7 +88,7 @@ export const EditCourse = () => {
   };
   const onSubmit = () => {
     if (validator.current.allValid()) {
-      editMode ? editCourse.mutate(course) : createCourse.mutate(course);
+      editCourse.mutate(course);
     } else {
       validator.current.showMessages();
       forceUpdate(1);
@@ -121,10 +120,10 @@ export const EditCourse = () => {
   return (
     <ContentLayout
       title={"Courses"}
-      subtitle={editMode ? "Update" : "Create new"}
+      subtitle={"Update"}
       breadcrumb={[
         { label: "Courses", location: "/admin/courses" },
-        { label: `${editMode ? "Edit" : "Create"}` },
+        { label: "Edit" },
       ]}
     >
       <section id="basic-vertical-layouts">
@@ -245,17 +244,15 @@ export const EditCourse = () => {
                     />
                   </div>
                   <div className="col-12 d-flex justify-content-between mt-4">
-                    {editMode && (
-                      <div>
-                        <Button
-                          className="me-1 mb-1"
-                          color="primary"
-                          onClick={() => navigate(`../section/create?courseId=${courseId}`)}
-                        >
-                          Add Section
-                        </Button>
-                      </div>
-                    )}
+                    <div>
+                      <Button
+                        className="me-1 mb-1"
+                        color="primary"
+                        onClick={() => navigate(`../section/create?courseId=${courseId}`)}
+                      >
+                        Add Section
+                      </Button>
+                    </div>
                     <div>
                       <LoadingButton
                         isLoading={createCourse.isLoading || editCourse.isLoading}
@@ -265,7 +262,7 @@ export const EditCourse = () => {
                           onSubmit(false);
                         }}
                       >
-                        {editMode ? "Update" : "Save & close"}
+                        {"Update"}
                       </LoadingButton>
                       <button
                         disabled={createCourse.isLoading || editCourse.isLoading}
@@ -295,94 +292,6 @@ export const EditCourse = () => {
         }}
         onCancel={() => onToggleModal(false)}
       />
-
-      {editMode && (
-        <CourseContentModal
-          size={"lg"}
-          isOpen={isModalOpen}
-          title={"Add course Section"}
-          onSave={() => {
-            onContentSubmit();
-          }}
-          onCancel={() => setIsModalOpen(false)}
-        >
-          <form className="form">
-            <div className="form-body">
-              <InputControl
-                label="Title"
-                name="title"
-                placeholder="Title"
-                value={courseContent.title}
-                onChange={(e) => onHandleChange(e, true)}
-                invalid={contentValidator.current.message("Title", courseContent.title, "required")}
-              />
-
-              <FormFeedback>
-                {contentValidator.current.message("Title", courseContent.title, "required")}
-              </FormFeedback>
-              {courseContent.isExternal === true && (
-                <InputControl
-                  label="Content/File URL"
-                  name="fileName"
-                  placeholder="Content/File URL"
-                  value={courseContent.fileName}
-                  onChange={(e) => onHandleChange(e, true)}
-                />
-              )}
-              {courseContent.isExternal === false && (
-                <>
-                  <InputControl
-                    label="File"
-                    type="file"
-                    placeholder="File"
-                    name="contentFile"
-                    onChange={(e) => handleUpload(e, true)}
-                    invalid={contentValidator.current.message(
-                      "ContentFile",
-                      courseContent.contentFile,
-                      "required"
-                    )}
-                  />
-                  <FormFeedback>
-                    {contentValidator.current.message(
-                      "ContentFile",
-                      courseContent.contentFile,
-                      "required"
-                    )}
-                  </FormFeedback>
-                </>
-              )}
-
-              <div className="mt-4">
-                <div className="form-check form-check-inline">
-                  <label htmlFor="isVideo">Video</label>
-                  <Input
-                    type="checkbox"
-                    id="isVideo"
-                    className="form-check-input"
-                    name="isVideo"
-                    checked={courseContent.isVideo}
-                    onChange={handleContentChecked}
-                  />
-                </div>
-              </div>
-              <div className="mt-4">
-                <div className="form-check form-check-inline">
-                  <label htmlFor="isExternal">Is an external link</label>
-                  <Input
-                    type="checkbox"
-                    id="isExternal"
-                    className="form-check-input"
-                    name="isExternal"
-                    checked={courseContent.isExternal}
-                    onChange={handleContentChecked}
-                  />
-                </div>
-              </div>
-            </div>
-          </form>
-        </CourseContentModal>
-      )}
     </ContentLayout>
   );
 };

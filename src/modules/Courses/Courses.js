@@ -7,7 +7,7 @@ export const Courses = () => {
   return (
     <Routes>
       <Route path="/" element={<CourseList />} />
-      <Route path="/create/new" element={<AddCourse />} />
+      <Route path="/create" element={<AddCourse />} />
       <Route path="/:courseId" element={<EditCourse />} />
       <Route path="/section/create" element={<CreateCourseSection />} />
       <Route path="/section/edit" element={<EditSection />} />
