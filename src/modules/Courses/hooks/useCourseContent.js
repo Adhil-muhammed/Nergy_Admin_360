@@ -36,9 +36,7 @@ export const useCourseContent = ({ sectionId = 0, contentId = 0 }) => {
     }
   }, [sectionId]);
 
-  {
-    /**
-  const courseContentInfo = useQuery(
+  const contentInfo = useQuery(
     `${GET_COURSECONTENT_BY_ID}_${contentId}`,
     () => getCourseContentById(contentId),
     {
@@ -48,28 +46,11 @@ export const useCourseContent = ({ sectionId = 0, contentId = 0 }) => {
   );
 
   useEffect(() => {
-    if (courseContentInfo.data) {
-      const { contentId,
-        title,
-        fileName,
-        fileURL,
-        isExternal,
-        isVideo,
-        sectionId } = courseContentInfo.data;
-        setCourseContent({
-        contentId,
-        title,
-        fileName,
-        fileURL,
-        isExternal,
-        isVideo,
-        sectionId
-      });
-      setContents(courseContents);
+    if (contentInfo.data) {
+      setCourseContent(contentInfo.data);
     }
-  }, [courseSectionInfo.data]);
- */
-  }
+  }, [contentInfo.data]);
+
   const createCourseContent = useMutation(createCoursesContent, {
     onError: (e, newData, previousData) => {
       errorMessage("Unable to create!");

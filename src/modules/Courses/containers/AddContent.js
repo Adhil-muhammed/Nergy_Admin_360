@@ -70,96 +70,96 @@ export const AddContent = () => {
   };
 
   return (
-    <div>
-      <ContentLayout
-        title={"Conent Section"}
-        subtitle="Create new Content"
-        breadcrumb={[{ label: "Content", location: "/" }, { label: "Create" }]}
-      ></ContentLayout>
-
-      <form className="form">
-        <div className="form-body">
-          <InputControl
-            label="Title"
-            name="title"
-            placeholder="Title"
-            value={courseContent.title}
-            onChange={(e) => onChangeHandler(e, true)}
-          //invalid={validator.current.message("name", courseContent.title, "required")}
-          />
-          <FormFeedback>
-            {/* {validator.current.message("Title", courseContent.title, "required")} */}
-          </FormFeedback>
-          {courseContent.isExternal === true && (
+    <ContentLayout
+      title={"Conent Section"}
+      subtitle="Create new Content"
+      breadcrumb={[{ label: "Content", location: "/" }, { label: "Create" }]}
+    >
+      <div>
+        <form className="form">
+          <div className="form-body">
             <InputControl
-              label="Content/File URL"
-              name="filefileURL"
-              placeholder="Content/File URL"
+              label="Title"
+              name="title"
+              placeholder="Title"
+              value={courseContent.title}
               onChange={(e) => onChangeHandler(e, true)}
+            //invalid={validator.current.message("name", courseContent.title, "required")}
             />
-          )}
-          {courseContent.isExternal === false && (
-            <>
+            <FormFeedback>
+              {/* {validator.current.message("Title", courseContent.title, "required")} */}
+            </FormFeedback>
+            {courseContent.isExternal === true && (
               <InputControl
-                label="File"
-                type="file"
-                placeholder="File"
-                name="fileName"
-                onChange={(e) => handleUpload(e, true)}
-              // invalid={validator.current.message(
-              //   "ContentFile",
-              //   courseContent.fileName,
-              //   "required"
-              // )}
+                label="Content/File URL"
+                name="filefileURL"
+                placeholder="Content/File URL"
+                onChange={(e) => onChangeHandler(e, true)}
               />
-              <FormFeedback>
-                {/* {validator.current.message("ContentFile", courseContent.fileURL, "required")} */}
-              </FormFeedback>
-            </>
-          )}
-          <div className="mt-4">
-            <div className="form-check form-check-inline">
-              <label htmlFor="isExternal">Is an external link</label>
-              <Input
-                type="checkbox"
-                id="isExternal"
-                className="form-check-input"
-                name="isExternal"
-                checked={courseContent.isExternal}
-                onChange={handleContentChecked}
-              />
+            )}
+            {courseContent.isExternal === false && (
+              <>
+                <InputControl
+                  label="File"
+                  type="file"
+                  placeholder="File"
+                  name="fileName"
+                  onChange={(e) => handleUpload(e, true)}
+                // invalid={validator.current.message(
+                //   "ContentFile",
+                //   courseContent.fileName,
+                //   "required"
+                // )}
+                />
+                <FormFeedback>
+                  {/* {validator.current.message("ContentFile", courseContent.fileURL, "required")} */}
+                </FormFeedback>
+              </>
+            )}
+            <div className="mt-4">
+              <div className="form-check form-check-inline">
+                <label htmlFor="isExternal">Is an external link</label>
+                <Input
+                  type="checkbox"
+                  id="isExternal"
+                  className="form-check-input"
+                  name="isExternal"
+                  checked={courseContent.isExternal}
+                  onChange={handleContentChecked}
+                />
+              </div>
             </div>
-          </div>
-          <div className="mt-4">
-            <div className="form-check form-check-inline">
-              <label htmlFor="isVideo">Video</label>
-              <Input
-                type="checkbox"
-                id="isVideo"
-                className="form-check-input"
-                name="isVideo"
-                checked={courseContent.isVideo}
-                onChange={handleContentChecked}
-              />
+            <div className="mt-4">
+              <div className="form-check form-check-inline">
+                <label htmlFor="isVideo">Video</label>
+                <Input
+                  type="checkbox"
+                  id="isVideo"
+                  className="form-check-input"
+                  name="isVideo"
+                  checked={courseContent.isVideo}
+                  onChange={handleContentChecked}
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="col-12 d-flex justify-content-end">
-            <LoadingButton className="me-1 mb-1" color="success" onClick={() => onSubmit()}>
-              Create
-            </LoadingButton>
-            <button
-              type="reset"
-              className="btn btn-light-secondary me-1 mb-1"
-              onClick={() => {
-                onCancel();
-              }}
-            >
-              Cancel
-            </button>
+            <div className="col-12 d-flex justify-content-end">
+              <LoadingButton className="me-1 mb-1" color="success" onClick={() => onSubmit()}>
+                Create
+              </LoadingButton>
+              <button
+                type="reset"
+                className="btn btn-light-secondary me-1 mb-1"
+                onClick={() => {
+                  onCancel();
+                }}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </ContentLayout >
   );
 };

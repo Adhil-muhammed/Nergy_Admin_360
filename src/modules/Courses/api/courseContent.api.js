@@ -20,6 +20,6 @@ export const updateCoursesContentById = async (id) => {
 };
 
 export const getCourseContentById = async (id) => {
-  const res = await Axios.get(`/Courses/${id}`);
+  const res = await Axios.get(`/Courses/content/${id}`);
   return res.data;
 };
