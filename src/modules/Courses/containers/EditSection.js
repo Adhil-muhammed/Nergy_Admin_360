@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import { useNavigate, useSearchParams, } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Input, FormFeedback, Label } from "reactstrap";
-import { ContentLayout, } from "shared";
+import { ContentLayout } from "shared";
 import { LoadingButton } from "shared/components/LoadingButton";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import SimpleReactValidator from "simple-react-validator";
@@ -15,11 +15,10 @@ export const EditSection = () => {
   const sectionId = searchParams.get("sectionId");
 
   const [update, forceUpdate] = useState();
-  const { createCourseSections, setCourseSection, courseSection, contents } =
-    useCourseSection({
-      sectionId,
-      courseId,
-    });
+  const { createCourseSections, setCourseSection, courseSection, contents } = useCourseSection({
+    sectionId,
+    courseId,
+  });
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },

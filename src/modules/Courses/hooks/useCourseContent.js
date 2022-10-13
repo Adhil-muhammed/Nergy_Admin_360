@@ -13,7 +13,7 @@ import { successMessage, successDeletedMessage, errorMessage } from "utils";
 const GET_COURSECONTENT = "GET_COURSECONTENT";
 const GET_COURSECONTENT_BY_ID = "GET_COURSECONTENT_BY_ID";
 
-export const useCourseContent = ({ load = false, contentId = 0 }) => {
+export const useCourseContent = ({ sectionId = 0, contentId = 0 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -25,7 +25,51 @@ export const useCourseContent = ({ load = false, contentId = 0 }) => {
     fileURL: "",
     isExternal: false,
     isVideo: false,
+    sectionId: 0,
   });
+
+  useEffect(() => {
+    if (sectionId > 0) {
+      setCourseContent((draft) => {
+        draft.sectionId = sectionId;
+      });
+    }
+  }, [sectionId]);
+
+  {
+    /**
+  const courseContentInfo = useQuery(
+    `${GET_COURSECONTENT_BY_ID}_${contentId}`,
+    () => getCourseContentById(contentId),
+    {
+      refetchOnWindowFocus: false,
+      enabled: contentId > 0,
+    }
+  );
+
+  useEffect(() => {
+    if (courseContentInfo.data) {
+      const { contentId,
+        title,
+        fileName,
+        fileURL,
+        isExternal,
+        isVideo,
+        sectionId } = courseContentInfo.data;
+        setCourseContent({
+        contentId,
+        title,
+        fileName,
+        fileURL,
+        isExternal,
+        isVideo,
+        sectionId
+      });
+      setContents(courseContents);
+    }
+  }, [courseSectionInfo.data]);
+ */
+  }
   const createCourseContent = useMutation(createCoursesContent, {
     onError: (e, newData, previousData) => {
       errorMessage("Unable to create!");
@@ -96,10 +140,12 @@ export const useCourseContent = ({ load = false, contentId = 0 }) => {
 
   return {
     deleteCourseContent,
+    createCourseContent,
     isConfirmDelete,
     courseContent,
     onToggleModal,
     courseCotentInfo,
     onDelete,
+    setCourseContent,
   };
 };
