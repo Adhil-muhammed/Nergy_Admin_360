@@ -1,10 +1,8 @@
 import React, { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ContentLayout, ModalLayout } from "shared/components";
-import { Input, Button, Table, FormFeedback } from "reactstrap";
-import { CourseContentModal } from "..";
+import { Input, FormFeedback } from "reactstrap";
 import { useCourse } from "../hooks";
-import InputControl from "shared/components/InputControl";
 import { QuillEditor } from "shared/components/QuillEditor";
 import SimpleReactValidator from "simple-react-validator";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
@@ -12,7 +10,6 @@ import { LoadingButton } from "shared/components/LoadingButton";
 
 export const AddCourse = () => {
   const { courseId } = useParams();
-  const editMode = courseId > 0;
   const [update, forceUpdate] = useState();
   const validator = useRef(
     new SimpleReactValidator({
@@ -91,7 +88,7 @@ export const AddCourse = () => {
   };
   const onSubmit = () => {
     if (validator.current.allValid()) {
-      editMode ? editCourse.mutate(course) : createCourse.mutate(course);
+      createCourse.mutate(course);
     } else {
       validator.current.showMessages();
       forceUpdate(1);
@@ -123,10 +120,10 @@ export const AddCourse = () => {
   return (
     <ContentLayout
       title={"Courses"}
-      subtitle={editMode ? "Update" : "Create new"}
+      subtitle={"Create new"}
       breadcrumb={[
         { label: "Courses", location: "/admin/courses" },
-        { label: `${editMode ? "Edit" : "Create"}` },
+        { label: "Create" },
       ]}
     >
       <section id="basic-vertical-layouts">
@@ -168,15 +165,7 @@ export const AddCourse = () => {
                           name="courseImageFile"
                           accept=".jpeg, .png, .jpg, .JPG, .JPEG, .PNG"
                           onChange={handleUpload}
-                          // invalid={validator.current.message(
-                          //   "File",
-                          //   course.courseImageFile,
-                          //   "required"
-                          // )}
                         />
-                        {/* <FormFeedback>
-                          {validator.current.message("File", course.courseImageFile, "required")}
-                        </FormFeedback> */}
                       </div>
                     </div>
                   </div>
@@ -230,7 +219,6 @@ export const AddCourse = () => {
                         id="first-exam-vertical"
                         className="form-check-input"
                         name="hasExam"
-                        // value={course.hasExam}
                         checked={course.hasExam}
                         onChange={handleChecked}
                       />
@@ -242,87 +230,12 @@ export const AddCourse = () => {
                         id="first-content-vertical"
                         className="form-check-input"
                         name="isContentEnabled"
-                        // value={course.isContentEnabled}
                         checked={course.isContentEnabled}
                         onChange={handleChecked}
                       />
                     </div>
                   </div>
-                  {/* <div className="col-12 mt-4">
-                    {course.courseContents.length > 0 && (
-                      <Table responsive size="">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Title</th>
-                            <th>File name</th>
-                            <td>Thumbnail</td>
-                            <th style={{ width: "220px" }}>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {course.courseContents?.map((content, index) => {
-                            return (
-                              <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{content.title}</td>
-                                <td>
-                                  {content.fileName && !content.isExternal ? (
-                                    <span>{content.fileName}</span>
-                                  ) : (
-                                    <a href={content.fileName} target="_blank">
-                                      {content.fileName}
-                                    </a>
-                                  )}
-                                </td>
-                                <td>
-                                  {content.fileURL && !content.isVideo ? (
-                                    <img src={content.fileURL} style={{ height: "40px" }} />
-                                  ) : content.fileURL && content.isVideo ? (
-                                    <video controls width="240" height="">
-                                      <source src={content.fileURL} type="video/mp4"></source>
-                                    </video>
-                                  ) : content.fileURL && content.isVideo && content.isExternal ? (
-                                    <iframe
-                                      width="240"
-                                      height=""
-                                      frameborder="0"
-                                      src={content.fileURL}
-                                    ></iframe>
-                                  ) : (
-                                    <span>No files</span>
-                                  )}
-                                </td>
-                                <td>
-                                  <Button
-                                    color="danger"
-                                    className="mt-4"
-                                    size="sm"
-                                    onClick={() => onDelete(content.contentId, true)}
-                                  >
-                                    <i className="bi bi-trash" style={{ fontSize: "10px" }}></i>{" "}
-                                    <span>Delete</span>
-                                  </Button>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </Table>
-                    )}
-                  </div> */}
                   <div className="col-12 d-flex justify-content-between mt-4">
-                    {editMode && (
-                      <div>
-                        <Button
-                          className="me-1 mb-1"
-                          color="primary"
-                          onClick={() => setIsModalOpen(true)}
-                        >
-                          Add course content
-                        </Button>
-                      </div>
-                    )}
                     <div>
                       <LoadingButton
                         isLoading={createCourse.isLoading || editCourse.isLoading}
@@ -332,7 +245,7 @@ export const AddCourse = () => {
                           onSubmit(false);
                         }}
                       >
-                        {editMode ? "Update" : "Save & close"}
+                        {"Save & close"}
                       </LoadingButton>
                       <button
                         disabled={createCourse.isLoading || editCourse.isLoading}
@@ -362,94 +275,6 @@ export const AddCourse = () => {
         }}
         onCancel={() => onToggleModal(false)}
       />
-
-      {editMode && (
-        <CourseContentModal
-          size={"lg"}
-          isOpen={isModalOpen}
-          title={"Add course content"}
-          onSave={() => {
-            onContentSubmit();
-          }}
-          onCancel={() => setIsModalOpen(false)}
-        >
-          <form className="form">
-            <div className="form-body">
-              <InputControl
-                label="Title"
-                name="title"
-                placeholder="Title"
-                value={courseContent.title}
-                onChange={(e) => onHandleChange(e, true)}
-                invalid={contentValidator.current.message("Title", courseContent.title, "required")}
-              />
-
-              <FormFeedback>
-                {contentValidator.current.message("Title", courseContent.title, "required")}
-              </FormFeedback>
-              {courseContent.isExternal === true && (
-                <InputControl
-                  label="Content/File URL"
-                  name="fileName"
-                  placeholder="Content/File URL"
-                  value={courseContent.fileName}
-                  onChange={(e) => onHandleChange(e, true)}
-                />
-              )}
-              {courseContent.isExternal === false && (
-                <>
-                  <InputControl
-                    label="File"
-                    type="file"
-                    placeholder="File"
-                    name="contentFile"
-                    onChange={(e) => handleUpload(e, true)}
-                    invalid={contentValidator.current.message(
-                      "ContentFile",
-                      courseContent.contentFile,
-                      "required"
-                    )}
-                  />
-                  <FormFeedback>
-                    {contentValidator.current.message(
-                      "ContentFile",
-                      courseContent.contentFile,
-                      "required"
-                    )}
-                  </FormFeedback>
-                </>
-              )}
-
-              <div className="mt-4">
-                <div className="form-check form-check-inline">
-                  <label htmlFor="isVideo">Video</label>
-                  <Input
-                    type="checkbox"
-                    id="isVideo"
-                    className="form-check-input"
-                    name="isVideo"
-                    checked={courseContent.isVideo}
-                    onChange={handleContentChecked}
-                  />
-                </div>
-              </div>
-              <div className="mt-4">
-                <div className="form-check form-check-inline">
-                  <label htmlFor="isExternal">Is an external link</label>
-                  <Input
-                    type="checkbox"
-                    id="isExternal"
-                    className="form-check-input"
-                    name="isExternal"
-                    checked={courseContent.isExternal}
-                    onChange={handleContentChecked}
-                  />
-                </div>
-              </div>
-            </div>
-          </form>
-        </CourseContentModal>
-      )}
     </ContentLayout>
   );
 };

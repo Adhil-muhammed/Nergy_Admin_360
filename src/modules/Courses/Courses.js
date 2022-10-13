@@ -7,12 +7,12 @@ export const Courses = () => {
   return (
     <Routes>
       <Route path="/" element={<CourseList />} />
-      <Route path="/create/new" element={<AddCourse />} />
+      <Route path="/create" element={<AddCourse />} />
       <Route path="/:courseId" element={<EditCourse />} />
       <Route path="/section/create" element={<CreateCourseSection />} />
       <Route path="/section/edit" element={<EditSection />} />
-      <Route path="/sections/contents/create" element={<AddContent />} />
-      <Route path="/sections/contents/edit" element={<EditContent />} />
+      <Route path="/section/content/create" element={<AddContent />} />
+      <Route path="/section/content/edit" element={<EditContent />} />
     </Routes>
   );
 };

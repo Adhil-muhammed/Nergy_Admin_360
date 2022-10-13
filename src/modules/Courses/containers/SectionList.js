@@ -1,16 +1,14 @@
 import React, { useMemo } from "react";
-import { ContentLayout, TableLayout, ModalLayout } from "shared/components";
+import { TableLayout, ModalLayout } from "shared/components";
 import { Button } from "reactstrap";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCourseSection } from "..";
 
 export const SectionList = (props) => {
   const { sections, courseId } = props;
 
   const history = useNavigate();
-  const location = useLocation();
   const { courseSection,
-    setCourseSection,
     onDelete,
     onToggleModal,
     deleteCourseSection,
@@ -57,18 +55,18 @@ export const SectionList = (props) => {
     []
   );
 
-  return (
-    <ContentLayout title={"Courses Section"} breadcrumb={[{ label: "CourseSection" }]}>
-      <TableLayout columns={columns} data={sections} />
-      <ModalLayout
-        isOpen={isConfirmDelete}
-        title={"Confirm"}
-        message={`Are you sure? Do you want to delete ${courseSection.title}`}
-        onConfirm={() => {
-          onConfirm();
-        }}
-        onCancel={() => onToggleModal(false)}
-      />
-    </ContentLayout>
+  return (<>
+    <h2>Sections</h2>
+    <TableLayout columns={columns} data={sections} />
+    <ModalLayout
+      isOpen={isConfirmDelete}
+      title={"Confirm"}
+      message={`Are you sure? Do you want to delete ${courseSection.title}`}
+      onConfirm={() => {
+        onConfirm();
+      }}
+      onCancel={() => onToggleModal(false)}
+    />
+  </>
   );
 };
