@@ -5,7 +5,7 @@ import { Input, FormFeedback, Label } from "reactstrap";
 import { CourseContentModal } from "..";
 import { LoadingButton } from "shared/components/LoadingButton";
 import InputControl from "shared/components/InputControl";
-import { useCourseContent } from "../hooks";
+import { useContent } from "../hooks";
 import SimpleReactValidator from "simple-react-validator";
 
 export const EditContent = () => {
@@ -15,7 +15,7 @@ export const EditContent = () => {
     const contentId = searchParams.get("contentId");
     const navigate = useNavigate();
 
-    const { createCourseContent, courseContent, setCourseContent } = useCourseContent({
+    const { createCourseContent, courseContent, setCourseContent } = useContent({
         contentId,
         sectionId,
     });

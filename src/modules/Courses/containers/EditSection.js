@@ -5,7 +5,7 @@ import { ContentLayout } from "shared";
 import { LoadingButton } from "shared/components/LoadingButton";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import SimpleReactValidator from "simple-react-validator";
-import { useCourseSection, ContentList } from "..";
+import { useSection, ContentList } from "..";
 
 export const EditSection = () => {
   const [searchParams] = useSearchParams();
@@ -15,7 +15,7 @@ export const EditSection = () => {
   const sectionId = searchParams.get("sectionId");
 
   const [update, forceUpdate] = useState();
-  const { createCourseSections, setCourseSection, courseSection, contents } = useCourseSection({
+  const { createCourseSections, setCourseSection, courseSection, contents } = useSection({
     sectionId,
     courseId,
   });

@@ -13,7 +13,7 @@ import { successMessage, successDeletedMessage, errorMessage } from "utils";
 const GET_COURSECONTENT = "GET_COURSECONTENT";
 const GET_COURSECONTENT_BY_ID = "GET_COURSECONTENT_BY_ID";
 
-export const useCourseContent = ({ sectionId = 0, contentId = 0 }) => {
+export const useContent = ({ sectionId = 0, contentId = 0 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 

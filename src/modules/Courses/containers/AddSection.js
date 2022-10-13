@@ -5,7 +5,7 @@ import { ContentLayout, } from "shared";
 import { LoadingButton } from "shared/components/LoadingButton";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import SimpleReactValidator from "simple-react-validator";
-import { useCourseSection } from "../hooks";
+import { useSection } from "../hooks";
 
 export const CreateCourseSection = () => {
   const [searchParams] = useSearchParams();
@@ -15,7 +15,7 @@ export const CreateCourseSection = () => {
 
   const [update, forceUpdate] = useState();
   const { createCourseSections, setCourseSection, courseSection, } =
-    useCourseSection({
+    useSection({
       load: false,
       courseSectionId: 0,
       sections: [],

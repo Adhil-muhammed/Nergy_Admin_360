@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { TableLayout, ModalLayout } from "shared/components";
 import { Button } from "reactstrap";
 import { useNavigate } from "react-router-dom";
-import { useCourseSection } from "..";
+import { useSection } from "..";
 
 export const SectionList = (props) => {
   const { sections, courseId } = props;
@@ -12,7 +12,7 @@ export const SectionList = (props) => {
     onDelete,
     onToggleModal,
     deleteCourseSection,
-    isConfirmDelete } = useCourseSection({ courseSectionId: 0, courseId })
+    isConfirmDelete } = useSection({ courseSectionId: 0, courseId })
 
   const onConfirm = () => {
     deleteCourseSection.mutate(courseSection.courseId);

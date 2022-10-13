@@ -13,7 +13,7 @@ import { successMessage, successDeletedMessage, errorMessage } from "utils";
 const GET_COURSESECTION = "GET_COURSESECTION";
 const GET_COURSESECTION_BY_ID = "GET_COURSESECTION_BY_ID";
 
-export const useCourseSection = ({
+export const useSection = ({
   sectionId = 0,
   courseId = 0,
 }) => {

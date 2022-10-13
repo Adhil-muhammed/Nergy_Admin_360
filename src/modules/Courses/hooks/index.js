@@ -1,3 +1,3 @@
 export * from "./useCourse";
-export * from "./useCourseSection";
-export * from "./useCourseContent";
+export * from "./useSection";
+export * from "./useContent";
