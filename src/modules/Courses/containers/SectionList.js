@@ -8,7 +8,6 @@ export const SectionList = (props) => {
   const { sections, courseId } = props;
 
   const history = useNavigate();
-  const location = useLocation();
   const { courseSection,
     setCourseSection,
     onDelete,

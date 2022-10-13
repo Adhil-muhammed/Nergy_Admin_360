@@ -1,7 +1,19 @@
 import { Button, Table } from "reactstrap";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
 
 export const ContentList = (props) => {
     const { contents } = props;
+    const history = useNavigate();
+    const [searchParams] = useSearchParams();
+
+
+    const courseId = searchParams.get("courseId");
+    const sectionId = searchParams.get("sectionId");
+
+    const onEdit = (contentId) => {
+        history(`../section/content/edit?contentId=${contentId}&sectionId=${sectionId}&courseId=${courseId}`);
+    };
 
     return <div className="col-12 mt-4">
         {contents.length > 0 && (
@@ -49,6 +61,14 @@ export const ContentList = (props) => {
                                     )}
                                 </td>
                                 <td>
+                                    <Button
+                                        className="mt-4"
+                                        size="sm"
+                                        onClick={() => onEdit(content.contentId)}
+                                    >
+                                        <i className="bi bi-trash" style={{ fontSize: "10px" }}></i>{" "}
+                                        <span>Edit</span>
+                                    </Button>
                                     <Button
                                         color="danger"
                                         className="mt-4"
