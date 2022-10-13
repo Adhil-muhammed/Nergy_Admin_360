@@ -2,11 +2,10 @@ import React, { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ContentLayout, ModalLayout, LoadingButton, LoadingSpinner } from "shared/components";
 import { Input, Button, FormFeedback } from "reactstrap";
-import { CourseContentModal, SectionList } from "..";
+import { SectionList } from "..";
 import { useCourse } from "../hooks";
 import { QuillEditor } from "shared/components/QuillEditor";
 import SimpleReactValidator from "simple-react-validator";
-import InputControl from "shared/components/InputControl";
 
 export const EditCourse = () => {
   const { courseId } = useParams();
@@ -119,7 +118,7 @@ export const EditCourse = () => {
 
   return (
     <ContentLayout
-      title={"Courses"}
+      title={"Edit Course"}
       subtitle={"Update"}
       breadcrumb={[
         { label: "Courses", location: "/admin/courses" },
@@ -219,7 +218,6 @@ export const EditCourse = () => {
                         id="first-exam-vertical"
                         className="form-check-input"
                         name="hasExam"
-                        // value={course.hasExam}
                         checked={course.hasExam}
                         onChange={handleChecked}
                       />
@@ -231,7 +229,6 @@ export const EditCourse = () => {
                         id="first-content-vertical"
                         className="form-check-input"
                         name="isContentEnabled"
-                        // value={course.isContentEnabled}
                         checked={course.isContentEnabled}
                         onChange={handleChecked}
                       />
