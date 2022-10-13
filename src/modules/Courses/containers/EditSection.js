@@ -5,7 +5,7 @@ import { ContentLayout, } from "shared";
 import { LoadingButton } from "shared/components/LoadingButton";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import SimpleReactValidator from "simple-react-validator";
-import { useCourseSection } from "../hooks";
+import { useCourseSection, ContentList } from "..";
 
 export const EditSection = () => {
   const [searchParams] = useSearchParams();
@@ -189,6 +189,7 @@ export const EditSection = () => {
               </div>
             </form>
           </div>
+          <ContentList contents={contents} />
         </div>
       </section>
     </>
