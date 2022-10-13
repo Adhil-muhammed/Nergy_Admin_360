@@ -65,134 +65,135 @@ export const CreateCourseSection = () => {
         title={"Course Sections"}
         subtitle="Create new Section"
         breadcrumb={[{ label: "Courses", location: "/admin/course/section" }, { label: "Create" }]}
-      ></ContentLayout>
-      <section id="basic-vertical-layouts">
-        <div className="row match-height">
-          <div className="col-12">
-            <form className="form form-vertical">
-              <div className="form-body">
-                <div className="col-12">
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="mb-2" htmlFor="first-name-vertical">
-                          Name
-                        </label>
-                        <Input
-                          type="text"
-                          id="first-name-vertical"
-                          className="form-control"
-                          name="title"
-                          placeholder="Name"
-                          value={courseSection.title}
-                          onChange={onChangeHandler}
-                          invalid={validator.current.message(
-                            "name",
-                            courseSection.title,
-                            "required"
-                          )}
-                        />
-                        <FormFeedback>
-                          {validator.current.message("name", courseSection.title, "required")}
-                        </FormFeedback>
+      >
+        <section id="basic-vertical-layouts">
+          <div className="row match-height">
+            <div className="col-12">
+              <form className="form form-vertical">
+                <div className="form-body">
+                  <div className="col-12">
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="mb-2" htmlFor="first-name-vertical">
+                            Name
+                          </label>
+                          <Input
+                            type="text"
+                            id="first-name-vertical"
+                            className="form-control"
+                            name="title"
+                            placeholder="Name"
+                            value={courseSection.title}
+                            onChange={onChangeHandler}
+                            invalid={validator.current.message(
+                              "name",
+                              courseSection.title,
+                              "required"
+                            )}
+                          />
+                          <FormFeedback>
+                            {validator.current.message("name", courseSection.title, "required")}
+                          </FormFeedback>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="mb-2" htmlFor="first-description-vertical">
-                          Description
-                        </label>
-                        <Input
-                          type="text"
-                          id="first-description-vertical"
-                          className="form-control"
-                          name="description"
-                          placeholder="Description"
-                          value={courseSection.description}
-                          onChange={onChangeHandler}
-                          invalid={validator.current.message(
-                            "description",
-                            courseSection.description,
-                            "required"
-                          )}
-                        />
-                        <FormFeedback>
-                          {validator.current.message(
-                            "description",
-                            courseSection.description,
-                            "required"
-                          )}
-                        </FormFeedback>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="mb-2" htmlFor="first-description-vertical">
+                            Description
+                          </label>
+                          <Input
+                            type="text"
+                            id="first-description-vertical"
+                            className="form-control"
+                            name="description"
+                            placeholder="Description"
+                            value={courseSection.description}
+                            onChange={onChangeHandler}
+                            invalid={validator.current.message(
+                              "description",
+                              courseSection.description,
+                              "required"
+                            )}
+                          />
+                          <FormFeedback>
+                            {validator.current.message(
+                              "description",
+                              courseSection.description,
+                              "required"
+                            )}
+                          </FormFeedback>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="mb-2" htmlFor="first-description-vertical">
-                          Sort Order
-                        </label>
-                        <Input
-                          type="text"
-                          id="first-description-vertical"
-                          className="form-control"
-                          name="sortOrder"
-                          placeholder="Sortorder"
-                          value={courseSection.sortOrder}
-                          onChange={onChangeHandler}
-                          invalid={validator.current.message(
-                            "sortorder",
-                            courseSection.sortOrder,
-                            "required"
-                          )}
-                        />
-                        <FormFeedback>
-                          {validator.current.message(
-                            "sortorder",
-                            courseSection.sortOrder,
-                            "required"
-                          )}
-                        </FormFeedback>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label className="mb-2" htmlFor="first-description-vertical">
+                            Sort Order
+                          </label>
+                          <Input
+                            type="text"
+                            id="first-description-vertical"
+                            className="form-control"
+                            name="sortOrder"
+                            placeholder="Sortorder"
+                            value={courseSection.sortOrder}
+                            onChange={onChangeHandler}
+                            invalid={validator.current.message(
+                              "sortorder",
+                              courseSection.sortOrder,
+                              "required"
+                            )}
+                          />
+                          <FormFeedback>
+                            {validator.current.message(
+                              "sortorder",
+                              courseSection.sortOrder,
+                              "required"
+                            )}
+                          </FormFeedback>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-6">
-                      <div className="form-group">
-                        <Input
-                          type="checkbox"
-                          name="isEnable"
-                          onChange={onCheckBoxChangeHandler}
-                          value={courseSection.isEnable}
-                          checked={courseSection.isEnable}
-                        />
-                        <Label check>Enabled</Label>
+                      <div className="col-6">
+                        <div className="form-group">
+                          <Input
+                            type="checkbox"
+                            name="isEnable"
+                            onChange={onCheckBoxChangeHandler}
+                            value={courseSection.isEnable}
+                            checked={courseSection.isEnable}
+                          />
+                          <Label check>Enabled</Label>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <div className="col-12 d-flex justify-content-end">
+                    <LoadingButton
+                      className="me-1 mb-1"
+                      color="success"
+                      onClick={() => {
+                        onSubmit();
+                      }}
+                    >
+                      Create
+                    </LoadingButton>
+                    <button
+                      type="reset"
+                      className="btn btn-light-secondary me-1 mb-1"
+                      onClick={() => {
+                        onCancel();
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
-                <div className="col-12 d-flex justify-content-end">
-                  <LoadingButton
-                    className="me-1 mb-1"
-                    color="success"
-                    onClick={() => {
-                      onSubmit();
-                    }}
-                  >
-                    Create
-                  </LoadingButton>
-                  <button
-                    type="reset"
-                    className="btn btn-light-secondary me-1 mb-1"
-                    onClick={() => {
-                      onCancel();
-                    }}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ContentLayout>
     </>
   );
 };
