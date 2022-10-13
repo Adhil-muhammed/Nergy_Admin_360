@@ -12,13 +12,12 @@ export const EditSection = () => {
   const navigate = useNavigate();
 
   const courseId = searchParams.get("courseId");
+  const sectionId = searchParams.get("sectionId");
 
   const [update, forceUpdate] = useState();
   const { createCourseSections, setCourseSection, courseSection, } =
     useCourseSection({
-      load: false,
-      courseSectionId: 0,
-      sections: [],
+      sectionId,
       courseId,
     });
 
