@@ -5,23 +5,21 @@ import { ContentLayout, } from "shared";
 import { LoadingButton } from "shared/components/LoadingButton";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import SimpleReactValidator from "simple-react-validator";
-import { useCourseSection } from "../hooks";
+import { useCourseSection, ContentList } from "..";
 
 export const EditSection = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const courseId = searchParams.get("courseId");
+  const sectionId = searchParams.get("sectionId");
 
   const [update, forceUpdate] = useState();
-  const { createCourseSections, setCourseSection, courseSection, } =
+  const { createCourseSections, setCourseSection, courseSection, contents } =
     useCourseSection({
-      load: false,
-      courseSectionId: 0,
-      sections: [],
+      sectionId,
       courseId,
     });
-
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },
@@ -176,7 +174,7 @@ export const EditSection = () => {
                       onSubmit();
                     }}
                   >
-                    Create
+                    Update
                   </LoadingButton>
                   <button
                     type="reset"
@@ -191,6 +189,7 @@ export const EditSection = () => {
               </div>
             </form>
           </div>
+          <ContentList contents={contents} />
         </div>
       </section>
     </>

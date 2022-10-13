@@ -4,7 +4,7 @@ import {
   createCourseSection,
   updateCourseSectionById,
   deleteCourseSectionById,
-  selectCourseSectionById,
+  getSectionById,
 } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useImmer } from "use-immer";
@@ -14,7 +14,7 @@ const GET_COURSESECTION = "GET_COURSESECTION";
 const GET_COURSESECTION_BY_ID = "GET_COURSESECTION_BY_ID";
 
 export const useCourseSection = ({
-  courseSectionId = 0,
+  sectionId = 0,
   courseId = 0,
 }) => {
   const navigate = useNavigate();
@@ -29,6 +29,8 @@ export const useCourseSection = ({
     courseId: 0,
     sortOrder: 0,
   });
+  const [contents, setContents] = useImmer([]);
+
 
   useEffect(() => {
     if (courseId > 0) {
@@ -39,17 +41,32 @@ export const useCourseSection = ({
   }, [courseId]);
 
   const courseSectionInfo = useQuery(
-    `${GET_COURSESECTION_BY_ID}_${courseSectionId}`,
-    () => selectCourseSectionById(courseSectionId),
+    `${GET_COURSESECTION_BY_ID}_${sectionId}`,
+    () => getSectionById(sectionId),
     {
       refetchOnWindowFocus: false,
-      enabled: courseSectionId > 0,
+      enabled: sectionId > 0,
     }
   );
 
   useEffect(() => {
     if (courseSectionInfo.data) {
-      setCourseSection(courseSectionInfo.data);
+      const { sectionId,
+        title,
+        description,
+        isEnable,
+        courseId,
+        sortOrder,
+        courseContents } = courseSectionInfo.data;
+      setCourseSection({
+        sectionId,
+        title,
+        description,
+        isEnable,
+        courseId,
+        sortOrder,
+      });
+      setContents(courseContents);
     }
   }, [courseSectionInfo.data]);
 
@@ -124,5 +141,6 @@ export const useCourseSection = ({
     updateCourseSection,
     createCourseSections,
     isConfirmDelete,
+    contents
   };
 };

@@ -6,16 +6,16 @@ export const createCourseSection = async (section) => {
 };
 
 export const updateCourseSectionById = async (sectionId) => {
-  const res = await Axios.put(`/section/${sectionId}`);
+  const res = await Axios.put(`/Courses/section/${sectionId}`);
   return res.data;
 };
 
 export const deleteCourseSectionById = async (sectionId) => {
-  const res = await Axios.delete("/section/${sectionId}");
+  const res = await Axios.delete("/Courses/section/${sectionId}");
   return res.data;
 };
 
-export const selectCourseSectionById = async () => {
-  const res = await Axios.get("/section/${Id}");
+export const getSectionById = async (Id) => {
+  const res = await Axios.get(`/Courses/section/${Id}`);
   return res.data;
 };
