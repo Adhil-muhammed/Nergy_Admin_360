@@ -128,5 +128,6 @@ export const useContent = ({ sectionId = 0, contentId = 0 }) => {
     courseCotentInfo,
     onDelete,
     setCourseContent,
+    editCourseContent
   };
 };

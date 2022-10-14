@@ -15,11 +15,10 @@ export const EditContent = () => {
     const contentId = searchParams.get("contentId");
     const navigate = useNavigate();
 
-    const { createCourseContent, courseContent, setCourseContent } = useContent({
+    const { editCourseContent, courseContent, setCourseContent } = useContent({
         contentId,
         sectionId,
     });
-
     // const [update, forceUpdate] = useState();
 
     // const validator = useRef(
@@ -59,7 +58,7 @@ export const EditContent = () => {
 
     const onSubmit = () => {
         //if (validator.current.allValid()) {
-        createCourseContent.mutate(courseContent);
+        editCourseContent.mutate(courseContent);
         // } else {
         //   validator.current.showMessages();
         //   forceUpdate(1);

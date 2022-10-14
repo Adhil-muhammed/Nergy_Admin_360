@@ -14,8 +14,12 @@ export const deleteCoursesContentById = async (id) => {
   return res.data;
 };
 
-export const updateCoursesContentById = async (id) => {
-  const res = await Axios.put(`/Courses/content/${id}`);
+export const updateCoursesContentById = async (content) => {
+  const res = await Axios.put(`/Courses/content/${content.contentId}`, content, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return res.data;
 };
 
