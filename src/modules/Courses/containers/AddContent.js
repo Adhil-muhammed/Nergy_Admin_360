@@ -19,13 +19,13 @@ export const AddContent = () => {
     sectionId,
   });
 
-  // const [update, forceUpdate] = useState();
+  const [update, forceUpdate] = useState();
 
-  // const validator = useRef(
-  //   new SimpleReactValidator({
-  //     autoForceUpdate: { forceUpdate: forceUpdate },
-  //   })
-  // );
+  const validator = useRef(
+    new SimpleReactValidator({
+      autoForceUpdate: { forceUpdate: forceUpdate },
+    })
+  );
 
   const handleContentChecked = (e) => {
     const { name, checked } = e.target;
@@ -56,13 +56,16 @@ export const AddContent = () => {
     });
   };
 
-  const onSubmit = () => {
-    //if (validator.current.allValid()) {
-    createCourseContent.mutate(courseContent);
-    // } else {
-    //   validator.current.showMessages();
-    //   forceUpdate(1);
-    // }
+  const onSubmit = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    if (validator.current.allValid()) {
+      createCourseContent.mutate(courseContent);
+    } else {
+      validator.current.showMessages();
+      forceUpdate(1);
+    }
   };
 
   const onCancel = () => {
@@ -84,10 +87,10 @@ export const AddContent = () => {
               placeholder="Title"
               value={courseContent.title}
               onChange={(e) => onChangeHandler(e, true)}
-            //invalid={validator.current.message("name", courseContent.title, "required")}
+              invalid={validator.current.message("name", courseContent.title, "required")}
             />
             <FormFeedback>
-              {/* {validator.current.message("Title", courseContent.title, "required")} */}
+              {validator.current.message("Title", courseContent.title, "required")}
             </FormFeedback>
             {courseContent.isExternal === true && (
               <InputControl
@@ -105,14 +108,14 @@ export const AddContent = () => {
                   placeholder="File"
                   name="fileName"
                   onChange={(e) => handleUpload(e, true)}
-                // invalid={validator.current.message(
-                //   "ContentFile",
-                //   courseContent.fileName,
-                //   "required"
-                // )}
+                  invalid={validator.current.message(
+                    "ContentFile",
+                    courseContent.fileName,
+                    "required"
+                  )}
                 />
                 <FormFeedback>
-                  {/* {validator.current.message("ContentFile", courseContent.fileURL, "required")} */}
+                  {validator.current.message("ContentFile", courseContent.fileURL, "required")}
                 </FormFeedback>
               </>
             )}
@@ -144,7 +147,7 @@ export const AddContent = () => {
             </div>
 
             <div className="col-12 d-flex justify-content-end">
-              <LoadingButton className="me-1 mb-1" color="success" onClick={() => onSubmit()}>
+              <LoadingButton className="me-1 mb-1" color="success" onClick={(e) => onSubmit(e)}>
                 Create
               </LoadingButton>
               <button
