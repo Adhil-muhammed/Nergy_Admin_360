@@ -29,11 +29,7 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     enabled: courseId > 0,
   });
 
-  useEffect(() => {
-    if (courseInfo.data) {
-      setCourse(courseInfo.data);
-    }
-  }, [courseInfo.data]);
+
 
   const [course, setCourse] = useImmer({
     courseId: 0,
@@ -47,6 +43,11 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     courseSections: []
   });
 
+  useEffect(() => {
+    if (courseInfo.data) {
+      setCourse(courseInfo.data);
+    }
+  }, [courseInfo.data]);
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [isModalOpen, setIsModalOpen] = useImmer(false);
@@ -117,8 +118,9 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     [setIsConfirmDelete]
   );
 
-  const onSectionDelete = () => {
+  console.log(course);
 
+  const onSectionDelete = () => {
 
 
   };

@@ -263,16 +263,6 @@ export const AddCourse = () => {
           </div>
         </div>
       </section>
-
-      <ModalLayout
-        isOpen={isConfirmDelete}
-        title={"Confirm"}
-        message={`Are you sure? Do you want to delete ${courseContents.title}?`}
-        onConfirm={() => {
-          onConfirm();
-        }}
-        onCancel={() => onToggleModal(false)}
-      />
     </ContentLayout>
   );
 };
