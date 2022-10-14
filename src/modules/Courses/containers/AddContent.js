@@ -12,6 +12,8 @@ export const AddContent = () => {
   const [searchParams] = useSearchParams();
 
   const sectionId = searchParams.get("sectionId");
+  const courseId = searchParams.get("courseId");
+
   const navigate = useNavigate();
 
   const { createCourseContent, courseContent, setCourseContent } = useContent({
@@ -69,7 +71,7 @@ export const AddContent = () => {
   };
 
   const onCancel = () => {
-    navigate("..", { replace: true });
+    navigate(`../section/edit?sectionId=${sectionId}&courseId=${courseId}`, { replace: true });
   };
 
   return (
