@@ -12,7 +12,6 @@ export const CourseList = (props) => {
     useCourse({
       load: true,
     });
-  const { data, isLoading } = coursesQuery;
   const history = useNavigate();
   const location = useLocation();
 
@@ -79,13 +78,13 @@ export const CourseList = (props) => {
     ],
     []
   );
-  if (isLoading) {
+  if (coursesQuery.isLoading) {
     return <LoadingSpinner />;
   }
   return (
     <ContentLayout title={"Courses"} subtitle={"List"} breadcrumb={[{ label: "Courses" }]}>
       <CourseIdFilter />
-      <TableLayout columns={columns} data={data} />
+      <TableLayout columns={columns} data={coursesQuery.data} />
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}

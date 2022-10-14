@@ -141,8 +141,7 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
       });
     } else {
       const selectedCourse = coursesQuery.data.find((c) => c.courseId === id);
-      if (selectedCourse) setCourse(selectedCourse);
-
+      if (selectedCourse) { setCourse(selectedCourse); }
       setIsConfirmDelete((draft) => {
         draft = true;
         return draft;
