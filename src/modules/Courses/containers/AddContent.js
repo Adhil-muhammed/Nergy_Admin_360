@@ -115,7 +115,7 @@ export const AddContent = () => {
                   )}
                 />
                 <FormFeedback>
-                  {validator.current.message("ContentFile", courseContent.fileURL, "required")}
+                  {validator.current.message("ContentFile", courseContent.fileName, "required")}
                 </FormFeedback>
               </>
             )}
