@@ -13,7 +13,7 @@ import { successMessage, successDeletedMessage, errorMessage } from "utils";
 const GET_COURSECONTENT = "GET_COURSECONTENT";
 const GET_COURSECONTENT_BY_ID = "GET_COURSECONTENT_BY_ID";
 
-export const useContent = ({ sectionId = 0, contentId = 0 }) => {
+export const useContent = ({ sectionId = 0, contentId = 0, courseId = 0 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -58,7 +58,7 @@ export const useContent = ({ sectionId = 0, contentId = 0 }) => {
     onSuccess: () => {
       successMessage();
       queryClient.invalidateQueries(GET_COURSECONTENT);
-      navigate("..", { replace: true });
+      navigate(`../section/edit?sectionId=${sectionId}&courseId=${courseId}`, { replace: true });
     },
   });
 

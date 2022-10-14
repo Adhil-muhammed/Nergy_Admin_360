@@ -19,6 +19,7 @@ export const AddContent = () => {
   const { createCourseContent, courseContent, setCourseContent } = useContent({
     contentId: 0,
     sectionId,
+    courseId
   });
 
   const [update, forceUpdate] = useState();
