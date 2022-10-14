@@ -56,7 +56,7 @@ export const CreateCourseSection = () => {
   }
 
   const onCancel = () => {
-    navigate("..", { replace: true });
+    navigate(`../${courseId}`, { replace: true });
   };
 
   return (
