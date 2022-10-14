@@ -16,9 +16,7 @@ export const CreateCourseSection = () => {
   const [update, forceUpdate] = useState();
   const { createCourseSections, setCourseSection, courseSection, } =
     useSection({
-      load: false,
-      courseSectionId: 0,
-      sections: [],
+      sectionId: 0,
       courseId,
     });
 

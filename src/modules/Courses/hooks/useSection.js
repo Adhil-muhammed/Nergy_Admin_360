@@ -31,7 +31,6 @@ export const useSection = ({
   });
   const [contents, setContents] = useImmer([]);
 
-
   useEffect(() => {
     if (courseId > 0) {
       setCourseSection((draft) => {
@@ -101,11 +100,13 @@ export const useSection = ({
       queryClient.invalidateQueries(GET_COURSESECTION);
     },
     onSettled: () => {
-      onToggleModal(false);
+      onToggleModal();
     },
   });
 
-  const onDelete = () => { }
+  const onDelete = (value) => {
+    onToggleModal();
+  }
   // React.useCallback(
   //   (id) => {
   //     const selectedCourseSection = courseSections.find((c) => c.sectionId === id);
@@ -122,9 +123,9 @@ export const useSection = ({
   // );
 
   const onToggleModal = React.useCallback(
-    (isOpen) => {
+    () => {
       setIsConfirmDelete((draft) => {
-        draft = isOpen;
+        draft = !draft;
         return draft;
       });
     },
