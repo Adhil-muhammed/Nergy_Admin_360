@@ -77,7 +77,7 @@ export const useSection = ({
     onSuccess: () => {
       successMessage();
       queryClient.invalidateQueries(GET_COURSESECTION);
-      navigate("..", { replace: true });
+      navigate(`../${courseId}`, { replace: true });
     },
   });
 
@@ -85,7 +85,7 @@ export const useSection = ({
     onSuccess: () => {
       successMessage();
       queryClient.invalidateQueries(GET_COURSESECTION);
-      navigate("..", { replace: true });
+      navigate(`../${courseId}`, { replace: true });
     },
     onError: (e, newData, previousData) => {
       errorMessage("Unable to edit!");

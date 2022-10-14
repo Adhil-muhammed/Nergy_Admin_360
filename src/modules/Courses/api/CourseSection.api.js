@@ -5,8 +5,8 @@ export const createCourseSection = async (section) => {
   return res.data;
 };
 
-export const updateCourseSectionById = async (sectionId) => {
-  const res = await Axios.put(`/Courses/section/${sectionId}`);
+export const updateCourseSectionById = async (section) => {
+  const res = await Axios.put(`/Courses/section/${section.sectionId}`, section);
   return res.data;
 };
 

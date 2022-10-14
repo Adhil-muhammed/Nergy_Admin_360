@@ -15,7 +15,7 @@ export const EditSection = () => {
   const sectionId = searchParams.get("sectionId");
 
   const [update, forceUpdate] = useState();
-  const { createCourseSections, setCourseSection, courseSection, contents } = useSection({
+  const { createCourseSections, updateCourseSection, setCourseSection, courseSection, contents } = useSection({
     sectionId,
     courseId,
   });
@@ -41,7 +41,7 @@ export const EditSection = () => {
 
   const onSubmit = () => {
     if (validator.current.allValid()) {
-      createCourseSections.mutate(courseSection);
+      updateCourseSection.mutate(courseSection);
     } else {
       validator.current.showMessages();
       forceUpdate(1);
