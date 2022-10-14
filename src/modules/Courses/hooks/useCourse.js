@@ -86,19 +86,6 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     },
   });
 
-  const createCourseContent = useMutation(createCoursesContent, {
-    onError: (e, newData, previousData) => {
-      errorMessage("Unable to create!");
-    },
-    onSuccess: () => {
-      successMessage();
-      queryClient.invalidateQueries(`${GET_COURSE_BY_ID}_${courseId}`);
-    },
-    onSettled: () => {
-      setIsModalOpen(false);
-    },
-  });
-
   const onDelete = (id) => {
     const selectedCourse = coursesQuery.data.find((c) => c.courseId === id);
     if (selectedCourse) { setCourse(selectedCourse); }
@@ -129,7 +116,6 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     course,
     setCourse,
     courseInfo,
-    createCourseContent,
     coursesQuery,
     createCourse,
     editCourse,
