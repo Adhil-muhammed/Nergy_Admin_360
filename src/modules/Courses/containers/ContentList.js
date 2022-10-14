@@ -51,11 +51,11 @@ export const ContentList = (props) => {
                     )}
                   </td>
                   <td>
-                    <Button color="danger" className="mt-4" size="sm" onClick={() =>
+                    {/* <Button color="danger" className="mt-4" size="sm" onClick={() =>
                       history(`../section/content/edit?sectionId=${sectionId}&courseId=${courseId}&contentId=${content.contentId} `)}>
                       <i className="bi bi-trash" style={{ fontSize: "10px" }}></i>{" "}
                       <span>Edit</span>
-                    </Button>
+                    </Button> */}
                     <Button color="danger" className="mt-4" size="sm" onClick={() => { }}>
                       <i className="bi bi-trash" style={{ fontSize: "10px" }}></i>{" "}
                       <span>Delete</span>
