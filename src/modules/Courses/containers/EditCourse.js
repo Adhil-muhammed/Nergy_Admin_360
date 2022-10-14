@@ -122,7 +122,7 @@ export const EditCourse = () => {
       subtitle={"Update"}
       breadcrumb={[
         { label: "Courses", location: "/admin/courses" },
-        { label: "Edit" },
+        { label: "Edit Course" },
       ]}
     >
       <section id="basic-vertical-layouts">

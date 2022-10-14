@@ -78,7 +78,11 @@ export const AddContent = () => {
     <ContentLayout
       title={"Conent Section"}
       subtitle="Create new Content"
-      breadcrumb={[{ label: "Content", location: "/" }, { label: "Create" }]}
+      breadcrumb={[{ label: "Courses", location: "/admin/course/section" },
+      { label: "Edit Courses", location: `../${courseId}` },
+      { label: "Edit Section", location: `../section/edit?sectionId=${sectionId}&courseId=${courseId}` },
+      { label: "Create Content" }]}
+
     >
       <div>
         <form className="form">
