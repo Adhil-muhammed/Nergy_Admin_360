@@ -28,46 +28,28 @@ export const EditCourse = () => {
     createCourse,
     editCourse,
     courseInfo,
-    isModalOpen,
-    setIsModalOpen,
-    courseContents,
-    setCourseContent,
-    createCourseContent,
-    courseContent,
-    onDelete,
     onToggleModal,
     isConfirmDelete,
-    deleteCourseContent,
+    onSectionDelete
   } = useCourse({
     load: false,
     courseId: courseId,
   });
   const navigate = useNavigate();
 
-  const onHandleChange = (e, isContent = false) => {
+  const onHandleChange = (e) => {
     const { name, value } = e.target;
-    if (isContent) {
-      setCourseContent((draft) => {
-        draft[name] = value;
-      });
-    } else {
-      setCourse((draft) => {
-        draft[name] = value;
-      });
-    }
+    setCourse((draft) => {
+      draft[name] = value;
+    });
   };
-  const handleUpload = (e, isContent = false) => {
+
+  const handleUpload = (e) => {
     const file = e.target.files[0];
     const name = e.target.name;
-    if (isContent) {
-      setCourseContent((draft) => {
-        draft[name] = file;
-      });
-    } else {
-      setCourse((draft) => {
-        draft[name] = file;
-      });
-    }
+    setCourse((draft) => {
+      draft[name] = file;
+    });
   };
 
   const handleChecked = (e) => {
@@ -77,14 +59,7 @@ export const EditCourse = () => {
     });
   };
 
-  const handleContentChecked = (e) => {
-    const { name, checked } = e.target;
-    setCourseContent((draft) => {
-      draft[name] = checked;
-      draft.fileName = name === "isExternal" ? "" : draft.fileName;
-      draft.contentFile = name === "isExternal" ? null : draft.contentFile;
-    });
-  };
+
   const onSubmit = () => {
     if (validator.current.allValid()) {
       editCourse.mutate(course);
@@ -94,22 +69,12 @@ export const EditCourse = () => {
     }
   };
 
-  const onContentSubmit = () => {
-    if (contentValidator.current.allValid()) {
-      createCourseContent.mutate({ ...courseContent, courseId });
-      setIsModalOpen(false);
-    } else {
-      contentValidator.current.showMessages();
-      forceUpdate(1);
-    }
-  };
 
   const onCancel = () => {
     navigate("..", { replace: true });
   };
 
   const onConfirm = () => {
-    deleteCourseContent.mutate(courseContents.contentId);
   };
 
   if (courseInfo.isLoading) {
@@ -238,6 +203,7 @@ export const EditCourse = () => {
                     <SectionList
                       sections={course.courseSections ? course.courseSections : []}
                       courseId={courseId}
+                      onSectionDelete={onSectionDelete}
                     />
                   </div>
                   <div className="col-12 d-flex justify-content-between mt-4">
@@ -283,7 +249,7 @@ export const EditCourse = () => {
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}
-        message={`Are you sure? Do you want to delete ${courseContents.title}?`}
+        message={`Are you sure? Do you want to delete ?`}
         onConfirm={() => {
           onConfirm();
         }}

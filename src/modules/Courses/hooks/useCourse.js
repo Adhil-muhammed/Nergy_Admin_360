@@ -44,23 +44,9 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     courseImageFile: "",
     certificateFile: "",
     contentPath: "",
-    courseContents: [],
+    courseSections: []
   });
 
-  const [courseContents, setCourseContents] = useImmer([
-    {
-      contentId: 0,
-      title: "",
-    },
-  ]);
-
-  const [courseContent, setCourseContent] = useImmer({
-    title: "",
-    contentFile: "",
-    fileName: "",
-    isExternal: false,
-    isVideo: false,
-  });
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [isModalOpen, setIsModalOpen] = useImmer(false);
@@ -112,61 +98,36 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     },
   });
 
-  const deleteCourseContent = useMutation(deleteCoursesContentById, {
-    onError: (e, newData, previousData) => {
-      errorMessage("Unable to delete!");
-    },
-    onSuccess: () => {
-      successDeletedMessage();
-      queryClient.invalidateQueries(`${GET_COURSE_BY_ID}_${courseId}`);
-    },
-    onSettled: () => {
-      onToggleModal(false);
-    },
-  });
-
-  const selectedCourseContentInfo = (id) => {
-    const selected = courseInfo.data.courseContents.find((item) => item.contentId === id);
-    if (selected) {
-      setCourseContents(selected);
-    }
-  };
-
-  const onDelete = (id, isContent = false) => {
-    if (isContent) {
-      selectedCourseContentInfo(id);
-      setIsConfirmDelete((draft) => {
-        draft = true;
-        return draft;
-      });
-    } else {
-      const selectedCourse = coursesQuery.data.find((c) => c.courseId === id);
-      if (selectedCourse) { setCourse(selectedCourse); }
-      setIsConfirmDelete((draft) => {
-        draft = true;
-        return draft;
-      });
-    }
+  const onDelete = (id) => {
+    const selectedCourse = coursesQuery.data.find((c) => c.courseId === id);
+    if (selectedCourse) { setCourse(selectedCourse); }
+    setIsConfirmDelete((draft) => {
+      draft = true;
+      return draft;
+    });
   };
 
   const onToggleModal = React.useCallback(
-    (isOpen) => {
+    () => {
       setIsConfirmDelete((draft) => {
-        draft = isOpen;
+        draft = !draft;
         return draft;
       });
     },
     [setIsConfirmDelete]
   );
 
+  const onSectionDelete = () => {
+
+
+
+  };
+
   return {
     course,
     setCourse,
     courseInfo,
-    courseContents,
     createCourseContent,
-    courseContent,
-    setCourseContent,
     coursesQuery,
     createCourse,
     editCourse,
@@ -174,8 +135,8 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     isConfirmDelete,
     onToggleModal,
     deleteCourse,
-    deleteCourseContent,
     isModalOpen,
     setIsModalOpen,
+    onSectionDelete
   };
 };

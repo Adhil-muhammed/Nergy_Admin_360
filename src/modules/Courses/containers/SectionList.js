@@ -1,18 +1,17 @@
-import React, { useMemo, useEffect } from "react";
-import { TableLayout, ModalLayout } from "shared/components";
+import React, { useMemo } from "react";
+import { TableLayout, } from "shared/components";
 import { Button } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { useSection } from "..";
 
 export const SectionList = (props) => {
-  const { sections, courseId } = props;
+  const { sections, courseId, onSectionDelete } = props;
 
   const history = useNavigate();
   const { courseSection,
     onDelete,
-    onToggleModal,
     deleteCourseSection,
-    isConfirmDelete } = useSection({ sectionId: 0, courseId });
+  } = useSection({ sectionId: 0, courseId });
 
   const onConfirm = () => {
     deleteCourseSection.mutate(courseSection.courseId);
@@ -28,7 +27,7 @@ export const SectionList = (props) => {
         <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
           <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
         </Button>
-        <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
+        <Button color="danger" size="sm" onClick={() => onSectionDelete(value)} className="ms-3">
           <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
         </Button>
       </>
@@ -58,15 +57,6 @@ export const SectionList = (props) => {
   return (<>
     <h2>Sections</h2>
     <TableLayout columns={columns} data={sections} />
-    <ModalLayout
-      isOpen={isConfirmDelete}
-      title={"Confirm"}
-      message={`Are you sure? Do you want to delete ${courseSection.title}`}
-      onConfirm={() => {
-        onConfirm();
-      }}
-      onCancel={() => onToggleModal(false)}
-    />
   </>
   );
 };
