@@ -11,7 +11,7 @@ export const updateCourseSectionById = async (section) => {
 };
 
 export const deleteCourseSectionById = async (sectionId) => {
-  const res = await Axios.delete("/Courses/section/${sectionId}");
+  const res = await Axios.delete(`/Courses/section/${sectionId}`);
   return res.data;
 };
 

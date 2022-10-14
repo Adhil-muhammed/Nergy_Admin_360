@@ -23,6 +23,7 @@ export const EditCourse = () => {
   );
 
   const {
+    courseSection,
     course,
     setCourse,
     createCourse,
@@ -30,11 +31,14 @@ export const EditCourse = () => {
     courseInfo,
     onToggleModal,
     isConfirmDelete,
-    onSectionDelete
+    onSectionDelete,
+    deleteCourseSection
   } = useCourse({
     load: false,
     courseId: courseId,
   });
+  console.log('courseSection: ', courseSection);
+
   const navigate = useNavigate();
 
   const onHandleChange = (e) => {
@@ -75,6 +79,7 @@ export const EditCourse = () => {
   };
 
   const onConfirm = () => {
+    deleteCourseSection.mutate(courseSection.sectionId)
   };
 
   if (courseInfo.isLoading) {
@@ -249,7 +254,7 @@ export const EditCourse = () => {
       <ModalLayout
         isOpen={isConfirmDelete}
         title={"Confirm"}
-        message={`Are you sure? Do you want to delete ?`}
+        message={`Are you sure? Do you want to delete ${courseSection.title}?`}
         onConfirm={() => {
           onConfirm();
         }}

@@ -7,8 +7,7 @@ import {
   createCourses,
   updateCourses,
   deteleCourses,
-  createCoursesContent,
-  deleteCoursesContentById,
+  deleteCourseSectionById,
 } from "..";
 import { useNavigate } from "react-router-dom";
 import { successMessage, successDeletedMessage, errorMessage } from "utils";
@@ -22,7 +21,6 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
   const coursesQuery = useQuery(GET_COURSES, getCourses, {
     refetchOnWindowFocus: false,
     enabled: load,
-    staleTime: Infinity,
   });
   const courseInfo = useQuery(`${GET_COURSE_BY_ID}_${courseId}`, () => getCourseById(courseId), {
     refetchOnWindowFocus: false,
@@ -41,6 +39,15 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     certificateFile: "",
     contentPath: "",
     courseSections: []
+  });
+
+  const [courseSection, setCourseSection] = useImmer({
+    sectionId: 0,
+    title: "",
+    description: "",
+    isEnable: false,
+    courseId: 0,
+    sortOrder: 0,
   });
 
   useEffect(() => {
@@ -82,7 +89,7 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
       errorMessage("Unable to delete!");
     },
     onSettled: () => {
-      onToggleModal(false);
+      onToggleModal();
     },
   });
 
@@ -95,6 +102,19 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     });
   };
 
+  const deleteCourseSection = useMutation(deleteCourseSectionById, {
+    onError: (e, newData, previousData) => {
+      errorMessage("Unable to delete!");
+    },
+    onSuccess: () => {
+      successDeletedMessage();
+      queryClient.invalidateQueries(`${GET_COURSE_BY_ID}_${courseId}`);
+    },
+    onSettled: () => {
+      onToggleModal();
+    },
+  });
+
   const onToggleModal = React.useCallback(
     () => {
       setIsConfirmDelete((draft) => {
@@ -105,11 +125,15 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     [setIsConfirmDelete]
   );
 
-  console.log(course);
 
-  const onSectionDelete = () => {
-
-
+  const onSectionDelete = (id) => {
+    const selectedCourse = courseInfo.data.courseSections.find((c) => c.sectionId === id);
+    let newSelectedCourse = JSON.parse(JSON.stringify(selectedCourse));
+    setCourseSection((draft) => {
+      draft = newSelectedCourse;
+      return draft;
+    });
+    onToggleModal();
   };
 
   return {
@@ -125,6 +149,8 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     deleteCourse,
     isModalOpen,
     setIsModalOpen,
-    onSectionDelete
+    onSectionDelete,
+    courseSection,
+    deleteCourseSection
   };
 };
