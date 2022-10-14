@@ -20,7 +20,7 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
   const queryClient = useQueryClient();
   const coursesQuery = useQuery(GET_COURSES, getCourses, {
     refetchOnWindowFocus: false,
-    enabled: load,
+    staleTime: Infinity
   });
   const courseInfo = useQuery(`${GET_COURSE_BY_ID}_${courseId}`, () => getCourseById(courseId), {
     refetchOnWindowFocus: false,
