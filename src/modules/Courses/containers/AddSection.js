@@ -156,10 +156,10 @@ export const CreateCourseSection = () => {
                         <div className="form-group">
                           <Input
                             type="checkbox"
-                            name="isEnable"
+                            name="isEnabled"
                             onChange={onCheckBoxChangeHandler}
-                            value={courseSection.isEnable}
-                            checked={courseSection.isEnable}
+                            value={courseSection.isEnabled}
+                            checked={courseSection.isEnabled}
                           />
                           <Label check>Enabled</Label>
                         </div>

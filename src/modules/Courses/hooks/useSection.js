@@ -26,7 +26,7 @@ export const useSection = ({
     sectionId: 0,
     title: "",
     description: "",
-    isEnable: false,
+    isEnabled: false,
     courseId,
     sortOrder: 0,
   });
@@ -57,14 +57,14 @@ export const useSection = ({
       const { sectionId,
         title,
         description,
-        isEnable,
+        isEnabled,
         sortOrder,
         courseContents } = courseSectionInfo.data;
       setCourseSection({
         sectionId,
         title,
         description,
-        isEnable,
+        isEnabled,
         courseId,
         sortOrder,
       });
