@@ -102,7 +102,7 @@ export const AddContent = () => {
             {courseContent.isExternal === true && (
               <InputControl
                 label="Content/File URL"
-                name="filefileURL"
+                name="fileName"
                 placeholder="Content/File URL"
                 onChange={(e) => onChangeHandler(e, true)}
               />
@@ -113,16 +113,16 @@ export const AddContent = () => {
                   label="File"
                   type="file"
                   placeholder="File"
-                  name="fileName"
+                  name="contentFile"
                   onChange={(e) => handleUpload(e, true)}
                   invalid={validator.current.message(
                     "ContentFile",
-                    courseContent.fileName,
+                    courseContent.contentFile,
                     "required"
                   )}
                 />
                 <FormFeedback>
-                  {validator.current.message("ContentFile", courseContent.fileName, "required")}
+                  {validator.current.message("ContentFile", courseContent.contentFile, "required")}
                 </FormFeedback>
               </>
             )}
