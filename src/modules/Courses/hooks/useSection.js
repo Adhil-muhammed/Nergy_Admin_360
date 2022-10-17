@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 import { useImmer } from "use-immer";
 import { successMessage, successDeletedMessage, errorMessage } from "utils";
 
-const GET_COURSESECTION = "GET_COURSESECTION";
 const GET_COURSESECTION_BY_ID = "GET_COURSESECTION_BY_ID";
 
 export const useSection = ({
@@ -78,7 +77,7 @@ export const useSection = ({
     },
     onSuccess: () => {
       successMessage();
-      queryClient.invalidateQueries(GET_COURSESECTION);
+      queryClient.invalidateQueries(`${GET_COURSESECTION_BY_ID}_${sectionId}`);
       navigate(`../${courseId}`, { replace: true });
     },
   });
@@ -86,7 +85,7 @@ export const useSection = ({
   const updateCourseSection = useMutation(updateCourseSectionById, {
     onSuccess: () => {
       successMessage();
-      queryClient.invalidateQueries(GET_COURSESECTION);
+      queryClient.invalidateQueries(`${GET_COURSESECTION_BY_ID}_${sectionId}`);
       navigate(`../${courseId}`, { replace: true });
     },
     onError: (e, newData, previousData) => {
@@ -100,7 +99,8 @@ export const useSection = ({
     },
     onSuccess: () => {
       successDeletedMessage();
-      queryClient.invalidateQueries(GET_COURSESECTION);
+      queryClient.invalidateQueries(`${GET_COURSESECTION_BY_ID}_${sectionId}`);
+
     },
     onSettled: () => {
       onToggleModal();
@@ -113,6 +113,8 @@ export const useSection = ({
     },
     onSuccess: () => {
       successDeletedMessage();
+      queryClient.invalidateQueries(`${GET_COURSESECTION_BY_ID}_${sectionId}`);
+
     },
     onSettled: () => {
       onToggleModal(false);
