@@ -130,7 +130,7 @@ export const CreateCourseSection = () => {
                             Sort Order
                           </label>
                           <Input
-                            type="text"
+                            type="number"
                             id="first-description-vertical"
                             className="form-control"
                             name="sortOrder"
