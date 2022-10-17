@@ -6,10 +6,14 @@ import { SectionList } from "..";
 import { useCourse } from "../hooks";
 import { QuillEditor } from "shared/components/QuillEditor";
 import SimpleReactValidator from "simple-react-validator";
+import InputControl from "shared/components/InputControl";
+
 
 export const EditCourse = () => {
   const { courseId } = useParams();
   const [update, forceUpdate] = useState();
+  const navigate = useNavigate();
+
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },
@@ -32,14 +36,32 @@ export const EditCourse = () => {
     onToggleModal,
     isConfirmDelete,
     onSectionDelete,
-    deleteCourseSection
+    deleteCourseSection,
+    coursesTypeQuery
   } = useCourse({
     load: false,
     courseId: courseId,
   });
-  console.log('courseSection: ', courseSection);
 
-  const navigate = useNavigate();
+
+  const { data: courseTypeData } = coursesTypeQuery;
+
+  const courseTypeList = React.useMemo(() => {
+    return courseTypeData
+      ? courseTypeData.map((p) => {
+        return { value: p.value, label: p.name };
+      })
+      : [];
+  }, [courseTypeData]);
+
+
+
+  const onSelectChange = (e, name) => {
+    const { value } = e;
+    setCourse((draft) => {
+      draft[name] = value;
+    });
+  };
 
   const onHandleChange = (e) => {
     const { name, value } = e.target;
@@ -85,6 +107,8 @@ export const EditCourse = () => {
   if (courseInfo.isLoading) {
     return <LoadingSpinner />;
   }
+
+  const selectedCourseType = courseTypeList.find((c) => c.value === course.courseType);
 
   return (
     <ContentLayout
@@ -176,6 +200,28 @@ export const EditCourse = () => {
                             course.instructions,
                             "required"
                           )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group">
+                        <label className="mb-2" htmlFor="first-programId-vertical">
+                          Course Type
+                        </label>
+                        <InputControl
+                          type="react-select"
+                          options={courseTypeList}
+                          name="courseType"
+                          value={
+                            selectedCourseType
+                          }
+                          isValid={!validator.current.message("courseType", course.courseType, "required")}
+                          onChange={(e) => onSelectChange(e, "courseType")}
+                        />
+                        <div className="text-danger">
+                          {validator.current.message("courseType", course.courseType, "required")}
                         </div>
                       </div>
                     </div>

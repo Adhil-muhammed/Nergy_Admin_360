@@ -8,12 +8,14 @@ import {
   updateCourses,
   deteleCourses,
   deleteCourseSectionById,
+  getCourseType
 } from "..";
 import { useNavigate } from "react-router-dom";
 import { successMessage, successDeletedMessage, errorMessage } from "utils";
 
 const GET_COURSES = "GET_COURSES";
 const GET_COURSE_BY_ID = "GET_COURSE_BY_ID";
+const GET_COURSE_TYPE = "GET_COURSE_TYPE";
 
 export const useCourse = ({ load = false, courseId = 0 }) => {
   const navigate = useNavigate();
@@ -25,6 +27,10 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
   const courseInfo = useQuery(`${GET_COURSE_BY_ID}_${courseId}`, () => getCourseById(courseId), {
     refetchOnWindowFocus: false,
     enabled: courseId > 0,
+  });
+  const coursesTypeQuery = useQuery(GET_COURSE_TYPE, getCourseType, {
+    refetchOnWindowFocus: false,
+    staleTime: Infinity
   });
 
 
@@ -38,7 +44,8 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     courseImageFile: "",
     certificateFile: "",
     contentPath: "",
-    courseSections: []
+    courseSections: [],
+    courseType: -1
   });
 
   const [courseSection, setCourseSection] = useImmer({
@@ -151,6 +158,7 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     setIsModalOpen,
     onSectionDelete,
     courseSection,
-    deleteCourseSection
+    deleteCourseSection,
+    coursesTypeQuery
   };
 };

@@ -7,9 +7,13 @@ import { QuillEditor } from "shared/components/QuillEditor";
 import SimpleReactValidator from "simple-react-validator";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { LoadingButton } from "shared/components/LoadingButton";
+import InputControl from "shared/components/InputControl";
+
 
 export const AddCourse = () => {
   const { courseId } = useParams();
+  const navigate = useNavigate();
+
   const [update, forceUpdate] = useState();
   const validator = useRef(
     new SimpleReactValidator({
@@ -27,46 +31,45 @@ export const AddCourse = () => {
     course,
     setCourse,
     createCourse,
-    editCourse,
-    courseInfo,
-    setIsModalOpen,
-    courseContents,
-    setCourseContent,
-    createCourseContent,
-    courseContent,
-    onToggleModal,
-    isConfirmDelete,
-    deleteCourseContent,
+    coursesTypeQuery
   } = useCourse({
     load: false,
     courseId: courseId,
   });
-  const navigate = useNavigate();
+  const { data: courseTypeData } = coursesTypeQuery;
+
+  const courseTypeList = React.useMemo(() => {
+    return courseTypeData
+      ? courseTypeData.map((p) => {
+        return { value: p.value, label: p.name };
+      })
+      : [];
+  }, [courseTypeData]);
+
+
+
+  const onSelectChange = (e, name) => {
+    const { value } = e;
+    setCourse((draft) => {
+      draft[name] = value;
+    });
+  };
+
 
   const onHandleChange = (e, isContent = false) => {
     const { name, value } = e.target;
-    if (isContent) {
-      setCourseContent((draft) => {
-        draft[name] = value;
-      });
-    } else {
-      setCourse((draft) => {
-        draft[name] = value;
-      });
-    }
+    setCourse((draft) => {
+      draft[name] = value;
+    });
   };
+
   const handleUpload = (e, isContent = false) => {
     const file = e.target.files[0];
     const name = e.target.name;
-    if (isContent) {
-      setCourseContent((draft) => {
-        draft[name] = file;
-      });
-    } else {
-      setCourse((draft) => {
-        draft[name] = file;
-      });
-    }
+
+    setCourse((draft) => {
+      draft[name] = file;
+    });
   };
 
   const handleChecked = (e) => {
@@ -76,14 +79,6 @@ export const AddCourse = () => {
     });
   };
 
-  const handleContentChecked = (e) => {
-    const { name, checked } = e.target;
-    setCourseContent((draft) => {
-      draft[name] = checked;
-      draft.fileName = name === "isExternal" ? "" : draft.fileName;
-      draft.contentFile = name === "isExternal" ? null : draft.contentFile;
-    });
-  };
   const onSubmit = () => {
     if (validator.current.allValid()) {
       createCourse.mutate(course);
@@ -93,27 +88,11 @@ export const AddCourse = () => {
     }
   };
 
-  const onContentSubmit = () => {
-    if (contentValidator.current.allValid()) {
-      createCourseContent.mutate({ ...courseContent, courseId });
-      setIsModalOpen(false);
-    } else {
-      contentValidator.current.showMessages();
-      forceUpdate(1);
-    }
-  };
-
   const onCancel = () => {
     navigate("..", { replace: true });
   };
 
-  const onConfirm = () => {
-    deleteCourseContent.mutate(courseContents.contentId);
-  };
-
-  if (courseInfo.isLoading) {
-    return <LoadingSpinner />;
-  }
+  const selectedCourseType = courseTypeList.find((c) => c.value === course.courseType);
 
   return (
     <ContentLayout
@@ -209,6 +188,28 @@ export const AddCourse = () => {
                       </div>
                     </div>
                   </div>
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group">
+                        <label className="mb-2" htmlFor="first-programId-vertical">
+                          Course Type
+                        </label>
+                        <InputControl
+                          type="react-select"
+                          options={courseTypeList}
+                          name="courseType"
+                          value={
+                            selectedCourseType
+                          }
+                          isValid={!validator.current.message("courseType", course.courseType, "required")}
+                          onChange={(e) => onSelectChange(e, "courseType")}
+                        />
+                        <div className="text-danger">
+                          {validator.current.message("courseType", course.courseType, "required")}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div className="mt-4">
                     <div className="form-check form-check-inline">
                       <label htmlFor="first-exam-vertical">Has Exam</label>
@@ -236,7 +237,7 @@ export const AddCourse = () => {
                   <div className="col-12 d-flex justify-content-between mt-4">
                     <div>
                       <LoadingButton
-                        isLoading={createCourse.isLoading || editCourse.isLoading}
+                        isLoading={createCourse.isLoading}
                         className="me-1 mb-1"
                         color="success"
                         onClick={() => {
@@ -246,7 +247,7 @@ export const AddCourse = () => {
                         {"Save & close"}
                       </LoadingButton>
                       <button
-                        disabled={createCourse.isLoading || editCourse.isLoading}
+                        disabled={createCourse.isLoading}
                         type="reset"
                         className="btn btn-light-secondary me-1 mb-1"
                         onClick={() => {

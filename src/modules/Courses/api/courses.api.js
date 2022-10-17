@@ -34,4 +34,10 @@ export const deteleCourses = async (courseId) => {
 };
 
 
+export const getCourseType = async () => {
+  const res = await Axios.get(`/Courses/coursetypes-list`);
+  return res.data;
+};
+
+
 
