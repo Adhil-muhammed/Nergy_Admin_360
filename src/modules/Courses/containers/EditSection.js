@@ -19,6 +19,7 @@ export const EditSection = () => {
     sectionId,
     courseId,
   });
+
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },

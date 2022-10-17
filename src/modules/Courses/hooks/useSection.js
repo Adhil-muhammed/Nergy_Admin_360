@@ -27,7 +27,7 @@ export const useSection = ({
     title: "",
     description: "",
     isEnable: false,
-    courseId: 0,
+    courseId,
     sortOrder: 0,
   });
   const [contents, setContents] = useImmer([]);
@@ -41,13 +41,7 @@ export const useSection = ({
     sectionId: 0,
   });
 
-  useEffect(() => {
-    if (courseId > 0) {
-      setCourseSection((draft) => {
-        draft.courseId = courseId;
-      });
-    }
-  }, [courseId]);
+
 
   const courseSectionInfo = useQuery(
     `${GET_COURSESECTION_BY_ID}_${sectionId}`,
@@ -64,7 +58,6 @@ export const useSection = ({
         title,
         description,
         isEnable,
-        courseId,
         sortOrder,
         courseContents } = courseSectionInfo.data;
       setCourseSection({
