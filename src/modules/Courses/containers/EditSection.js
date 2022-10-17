@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Input, FormFeedback, Label } from "reactstrap";
-import { ContentLayout } from "shared";
+import { ContentLayout, ModalLayout } from "shared";
 import { LoadingButton } from "shared/components/LoadingButton";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import SimpleReactValidator from "simple-react-validator";
@@ -15,7 +15,7 @@ export const EditSection = () => {
   const sectionId = searchParams.get("sectionId");
 
   const [update, forceUpdate] = useState();
-  const { createCourseSections, updateCourseSection, setCourseSection, courseSection, contents } = useSection({
+  const { isConfirmDelete, deleteCourseContent, updateCourseSection, setCourseSection, courseSection, contents, onDeleteContent, selectedContent, onToggleModal } = useSection({
     sectionId,
     courseId,
   });
@@ -188,9 +188,18 @@ export const EditSection = () => {
                 </div>
               </form>
             </div>
-            <ContentList contents={contents} />
+            <ContentList contents={contents} onDeleteContent={onDeleteContent} />
           </div>
         </section>
+        <ModalLayout
+          isOpen={isConfirmDelete}
+          title={"Confirm"}
+          message={`Are you sure? Do you want to delete ${selectedContent.title}`}
+          onConfirm={() => {
+            deleteCourseContent.mutate(selectedContent.contentId);
+          }}
+          onCancel={() => onToggleModal()}
+        />
       </ContentLayout>
     </>
   );

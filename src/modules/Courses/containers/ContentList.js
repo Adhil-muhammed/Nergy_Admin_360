@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 
 export const ContentList = (props) => {
-  const { contents } = props;
+  const { contents, onDeleteContent } = props;
   const history = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
   const courseId = searchParams.get("courseId");
@@ -11,6 +11,7 @@ export const ContentList = (props) => {
 
   return (
     <div className="col-12 mt-4">
+      <h2>Contents</h2>
       {contents.length > 0 && (
         <Table responsive size="">
           <thead>
@@ -56,7 +57,7 @@ export const ContentList = (props) => {
                       <i className="bi bi-trash" style={{ fontSize: "10px" }}></i>{" "}
                       <span>Edit</span>
                     </Button> */}
-                    <Button color="danger" className="mt-4" size="sm" onClick={() => { }}>
+                    <Button color="danger" className="mt-4" size="sm" onClick={() => { onDeleteContent(content.contentId) }}>
                       <i className="bi bi-trash" style={{ fontSize: "10px" }}></i>{" "}
                       <span>Delete</span>
                     </Button>

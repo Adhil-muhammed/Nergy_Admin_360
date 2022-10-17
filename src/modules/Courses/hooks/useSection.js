@@ -5,6 +5,7 @@ import {
   updateCourseSectionById,
   deleteCourseSectionById,
   getSectionById,
+  deleteCoursesContentById
 } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useImmer } from "use-immer";
@@ -30,6 +31,15 @@ export const useSection = ({
     sortOrder: 0,
   });
   const [contents, setContents] = useImmer([]);
+  const [selectedContent, setSelectedContent] = useImmer({
+    contentId: 0,
+    title: "",
+    fileName: "",
+    fileURL: "",
+    isExternal: false,
+    isVideo: false,
+    sectionId: 0,
+  });
 
   useEffect(() => {
     if (courseId > 0) {
@@ -104,23 +114,28 @@ export const useSection = ({
     },
   });
 
-  const onDelete = (value) => {
+  const deleteCourseContent = useMutation(deleteCoursesContentById, {
+    onError: (e, newData, previousData) => {
+      errorMessage("Unable to delete!");
+    },
+    onSuccess: () => {
+      successDeletedMessage();
+    },
+    onSettled: () => {
+      onToggleModal(false);
+    },
+  });
+
+  const onDeleteContent = (id) => {
+    const sc = contents.find((c) => c.contentId === id);
+    let newSc = JSON.parse(JSON.stringify(sc));
+    setSelectedContent((draft) => {
+      draft = newSc;
+      return draft;
+    });
     onToggleModal();
   }
-  // React.useCallback(
-  //   (id) => {
-  //     const selectedCourseSection = courseSections.find((c) => c.sectionId === id);
-  //     if (selectedCourseSection)
-  //       setCourseSection((draft) => {
-  //         draft = selectedCourseSection;
-  //       });
-  //     setIsConfirmDelete((draft) => {
-  //       draft = true;
-  //       return draft;
-  //     });
-  //   },
-  //   [setIsConfirmDelete, courseSections, setCourseSection]
-  // );
+
 
   const onToggleModal = React.useCallback(
     () => {
@@ -136,12 +151,15 @@ export const useSection = ({
     courseSection,
     courseSectionInfo,
     setCourseSection,
-    onDelete,
     onToggleModal,
     deleteCourseSection,
     updateCourseSection,
     createCourseSections,
     isConfirmDelete,
-    contents
+    contents,
+    onDeleteContent,
+    selectedContent,
+    deleteCourseContent,
+    isConfirmDelete
   };
 };
