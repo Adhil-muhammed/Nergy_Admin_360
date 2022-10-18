@@ -478,13 +478,6 @@ export const CreateStudent = () => {
                       Save
                     </LoadingButton>
                     <button
-                      disabled={createStudent.isLoading || editStudent.isLoading}
-                      type="reset"
-                      className="btn btn-light-secondary me-1 mb-1"
-                    >
-                      Reset
-                    </button>
-                    <button
                       type="reset"
                       className="btn btn-light-secondary me-1 mb-1"
                       onClick={() => {
