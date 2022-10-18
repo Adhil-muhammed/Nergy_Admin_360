@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useTrainer } from "../hook";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { TrainerFilter } from "..";
-import { TermsFilter } from "modules/Term";
 
 export const TrainerList = () => {
   const {
@@ -81,8 +80,7 @@ export const TrainerList = () => {
   }
   return (
     <ContentLayout title={"Trainer"} subtitle={"Trainer List"} breadcrumb={[{ label: "Trainer" }]}>
-      <TermsFilter />
-
+      <TrainerFilter />
       <PaginationTableLayout
         columns={columns}
         data={traines}

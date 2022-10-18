@@ -20,6 +20,7 @@ import AssessmentSection from "modules/AssessmentSection/AssessmentSection";
 import Assessment from "modules/Assessment/Assessment";
 import Report from "modules/Reports/Report";
 import AssessmentSchedule from "modules/AssessmentSchedule/AssessmentSchedule";
+import { Trainer } from "modules/Trainer";
 
 export function Dashboard() {
   return (
@@ -47,6 +48,7 @@ export function Dashboard() {
             <Route element={<Notifications />} path={"/notifications/*"} />
             <Route element={<SupportTicket />} path={"/supportTicket/*"} />
             <Route element={<Program />} path={"/program/*"} />
+            <Route element={<Trainer />} path={"/trainer/*"} />
             <Route path="/*" element={<h5>Not Found</h5>} />
           </Routes>
           <Footer />
