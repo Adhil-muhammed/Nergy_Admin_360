@@ -27,7 +27,7 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
   const queryClient = useQueryClient();
   const [page, setPage] = useImmer({
     pageIndex: 1,
-    pageSize: 10,
+    pageSize: 100,
   });
   const studentsQuery = useQuery([GetStudentKey, page], () => getStudents(page), {
     keepPreviousData: true,
@@ -41,10 +41,18 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
   const courses = React.useMemo(() => {
     return coursesQuery.data
       ? coursesQuery.data.map((c) => {
-          return { value: c.courseId, label: c.name };
-        })
+        return { value: c.courseId, label: c.name };
+      })
       : [];
   }, [coursesQuery.data]);
+
+  const batches = React.useMemo(() => {
+    return batchesQuery.data
+      ? batchesQuery.data.map((c) => {
+        return { value: c.batchId, label: c.name };
+      })
+      : [];
+  }, [batchesQuery.data]);
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [studentCsv, setStudentCsv] = useImmer(undefined);
@@ -62,6 +70,7 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     mobile: "",
     region: "",
     selectedCourses: [],
+    selectedBatches: [],
   });
 
   const studentInfo = useQuery(
@@ -102,7 +111,7 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
       navigate("..", { replace: true });
       queryClient.invalidateQueries(GetStudentKey);
     },
-    onError: (e, newData, previousData) => {},
+    onError: (e, newData, previousData) => { },
   });
 
   const deleteStudent = useMutation(deteleStudents, {
@@ -178,7 +187,7 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     page,
     setPage,
     fetchData,
-    batchesQuery,
+    batches,
     institutesQuery,
     courses,
     studentInfo,

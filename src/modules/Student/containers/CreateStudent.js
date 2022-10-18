@@ -25,7 +25,7 @@ export const CreateStudent = () => {
     student,
     setStudent,
     createStudent,
-    batchesQuery,
+    batches,
     institutesQuery,
     courses,
     editStudent,
@@ -33,7 +33,6 @@ export const CreateStudent = () => {
   } = useStudent({ load: false, studentId: studentId });
   const {
     instituteId,
-    batchId,
     registrationId,
     firstName,
     lastName,
@@ -45,6 +44,7 @@ export const CreateStudent = () => {
     region,
     selectedCourses,
     userStatus,
+    selectedBatches
   } = student;
 
   const onChangeDate = (e) => {
@@ -168,30 +168,31 @@ export const CreateStudent = () => {
                         <label className="mb-2" htmlFor="first-name-vertical">
                           Batch
                         </label>
-                        <Input
-                          value={batchId}
-                          id="first-name-vertical"
-                          name="batchId"
-                          type="select"
-                          onChange={(e) => {
-                            setStudent((draft) => {
-                              draft.batchId = e.target.value;
-                            });
-                          }}
-                          invalid={validator.current.message("batchId", batchId, "required")}
-                        >
-                          <option value="">---Select---</option>
-                          {batchesQuery?.data?.map((batch) => {
-                            return (
-                              <option key={`batch_${batch.batchId}`} value={batch.batchId}>
-                                {batch.name}
-                              </option>
-                            );
-                          })}
-                        </Input>
-                        <FormFeedback>
-                          {validator.current.message("batchId", batchId, "required")}
-                        </FormFeedback>
+                        <InputControl
+                          type="react-select"
+                          isMulti
+                          options={batches}
+                          name="selectedBatches"
+                          value={
+                            batches.length > 0 &&
+                            batches.filter((item) => selectedBatches.indexOf(item.value) > -1)
+                          }
+                          isValid={
+                            !validator.current.message(
+                              "selectedBatches",
+                              selectedBatches,
+                              "required"
+                            )
+                          }
+                          onChange={(e) => onSelectChange(e, "selectedBatches")}
+                        />
+                        <div className="text-danger">
+                          {validator.current.message(
+                            "selectedBatches",
+                            selectedBatches,
+                            "required"
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className="col-sm-6">
