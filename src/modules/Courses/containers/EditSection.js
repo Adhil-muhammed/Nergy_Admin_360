@@ -6,6 +6,8 @@ import { LoadingButton } from "shared/components/LoadingButton";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import SimpleReactValidator from "simple-react-validator";
 import { useSection, ContentList } from "..";
+import { QuillEditor } from "shared/components/QuillEditor";
+
 
 export const EditSection = () => {
   const [searchParams] = useSearchParams();
@@ -95,34 +97,6 @@ export const EditSection = () => {
                           </FormFeedback>
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="mb-2" htmlFor="first-description-vertical">
-                            Description
-                          </label>
-                          <Input
-                            type="text"
-                            id="first-description-vertical"
-                            className="form-control"
-                            name="description"
-                            placeholder="Description"
-                            value={courseSection.description}
-                            onChange={onChangeHandler}
-                            invalid={validator.current.message(
-                              "description",
-                              courseSection.description,
-                              "required"
-                            )}
-                          />
-                          <FormFeedback>
-                            {validator.current.message(
-                              "description",
-                              courseSection.description,
-                              "required"
-                            )}
-                          </FormFeedback>
-                        </div>
-                      </div>
 
                       <div className="col-sm-6">
                         <div className="form-group">
@@ -150,6 +124,21 @@ export const EditSection = () => {
                               "required"
                             )}
                           </FormFeedback>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label htmlFor="first-description-vertical" className="mb-2">
+                            Description*
+                          </label>
+                          <QuillEditor
+                            value={courseSection.description}
+                            onChange={(value) => {
+                              setCourseSection((draft) => {
+                                draft.description = value;
+                              });
+                            }}
+                          />
                         </div>
                       </div>
                       <div className="col-6">
