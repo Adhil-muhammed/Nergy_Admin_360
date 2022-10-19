@@ -7,8 +7,11 @@ import SimpleReactValidator from "simple-react-validator";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { LoadingButton } from "shared/components/LoadingButton";
 import { QuillEditor } from "shared/components/QuillEditor";
+import InputControl from "shared/components/InputControl";
+
 
 export const AddOrEditNotification = () => {
+  const navigate = useNavigate();
   const [update, forceUpdate] = useState();
   const validator = useRef(
     new SimpleReactValidator({
@@ -26,9 +29,10 @@ export const AddOrEditNotification = () => {
     editNotification,
     notificationInfo,
     onChange,
+    batches
   } = useNotification({
     load: false,
-    notificationId: notificationId,
+    notificationId,
   });
 
   const { title, content, isActive } = notification;
@@ -39,7 +43,6 @@ export const AddOrEditNotification = () => {
     });
   };
 
-  const navigate = useNavigate();
 
   const onSubmit = () => {
     if (validator.current.allValid()) {
@@ -51,12 +54,22 @@ export const AddOrEditNotification = () => {
       forceUpdate(1);
     }
   };
+
   const onCancel = () => {
     navigate("..", { replace: true });
   };
+
+  const onSelectChange = (e, name) => {
+    const requiredFormat = e.map((item) => item.value);
+    setNotification((draft) => {
+      draft[name] = requiredFormat;
+    });
+  };
+
   if (notificationInfo.isLoading) {
     return <LoadingSpinner />;
   }
+
   return (
     <ContentLayout
       subtitle={editMode ? "Update" : "Create"}
@@ -71,7 +84,7 @@ export const AddOrEditNotification = () => {
           <div className="col-12">
             <form className="form form-vertical">
               <div className="form-body">
-                <div className="col-12">
+                <div className="col-8">
                   <div className="row">
                     <div className="col-12">
                       <div className="form-group">
@@ -98,19 +111,6 @@ export const AddOrEditNotification = () => {
                         <label className="mb-2" htmlFor="first-content-vertical">
                           Content
                         </label>
-                        {/* <Input
-                          type="text"
-                          id="first-content-vertical"
-                          className="form-control"
-                          name="content"
-                          placeholder="Content"
-                          value={content}
-                          onChange={onChange}
-                          invalid={validator.current.message("Content", content, "required")}
-                        />
-                        <FormFeedback>
-                          {validator.current.message("Content", content, "required")}
-                        </FormFeedback> */}
                         <QuillEditor
                           value={content}
                           onChange={(value) => {
@@ -121,6 +121,38 @@ export const AddOrEditNotification = () => {
                         />
                         <div className="text-danger">
                           {validator.current.message("Content", content, "required")}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-12">
+                      <div className="form-group">
+                        <label className="mb-2" htmlFor="first-name-vertical">
+                          Batch
+                        </label>
+                        <InputControl
+                          type="react-select"
+                          isMulti
+                          options={batches}
+                          name="selectedBatches"
+                          value={
+                            batches.length > 0 &&
+                            batches.filter((item) => notification.selectedBatches.indexOf(item.value) > -1)
+                          }
+                          isValid={
+                            !validator.current.message(
+                              "selectedBatches",
+                              notification.selectedBatches,
+                              "required"
+                            )
+                          }
+                          onChange={(e) => onSelectChange(e, "selectedBatches")}
+                        />
+                        <div className="text-danger">
+                          {validator.current.message(
+                            "selectedBatches",
+                            notification.selectedBatches,
+                            "required"
+                          )}
                         </div>
                       </div>
                     </div>
