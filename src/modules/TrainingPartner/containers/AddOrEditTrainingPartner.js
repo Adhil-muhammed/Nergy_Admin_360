@@ -154,7 +154,7 @@ export const AddOrEditTrainingPartner = (props) => {
                           }}
                           invalid={validator.current.message("gender", gender, "required")}
                         >
-                          <option value="">---Select---</option>
+                          <option value={-1}>---Select---</option>
                           <option value={0}>Male</option>
                           <option value={1}>Female</option>
                         </Input>
@@ -228,7 +228,7 @@ export const AddOrEditTrainingPartner = (props) => {
                               Password
                             </label>
                             <Input
-                              type="text"
+                              type="password"
                               id="first-password-vertical"
                               className="form-control"
                               name="password"
@@ -241,6 +241,10 @@ export const AddOrEditTrainingPartner = (props) => {
                               }}
                               invalid={validator.current.message("password", password, "required")}
                             />
+                            <div>
+                              Password should contain Uppercase, Lowercase, number & special
+                              character
+                            </div>
                             <FormFeedback>
                               {validator.current.message("password", password, "required")}
                             </FormFeedback>
@@ -249,7 +253,7 @@ export const AddOrEditTrainingPartner = (props) => {
                       </div>
                     </div>
 
-                    <div className="mt-4">
+                    {/* <div className="mt-4">
                       <div className="form-check form-check-inline">
                         <label htmlFor="first-exam-vertical">User Status</label>
                         <Input
@@ -260,6 +264,32 @@ export const AddOrEditTrainingPartner = (props) => {
                           checked={userStatus}
                           onChange={handleChecked}
                         />
+                      </div>
+                    </div> */}
+                    <div className="form-group">
+                      <div className="col-sm-6">
+                        <label className="mb-2" htmlFor="first-status-vertical">
+                          Status
+                        </label>
+                        <Input
+                          value={userStatus}
+                          id="first-status-vertical"
+                          name="status"
+                          type="select"
+                          onChange={(e) => {
+                            setTrainingPartner((draft) => {
+                              draft.userStatus = parseInt(e.target.value, 10);
+                            });
+                          }}
+                          invalid={validator.current.message("Status", userStatus, "required")}
+                        >
+                          <option value={-1}>---Select---</option>
+                          <option value={0}>Active</option>
+                          <option value={1}>Inactive</option>
+                        </Input>
+                        <FormFeedback>
+                          {validator.current.message("Status", userStatus, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>

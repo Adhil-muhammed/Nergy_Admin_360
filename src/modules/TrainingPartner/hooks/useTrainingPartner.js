@@ -45,11 +45,11 @@ export const useTrainingPartner = ({ load = false, trainingPartnerId = undefined
     trainingPartnerId: "",
     firstName: "",
     lastName: "",
-    gender: 0,
+    gender: -1,
     address: "",
     phoneNumber: "",
     emailAddress: "",
-    userStatus: 0,
+    userStatus: -1,
   });
 
   const createTrainingPartner = useMutation(createTrPartner, {
