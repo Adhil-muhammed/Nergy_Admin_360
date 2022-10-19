@@ -27,12 +27,6 @@ export const AddOrEditTrainingPartner = (props) => {
   const { firstName, lastName, address, gender, phoneNumber, emailAddress, userStatus, password } =
     trainingPartner;
 
-  const handleChecked = (e) => {
-    setTrainingPartner((draft) => {
-      draft.userStatus = Number(e.target.checked);
-    });
-  };
-
   const onSubmit = (e) => {
     if (e) {
       e.preventDefault();
@@ -252,20 +246,6 @@ export const AddOrEditTrainingPartner = (props) => {
                         )}
                       </div>
                     </div>
-
-                    {/* <div className="mt-4">
-                      <div className="form-check form-check-inline">
-                        <label htmlFor="first-exam-vertical">User Status</label>
-                        <Input
-                          type="checkbox"
-                          id="first-exam-vertical"
-                          className="form-check-input"
-                          name="userStatus"
-                          checked={userStatus}
-                          onChange={handleChecked}
-                        />
-                      </div>
-                    </div> */}
                     <div className="form-group">
                       <div className="col-sm-6">
                         <label className="mb-2" htmlFor="first-status-vertical">
