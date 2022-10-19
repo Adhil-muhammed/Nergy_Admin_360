@@ -192,35 +192,30 @@ export const AddOrEditTrainer = (props) => {
                         </div>
                       </div>
                     </div>
-
                     <div className="row">
                       <div className="col-sm-6">
-                        {editMode ? (
-                          <div></div>
-                        ) : (
-                          <div className="form-group">
-                            <label htmlFor="first-email-vertical" className="mb-2">
-                              Password
-                            </label>
-                            <Input
-                              type="text"
-                              id="first-password-vertical"
-                              className="form-control"
-                              name="password"
-                              placeholder="Password"
-                              value={password}
-                              onChange={(e) => {
-                                setTrainer((draft) => {
-                                  draft.password = e.target.value;
-                                });
-                              }}
-                              invalid={validator.current.message("password", password, "required")}
-                            />
-                            <FormFeedback>
-                              {validator.current.message("password", password, "required")}
-                            </FormFeedback>
+                        <div className="form-group">
+                          <label className="mb-2" htmlFor="contact-info-vertical">
+                            Date of birth
+                          </label>
+                          <Datetime
+                            dateformat="YYYY-MM-DD"
+                            timeformat="{false}"
+                            name="dateofbirth"
+                            closeOnSelect={true}
+                            selected={dateOfBirthVal}
+                            value={dateOfBirthVal}
+                            onChange={onDateOfBirthChange}
+                            className={
+                              update && !dateOfBirthVal.isValid() && "form-control is-invalid"
+                            }
+                          />
+                          <div className="text-danger">
+                            {update && !dateOfBirthVal.isValid()
+                              ? "Please select date of birth"
+                              : ""}
                           </div>
-                        )}
+                        </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-group">
@@ -246,28 +241,30 @@ export const AddOrEditTrainer = (props) => {
                     </div>
                     <div className="row">
                       <div className="col-sm-6">
-                        <div className="form-group">
-                          <label className="mb-2" htmlFor="contact-info-vertical">
-                            Date of birth
-                          </label>
-                          <Datetime
-                            dateformat="YYYY-MM-DD"
-                            timeformat="{false}"
-                            name="dateofbirth"
-                            closeOnSelect={true}
-                            selected={dateOfBirthVal}
-                            value={dateOfBirthVal}
-                            onChange={onDateOfBirthChange}
-                            className={
-                              update && !dateOfBirthVal.isValid() && "form-control is-invalid"
-                            }
-                          />
-                          <div className="text-danger">
-                            {update && !dateOfBirthVal.isValid()
-                              ? "Please select date of birth"
-                              : ""}
+                        {!editMode && (
+                          <div className="form-group">
+                            <label htmlFor="first-email-vertical" className="mb-2">
+                              Password
+                            </label>
+                            <Input
+                              type="text"
+                              id="first-password-vertical"
+                              className="form-control"
+                              name="password"
+                              placeholder="Password"
+                              value={password}
+                              onChange={(e) => {
+                                setTrainer((draft) => {
+                                  draft.password = e.target.value;
+                                });
+                              }}
+                              invalid={validator.current.message("password", password, "required")}
+                            />
+                            <FormFeedback>
+                              {validator.current.message("password", password, "required")}
+                            </FormFeedback>
                           </div>
-                        </div>
+                        )}
                         <div className="mt-4">
                           <div className="form-check form-check-inline">
                             <label htmlFor="first-exam-vertical">User Status</label>
