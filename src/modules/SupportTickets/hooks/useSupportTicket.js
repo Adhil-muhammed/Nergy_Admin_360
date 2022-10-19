@@ -47,7 +47,7 @@ export const useSupportTicket = ({ load = false, ticketId = 0 }) => {
     message: "",
     studentId: "",
     userId: "",
-    status: 0,
+    status: -1,
     replies: [],
   });
 
