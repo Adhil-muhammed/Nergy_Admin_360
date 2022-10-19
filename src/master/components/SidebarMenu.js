@@ -115,6 +115,13 @@ const SidebarMenu = ({ title }) => {
         icon: "bi-file-earmark-text-fill",
         children: [],
       },
+      {
+        id: 17,
+        name: "Training Partner",
+        pathName: "trainingpartner",
+        icon: "bi-file-earmark-text-fill",
+        children: [],
+      },
     ];
 
     const returnMenuItem = (item, i) => {
