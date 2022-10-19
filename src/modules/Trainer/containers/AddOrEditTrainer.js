@@ -247,7 +247,7 @@ export const AddOrEditTrainer = (props) => {
                               Password
                             </label>
                             <Input
-                              type="text"
+                              type="password"
                               id="first-password-vertical"
                               className="form-control"
                               name="password"
