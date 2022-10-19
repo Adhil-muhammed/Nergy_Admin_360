@@ -21,17 +21,8 @@ export const TrainerList = () => {
 
   const { data, isLoading } = trainersQuery;
 
-  const {
-    data: traines,
-    currentPage,
-    totalPages,
-    pageSize,
-    totalCount,
-    hasNext,
-    hasPrevious,
-  } = !isLoading && data;
+  const { data: traines, totalPages, hasNext, hasPrevious } = !isLoading && data;
 
-  //console.log(trainerIId);
   const history = useNavigate();
   const location = useLocation();
   const onConfirm = () => {
@@ -40,9 +31,6 @@ export const TrainerList = () => {
 
   const onEdit = (trainerId) => {
     history(`${location.pathname}/edit/${trainerId}`);
-  };
-  const gotoCreate = () => {
-    history(`${location.pathname}/create`);
   };
 
   const ActionButtons = ({ value }) => {
@@ -57,6 +45,7 @@ export const TrainerList = () => {
       </>
     );
   };
+
   const columns = [
     {
       Header: "First Name",
@@ -66,7 +55,6 @@ export const TrainerList = () => {
       Header: "Last Name",
       accessor: "lastName",
     },
-
     {
       Header: "Actions",
       accessor: "trainerId",
@@ -78,6 +66,7 @@ export const TrainerList = () => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
+
   return (
     <ContentLayout title={"Trainer"} subtitle={"Trainer List"} breadcrumb={[{ label: "Trainer" }]}>
       <TrainerFilter />
