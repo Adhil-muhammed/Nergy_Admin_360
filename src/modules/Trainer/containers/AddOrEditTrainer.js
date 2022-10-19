@@ -260,6 +260,9 @@ export const AddOrEditTrainer = (props) => {
                               }}
                               invalid={validator.current.message("password", password, "required")}
                             />
+                            <div>
+                              Password should contain Uppercase, Lowercase, number & special character
+                            </div>
                             <FormFeedback>
                               {validator.current.message("password", password, "required")}
                             </FormFeedback>
