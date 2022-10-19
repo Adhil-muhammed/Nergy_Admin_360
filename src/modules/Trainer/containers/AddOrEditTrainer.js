@@ -185,7 +185,7 @@ export const AddOrEditTrainer = (props) => {
                             }}
                             invalid={validator.current.message("gender", gender, "required")}
                           >
-                            <option value="">---Select---</option>
+                            <option value={-1}>---Select---</option>
                             <option value={0}>Male</option>
                             <option value={1}>Female</option>
                           </Input>
@@ -265,18 +265,29 @@ export const AddOrEditTrainer = (props) => {
                             </FormFeedback>
                           </div>
                         )}
-                        <div className="mt-4">
-                          <div className="form-check form-check-inline">
-                            <label htmlFor="first-exam-vertical">User Status</label>
-                            <Input
-                              type="checkbox"
-                              id="first-exam-vertical"
-                              className="form-check-input"
-                              name="userStatus"
-                              checked={userStatus}
-                              onChange={handleChecked}
-                            />
-                          </div>
+                        <div className="form-group">
+                          <label className="mb-2" htmlFor="first-status-vertical">
+                            Status
+                          </label>
+                          <Input
+                            value={userStatus}
+                            id="first-status-vertical"
+                            name="status"
+                            type="select"
+                            onChange={(e) => {
+                              setTrainer((draft) => {
+                                draft.userStatus = parseInt(e.target.value, 10);
+                              });
+                            }}
+                            invalid={validator.current.message("Status", userStatus, "required")}
+                          >
+                            <option value={-1}>---Select---</option>
+                            <option value={0}>Active</option>
+                            <option value={1}>Inactive</option>
+                          </Input>
+                          <FormFeedback>
+                            {validator.current.message("Status", userStatus, "required")}
+                          </FormFeedback>
                         </div>
                         <div className="col-12 d-flex justify-content-end">
                           <LoadingButton

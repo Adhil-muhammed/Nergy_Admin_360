@@ -45,11 +45,11 @@ export const useTrainer = ({ load = false, trainerId = undefined }) => {
     trainerId: 0,
     firstName: "",
     lastName: "",
-    gender: 0,
+    gender: -1,
     emailAddress: "",
     qualification: "",
     dateOfBirth: "",
-    userStatus: 0,
+    userStatus: -1,
   });
 
   const createTrainer = useMutation(createTrainers, {
