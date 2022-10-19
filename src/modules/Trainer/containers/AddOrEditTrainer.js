@@ -2,9 +2,8 @@ import React, { useState, useRef } from "react";
 import { ContentLayout } from "shared/components";
 import { useNavigate, useParams } from "react-router-dom";
 import Datetime from "react-datetime";
-import InputControl from "shared/components/InputControl";
 import moment from "moment";
-import { Input, Button, FormFeedback } from "reactstrap";
+import { Input, FormFeedback } from "reactstrap";
 import { useTrainer } from "../hook";
 import SimpleReactValidator from "simple-react-validator";
 import { LoadingButton } from "shared/components/LoadingButton";
@@ -25,6 +24,7 @@ export const AddOrEditTrainer = (props) => {
     load: false,
     trainerId,
   });
+
   const {
     firstName,
     lastName,
@@ -46,6 +46,7 @@ export const AddOrEditTrainer = (props) => {
       draft.dateOfBirth = date;
     });
   };
+
   const handleChecked = (e) => {
     setTrainer((draft) => {
       draft.userStatus = Number(e.target.checked);
@@ -71,6 +72,7 @@ export const AddOrEditTrainer = (props) => {
   if (trainerInfo.isLoading) {
     return <LoadingSpinner />;
   }
+
   return (
     <>
       <ContentLayout
