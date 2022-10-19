@@ -238,16 +238,21 @@ export const AddOrEditSupportTicket = (props) => {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-sm-6">
+                    <div className="col-sm-12">
                       <div className="form-group">
                         <label className="mb-2" htmlFor="first-subject-vertical">
                           Subject
                         </label>
-                        <QuillEditor
+                        <Input
+                          type="text"
+                          id="first-qualification-vertical"
+                          className="form-control"
+                          name="qualification"
                           value={subject}
-                          onChange={(value) => {
+                          placeholder="subject"
+                          onChange={(e) => {
                             setSupportTicket((draft) => {
-                              draft.subject = value;
+                              draft.subject = e.target.value;
                             });
                           }}
                         />
@@ -256,7 +261,7 @@ export const AddOrEditSupportTicket = (props) => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-sm-6">
+                    <div className="col-sm-12">
                       <div className="form-group">
                         <label className="mb-2" htmlFor="first-message-vertical">
                           Message
