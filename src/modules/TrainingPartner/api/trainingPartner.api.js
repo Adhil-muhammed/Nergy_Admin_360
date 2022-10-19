@@ -10,7 +10,7 @@ export const getTrainingPartnerById = async (trainingPartnerId) => {
   return res.data;
 };
 
-export const createTrainingPartner = async (trainingpartner) => {
+export const createTrPartner = async (trainingpartner) => {
   const res = await Axios.post("/TrainingPartner", trainingpartner);
   return res.data;
 };
@@ -20,7 +20,7 @@ export const updateTrainingPartner = async (trainingpartner) => {
   return res.data;
 };
 
-export const deteleBatches = async (trainingPartnerId) => {
+export const deleteTrPartner = async (trainingPartnerId) => {
   const res = await Axios.delete(`/TrainingPartner/${trainingPartnerId}`);
   return res.data;
 };
