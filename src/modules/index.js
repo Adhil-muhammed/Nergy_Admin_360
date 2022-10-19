@@ -13,3 +13,4 @@ export * from "./Notifications";
 export * from "./SupportTickets";
 export * from "./Program";
 export * from "./TrainingPartner";
+export * from "./Trainer";

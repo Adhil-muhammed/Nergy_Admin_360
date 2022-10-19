@@ -110,8 +110,8 @@ const SidebarMenu = ({ title }) => {
       },
       {
         id: 16,
-        name: "Training Partner",
-        pathName: "trainingpartner",
+        name: "Trainer",
+        pathName: "trainer",
         icon: "bi-file-earmark-text-fill",
         children: [],
       },

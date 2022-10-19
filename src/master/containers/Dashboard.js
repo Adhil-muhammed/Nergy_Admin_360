@@ -15,7 +15,6 @@ import {
   Notifications,
   SupportTicket,
   Program,
-  TrainingPartner,
 } from "modules";
 import AssessmentSection from "modules/AssessmentSection/AssessmentSection";
 import Assessment from "modules/Assessment/Assessment";
@@ -48,8 +47,6 @@ export function Dashboard() {
             <Route element={<Notifications />} path={"/notifications/*"} />
             <Route element={<SupportTicket />} path={"/supportTicket/*"} />
             <Route element={<Program />} path={"/program/*"} />
-            <Route element={<TrainingPartner />} path={"/trainingpartner/*"} />
-
             <Route path="/*" element={<h5>Not Found</h5>} />
           </Routes>
           <Footer />
