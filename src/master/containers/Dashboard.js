@@ -15,12 +15,12 @@ import {
   Notifications,
   SupportTicket,
   Program,
+  Trainer,
 } from "modules";
 import AssessmentSection from "modules/AssessmentSection/AssessmentSection";
 import Assessment from "modules/Assessment/Assessment";
 import Report from "modules/Reports/Report";
 import AssessmentSchedule from "modules/AssessmentSchedule/AssessmentSchedule";
-import { Trainer } from "modules/Trainer";
 
 export function Dashboard() {
   return (
