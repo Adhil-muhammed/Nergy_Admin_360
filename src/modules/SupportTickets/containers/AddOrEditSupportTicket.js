@@ -71,16 +71,16 @@ export const AddOrEditSupportTicket = (props) => {
   const userIdList = React.useMemo(() => {
     return userData
       ? userData.map((c) => {
-          return { value: c.userId, label: c.userId };
-        })
+        return { value: c.userId, label: `${c.firstName} ${c.lastName}` };
+      })
       : [];
   }, [userData]);
 
   const studentIdList = React.useMemo(() => {
     return studentData
       ? studentData.data.map((c) => {
-          return { value: c.studentId, label: c.studentId };
-        })
+        return { value: c.studentId, label: `${c.firstName} ${c.lastName} (${c.registrationId})` };
+      })
       : [];
   }, [studentData]);
 
@@ -186,9 +186,8 @@ export const AddOrEditSupportTicket = (props) => {
                             });
                           }}
                           invalid={validator.current.message("Status", status, "required")}
-                          disabled={!editMode}
                         >
-                          <option value="">---Select---</option>
+                          <option value={-1}>---Select---</option>
                           <option value={0}>Active</option>
                           <option value={1}>Inactive</option>
                         </Input>
@@ -202,7 +201,7 @@ export const AddOrEditSupportTicket = (props) => {
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label className="mb-2" htmlFor="first-userid-vertical">
-                          User Id
+                          User
                         </label>
                         <InputControl
                           type="react-select"
@@ -220,7 +219,7 @@ export const AddOrEditSupportTicket = (props) => {
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label className="mb-2" htmlFor="first-studentid-vertical">
-                          Student Id
+                          Student
                         </label>
                         <InputControl
                           type="react-select"
@@ -239,16 +238,21 @@ export const AddOrEditSupportTicket = (props) => {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-sm-6">
+                    <div className="col-sm-12">
                       <div className="form-group">
                         <label className="mb-2" htmlFor="first-subject-vertical">
                           Subject
                         </label>
-                        <QuillEditor
+                        <Input
+                          type="text"
+                          id="first-qualification-vertical"
+                          className="form-control"
+                          name="qualification"
                           value={subject}
-                          onChange={(value) => {
+                          placeholder="subject"
+                          onChange={(e) => {
                             setSupportTicket((draft) => {
-                              draft.subject = value;
+                              draft.subject = e.target.value;
                             });
                           }}
                         />
@@ -257,7 +261,7 @@ export const AddOrEditSupportTicket = (props) => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-sm-6">
+                    <div className="col-sm-12">
                       <div className="form-group">
                         <label className="mb-2" htmlFor="first-message-vertical">
                           Message
