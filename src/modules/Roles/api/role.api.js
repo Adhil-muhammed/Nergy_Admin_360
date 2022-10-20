@@ -26,6 +26,6 @@ export const getRoleById = async (roleId) => {
 };
 
 export const getModulePermissions = async (role) => {
-  const res = await Axios.get(`/UserRoles/module-permissions/${role}`);
+  const res = await Axios.get(`/UserRoles/permissions/${role}`);
   return res.data;
 };
