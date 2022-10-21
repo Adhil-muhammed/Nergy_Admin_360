@@ -6,7 +6,9 @@ import {
     AccordionHeader,
     AccordionItem,
     Label,
-    Input
+    Input,
+    ListGroup,
+    ListGroupItem
 } from 'reactstrap';
 import { ContentLayout } from "shared/components";
 import { useSearchParams, useNavigate } from "react-router-dom";
@@ -64,7 +66,6 @@ export const PermissionList = () => {
         ]}
     >
         {
-
             modulePermissions.length > 0 ? <Accordion open={open} toggle={toggle}>
                 {
                     modulePermissions.map((module, index) => {
@@ -72,20 +73,22 @@ export const PermissionList = () => {
                         return <AccordionItem key={`AccordionItem${index}_${module.name}`}>
                             <AccordionHeader key={`AccordionHeader${index}_${module.name}`} targetId={targetId}>{module.name}</AccordionHeader>
                             <AccordionBody key={`AccordionBody_${index}_${module.name}`} accordionId={targetId}>
-                                {
-                                    module.actions.map((action, index) => {
-                                        return <div key={`div_${index}_${action.name}`} >
-                                            <Input
-                                                type="checkbox"
-                                                name={action.name}
-                                                onChange={(e) => permissionChanged(e, module)}
-                                                value={action.allowed}
-                                                checked={action.allowed}
-                                            />
-                                            <Label check>{action.title}</Label>
-                                        </div>
-                                    })
-                                }
+                                <ListGroup>
+                                    {
+                                        module.actions.map((action, index) => {
+                                            return <ListGroupItem key={`div_${index}_${action.name}`} >
+                                                <Input
+                                                    type="checkbox"
+                                                    name={action.name}
+                                                    onChange={(e) => permissionChanged(e, module)}
+                                                    value={action.allowed}
+                                                    checked={action.allowed}
+                                                />
+                                                <Label check>{action.title}</Label>
+                                            </ListGroupItem>
+                                        })
+                                    }
+                                </ListGroup>
                             </AccordionBody>
                         </AccordionItem>
                     })
