@@ -9,7 +9,7 @@ import {
     Input
 } from 'reactstrap';
 import { ContentLayout } from "shared/components";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { LoadingButton } from "shared/components/LoadingButton";
 
 
@@ -17,9 +17,11 @@ import { LoadingButton } from "shared/components/LoadingButton";
 
 export const PermissionList = () => {
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+
     const userRole = searchParams.get("userRole");
 
-    const [open, setOpen] = useState('1');
+    const [open, setOpen] = useState('0');
     const toggle = (id) => {
         if (open === id) {
             setOpen();
@@ -50,6 +52,10 @@ export const PermissionList = () => {
         updatePermission.mutate({ userRole, modulePermissions });
     };
 
+    const onCancel = () => {
+        navigate("..", { replace: true });
+    };
+
     return <ContentLayout
         title={"Update"}
         breadcrumb={[
@@ -62,7 +68,7 @@ export const PermissionList = () => {
             modulePermissions.length > 0 ? <Accordion open={open} toggle={toggle}>
                 {
                     modulePermissions.map((module, index) => {
-                        const targetId = (index).toString();
+                        const targetId = (index + 1).toString();
                         return <AccordionItem key={`AccordionItem${index}_${module.name}`}>
                             <AccordionHeader key={`AccordionHeader${index}_${module.name}`} targetId={targetId}>{module.name}</AccordionHeader>
                             <AccordionBody key={`AccordionBody_${index}_${module.name}`} accordionId={targetId}>
@@ -100,9 +106,7 @@ export const PermissionList = () => {
             <button
                 type="reset"
                 className="btn btn-light-secondary me-1 mb-1"
-                onClick={() => {
-
-                }}
+                onClick={() => onCancel()}
             >
                 Cancel
             </button>
