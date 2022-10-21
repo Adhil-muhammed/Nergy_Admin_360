@@ -30,14 +30,6 @@ export const AddContent = () => {
     })
   );
 
-  const handleContentChecked = (e) => {
-    const { name, checked } = e.target;
-    setCourseContent((draft) => {
-      draft[name] = checked;
-      draft.fileName = name === "isExternal" ? "" : draft.fileName;
-    });
-  };
-
   const handleUpload = (e, isContent = false) => {
     const file = e.target.files[0];
     const name = e.target.name;
@@ -88,71 +80,79 @@ export const AddContent = () => {
       <div>
         <form className="form">
           <div className="form-body">
-            <InputControl
-              label="Title"
-              name="title"
-              placeholder="Title"
-              value={courseContent.title}
-              onChange={(e) => onChangeHandler(e, true)}
-              invalid={validator.current.message("name", courseContent.title, "required")}
-            />
-            <FormFeedback>
-              {validator.current.message("Title", courseContent.title, "required")}
-            </FormFeedback>
-            {courseContent.isExternal === true && (
-              <InputControl
-                label="Content/File URL"
-                name="fileName"
-                placeholder="Content/File URL"
-                onChange={(e) => onChangeHandler(e, true)}
-              />
-            )}
-            {courseContent.isExternal === false && (
-              <>
+            <div className="col-sm-6">
+              <div className="form-group">
                 <InputControl
-                  label="File"
-                  type="file"
-                  placeholder="File"
-                  name="contentFile"
-                  onChange={(e) => handleUpload(e, true)}
-                  invalid={validator.current.message(
-                    "ContentFile",
-                    courseContent.contentFile,
-                    "required"
-                  )}
+                  label="Title"
+                  name="title"
+                  placeholder="Title"
+                  value={courseContent.title}
+                  onChange={(e) => onChangeHandler(e, true)}
+                  invalid={validator.current.message("name", courseContent.title, "required")}
                 />
                 <FormFeedback>
-                  {validator.current.message("ContentFile", courseContent.contentFile, "required")}
+                  {validator.current.message("Title", courseContent.title, "required")}
                 </FormFeedback>
-              </>
-            )}
-            <div className="mt-4">
-              <div className="form-check form-check-inline">
-                <label htmlFor="isExternal">Is an external link</label>
-                <Input
-                  type="checkbox"
-                  id="isExternal"
-                  className="form-check-input"
-                  name="isExternal"
-                  checked={courseContent.isExternal}
-                  onChange={handleContentChecked}
-                />
               </div>
-            </div>
-            <div className="mt-4">
-              <div className="form-check form-check-inline">
-                <label htmlFor="isVideo">Video</label>
+              <div className="form-group">
+                <label className="mb-2" htmlFor="first-name-vertical">
+                  Content Type
+                </label>
                 <Input
-                  type="checkbox"
-                  id="isVideo"
-                  className="form-check-input"
-                  name="isVideo"
-                  checked={courseContent.isVideo}
-                  onChange={handleContentChecked}
-                />
+                  value={courseContent.contentType}
+                  id="first-name-vertical"
+                  name="contentType"
+                  type="select"
+                  onChange={(e) => {
+                    setCourseContent((draft) => {
+                      draft.contentType = parseInt(e.target.value, 10);
+                    });
+                  }}
+                  invalid={validator.current.message("contentType", courseContent.contentType, "required")}
+                >
+                  <option value={-1}>---Select---</option>
+                  <option value={0}>PDF</option>
+                  <option value={1}>Video</option>
+                  <option value={2}>Video Link</option>
+                  <option value={3}>External Link</option>
+                </Input>
+                <FormFeedback>
+                  {validator.current.message("contentType", courseContent.contentType, "required")}
+                </FormFeedback>
               </div>
             </div>
 
+            <div className="col-sm-6">
+              <div className="form-group">
+                {(courseContent.contentType === 3 || courseContent.contentType === 2) && (
+                  <InputControl
+                    label="Content/File URL"
+                    name="fileName"
+                    placeholder="Content/File URL"
+                    onChange={(e) => onChangeHandler(e, true)}
+                  />
+                )}
+                {(courseContent.contentType === 0 || courseContent.contentType === 1) && (
+                  <>
+                    <InputControl
+                      label="File"
+                      type="file"
+                      placeholder="File"
+                      name="contentFile"
+                      onChange={(e) => handleUpload(e, true)}
+                      invalid={validator.current.message(
+                        "ContentFile",
+                        courseContent.contentFile,
+                        "required"
+                      )}
+                    />
+                    <FormFeedback>
+                      {validator.current.message("ContentFile", courseContent.contentFile, "required")}
+                    </FormFeedback>
+                  </>
+                )}
+              </div>
+            </div>
             <div className="col-12 d-flex justify-content-end">
               <LoadingButton className="me-1 mb-1" color="success" onClick={(e) => onSubmit(e)}>
                 Create

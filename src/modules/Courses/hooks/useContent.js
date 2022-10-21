@@ -23,8 +23,7 @@ export const useContent = ({ sectionId = 0, contentId = 0, courseId = 0 }) => {
     title: "",
     fileName: "",
     contentFile: "",
-    isExternal: false,
-    isVideo: false,
+    contentType: -1,
     sectionId: 0,
   });
 
