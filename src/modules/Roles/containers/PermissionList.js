@@ -13,9 +13,7 @@ import {
 import { ContentLayout } from "shared/components";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { LoadingButton } from "shared/components/LoadingButton";
-
-
-
+import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const PermissionList = () => {
     const [searchParams] = useSearchParams();
@@ -93,9 +91,9 @@ export const PermissionList = () => {
                         </AccordionItem>
                     })
                 }
-            </Accordion> : <div>Loading...</div>
+            </Accordion> : <LoadingSpinner />
         }
-        <div className="col-12 d-flex justify-content-end">
+        <div className=" col-12 d-flex justify-content-end">
             <LoadingButton
                 className="me-1 mb-1"
                 color="success"
@@ -114,7 +112,5 @@ export const PermissionList = () => {
                 Cancel
             </button>
         </div>
-
-
     </ContentLayout>
 }
