@@ -32,7 +32,6 @@ export const getModulePermissions = async (role) => {
 
 
 export const updateModulePermissions = async ({ userRole, modulePermissions }) => {
-  console.log('modulePermissions: ', modulePermissions);
   const res = await Axios.put(`/UserRoles/permissions/${userRole}`, modulePermissions);
   return res.data;
 };
