@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
+import { updateModulePermissions, getModulePermissions } from "..";
+import { successMessage, errorMessage } from "utils";
 import { useImmer } from "use-immer";
-import { getRoles, getModulePermissions } from "..";
 
-const GET_ROLES = "GET_ROLES";
+
 const GET_PERMISSIONS = "GET_PERMISSIONS";
 
 export const action_types = {
@@ -15,10 +16,9 @@ export const action_types = {
 
 export const usePermission = ({ userRole = "" }) => {
   const queryClient = useQueryClient();
-  const [selectedPermission, setSelectedPermission] = useImmer({
-    name: "",
-    actions: []
-  })
+  const [modulePermissions, setmodulePermissions] = useImmer([]);
+
+
 
   const permissionQuery = useQuery(
     `${GET_PERMISSIONS}_${userRole}`,
@@ -29,6 +29,28 @@ export const usePermission = ({ userRole = "" }) => {
       staleTime: Infinity,
     }
   );
+
+  React.useEffect(() => {
+    if (permissionQuery.data) {
+      setmodulePermissions((draft) => {
+        draft = permissionQuery.data;
+        return draft;
+      })
+    }
+
+  }, [permissionQuery.data])
+
+  const updatePermission = useMutation(updateModulePermissions, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(`${GET_PERMISSIONS}_${userRole}`);
+      successMessage();
+    },
+    onError: (data) => {
+      errorMessage();
+    },
+    onSettled: () => {
+    },
+  });
 
   // const rolesQuery = useQuery(GET_ROLES, async () => await getRoles(), {
   //   refetchOnWindowFocus: false,
@@ -53,9 +75,13 @@ export const usePermission = ({ userRole = "" }) => {
   //   return false;
   // };
 
+
+
+
   return {
     permissionQuery,
-    selectedPermission,
-    setSelectedPermission,
+    updatePermission,
+    modulePermissions,
+    setmodulePermissions
   };
 };

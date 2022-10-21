@@ -3,7 +3,7 @@ import { Input, Button, FormFeedback } from "reactstrap";
 import React, { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
-import { useRole, PermissionList } from "..";
+import { useRole } from "..";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { LoadingButton } from "shared/components/LoadingButton";
 
@@ -85,11 +85,6 @@ export const CreateRole = (props) => {
                             <FormFeedback>
                               {validator.current.message("name", name, "required")}
                             </FormFeedback>
-                          </div>
-                        </div>
-                        <div className="col-12">
-                          <div className="form-group">
-                            <PermissionList userRole={name} />
                           </div>
                         </div>
                         <div className="col-12 d-flex justify-content-end">

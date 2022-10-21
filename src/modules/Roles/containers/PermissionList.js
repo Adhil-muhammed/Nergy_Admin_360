@@ -1,108 +1,113 @@
-import { Table } from "reactstrap";
+import { useState } from "react";
 import { usePermission } from "..";
-import { Input, FormFeedback, Label, Button } from "reactstrap";
+import {
+    Accordion,
+    AccordionBody,
+    AccordionHeader,
+    AccordionItem,
+    Label,
+    Input
+} from 'reactstrap';
+import { ContentLayout } from "shared/components";
+import { useSearchParams } from "react-router-dom";
+import { LoadingButton } from "shared/components/LoadingButton";
 
 
-export const PermissionList = (props) => {
-    const { userRole } = props;
-    const { permissionQuery,
-        selectedPermission,
-        setSelectedPermission,
+
+
+export const PermissionList = () => {
+    const [searchParams] = useSearchParams();
+    const userRole = searchParams.get("userRole");
+
+    const [open, setOpen] = useState('1');
+    const toggle = (id) => {
+        if (open === id) {
+            setOpen();
+        } else {
+            setOpen(id);
+        }
+    };
+    const {
+        updatePermission,
+        modulePermissions,
+        setmodulePermissions
     } = usePermission({ userRole });
-    const { data, isLoading } = permissionQuery;
 
-    const permissionChanged = (e) => {
+    const permissionChanged = (e, data) => {
         const { name } = e.target;
-        // setSelectedPermission((draft) => {
-        //     const action = draft.actions.find(s => s.name === name);
-        //     action.allowed = !action.allowed;
-        //     return draft
-        // });
-
-        // setPermissions((draft) => {
-        //     const module = draft.find(s => s.name === selectedPermission.name);
-        //     const action = module.actions.find(s => s.name === name);
-        //     action.allowed = !action.allowed;
-        //     return draft
-        // });
+        setmodulePermissions((draft) => {
+            const module = draft.find(s => s.name === data.name);
+            const action = module.actions.find(s => s.name === name);
+            action.allowed = !action.allowed;
+            return draft;
+        });
     };
 
-    return <>
+    const onSubmit = (e) => {
+        if (e) {
+            e.preventDefault();
+        }
+        updatePermission.mutate({ userRole, modulePermissions });
+    };
+
+    return <ContentLayout
+        title={"Update"}
+        breadcrumb={[
+            { label: "Roles", location: "/admin/role" },
+            { label: "Edit Permission" },
+        ]}
+    >
         {
-            data ? <Table bordered>
-                <thead>
-                    <tr>
-                        <th>Module</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th>Update</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        data.map((module, index) => {
-                            return <tr key={`tr_${index}_${module.name}`}>
-                                <th key={`th_${index}_${module.name}`} scope="row">{module.name}</th>
+
+            modulePermissions.length > 0 ? <Accordion open={open} toggle={toggle}>
+                {
+                    modulePermissions.map((module, index) => {
+                        const targetId = (index).toString();
+                        return <AccordionItem key={`AccordionItem${index}_${module.name}`}>
+                            <AccordionHeader key={`AccordionHeader${index}_${module.name}`} targetId={targetId}>{module.name}</AccordionHeader>
+                            <AccordionBody key={`AccordionBody_${index}_${module.name}`} accordionId={targetId}>
                                 {
                                     module.actions.map((action, index) => {
-                                        return <td key={`td_${index}_${action.name}`}>
-                                            <div className="form-group">
-                                                <Input
-                                                    type="checkbox"
-                                                    name={action.name}
-                                                    onChange={permissionChanged}
-                                                    value={action.allowed}
-                                                    checked={action.allowed}
-                                                    disabled={selectedPermission.name != module.name}
-                                                />
-                                                <Label check>{action.name}</Label>
-                                            </div>
-                                        </td>
+                                        return <div key={`div_${index}_${action.name}`} >
+                                            <Input
+                                                type="checkbox"
+                                                name={action.name}
+                                                onChange={(e) => permissionChanged(e, module)}
+                                                value={action.allowed}
+                                                checked={action.allowed}
+                                            />
+                                            <Label check>{action.title}</Label>
+                                        </div>
                                     })
                                 }
-                                <td>
-                                    {
-                                        selectedPermission.name != module.name &&
-                                        <Button outline color="primary" size="sm" onClick={() => {
-                                            setSelectedPermission(draft => {
-                                                draft.name = module.name;
-                                                draft.actions = module.actions;
-                                            })
-                                        }}>
-                                            <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i>
-                                        </Button>
-                                    }
-                                    {
-                                        selectedPermission.name == module.name &&
-                                        <>
-                                            <Button outline color="primary" size="sm" onClick={() => {
-                                                setSelectedPermission(draft => {
-                                                    draft.name = module.name;
-                                                    draft.actions = module.actions;
-                                                })
-                                            }}>
-                                                Update
-                                            </Button>
-                                            <Button outline color="primary" size="sm" onClick={() => {
-                                                setSelectedPermission(draft => {
-                                                    draft.name = "";
-                                                    draft.actions = [];
-                                                })
-                                            }}>
-                                                Cancel
-                                            </Button>
-                                        </>
-
-                                    }
-                                </td>
-                            </tr>
-                        })
-                    }
-                </tbody>
-            </Table> : <div>Loading..</div>
+                            </AccordionBody>
+                        </AccordionItem>
+                    })
+                }
+            </Accordion> : <div>Loading...</div>
         }
+        <div className="col-12 d-flex justify-content-end">
+            <LoadingButton
+                className="me-1 mb-1"
+                color="success"
+                onClick={(e) => {
+                    onSubmit(e);
+                }}
+            >
+                {"Update"}
+            </LoadingButton>
 
-    </>
+            <button
+                type="reset"
+                className="btn btn-light-secondary me-1 mb-1"
+                onClick={() => {
+
+                }}
+            >
+                Cancel
+            </button>
+        </div>
+
+
+    </ContentLayout>
 }
