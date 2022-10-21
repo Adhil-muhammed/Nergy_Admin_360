@@ -3,12 +3,11 @@ import { Input, Button, FormFeedback } from "reactstrap";
 import React, { useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
-import { useRole, usePermission, action_types } from "../hooks";
+import { useRole } from "..";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { LoadingButton } from "shared/components/LoadingButton";
 
 export const CreateRole = (props) => {
-  const { hasPermission } = usePermission({ load: true });
   const navigate = useNavigate();
   const [update, forceUpdate] = useState();
   const validator = useRef(
@@ -61,13 +60,6 @@ export const CreateRole = (props) => {
         <div className="row match-height">
           <div className="col-md-6 col-12">
             <div className="card">
-              {/* test purpose only starts */}
-              {hasPermission("UserRoles", action_types.View) && "Can view this module!"}
-              {hasPermission("UserRoles", action_types.Create) && <button>Create</button>}
-              {hasPermission("UserRoles", action_types.Edit) && <button>Edit</button>}
-              {hasPermission("UserRoles", action_types.Delete) && <button>Delete</button>}
-              {/* test purpose only ends */}
-
               <div className="card-content">
                 <div className="card-body">
                   <form className="form form-vertical">
