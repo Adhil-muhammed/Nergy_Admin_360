@@ -5,8 +5,14 @@ import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useCourse } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { useAppStore } from "master";
 
 export const CourseList = (props) => {
+  const { hasPermission } = useAppStore();
+  const hasDeletePermission = hasPermission("Courses", "Delete");
+  const hasEditPermission = hasPermission("Courses", "Edit");
+  const hasCreatePermission = hasPermission("Courses", "Create");
+
   const { course, coursesQuery, onDelete, onToggleModal, isConfirmDelete, deleteCourse } =
     useCourse({
       load: true,
@@ -37,12 +43,16 @@ export const CourseList = (props) => {
   const ActionButtons = ({ value }) => {
     return (
       <>
-        <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
-          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
-        </Button>
-        <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
-          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
-        </Button>
+        {
+          hasEditPermission && <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
+            <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+          </Button>
+        }
+        {
+          hasDeletePermission && <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
+            <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+          </Button>
+        }
       </>
     );
   };
@@ -77,12 +87,16 @@ export const CourseList = (props) => {
     ],
     []
   );
+
   if (coursesQuery.isLoading) {
     return <LoadingSpinner />;
   }
+
   return (
     <ContentLayout title={"Courses"} subtitle={"List"} breadcrumb={[{ label: "Courses" }]}>
-      <CourseIdFilter />
+      {
+        hasCreatePermission && <CourseIdFilter />
+      }
       <TableLayout columns={columns} data={coursesQuery.data} />
       <ModalLayout
         isOpen={isConfirmDelete}

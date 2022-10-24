@@ -14,7 +14,7 @@ export const AppStore = (props) => {
     const localData = JSON.parse(localStorage.getItem("localData"));
     const [AppState, setAppState] = useImmer(localData || initial);
 
-    const { hasPermission } = useAuthorize(AppState.token);
+    const { hasPermission, userPermissionQuery } = useAuthorize(AppState.token);
 
     useEffect(() => {
         localStorage.setItem("localData", JSON.stringify(AppState));
@@ -29,7 +29,7 @@ export const AppStore = (props) => {
                 hasPermission
             }}
         >
-            {props.children}
+            {userPermissionQuery.data ? props.children : null}
         </AppContext.Provider>
     );
 };

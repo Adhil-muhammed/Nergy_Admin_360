@@ -12,19 +12,24 @@ export const useAuthorize = (token = "") => {
     });
 
     const hasPermission = React.useCallback((moduleName, actionName) => {
-        const module = userPermissionQuery.data.find(d => d.name === moduleName);
-        if (!module) {
-            return false;
-        } else {
-            const action = module.actions.find(d => d.title === actionName);
-            if (action) {
-                return action.allowed;
-            }
-            else {
-                return false
+        if (userPermissionQuery.status === "success") {
+            const module = userPermissionQuery.data.find(d => d.name === moduleName);
+            if (!module) {
+                return false;
+            } else {
+                const action = module.actions.find(d => d.title === actionName);
+                if (action) {
+                    return action.allowed;
+                }
+                else {
+                    return false
+                }
             }
         }
-    }, [])
+        else {
+            return false;
+        }
+    }, [userPermissionQuery.data])
 
-    return { hasPermission }
+    return { hasPermission, userPermissionQuery }
 }
