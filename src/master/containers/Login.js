@@ -1,8 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "reactstrap";
-import { useAppStore } from "store/AppStore";
-import { useAuthenticate } from "..";
+import { useAuthenticate, useAppStore } from "..";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
 import appInfo from "../../../package.json";
 import SimpleReactValidator from "simple-react-validator";

@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Login, ForgotPassword, ResetPassword, Dashboard } from ".";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { AppStore } from "store/AppStore";
+import { AppStore } from "master";
 import { ProtectedRoute } from "shared/components/ProtectedRoute";
 
 const queryClient = new QueryClient();

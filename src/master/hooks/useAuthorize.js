@@ -4,10 +4,11 @@ import { getPermission } from "..";
 
 const GET_USER_PERMISSION = "GET_USER_PERMISSION";
 
-export const useAuthorize = () => {
+export const useAuthorize = (token = "") => {
     const userPermissionQuery = useQuery(GET_USER_PERMISSION, getPermission, {
         refetchOnWindowFocus: false,
         staleTime: Infinity,
+        enabled: token != ""
     });
 
     const hasPermission = React.useCallback((moduleName, actionName) => {

@@ -2,7 +2,7 @@ import { useImmer } from "use-immer";
 import { authenticate, getForgotPassword, resetPassword } from "..";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useAppStore } from "store/AppStore";
+import { useAppStore } from "master";
 import { errorMessage, Axios } from "utils";
 
 export const useAuthenticate = () => {
