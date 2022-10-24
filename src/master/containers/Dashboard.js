@@ -22,8 +22,11 @@ import AssessmentSection from "modules/AssessmentSection/AssessmentSection";
 import Assessment from "modules/Assessment/Assessment";
 import Report from "modules/Reports/Report";
 import AssessmentSchedule from "modules/AssessmentSchedule/AssessmentSchedule";
+import { useAppStore } from "master";
+
 
 export function Dashboard() {
+  const { hasPermission } = useAppStore();
   return (
     <div id="app">
       <SideBar />
@@ -32,25 +35,64 @@ export function Dashboard() {
         <div id="main-content">
           <Routes>
             <Route element={<DashboardCanvas />} path={"/"} />
-            <Route element={<Batch />} path={"/batch/*"} />
-            <Route element={<Role />} path={"/role/*"} />
-            <Route element={<Student />} path={"/student/*"} />
-            <Route element={<Institute />} path={"/institute/*"} />
-            <Route element={<QuestionBanks />} path={"/questionbanks/*"} />
-            <Route element={<Courses />} path={"/courses/*"} />
-            <Route element={<Users />} path={"/users/*"} />
-            <Route element={<Settings />} path={"/settings/*"} />
-            <Route element={<Questions />} path={"/questions/*"} />
-            <Route element={<AssessmentSection />} path={"/assessmentSection/*"} />
-            <Route element={<Assessment />} path={"/assessments/*"} />
-            <Route element={<Report />} path={"/reports/*"} />
-            <Route element={<AssessmentSchedule />} path={"/assessment-schedule/*"} />
-            <Route element={<Certificates />} path={"/certificates/*"} />
-            <Route element={<Notifications />} path={"/notifications/*"} />
-            <Route element={<SupportTicket />} path={"/supportTicket/*"} />
-            <Route element={<Program />} path={"/program/*"} />
-            <Route element={<Trainer />} path={"/trainer/*"} />
-            <Route element={<TrainingPartner />} path={"/trainingpartner/*"} />
+            {
+              hasPermission("Batches", "View") && <Route element={<Batch />} path={"/batch/*"} />
+            }
+            {
+              hasPermission("UserRoles", "View") && <Route element={<Role />} path={"/role/*"} />
+            }
+            {
+              hasPermission("Students", "View") && <Route element={<Student />} path={"/student/*"} />
+            }
+            {
+              hasPermission("Institutes", "View") && <Route element={<Institute />} path={"/institute/*"} />
+            }
+            {
+              hasPermission("QuestionBanks", "View") && <Route element={<QuestionBanks />} path={"/questionbanks/*"} />
+            }
+            {
+              hasPermission("Users", "View") && <Route element={<Users />} path={"/users/*"} />
+            }
+            {
+              hasPermission("Courses", "View") && <Route element={<Courses />} path={"/courses/*"} />
+            }
+            {
+              hasPermission("Settings", "View") && <Route element={<Settings />} path={"/settings/*"} />
+            }
+            {
+              hasPermission("Questions", "View") && <Route element={<Questions />} path={"/questions/*"} />
+            }
+            {
+              hasPermission("AssessmentSections", "View") && <Route element={<AssessmentSection />} path={"/assessmentsection/*"} />
+
+            }
+            {
+              hasPermission("Assessments", "View") && <Route element={<Assessment />} path={"/assessments/*"} />
+            }
+            {
+              hasPermission("Courses", "View") && <Route element={<Report />} path={"/reports/*"} />
+            }
+            {
+              hasPermission("AssessmentSchedule", "View") && <Route element={<AssessmentSchedule />} path={"/assessment-schedule/*"} />
+            }
+            {
+              hasPermission("Certificates", "View") && <Route element={<Certificates />} path={"/certificates/*"} />
+            }
+            {
+              hasPermission("Notifications", "View") && <Route element={<Notifications />} path={"/notifications/*"} />
+            }
+            {
+              hasPermission("SupportTickets", "View") && <Route element={<SupportTicket />} path={"/supportticket/*"} />
+            }
+            {
+              hasPermission("Program", "View") && <Route element={<Program />} path={"/program/*"} />
+            }
+            {
+              hasPermission("Trainer", "View") && <Route element={<Trainer />} path={"/trainer/*"} />
+            }
+            {
+              hasPermission("TrainingPartner", "View") && <Route element={<TrainingPartner />} path={"/trainingpartner/*"} />
+            }
             <Route path="/*" element={<h5>Not Found</h5>} />
           </Routes>
           <Footer />
