@@ -14,3 +14,8 @@ export const resetPassword = async (auth) => {
   const res = await Axios.post("/Users/ResetPassword", auth);
   return res.data;
 };
+
+export const getPermission = async () => {
+  const res = await Axios.get("/Users/permissions");
+  return res.data;
+};
