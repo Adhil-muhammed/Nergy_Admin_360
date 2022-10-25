@@ -36,7 +36,6 @@ export const BatchList = (props) => {
             <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
           </Button>
         }
-
         {
           hasDeletePermission && <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
             <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
@@ -46,7 +45,7 @@ export const BatchList = (props) => {
     );
   };
 
-  const columns = [
+  let columns = [
     {
       Header: "Name",
       accessor: "name",
@@ -59,14 +58,18 @@ export const BatchList = (props) => {
       Header: "End",
       accessor: "endDate",
     },
-
-    {
-      Header: "Actions",
-      accessor: "batchId",
-      id: "actions",
-      Cell: ActionButtons,
-    },
   ];
+
+  if (hasEditPermission || hasDeletePermission) {
+    columns.push(
+      {
+        Header: "Actions",
+        accessor: "batchId",
+        id: "actions",
+        Cell: ActionButtons,
+      }
+    );
+  }
 
   if (isLoading) {
     return <LoadingSpinner />;
