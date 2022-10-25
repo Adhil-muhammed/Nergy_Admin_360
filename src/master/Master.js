@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Login, ForgotPassword, ResetPassword, Dashboard } from ".";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { AppStore } from "master";
+import { AppScope, AuthorizeScope } from "master";
 import { ProtectedRoute } from "shared/components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -10,7 +10,7 @@ const queryClient = new QueryClient();
 export function Master() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AppStore>
+      <AppScope>
         <BrowserRouter basename="admin">
           <Routes>
             <Route exact element={<Login />} path={"/auth/login"} />
@@ -19,15 +19,17 @@ export function Master() {
             <Route
               exact
               element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
+                <AuthorizeScope>
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                </AuthorizeScope>
               }
               path={"/*"}
             />
           </Routes>
         </BrowserRouter>
-      </AppStore>
+      </AppScope>
     </QueryClientProvider>
   );
 }

@@ -5,10 +5,10 @@ import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useCourse } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
-import { useAppStore } from "master";
+import { useAuthorizeContext } from "master";
 
 export const CourseList = (props) => {
-  const { hasPermission } = useAppStore();
+  const { hasPermission } = useAuthorizeContext();
   const hasDeletePermission = hasPermission("Courses", "Delete");
   const hasEditPermission = hasPermission("Courses", "Edit");
   const hasCreatePermission = hasPermission("Courses", "Create");

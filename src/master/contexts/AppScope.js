@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import { useImmer } from "use-immer";
-import { AppContext } from "..";
 import { useAuthorize } from "..";
 
-export const AppStore = (props) => {
+export const AppContext = React.createContext();
+
+export const AppScope = (props) => {
     const initial = {
         isAuthenticated: false,
         user: "",
@@ -13,8 +14,6 @@ export const AppStore = (props) => {
 
     const localData = JSON.parse(localStorage.getItem("localData"));
     const [AppState, setAppState] = useImmer(localData || initial);
-
-    const { hasPermission, userPermissionQuery } = useAuthorize(AppState.token);
 
     useEffect(() => {
         localStorage.setItem("localData", JSON.stringify(AppState));
@@ -26,10 +25,9 @@ export const AppStore = (props) => {
             value={{
                 AppState,
                 setAppState,
-                hasPermission
             }}
         >
-            {userPermissionQuery.data ? props.children : null}
+            {props.children}
         </AppContext.Provider>
     );
 };

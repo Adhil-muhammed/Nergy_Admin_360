@@ -22,11 +22,11 @@ import AssessmentSection from "modules/AssessmentSection/AssessmentSection";
 import Assessment from "modules/Assessment/Assessment";
 import Report from "modules/Reports/Report";
 import AssessmentSchedule from "modules/AssessmentSchedule/AssessmentSchedule";
-import { useAppStore } from "master";
+import { useAuthorizeContext } from "master";
 
 
 export function Dashboard() {
-  const { hasPermission } = useAppStore();
+  const { hasPermission } = useAuthorizeContext();
   return (
     <div id="app">
       <SideBar />

@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppStore } from "master";
+import { useAppScopeContext } from "master";
 import { useImmer } from "use-immer";
 import Avatar from "../../assets/images/faces/1.jpg";
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
@@ -11,7 +11,7 @@ export function Header() {
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [isDropDown, setIsDropDown] = useImmer(false);
   const navigate = useNavigate();
-  const { AppState } = useAppStore();
+  const { AppState } = useAppScopeContext();
   const {
     user: { email, firstName },
   } = AppState;
