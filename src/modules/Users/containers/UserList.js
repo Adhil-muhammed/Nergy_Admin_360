@@ -8,12 +8,19 @@ import { useUser } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
 export const UserList = (props) => {
+  const { hasPermission } = props;
+  const hasCreatePermission = hasPermission("Users", "Create");
+  const hasEditPermission = hasPermission("Users", "Edit");
+  const hasDeletePermission = hasPermission("Users", "Delete");
+
+  const history = useNavigate();
+  const location = useLocation();
+
   const { user, onDelete, onToggleModal, isConfirmDelete, deleteUser, usersQuery } = useUser({
     load: true,
   });
   const { data, isLoading } = usersQuery;
-  const history = useNavigate();
-  const location = useLocation();
+
   const onConfirm = () => {
     deleteUser.mutate(user.userId);
   };
@@ -29,12 +36,17 @@ export const UserList = (props) => {
   const ActionButtons = ({ value }) => {
     return (
       <>
-        <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
-          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
-        </Button>
-        <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
-          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
-        </Button>
+        {
+          hasEditPermission && <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
+            <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+          </Button>
+        }
+        {
+          hasDeletePermission &&
+          <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
+            <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+          </Button>
+        }
       </>
     );
   };
@@ -57,19 +69,26 @@ export const UserList = (props) => {
       accessor: "userStatusStr",
       Cell: StatusIndicator,
     },
-    {
+  ];
+
+  if (hasDeletePermission || hasDeletePermission) {
+    columns.push({
       Header: "Actions",
       id: "actions",
       accessor: "userId",
       Cell: ActionButtons,
-    },
-  ];
+    })
+  }
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
+
   return (
     <ContentLayout title={"Users"} subtitle={"List"} breadcrumb={[{ label: "Users" }]}>
-      <UserIdFilter />
+      {
+        hasCreatePermission && <UserIdFilter />
+      }
       <TableLayout columns={columns} data={data} />
       <ModalLayout
         isOpen={isConfirmDelete}

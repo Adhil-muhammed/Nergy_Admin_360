@@ -3,13 +3,23 @@ import { Routes, Route } from "react-router-dom";
 
 import React from "react";
 
-export const Users = () => {
+export const Users = (props) => {
+  const { hasPermission } = props;
   return (
     <>
       <Routes>
-        <Route path="/" element={<UserList />} />
-        <Route path="/create" element={<CreateUser />} />
-        <Route path="/edit/:userId" element={<CreateUser />} />
+        {
+          hasPermission("Users", "View") &&
+          <Route path="/" element={<UserList />} />
+        }
+        {
+          hasPermission("Users", "Create") &&
+          <Route path="/create" element={<CreateUser />} />
+        }
+        {
+          hasPermission("Users", "Edit") &&
+          <Route path="/edit/:userId" element={<CreateUser />} />
+        }
       </Routes>
     </>
   );
