@@ -3,13 +3,24 @@ import { Routes, Route } from "react-router-dom";
 
 import React from "react";
 
-export const QuestionBanks = () => {
+export const QuestionBanks = (props) => {
+  const { hasPermission } = props;
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<QuestionBanksList />} />
-        <Route path="/create" element={<CreateOrEditQuestionBanks />} />
-        <Route path="/edit/:questionBankId" element={<CreateOrEditQuestionBanks />} />
+        {
+          hasPermission("QuestionBanks", "View") &&
+          <Route path="/" element={<QuestionBanksList hasPermission={hasPermission} />} />
+        }
+        {
+          hasPermission("QuestionBanks", "Create") &&
+          <Route path="/create" element={<CreateOrEditQuestionBanks />} />
+        }
+        {
+          hasPermission("QuestionBanks", "Edit") &&
+          <Route path="/edit/:questionBankId" element={<CreateOrEditQuestionBanks />} />
+        }
       </Routes>
     </>
   );
