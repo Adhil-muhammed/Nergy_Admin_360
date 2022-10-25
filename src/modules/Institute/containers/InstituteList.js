@@ -7,12 +7,19 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useInstitute } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 
-export const InstituteList = () => {
+export const InstituteList = (props) => {
+  const { hasPermission } = props;
+  const hasCreatePermission = hasPermission("Institutes", "Create");
+  const hasEditPermission = hasPermission("Institutes", "Edit");
+  const hasDeletePermission = hasPermission("Institutes", "Delete");
+
+  const history = useNavigate();
+  const location = useLocation();
+
   const { institute, institutesQuery, onDelete, onToggleModal, isConfirmDelete, deleteInstitute } =
     useInstitute({ load: true });
   const { data, isLoading } = institutesQuery;
-  const history = useNavigate();
-  const location = useLocation();
+
   const onConfirm = () => {
     deleteInstitute.mutate(institute.instituteId);
   };
@@ -24,12 +31,16 @@ export const InstituteList = () => {
   const ActionButtons = ({ value }) => {
     return (
       <>
-        <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
-          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
-        </Button>
-        <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
-          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
-        </Button>
+        {
+          hasEditPermission && <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
+            <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+          </Button>
+        }
+        {
+          hasDeletePermission && <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
+            <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+          </Button>
+        }
       </>
     );
   };
@@ -38,14 +49,17 @@ export const InstituteList = () => {
     {
       Header: "Name",
       accessor: "name",
-    },
-    {
+    }
+  ];
+
+  if (hasEditPermission || hasDeletePermission) {
+    columns.push({
       Header: "Actions",
       accessor: "instituteId",
       id: "actions",
       Cell: ActionButtons,
-    },
-  ];
+    });
+  }
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -53,7 +67,9 @@ export const InstituteList = () => {
 
   return (
     <ContentLayout title={"Institutes"} subtitle={"List"} breadcrumb={[{ label: "Institute" }]}>
-      <InstituteIdFilter />
+      {
+        hasCreatePermission && <InstituteIdFilter />
+      }
       <TableLayout columns={columns} data={data} />
       <ModalLayout
         isOpen={isConfirmDelete}
