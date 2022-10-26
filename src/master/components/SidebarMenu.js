@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { UncontrolledCollapse } from "reactstrap";
 import { NavLink } from "react-router-dom";
+import { useAuthorizeContext } from "master";
+
 
 const SidebarMenu = ({ title }) => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
+  const { hasPermission } = useAuthorizeContext();
+
 
   useEffect(() => {
     const menuData = [
       { id: 1, name: "Dashboard", pathName: "/", icon: "bi-grid-fill", children: [] },
-      { id: 2, name: "Batch", pathName: "batch", icon: "bi-collection-fill", children: [] },
-      { id: 3, name: "Student", pathName: "student", icon: "bi-person-fill", children: [] },
-      { id: 4, name: "Institute", pathName: "institute", icon: "bi-house-door-fill", children: [] },
+      { id: 2, name: "Batch", pathName: "batch", show: hasPermission("Batches", "View"), icon: "bi-collection-fill", children: [] },
+      { id: 3, name: "Student", pathName: "student", show: hasPermission("Students", "View"), icon: "bi-person-fill", children: [] },
+      { id: 4, name: "Institute", pathName: "institute", show: hasPermission("Institutes", "View"), icon: "bi-house-door-fill", children: [] },
       {
         id: 5,
         name: "Assessment",
@@ -22,6 +26,7 @@ const SidebarMenu = ({ title }) => {
             id: 1,
             name: "Assessment Section",
             pathName: "assessmentSection",
+            show: hasPermission("AssessmentSections", "View"),
             icon: "bi-check-circle-fill",
             children: [],
           },
@@ -29,6 +34,7 @@ const SidebarMenu = ({ title }) => {
             id: 2,
             name: "Assessments",
             pathName: "assessments",
+            show: hasPermission("Assessments", "View"),
             icon: "bi-check-circle-fill",
             children: [],
           },
@@ -36,6 +42,7 @@ const SidebarMenu = ({ title }) => {
             id: 3,
             name: "Assessment Schedule",
             pathName: "assessment-schedule",
+            show: hasPermission("AssessmentSchedule", "View"),
             icon: "bi-check-circle-fill",
             children: [],
           },
@@ -45,6 +52,7 @@ const SidebarMenu = ({ title }) => {
         id: 6,
         name: "QuestionBanks",
         pathName: "questionbanks",
+        show: hasPermission("QuestionBanks", "View"),
         icon: "bi-archive-fill",
         children: [],
       },
@@ -52,15 +60,30 @@ const SidebarMenu = ({ title }) => {
         id: 7,
         name: "Questions",
         pathName: "questions",
+        show: hasPermission("Questions", "View"),
         icon: "bi-question-circle-fill",
         children: [],
       },
-      { id: 8, name: "Courses", pathName: "courses", icon: "bi-book-fill", children: [] },
-      { id: 9, name: "Reports", pathName: "reports", icon: "bi-pie-chart-fill", children: [] },
+      {
+        id: 8,
+        name: "Courses",
+        pathName: "courses",
+        show: hasPermission("Courses", "View"),
+        icon: "bi-book-fill", children: []
+      },
+      {
+        id: 9,
+        name: "Reports",
+        pathName: "reports",
+        show: hasPermission("Reports", "View"),
+        icon: "bi-pie-chart-fill",
+        children: []
+      },
       {
         id: 10,
         name: "Certificates",
         pathName: "certificates",
+        show: hasPermission("Certificates", "View"),
         icon: "bi-award-fill",
         children: [],
       },
@@ -74,6 +97,7 @@ const SidebarMenu = ({ title }) => {
             id: 1,
             name: "Users",
             pathName: "users",
+            show: hasPermission("Users", "View"),
             icon: "bi-people-fill",
             children: [],
           },
@@ -81,16 +105,24 @@ const SidebarMenu = ({ title }) => {
             id: 2,
             name: "Role",
             pathName: "role",
+            show: hasPermission("UserRoles", "View"),
             icon: "bi-people-fill",
             children: [],
           },
         ],
       },
-      { id: 12, name: "Settings", pathName: "settings", icon: "bi-gear-fill", children: [] },
+      {
+        id: 12, name: "Settings",
+        pathName: "settings",
+        show: hasPermission("Settings", "View"),
+        icon: "bi-gear-fill",
+        children: []
+      },
       {
         id: 13,
         name: "Notifications",
         pathName: "notifications",
+        show: hasPermission("Notifications", "View"),
         icon: "bi-chat-right-text-fill",
         children: [],
       },
@@ -98,6 +130,7 @@ const SidebarMenu = ({ title }) => {
         id: 14,
         name: "Support Ticket",
         pathName: "supportTicket",
+        show: hasPermission("SupportTickets", "View"),
         icon: "bi-tools",
         children: [],
       },
@@ -106,6 +139,7 @@ const SidebarMenu = ({ title }) => {
         name: "Program",
         pathName: "program",
         icon: "bi-file-earmark-text-fill",
+        show: hasPermission("Program", "View"),
         children: [],
       },
       {
@@ -113,12 +147,14 @@ const SidebarMenu = ({ title }) => {
         name: "Trainer",
         pathName: "trainer",
         icon: "bi-file-earmark-text-fill",
+        show: hasPermission("Trainer", "View"),
         children: [],
       },
       {
         id: 17,
         name: "Training Partner",
         pathName: "trainingpartner",
+        show: hasPermission("TrainingPartner", "View"),
         icon: "bi-file-earmark-text-fill",
         children: [],
       },
@@ -173,8 +209,10 @@ const SidebarMenu = ({ title }) => {
     const load = async () => {
       setLoading(false);
       let menuItems = menuData.map((item, i) => {
-        let menuItem = returnMenuItem(item, i);
-        return menuItem;
+        if (item.show) {
+          let menuItem = returnMenuItem(item, i);
+          return menuItem;
+        }
       });
       setItems(menuItems);
     };
