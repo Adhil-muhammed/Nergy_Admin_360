@@ -8,9 +8,11 @@ import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { Axios } from "utils";
 import fileDownload from "js-file-download";
 import { useDropzone } from "react-dropzone";
+import { useAuthorizeContext } from "master";
 
-export const StudentList = (props) => {
-  const { hasPermission } = props;
+
+export const StudentList = () => {
+  const { hasPermission } = useAuthorizeContext();
   const hasCreatePermission = hasPermission("Batches", "Create");
   const hasEditPermission = hasPermission("Batches", "Edit");
   const hasDeletePermission = hasPermission("Batches", "Delete");

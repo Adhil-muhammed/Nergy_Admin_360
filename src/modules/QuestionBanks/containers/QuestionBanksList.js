@@ -6,9 +6,10 @@ import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useQuestionBanks } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { useAuthorizeContext } from "master";
 
-export const QuestionBanksList = (props) => {
-  const { hasPermission } = props;
+export const QuestionBanksList = () => {
+  const { hasPermission } = useAuthorizeContext();
   const hasCreatePermission = hasPermission("QuestionBanks", "Create");
   const hasEditPermission = hasPermission("QuestionBanks", "Edit");
   const hasDeletePermission = hasPermission("QuestionBanks", "Delete");

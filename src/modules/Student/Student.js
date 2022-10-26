@@ -1,14 +1,17 @@
+import React from "react";
 import { StudentList, CreateStudent } from ".";
 import { Routes, Route } from "react-router-dom";
+import { useAuthorizeContext } from "master";
 
-import React from "react";
 
-export const Student = (props) => {
-  const { hasPermission } = props;
+
+export const Student = () => {
+  const { hasPermission } = useAuthorizeContext();
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<StudentList hasPermission={hasPermission} />} />
+        <Route path="/" element={<StudentList />} />
         {
           hasPermission("Students", "Create") &&
           <Route path="/create" element={<CreateStudent />} />

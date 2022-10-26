@@ -37,26 +37,26 @@ export function Dashboard() {
             <Route element={<DashboardCanvas />} path={"/"} />
             {
               hasPermission("Batches", "View") &&
-              <Route element={<Batch hasPermission={hasPermission} />} path={"/batch/*"} />
+              <Route element={<Batch />} path={"/batch/*"} />
             }
             {
               hasPermission("UserRoles", "View") && <Route element={<Role />} path={"/role/*"} />
             }
             {
               hasPermission("Students", "View") &&
-              <Route element={<Student hasPermission={hasPermission} />} path={"/student/*"} />
+              <Route element={<Student />} path={"/student/*"} />
             }
             {
               hasPermission("Institutes", "View") &&
-              <Route element={<Institute hasPermission={hasPermission} />} path={"/institute/*"} />
+              <Route element={<Institute />} path={"/institute/*"} />
             }
             {
               hasPermission("QuestionBanks", "View") &&
-              <Route element={<QuestionBanks hasPermission={hasPermission} />} path={"/questionbanks/*"} />
+              <Route element={<QuestionBanks />} path={"/questionbanks/*"} />
             }
             {
               hasPermission("Users", "View") &&
-              <Route element={<Users hasPermission={hasPermission} />} path={"/users/*"} />
+              <Route element={<Users />} path={"/users/*"} />
             }
             {
               hasPermission("Courses", "View") && <Route element={<Courses />} path={"/courses/*"} />

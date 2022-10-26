@@ -1,10 +1,12 @@
+import React from "react";
 import { UserList, CreateUser } from ".";
 import { Routes, Route } from "react-router-dom";
+import { useAuthorizeContext } from "master";
 
-import React from "react";
 
-export const Users = (props) => {
-  const { hasPermission } = props;
+export const Users = () => {
+  const { hasPermission } = useAuthorizeContext();
+
   return (
     <>
       <Routes>

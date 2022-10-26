@@ -6,9 +6,11 @@ import { Button, Badge } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { useAuthorizeContext } from "master";
 
-export const UserList = (props) => {
-  const { hasPermission } = props;
+
+export const UserList = () => {
+  const { hasPermission } = useAuthorizeContext();
   const hasCreatePermission = hasPermission("Users", "Create");
   const hasEditPermission = hasPermission("Users", "Edit");
   const hasDeletePermission = hasPermission("Users", "Delete");

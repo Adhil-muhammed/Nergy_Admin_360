@@ -6,9 +6,10 @@ import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useInstitute } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { useAuthorizeContext } from "master";
 
-export const InstituteList = (props) => {
-  const { hasPermission } = props;
+export const InstituteList = () => {
+  const { hasPermission } = useAuthorizeContext();
   const hasCreatePermission = hasPermission("Institutes", "Create");
   const hasEditPermission = hasPermission("Institutes", "Edit");
   const hasDeletePermission = hasPermission("Institutes", "Delete");

@@ -1,15 +1,18 @@
 import { BatchList, useBatch, AddOrEditBatch } from ".";
 import { Routes, Route } from "react-router-dom";
+import { useAuthorizeContext } from "master";
+
 
 
 import React from "react";
 
-export const Batch = (props) => {
-  const { hasPermission } = props;
+export const Batch = () => {
+  const { hasPermission } = useAuthorizeContext();
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<BatchList hasPermission={hasPermission} />} />
+        <Route path="/" element={<BatchList />} />
         {
           hasPermission("Batches", "Create") && <Route path="/create" element={<AddOrEditBatch />} />
         }

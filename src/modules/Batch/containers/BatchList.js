@@ -6,9 +6,11 @@ import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useBatch } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { useAuthorizeContext } from "master";
 
-export const BatchList = (props) => {
-  const { hasPermission } = props;
+
+export const BatchList = () => {
+  const { hasPermission } = useAuthorizeContext();
   const hasCreatePermission = hasPermission("Batches", "Create");
   const hasEditPermission = hasPermission("Batches", "Edit");
   const hasDeletePermission = hasPermission("Batches", "Delete");
