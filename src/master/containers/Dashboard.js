@@ -105,7 +105,8 @@ export function Dashboard() {
               <Route element={<Trainer />} path={"/trainer/*"} />
             }
             {
-              hasPermission("TrainingPartner", "View") && <Route element={<TrainingPartner />} path={"/trainingpartner/*"} />
+              hasPermission("TrainingPartner", "View") &&
+              <Route element={<TrainingPartner />} path={"/trainingpartner/*"} />
             }
             <Route path="/*" element={<h5>Not Found</h5>} />
           </Routes>
