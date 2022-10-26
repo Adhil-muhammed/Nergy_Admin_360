@@ -6,6 +6,8 @@ import { Button, Badge } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useNotification } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { useAuthorizeContext } from "master";
+
 
 export const NotificationList = () => {
   const { hasPermission } = useAuthorizeContext();
