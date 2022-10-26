@@ -57,31 +57,28 @@ export const CourseList = () => {
     );
   };
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Name",
-        accessor: "name",
-      },
-      {
-        Header: "Exam",
-        accessor: "hasExam",
-        Cell: CheckMarker,
-      },
-      {
-        Header: "Content",
-        accessor: "isContentEnabled",
-        Cell: CheckMarker,
-      },
-      {
-        Header: "Thumbnail",
-        accessor: "courseImageURL",
-        Cell: Thumbnail,
-      },
+  const columns = [
+    {
+      Header: "Name",
+      accessor: "name",
+    },
+    {
+      Header: "Exam",
+      accessor: "hasExam",
+      Cell: CheckMarker,
+    },
+    {
+      Header: "Content",
+      accessor: "isContentEnabled",
+      Cell: CheckMarker,
+    },
+    {
+      Header: "Thumbnail",
+      accessor: "courseImageURL",
+      Cell: Thumbnail,
+    },
 
-    ],
-    []
-  );
+  ];
 
   if (hasEditPermission || hasDeletePermission) {
     columns.push({
