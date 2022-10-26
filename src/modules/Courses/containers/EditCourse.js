@@ -115,7 +115,7 @@ export const EditCourse = () => {
       title={"Edit Course"}
       subtitle={"Update"}
       breadcrumb={[
-        { label: "Courses", location: "/admin/courses" },
+        { label: "Courses", location: "/courses" },
         { label: "Edit Course" },
       ]}
     >

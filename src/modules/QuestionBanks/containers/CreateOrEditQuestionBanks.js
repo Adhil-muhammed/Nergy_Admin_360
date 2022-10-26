@@ -45,7 +45,7 @@ export const CreateOrEditQuestionBanks = () => {
       subtitle={editMode ? "Update" : "Create"}
       title={"Question Bank"}
       breadcrumb={[
-        { label: "Question Bank", location: "/admin/questionbanks" },
+        { label: "Question Bank", location: "/questionbanks" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >

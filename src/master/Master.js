@@ -11,9 +11,9 @@ export function Master() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppScope>
-        <BrowserRouter basename="admin">
+        <BrowserRouter >
           <Routes>
-            <Route exact element={<Login />} path={"/auth/login"} />
+            <Route exact element={<Login />} path={"/login"} />
             <Route exact element={<ForgotPassword />} path={"/forgotPassword"} />
             <Route exact element={<ResetPassword />} path={"/auth/reset"} />
             <Route

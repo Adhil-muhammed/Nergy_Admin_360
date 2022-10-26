@@ -55,16 +55,16 @@ export const AddorEditCertificates = () => {
   const courses = React.useMemo(() => {
     return coursesQuery.data
       ? coursesQuery.data.map((c) => {
-          return { value: c.courseId, label: c.name };
-        })
+        return { value: c.courseId, label: c.name };
+      })
       : [];
   }, [coursesQuery.data]);
 
   const batches = React.useMemo(() => {
     return batchesQuery.data
       ? batchesQuery.data.map((c) => {
-          return { value: c.batchId, label: c.name };
-        })
+        return { value: c.batchId, label: c.name };
+      })
       : [];
   }, [batchesQuery.data]);
 
@@ -78,7 +78,7 @@ export const AddorEditCertificates = () => {
       subtitle={"Create"}
       title={"Certificate"}
       breadcrumb={[
-        { label: "Certificates", location: "/admin/certificates" },
+        { label: "Certificates", location: "/certificates" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >

@@ -8,7 +8,7 @@ const SidebarMenu = ({ title }) => {
 
   useEffect(() => {
     const menuData = [
-      { id: 1, name: "Dashboard", pathName: "/dashboard", icon: "bi-grid-fill", children: [] },
+      { id: 1, name: "Dashboard", pathName: "/", icon: "bi-grid-fill", children: [] },
       { id: 2, name: "Batch", pathName: "batch", icon: "bi-collection-fill", children: [] },
       { id: 3, name: "Student", pathName: "student", icon: "bi-person-fill", children: [] },
       { id: 4, name: "Institute", pathName: "institute", icon: "bi-house-door-fill", children: [] },

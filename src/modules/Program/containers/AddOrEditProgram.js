@@ -68,7 +68,7 @@ export const AddOrEditProgram = () => {
       title={"Program"}
       subtitle={editMode ? "Update" : "Create"}
       breadcrumb={[
-        { label: "Program", location: "/admin/program" },
+        { label: "Program", location: "/program" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >

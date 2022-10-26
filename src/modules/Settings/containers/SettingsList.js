@@ -12,9 +12,9 @@ export const SettingsList = () => {
   const { data, isLoading } = settingsQuery;
   const navigate = useNavigate();
 
-  const inputHandler = () => {};
+  const inputHandler = () => { };
   const onCancel = () => {
-    navigate("/admin", { replace: true });
+    navigate("/", { replace: true });
   };
 
   if (isLoading) {
@@ -55,7 +55,7 @@ export const SettingsList = () => {
             })}
           </div>
           <div className="col-12 d-flex justify-content-end">
-            <Button className="me-1 mb-1" color="success" onClick={() => {}}>
+            <Button className="me-1 mb-1" color="success" onClick={() => { }}>
               Update
             </Button>
             <button

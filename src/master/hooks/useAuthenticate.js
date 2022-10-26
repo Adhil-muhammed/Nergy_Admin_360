@@ -33,9 +33,8 @@ export const useAuthenticate = () => {
   });
 
   const userSignOut = async () => {
-    // await Axios.post("/Accounts/SignOut");
     localStorage.removeItem("localData");
-    window.location.href = "/admin";
+    window.location.href = "/login";
   };
 
   return {

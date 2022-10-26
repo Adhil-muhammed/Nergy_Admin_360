@@ -116,10 +116,10 @@ export function Header() {
                   </DropdownToggle>
                   <DropdownMenu>
                     <DropdownItem header>Hello, {firstName}!</DropdownItem>
-                    <DropdownItem onClick={() => navigateTo("/admin")}>
+                    <DropdownItem onClick={() => navigateTo("/")}>
                       <i className="icon-mid bi bi-house-door me-2" /> Dashboard
                     </DropdownItem>
-                    <DropdownItem onClick={() => navigateTo("/admin/settings")}>
+                    <DropdownItem onClick={() => navigateTo("/settings")}>
                       <i className="icon-mid bi bi-gear me-2" /> Settings
                     </DropdownItem>
                     <DropdownItem divider />
