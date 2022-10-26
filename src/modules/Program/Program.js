@@ -1,14 +1,26 @@
 import React from "react";
 import { ProgramList, AddOrEditProgram } from ".";
 import { Routes, Route } from "react-router-dom";
+import { useAuthorizeContext } from "master";
 
 export const Program = () => {
+  const { hasPermission } = useAuthorizeContext();
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<ProgramList />} />
-        <Route path="/create" element={<AddOrEditProgram />} />
-        <Route path="/edit/:programId" element={<AddOrEditProgram />} />
+        {
+          hasPermission("Program", "View") &&
+          <Route path="/" element={<ProgramList />} />
+        }
+        {
+          hasPermission("Program", "Create") &&
+          <Route path="/create" element={<AddOrEditProgram />} />
+        }
+        {
+          hasPermission("Program", "Edit") &&
+          <Route path="/edit/:programId" element={<AddOrEditProgram />} />
+        }
       </Routes>
     </>
   );
