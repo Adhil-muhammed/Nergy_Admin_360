@@ -40,7 +40,8 @@ export function Dashboard() {
               <Route element={<Batch />} path={"/batch/*"} />
             }
             {
-              hasPermission("UserRoles", "View") && <Route element={<Role />} path={"/role/*"} />
+              hasPermission("UserRoles", "View") &&
+              <Route element={<Role />} path={"/role/*"} />
             }
             {
               hasPermission("Students", "View") &&
