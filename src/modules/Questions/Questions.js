@@ -1,14 +1,27 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { CreateQuestion, QuestionsList } from "./containers";
+import { useAuthorizeContext } from "master";
+
 
 export const Questions = () => {
+  const { hasPermission } = useAuthorizeContext();
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<QuestionsList />} />
-        <Route path="/create/new" element={<CreateQuestion />} />
-        <Route path="/edit/:id" element={<CreateQuestion />} />
+        {
+          hasPermission("Questions", "View") &&
+          <Route path="/" element={<QuestionsList />} />
+        }
+        {
+          hasPermission("Questions", "Create") &&
+          <Route path="/create/new" element={<CreateQuestion />} />
+        }
+        {
+          hasPermission("Questions", "Edit") &&
+          <Route path="/edit/:id" element={<CreateQuestion />} />
+        }
       </Routes>
     </>
   );

@@ -6,11 +6,19 @@ import { ContentLayout, ModalLayout, TableLayout } from "shared";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { useImmer } from "use-immer";
 import { useQuestion } from "../hooks";
+import { useAuthorizeContext } from "master";
+
 export const QuestionsList = (props) => {
-  const { questionsQuery, isConfirmDelete, onToggleModal, onDelete, onDeleteQuestion, question } =
-    useQuestion({ load: true });
   const history = useNavigate();
   const location = useLocation();
+
+  const { hasPermission } = useAuthorizeContext();
+  const hasCreatePermission = hasPermission("Questions", "Create");
+  const hasEditPermission = hasPermission("Questions", "Edit");
+  const hasDeletePermission = hasPermission("Questions", "Delete");
+
+  const { questionsQuery, isConfirmDelete, onToggleModal, onDelete, onDeleteQuestion, question } =
+    useQuestion({ load: true });
 
   const { data, isLoading } = questionsQuery;
 
@@ -29,12 +37,16 @@ export const QuestionsList = (props) => {
   const ActionButtons = ({ row }) => {
     return (
       <>
-        <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.questionId)}>
-          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
-        </Button>
-        <Button color="danger" size="sm" onClick={() => onDelete(row)} className="ms-3">
-          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
-        </Button>
+        {
+          hasEditPermission && <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.questionId)}>
+            <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+          </Button>
+        }
+        {
+          hasDeletePermission && <Button color="danger" size="sm" onClick={() => onDelete(row)} className="ms-3">
+            <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+          </Button>
+        }
       </>
     );
   };
@@ -52,13 +64,16 @@ export const QuestionsList = (props) => {
       Header: "Question Bank",
       accessor: (row) => row.questionBank.name,
     },
-    {
+  ];
+
+  if (hasEditPermission || hasDeletePermission) {
+    columns.push({
       Header: "Actions",
       id: "actions",
       accessor: "questionId",
       Cell: ActionButtons,
-    },
-  ];
+    });
+  }
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -67,11 +82,13 @@ export const QuestionsList = (props) => {
   return (
     <>
       <ContentLayout title="Questions" subtitle="List" breadcrumb={[{ label: "Questions" }]}>
-        <div className="mb-4">
-          <Button color="primary" size="sm" onClick={gotoCreate}>
-            Create New
-          </Button>
-        </div>
+        {
+          hasCreatePermission && <div className="mb-4">
+            <Button color="primary" size="sm" onClick={gotoCreate}>
+              Create New
+            </Button>
+          </div>
+        }
         <TableLayout columns={columns} data={data} />
         <ModalLayout
           isOpen={isConfirmDelete}

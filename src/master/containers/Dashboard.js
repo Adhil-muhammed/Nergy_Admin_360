@@ -65,7 +65,8 @@ export function Dashboard() {
               hasPermission("Settings", "View") && <Route element={<Settings />} path={"/settings/*"} />
             }
             {
-              hasPermission("Questions", "View") && <Route element={<Questions />} path={"/questions/*"} />
+              hasPermission("Questions", "View") &&
+              <Route element={<Questions />} path={"/questions/*"} />
             }
             {
               hasPermission("AssessmentSections", "View") && <Route element={<AssessmentSection />} path={"/assessmentsection/*"} />
