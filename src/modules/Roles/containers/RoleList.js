@@ -6,8 +6,15 @@ import { Button } from "reactstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useRole } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
+import { useAuthorizeContext } from "master";
+
 
 export const RoleList = () => {
+  const { hasPermission } = useAuthorizeContext();
+  const hasCreatePermission = hasPermission("UserRoles", "Create");
+  const hasEditPermission = hasPermission("UserRoles", "Edit");
+  const hasDeletePermission = hasPermission("UserRoles", "Delete");
+
   const { role, rolesQuery, onDelete, onToggleModal, isConfirmDelete, deleteRole } = useRole({
     load: true,
   });
@@ -32,15 +39,16 @@ export const RoleList = () => {
   const editPermissionButton = ({ row }) => {
     return (
       <>
-        <Button
-          color="success"
-          size="sm"
-          onClick={() => onEditPermission(row.original.name)}
-          className="me-3"
-        >
-          <i className="bi bi-gear" style={{ fontSize: "10px" }}></i> <span>Permissions</span>
-        </Button>
-
+        {
+          hasEditPermission && <Button
+            color="success"
+            size="sm"
+            onClick={() => onEditPermission(row.original.name)}
+            className="me-3"
+          >
+            <i className="bi bi-gear" style={{ fontSize: "10px" }}></i> <span>Permissions</span>
+          </Button>
+        }
       </>
     );
   };
@@ -48,17 +56,17 @@ export const RoleList = () => {
   const ActionButtons = ({ row }) => {
     return (
       <>
-        <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.roleId)}>
-          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
-        </Button>
-        <Button
-          color="danger"
-          size="sm"
-          onClick={() => onDelete(row.original.roleId)}
-          className="ms-3"
-        >
-          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
-        </Button>
+        {
+          hasEditPermission && <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.roleId)}>
+            <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+          </Button>
+        }
+        {
+          hasDeletePermission && <Button color="danger" size="sm" onClick={() => onDelete(row.original.roleId)} className="ms-3"
+          >
+            <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+          </Button>
+        }
       </>
     );
   };
@@ -68,21 +76,28 @@ export const RoleList = () => {
       Header: "Name",
       accessor: "name",
     },
-    {
+
+  ];
+
+  if (hasEditPermission) {
+    columns.push({
       Header: "Permission",
       id: "Permission",
       accessor: "name",
       key: "actions",
       Cell: editPermissionButton,
-    },
-    {
+    });
+  }
+
+  if (hasDeletePermission || hasEditPermission) {
+    columns.push({
       Header: "Actions",
       id: "actions",
       accessor: "roleId",
       key: "actions",
       Cell: ActionButtons,
-    },
-  ];
+    });
+  }
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -90,7 +105,9 @@ export const RoleList = () => {
 
   return (
     <ContentLayout title={"Roles"} subtitle={"List"} breadcrumb={[{ label: "Roles" }]}>
-      <RoleFilter />
+      {
+        hasCreatePermission && <RoleFilter />
+      }
       <TableLayout columns={columns} data={data} />
       <ModalLayout
         isOpen={isConfirmDelete}

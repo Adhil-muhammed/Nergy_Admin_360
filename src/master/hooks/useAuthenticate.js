@@ -2,13 +2,13 @@ import { useImmer } from "use-immer";
 import { authenticate, getForgotPassword, resetPassword } from "..";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useAppStore } from "store/AppStore";
+import { useAppScopeContext } from "master";
 import { errorMessage, Axios } from "utils";
 
 export const useAuthenticate = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { setAppState } = useAppStore();
+  const { setAppState } = useAppScopeContext();
   const [authenticateState, setAuthenticateState] = useImmer({
     credential: { userName: "", password: "" },
     isValidate: false,
@@ -33,9 +33,8 @@ export const useAuthenticate = () => {
   });
 
   const userSignOut = async () => {
-    // await Axios.post("/Accounts/SignOut");
     localStorage.removeItem("localData");
-    window.location.href = "/admin";
+    window.location.href = "/login";
   };
 
   return {

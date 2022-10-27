@@ -5,8 +5,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useTrainer } from "../hook";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { TrainerFilter } from "..";
+import { useAuthorizeContext } from "master";
 
 export const TrainerList = () => {
+  const { hasPermission } = useAuthorizeContext();
+  const hasCreatePermission = hasPermission("Trainer", "Create");
+  const hasEditPermission = hasPermission("Trainer", "Edit");
+  const hasDeletePermission = hasPermission("Trainer", "Delete");
+
   const {
     trainer,
     trainersQuery,
@@ -36,12 +42,16 @@ export const TrainerList = () => {
   const ActionButtons = ({ value }) => {
     return (
       <>
-        <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
-          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
-        </Button>
-        <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
-          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
-        </Button>
+        {
+          hasEditPermission && <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
+            <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+          </Button>
+        }
+        {
+          hasDeletePermission && <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
+            <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+          </Button>
+        }
       </>
     );
   };
@@ -55,13 +65,17 @@ export const TrainerList = () => {
       Header: "Last Name",
       accessor: "lastName",
     },
-    {
+
+  ];
+
+  if (hasDeletePermission && hasEditPermission) {
+    columns.push({
       Header: "Actions",
       accessor: "trainerId",
       id: "actions",
       Cell: ActionButtons,
-    },
-  ];
+    });
+  }
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -69,7 +83,9 @@ export const TrainerList = () => {
 
   return (
     <ContentLayout title={"Trainer"} subtitle={"Trainer List"} breadcrumb={[{ label: "Trainer" }]}>
-      <TrainerFilter />
+      {
+        hasCreatePermission && <TrainerFilter />
+      }
       <PaginationTableLayout
         columns={columns}
         data={traines}

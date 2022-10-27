@@ -1,8 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "reactstrap";
-import { useAppStore } from "store/AppStore";
-import { useAuthenticate } from "..";
+import { useAuthenticate, useAppScopeContext } from "..";
 import Nergy360Logo from "../../assets/images/logo/360logo.png";
 import appInfo from "../../../package.json";
 import SimpleReactValidator from "simple-react-validator";
@@ -12,7 +11,7 @@ import { Input, FormFeedback } from "reactstrap";
 export function Login() {
   const { authenticateState, setAuthenticateState, mutation } = useAuthenticate();
   const { userName, password } = authenticateState.credential;
-  const { AppState } = useAppStore();
+  const { AppState } = useAppScopeContext();
   const navigate = useNavigate();
   const { mutate, isLoading } = mutation;
   const [update, forceUpdate] = useState();
@@ -35,7 +34,7 @@ export function Login() {
   };
 
   useEffect(() => {
-    if (AppState.token) return navigate("/admin");
+    if (AppState.token) return navigate("/");
   }, [AppState.token]);
 
   return (

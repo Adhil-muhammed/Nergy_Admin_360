@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppStore } from "store/AppStore";
+import { useAppScopeContext } from "master";
 import { useImmer } from "use-immer";
 import Avatar from "../../assets/images/faces/1.jpg";
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
@@ -11,7 +11,7 @@ export function Header() {
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [isDropDown, setIsDropDown] = useImmer(false);
   const navigate = useNavigate();
-  const { AppState } = useAppStore();
+  const { AppState } = useAppScopeContext();
   const {
     user: { email, firstName },
   } = AppState;
@@ -116,10 +116,10 @@ export function Header() {
                   </DropdownToggle>
                   <DropdownMenu>
                     <DropdownItem header>Hello, {firstName}!</DropdownItem>
-                    <DropdownItem onClick={() => navigateTo("/admin")}>
+                    <DropdownItem onClick={() => navigateTo("/")}>
                       <i className="icon-mid bi bi-house-door me-2" /> Dashboard
                     </DropdownItem>
-                    <DropdownItem onClick={() => navigateTo("/admin/settings")}>
+                    <DropdownItem onClick={() => navigateTo("/settings")}>
                       <i className="icon-mid bi bi-gear me-2" /> Settings
                     </DropdownItem>
                     <DropdownItem divider />

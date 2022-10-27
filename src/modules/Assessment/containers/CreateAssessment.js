@@ -38,24 +38,24 @@ export const CreateAssessment = () => {
   const courseList = React.useMemo(() => {
     return courses
       ? courses.map((c) => {
-          return { value: c.courseId, label: c.name };
-        })
+        return { value: c.courseId, label: c.name };
+      })
       : [];
   }, [courses]);
 
   const batchesList = React.useMemo(() => {
     return batches
       ? batches.map((c) => {
-          return { value: c.batchId, label: c.name };
-        })
+        return { value: c.batchId, label: c.name };
+      })
       : [];
   }, [batches]);
 
   const assessmentSectionList = React.useMemo(() => {
     return assessmentSections
       ? assessmentSections.map((c) => {
-          return { value: c.sectionId, label: c.name };
-        })
+        return { value: c.sectionId, label: c.name };
+      })
       : [];
   }, [assessmentSections]);
 
@@ -96,13 +96,13 @@ export const CreateAssessment = () => {
     if (validator.current.allValid()) {
       updateMode
         ? editAssessment.mutate({
-            ...assessment.data,
-            assessmentStatus: +assessment.data.assessmentStatus,
-          })
+          ...assessment.data,
+          assessmentStatus: +assessment.data.assessmentStatus,
+        })
         : createAssessment.mutate({
-            ...assessment.data,
-            assessmentStatus: +assessment.data.assessmentStatus,
-          });
+          ...assessment.data,
+          assessmentStatus: +assessment.data.assessmentStatus,
+        });
     } else {
       validator.current.showMessages();
       forceUpdate(1);
@@ -160,7 +160,7 @@ export const CreateAssessment = () => {
       subtitle={updateMode ? "Update" : "Create"}
       title={"Assessments"}
       breadcrumb={[
-        { label: "Assessments", location: "/admin/assessments" },
+        { label: "Assessments", location: "/assessments" },
         { label: `${updateMode ? "Edit" : "Create"}` },
       ]}
     >

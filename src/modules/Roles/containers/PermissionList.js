@@ -59,7 +59,7 @@ export const PermissionList = () => {
     return <ContentLayout
         title={"Update"}
         breadcrumb={[
-            { label: "Roles", location: "/admin/role" },
+            { label: "Roles", location: "/role" },
             { label: "Edit Permission" },
         ]}
     >

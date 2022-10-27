@@ -20,7 +20,7 @@ export const Breadcrumb = ({ breadcrumb }) => {
     <nav aria-label="breadcrumb" className="breadcrumb-header float-start float-lg-end">
       <ol className="breadcrumb">
         <li className="breadcrumb-item">
-          <Link to="/admin">Dashboard</Link>
+          <Link to="/">Dashboard</Link>
         </li>
         {breadcrumb.map((item, idx) => {
           if (breadcrumb.length <= 1) {

@@ -5,12 +5,23 @@ import {
   AssessmentSlots,
   GenerateAssessmentSchedule,
 } from "./containers";
+import { useAuthorizeContext } from "master";
+
+
 const AssessmentSchedule = () => {
+  const { hasPermission } = useAuthorizeContext();
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<AssessmentScheduleList />} />
-        <Route path="/create" element={<AddorEditAssessmentSchedule />} />
+        {
+          hasPermission("AssessmentSchedule", "View") &&
+          <Route path="/" element={<AssessmentScheduleList />} />
+        }
+        {
+          hasPermission("AssessmentSchedule", "Create") &&
+          <Route path="/create" element={<AddorEditAssessmentSchedule />} />
+        }
         <Route path="/slots/:scheduleId" element={<AssessmentSlots />} />
         <Route path="/generate-schedule" element={<GenerateAssessmentSchedule />} />
       </Routes>

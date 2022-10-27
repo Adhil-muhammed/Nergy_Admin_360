@@ -83,7 +83,7 @@ const CreateAssessmentSection = () => {
       title={"Assessment Section"}
       subtitle={updateMode ? "Update" : "Create"}
       breadcrumb={[
-        { label: "Assessment Section", location: "/admin/assessmentSection" },
+        { label: "Assessment Section", location: "/assessmentSection" },
         { label: `${updateMode ? "Edit" : "Create"}` },
       ]}
     >

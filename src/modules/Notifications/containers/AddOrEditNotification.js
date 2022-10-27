@@ -75,7 +75,7 @@ export const AddOrEditNotification = () => {
       subtitle={editMode ? "Update" : "Create"}
       title={"Notifications"}
       breadcrumb={[
-        { label: "Notifications", location: "/admin/notifications" },
+        { label: "Notifications", location: "/notifications" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >

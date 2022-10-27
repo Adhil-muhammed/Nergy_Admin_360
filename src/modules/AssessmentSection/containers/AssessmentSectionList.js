@@ -1,12 +1,17 @@
 import React, { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useTable } from "react-table";
 import { Button } from "reactstrap";
 import { ContentLayout, ModalLayout, TableLayout } from "shared";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { useAssessmentSection } from "../hooks";
+import { useAuthorizeContext } from "master";
+
 
 const AssessmentSectionList = () => {
+  const { hasPermission } = useAuthorizeContext();
+  const hasCreatePermission = hasPermission("AssessmentSections", "Create");
+  const hasEditPermission = hasPermission("AssessmentSections", "Edit");
+  const hasDeletePermission = hasPermission("AssessmentSections", "Delete");
   const {
     assessmentSectionQuery,
     isConfirmDelete,
@@ -36,17 +41,23 @@ const AssessmentSectionList = () => {
   const ActionButtons = ({ row }) => {
     return (
       <>
-        <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.sectionId)}>
-          <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
-        </Button>
-        <Button
-          color="danger"
-          size="sm"
-          onClick={() => onDelete(row.original.sectionId)}
-          className="ms-3"
-        >
-          <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
-        </Button>
+        {
+          hasEditPermission &&
+          <Button outline color="primary" size="sm" onClick={() => onEdit(row.original.sectionId)}>
+            <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
+          </Button>
+        }
+        {
+          hasDeletePermission &&
+          <Button
+            color="danger"
+            size="sm"
+            onClick={() => onDelete(row.original.sectionId)}
+            className="ms-3"
+          >
+            <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+          </Button>
+        }
       </>
     );
   };
@@ -56,13 +67,17 @@ const AssessmentSectionList = () => {
       Header: "Name",
       accessor: "name",
     },
-    {
+
+  ];
+
+  if (hasEditPermission && hasDeletePermission) {
+    columns.push({
       Header: "Actions",
       id: "actions",
       accessor: "sectionId",
       Cell: ActionButtons,
-    },
-  ];
+    })
+  }
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -76,11 +91,13 @@ const AssessmentSectionList = () => {
         isLoading={isLoading}
         breadcrumb={[{ label: "Assessment Section" }]}
       >
-        <div className="mb-4">
-          <Button color="primary" size="sm" onClick={gotoCreate}>
-            Create New
-          </Button>
-        </div>
+        {
+          hasCreatePermission && <div className="mb-4">
+            <Button color="primary" size="sm" onClick={gotoCreate}>
+              Create New
+            </Button>
+          </div>
+        }
         <TableLayout columns={columns} data={data} />
         <ModalLayout
           isOpen={isConfirmDelete}

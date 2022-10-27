@@ -99,7 +99,7 @@ export const AddCourse = () => {
       title={"Courses"}
       subtitle={"Create new"}
       breadcrumb={[
-        { label: "Courses", location: "/admin/courses" },
+        { label: "Courses", location: "/courses" },
         { label: "Create" },
       ]}
     >

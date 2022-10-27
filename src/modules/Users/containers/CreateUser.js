@@ -56,7 +56,7 @@ export const CreateUser = () => {
       subtitle={editMode ? "Update" : "Create"}
       title={"Users"}
       breadcrumb={[
-        { label: "Users", location: "/admin/users" },
+        { label: "Users", location: "/users" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >
