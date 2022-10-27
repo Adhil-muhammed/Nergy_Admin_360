@@ -78,7 +78,7 @@ export const AddorEditCertificates = () => {
       subtitle={"Create"}
       title={"Certificate"}
       breadcrumb={[
-        { label: "Certificates", location: "/certificates" },
+        { label: "Certificates", location: "/admin/certificates" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >

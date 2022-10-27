@@ -140,7 +140,7 @@ export const AddOrEditSupportTicket = (props) => {
       subtitle={editMode ? "Update" : "Create"}
       title={"Support Tickets"}
       breadcrumb={[
-        { label: "Support ticket", location: "/supportTicket" },
+        { label: "Support ticket", location: "/admin/supportTicket" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >

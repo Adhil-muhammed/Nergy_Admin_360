@@ -64,7 +64,7 @@ export const EditSection = () => {
       <ContentLayout
         title={"Course Sections"}
         subtitle="Create new Section"
-        breadcrumb={[{ label: "Courses", location: "/courses" }, { label: "Edit Courses", location: `../${courseId}` }, { label: "Edit Section" }]}
+        breadcrumb={[{ label: "Courses", location: "/admin/courses" }, { label: "Edit Courses", location: `../${courseId}` }, { label: "Edit Section" }]}
       >
         <section id="basic-vertical-layouts">
           <div className="row match-height">

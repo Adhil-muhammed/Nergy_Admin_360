@@ -8,7 +8,7 @@ export const UserIdFilter = () => {
     history(`${location.pathname}/create`);
   };
   const gotoRoles = () => {
-    history('/role');
+    history('/admin/role');
   };
   return (
     <div>

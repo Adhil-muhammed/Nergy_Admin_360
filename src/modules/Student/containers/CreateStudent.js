@@ -84,7 +84,7 @@ export const CreateStudent = () => {
       title={"Student"}
       subtitle={editMode ? "Update" : "Create"}
       breadcrumb={[
-        { label: "Student", location: "/student" },
+        { label: "Student", location: "/admin/student" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >

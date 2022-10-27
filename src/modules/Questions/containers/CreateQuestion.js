@@ -125,7 +125,7 @@ export const CreateQuestion = () => {
       title={"Questions"}
       subtitle={updateMode ? "Edit" : "Create"}
       breadcrumb={[
-        { label: "Questions", location: "/questions" },
+        { label: "Questions", location: "/admin/questions" },
         { label: `${updateMode ? "Edit" : "Create"}` },
       ]}
     >

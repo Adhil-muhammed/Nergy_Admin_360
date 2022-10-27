@@ -14,7 +14,7 @@ export const SettingsList = () => {
 
   const inputHandler = () => { };
   const onCancel = () => {
-    navigate("/", { replace: true });
+    navigate("/admin", { replace: true });
   };
 
   if (isLoading) {
