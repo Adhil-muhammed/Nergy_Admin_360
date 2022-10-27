@@ -12,7 +12,7 @@ const SidebarMenu = ({ title }) => {
 
   useEffect(() => {
     const menuData = [
-      { id: 1, name: "Dashboard", pathName: "/admin", icon: "bi-grid-fill", children: [] },
+      { id: 1, name: "Dashboard", pathName: "/admin", icon: "bi-grid-fill", show: true, children: [] },
       { id: 2, name: "Batch", pathName: "batch", show: hasPermission("Batches", "View"), icon: "bi-collection-fill", children: [] },
       { id: 3, name: "Student", pathName: "student", show: hasPermission("Students", "View"), icon: "bi-person-fill", children: [] },
       { id: 4, name: "Institute", pathName: "institute", show: hasPermission("Institutes", "View"), icon: "bi-house-door-fill", children: [] },
@@ -21,6 +21,7 @@ const SidebarMenu = ({ title }) => {
         name: "Assessment",
         pathName: "assessmentSection",
         icon: "bi-check-circle-fill",
+        show: hasPermission("AssessmentSections", "View") || hasPermission("Assessments", "View") || hasPermission("AssessmentSchedule", "View"),
         children: [
           {
             id: 1,
@@ -75,7 +76,7 @@ const SidebarMenu = ({ title }) => {
         id: 9,
         name: "Reports",
         pathName: "reports",
-        show: hasPermission("Reports", "View"),
+        show: true,
         icon: "bi-pie-chart-fill",
         children: []
       },
@@ -92,6 +93,7 @@ const SidebarMenu = ({ title }) => {
         name: "User",
         pathName: "users",
         icon: "bi-people-fill",
+        show: hasPermission("Users", "View") || hasPermission("UserRoles", "View"),
         children: [
           {
             id: 1,
@@ -147,14 +149,14 @@ const SidebarMenu = ({ title }) => {
         name: "Trainer",
         pathName: "trainer",
         icon: "bi-file-earmark-text-fill",
-        show: hasPermission("Trainer", "View"),
+        show: true,
         children: [],
       },
       {
         id: 17,
         name: "Training Partner",
         pathName: "trainingpartner",
-        show: hasPermission("TrainingPartner", "View"),
+        show: true,
         icon: "bi-file-earmark-text-fill",
         children: [],
       },
