@@ -34,7 +34,7 @@ export function Login() {
   };
 
   useEffect(() => {
-    if (AppState.token) return navigate("/");
+    if (AppState.token) return navigate("/admin");
   }, [AppState.token]);
 
   return (

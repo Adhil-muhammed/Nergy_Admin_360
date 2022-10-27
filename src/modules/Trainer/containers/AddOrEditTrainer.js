@@ -79,7 +79,7 @@ export const AddOrEditTrainer = (props) => {
         title={"Trainer"}
         subtitle={editMode ? "Update" : "Create"}
         breadcrumb={[
-          { label: "Trainer", location: "/trainer" },
+          { label: "Trainer", location: "/admin/trainer" },
           { label: `${editMode ? "Edit" : "Create"}` },
         ]}
       >

@@ -160,7 +160,7 @@ export const CreateAssessment = () => {
       subtitle={updateMode ? "Update" : "Create"}
       title={"Assessments"}
       breadcrumb={[
-        { label: "Assessments", location: "/assessments" },
+        { label: "Assessments", location: "/admin/assessments" },
         { label: `${updateMode ? "Edit" : "Create"}` },
       ]}
     >

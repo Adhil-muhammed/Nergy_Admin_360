@@ -96,7 +96,7 @@ export const AddOrEditBatch = (props) => {
       subtitle={editMode ? "Update" : "Create"}
       title={"Batch"}
       breadcrumb={[
-        { label: "Batch", location: "/batch" },
+        { label: "Batch", location: "/admin/batch" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >

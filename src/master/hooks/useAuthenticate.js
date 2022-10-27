@@ -34,7 +34,7 @@ export const useAuthenticate = () => {
 
   const userSignOut = async () => {
     localStorage.removeItem("localData");
-    window.location.href = "/login";
+    window.location.href = "/admin/login";
   };
 
   return {

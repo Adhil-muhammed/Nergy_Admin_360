@@ -12,7 +12,7 @@ const SidebarMenu = ({ title }) => {
 
   useEffect(() => {
     const menuData = [
-      { id: 1, name: "Dashboard", pathName: "/", icon: "bi-grid-fill", children: [] },
+      { id: 1, name: "Dashboard", pathName: "/admin", icon: "bi-grid-fill", children: [] },
       { id: 2, name: "Batch", pathName: "batch", show: hasPermission("Batches", "View"), icon: "bi-collection-fill", children: [] },
       { id: 3, name: "Student", pathName: "student", show: hasPermission("Students", "View"), icon: "bi-person-fill", children: [] },
       { id: 4, name: "Institute", pathName: "institute", show: hasPermission("Institutes", "View"), icon: "bi-house-door-fill", children: [] },

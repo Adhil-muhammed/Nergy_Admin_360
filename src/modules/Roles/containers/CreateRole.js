@@ -52,7 +52,7 @@ export const CreateRole = (props) => {
     <ContentLayout
       title={editMode ? "Update" : "Create New"}
       breadcrumb={[
-        { label: "Roles", location: "/role" },
+        { label: "Roles", location: "/admin/role" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >

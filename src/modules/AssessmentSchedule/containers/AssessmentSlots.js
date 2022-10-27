@@ -103,7 +103,7 @@ export const AssessmentSlots = () => {
       title={"Assessment Slots"}
       subtitle={"List"}
       breadcrumb={[
-        { label: "Assessment Schedule", location: "/assessment-schedule" },
+        { label: "Assessment Schedule", location: "/admin/assessment-schedule" },
         { label: `Assessment slot ${scheduleId}` },
       ]}
     >

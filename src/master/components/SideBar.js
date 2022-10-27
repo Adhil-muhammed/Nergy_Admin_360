@@ -10,7 +10,7 @@ export function SideBar() {
         <div className="sidebar-header">
           <div className="d-flex justify-content-between">
             <div className="logo">
-              <Link to="/">
+              <Link to="/admin">
                 <img style={{ height: "54px" }} src={Nergy360Logo} alt="Logo" />
               </Link>
             </div>
