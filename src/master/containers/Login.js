@@ -122,7 +122,7 @@ export function Login() {
 
               <div className="text-center mt-5 text-lg fs-4">
                 <p>
-                  <Link className="font-bold" to="/forgotPassword">
+                  <Link className="font-bold" to="/auth/forgotPassword">
                     Forgot password?
                   </Link>
                   .

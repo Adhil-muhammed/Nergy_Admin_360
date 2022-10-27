@@ -13,8 +13,8 @@ export function Master() {
       <AppScope>
         <BrowserRouter basename="admin">
           <Routes>
-            <Route exact element={<Login />} path={"/login"} />
-            <Route exact element={<ForgotPassword />} path={"/forgotPassword"} />
+            <Route exact element={<Login />} path={"/auth/login"} />
+            <Route exact element={<ForgotPassword />} path={"/auth/forgotPassword"} />
             <Route exact element={<ResetPassword />} path={"/auth/reset"} />
             <Route
               exact
