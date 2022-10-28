@@ -9,7 +9,6 @@ import { LoadingButton } from "shared/components/LoadingButton";
 import { QuillEditor } from "shared/components/QuillEditor";
 import InputControl from "shared/components/InputControl";
 
-
 export const AddOrEditNotification = () => {
   const navigate = useNavigate();
   const [update, forceUpdate] = useState();
@@ -29,7 +28,7 @@ export const AddOrEditNotification = () => {
     editNotification,
     notificationInfo,
     onChange,
-    batches
+    batches,
   } = useNotification({
     load: false,
     notificationId,
@@ -42,7 +41,6 @@ export const AddOrEditNotification = () => {
       draft.isActive = e.target.checked;
     });
   };
-
 
   const onSubmit = () => {
     if (validator.current.allValid()) {
@@ -75,7 +73,7 @@ export const AddOrEditNotification = () => {
       subtitle={editMode ? "Update" : "Create"}
       title={"Notifications"}
       breadcrumb={[
-        { label: "Notifications", location: "/admin/notifications" },
+        { label: "Notifications", location: "/notifications" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >
@@ -136,7 +134,9 @@ export const AddOrEditNotification = () => {
                           name="selectedBatches"
                           value={
                             batches.length > 0 &&
-                            batches.filter((item) => notification.selectedBatches.indexOf(item.value) > -1)
+                            batches.filter(
+                              (item) => notification.selectedBatches.indexOf(item.value) > -1
+                            )
                           }
                           isValid={
                             !validator.current.message(

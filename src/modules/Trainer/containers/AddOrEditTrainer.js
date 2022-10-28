@@ -79,7 +79,7 @@ export const AddOrEditTrainer = (props) => {
         title={"Trainer"}
         subtitle={editMode ? "Update" : "Create"}
         breadcrumb={[
-          { label: "Trainer", location: "/admin/trainer" },
+          { label: "Trainer", location: "/trainer" },
           { label: `${editMode ? "Edit" : "Create"}` },
         ]}
       >
@@ -261,7 +261,8 @@ export const AddOrEditTrainer = (props) => {
                               invalid={validator.current.message("password", password, "required")}
                             />
                             <div>
-                              Password should contain Uppercase, Lowercase, number & special character
+                              Password should contain Uppercase, Lowercase, number & special
+                              character
                             </div>
                             <FormFeedback>
                               {validator.current.message("password", password, "required")}

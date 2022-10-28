@@ -71,16 +71,19 @@ export const AddOrEditSupportTicket = (props) => {
   const userIdList = React.useMemo(() => {
     return userData
       ? userData.map((c) => {
-        return { value: c.userId, label: `${c.firstName} ${c.lastName}` };
-      })
+          return { value: c.userId, label: `${c.firstName} ${c.lastName}` };
+        })
       : [];
   }, [userData]);
 
   const studentIdList = React.useMemo(() => {
     return studentData
       ? studentData.data.map((c) => {
-        return { value: c.studentId, label: `${c.firstName} ${c.lastName} (${c.registrationId})` };
-      })
+          return {
+            value: c.studentId,
+            label: `${c.firstName} ${c.lastName} (${c.registrationId})`,
+          };
+        })
       : [];
   }, [studentData]);
 
@@ -140,7 +143,7 @@ export const AddOrEditSupportTicket = (props) => {
       subtitle={editMode ? "Update" : "Create"}
       title={"Support Tickets"}
       breadcrumb={[
-        { label: "Support ticket", location: "/admin/supportTicket" },
+        { label: "Support ticket", location: "/supportTicket" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >
