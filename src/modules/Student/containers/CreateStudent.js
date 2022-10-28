@@ -44,7 +44,7 @@ export const CreateStudent = () => {
     region,
     selectedCourses,
     userStatus,
-    selectedBatches
+    selectedBatches,
   } = student;
 
   const onChangeDate = (e) => {
@@ -340,6 +340,7 @@ export const CreateStudent = () => {
                         <InputControl
                           type="date"
                           name="dateofBirth"
+                          max={moment(new Date(), "YYYY-MM-DDTHH:mm:ss").format("YYYY-MM-DD")}
                           value={moment(dateOfBirth, "YYYY-MM-DDTHH:mm:ss").format("YYYY-MM-DD")}
                           onChange={onChangeDate}
                           invalid={validator.current.message(
