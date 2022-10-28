@@ -138,22 +138,9 @@ export const AddOrEditNotification = () => {
                               (item) => notification.selectedBatches.indexOf(item.value) > -1
                             )
                           }
-                          isValid={
-                            !validator.current.message(
-                              "selectedBatches",
-                              notification.selectedBatches,
-                              "required"
-                            )
-                          }
+                          isValid={true}
                           onChange={(e) => onSelectChange(e, "selectedBatches")}
                         />
-                        <div className="text-danger">
-                          {validator.current.message(
-                            "selectedBatches",
-                            notification.selectedBatches,
-                            "required"
-                          )}
-                        </div>
                       </div>
                     </div>
                   </div>
