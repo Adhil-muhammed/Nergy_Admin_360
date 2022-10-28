@@ -33,7 +33,7 @@ export function Dashboard() {
         <Header />
         <div id="main-content">
           <Routes>
-            <Route element={<DashboardCanvas />} path={"/admin/*"} />
+            <Route element={<DashboardCanvas />} path={"/*"} />
             {hasPermission("Batches", "View") && <Route element={<Batch />} path={"/batch/*"} />}
             {hasPermission("UserRoles", "View") && <Route element={<Role />} path={"/role/*"} />}
             {hasPermission("Students", "View") && (

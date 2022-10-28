@@ -3,25 +3,47 @@ import { UncontrolledCollapse } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import { useAuthorizeContext } from "master";
 
-
 const SidebarMenu = ({ title }) => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const { hasPermission } = useAuthorizeContext();
 
-
   useEffect(() => {
     const menuData = [
-      { id: 1, name: "Dashboard", pathName: "/admin", icon: "bi-grid-fill", show: true, children: [] },
-      { id: 2, name: "Batch", pathName: "batch", show: hasPermission("Batches", "View"), icon: "bi-collection-fill", children: [] },
-      { id: 3, name: "Student", pathName: "student", show: hasPermission("Students", "View"), icon: "bi-person-fill", children: [] },
-      { id: 4, name: "Institute", pathName: "institute", show: hasPermission("Institutes", "View"), icon: "bi-house-door-fill", children: [] },
+      { id: 1, name: "Dashboard", pathName: "/", icon: "bi-grid-fill", show: true, children: [] },
+      {
+        id: 2,
+        name: "Batch",
+        pathName: "batch",
+        show: hasPermission("Batches", "View"),
+        icon: "bi-collection-fill",
+        children: [],
+      },
+      {
+        id: 3,
+        name: "Student",
+        pathName: "student",
+        show: hasPermission("Students", "View"),
+        icon: "bi-person-fill",
+        children: [],
+      },
+      {
+        id: 4,
+        name: "Institute",
+        pathName: "institute",
+        show: hasPermission("Institutes", "View"),
+        icon: "bi-house-door-fill",
+        children: [],
+      },
       {
         id: 5,
         name: "Assessment",
         pathName: "assessmentSection",
         icon: "bi-check-circle-fill",
-        show: hasPermission("AssessmentSections", "View") || hasPermission("Assessments", "View") || hasPermission("AssessmentSchedule", "View"),
+        show:
+          hasPermission("AssessmentSections", "View") ||
+          hasPermission("Assessments", "View") ||
+          hasPermission("AssessmentSchedule", "View"),
         children: [
           {
             id: 1,
@@ -70,7 +92,8 @@ const SidebarMenu = ({ title }) => {
         name: "Courses",
         pathName: "courses",
         show: hasPermission("Courses", "View"),
-        icon: "bi-book-fill", children: []
+        icon: "bi-book-fill",
+        children: [],
       },
       {
         id: 9,
@@ -78,7 +101,7 @@ const SidebarMenu = ({ title }) => {
         pathName: "reports",
         show: true,
         icon: "bi-pie-chart-fill",
-        children: []
+        children: [],
       },
       {
         id: 10,
@@ -114,11 +137,12 @@ const SidebarMenu = ({ title }) => {
         ],
       },
       {
-        id: 12, name: "Settings",
+        id: 12,
+        name: "Settings",
         pathName: "settings",
         show: hasPermission("Settings", "View"),
         icon: "bi-gear-fill",
-        children: []
+        children: [],
       },
       {
         id: 13,
