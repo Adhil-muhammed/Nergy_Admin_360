@@ -28,8 +28,8 @@ export const CreateQuestion = () => {
   const questionBanks = React.useMemo(() => {
     return questionBanksQuery.data
       ? questionBanksQuery.data.map((c) => {
-        return { value: c.questionBankId, label: c.name };
-      })
+          return { value: c.questionBankId, label: c.name };
+        })
       : [];
   }, [questionBanksQuery.data]);
 
@@ -125,7 +125,7 @@ export const CreateQuestion = () => {
       title={"Questions"}
       subtitle={updateMode ? "Edit" : "Create"}
       breadcrumb={[
-        { label: "Questions", location: "/admin/questions" },
+        { label: "Questions", location: "/questions" },
         { label: `${updateMode ? "Edit" : "Create"}` },
       ]}
     >

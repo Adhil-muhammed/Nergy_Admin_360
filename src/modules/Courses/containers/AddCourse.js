@@ -9,7 +9,6 @@ import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { LoadingButton } from "shared/components/LoadingButton";
 import InputControl from "shared/components/InputControl";
 
-
 export const AddCourse = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
@@ -27,12 +26,7 @@ export const AddCourse = () => {
     })
   );
 
-  const {
-    course,
-    setCourse,
-    createCourse,
-    coursesTypeQuery
-  } = useCourse({
+  const { course, setCourse, createCourse, coursesTypeQuery } = useCourse({
     load: false,
     courseId: courseId,
   });
@@ -41,12 +35,10 @@ export const AddCourse = () => {
   const courseTypeList = React.useMemo(() => {
     return courseTypeData
       ? courseTypeData.map((p) => {
-        return { value: p.value, label: p.name };
-      })
+          return { value: p.value, label: p.name };
+        })
       : [];
   }, [courseTypeData]);
-
-
 
   const onSelectChange = (e, name) => {
     const { value } = e;
@@ -54,7 +46,6 @@ export const AddCourse = () => {
       draft[name] = value;
     });
   };
-
 
   const onHandleChange = (e, isContent = false) => {
     const { name, value } = e.target;
@@ -98,10 +89,7 @@ export const AddCourse = () => {
     <ContentLayout
       title={"Courses"}
       subtitle={"Create new"}
-      breadcrumb={[
-        { label: "Courses", location: "/admin/courses" },
-        { label: "Create" },
-      ]}
+      breadcrumb={[{ label: "Courses", location: "/courses" }, { label: "Create" }]}
     >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
@@ -198,10 +186,10 @@ export const AddCourse = () => {
                           type="react-select"
                           options={courseTypeList}
                           name="courseType"
-                          value={
-                            selectedCourseType
+                          value={selectedCourseType}
+                          isValid={
+                            !validator.current.message("courseType", course.courseType, "required")
                           }
-                          isValid={!validator.current.message("courseType", course.courseType, "required")}
                           onChange={(e) => onSelectChange(e, "courseType")}
                         />
                         <div className="text-danger">

@@ -102,7 +102,7 @@ export const AddorEditAssessmentSchedule = (props) => {
       subtitle={editMode ? "Update" : "Create"}
       title={"Assesment Schedule"}
       breadcrumb={[
-        { label: "Assessment Schedule", location: "/admin/assessment-schedule" },
+        { label: "Assessment Schedule", location: "/assessment-schedule" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >

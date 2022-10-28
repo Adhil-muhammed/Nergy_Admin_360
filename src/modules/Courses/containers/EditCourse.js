@@ -8,7 +8,6 @@ import { QuillEditor } from "shared/components/QuillEditor";
 import SimpleReactValidator from "simple-react-validator";
 import InputControl from "shared/components/InputControl";
 
-
 export const EditCourse = () => {
   const { courseId } = useParams();
   const [update, forceUpdate] = useState();
@@ -37,24 +36,21 @@ export const EditCourse = () => {
     isConfirmDelete,
     onSectionDelete,
     deleteCourseSection,
-    coursesTypeQuery
+    coursesTypeQuery,
   } = useCourse({
     load: false,
     courseId: courseId,
   });
-
 
   const { data: courseTypeData } = coursesTypeQuery;
 
   const courseTypeList = React.useMemo(() => {
     return courseTypeData
       ? courseTypeData.map((p) => {
-        return { value: p.value, label: p.name };
-      })
+          return { value: p.value, label: p.name };
+        })
       : [];
   }, [courseTypeData]);
-
-
 
   const onSelectChange = (e, name) => {
     const { value } = e;
@@ -85,7 +81,6 @@ export const EditCourse = () => {
     });
   };
 
-
   const onSubmit = () => {
     if (validator.current.allValid()) {
       editCourse.mutate(course);
@@ -95,13 +90,12 @@ export const EditCourse = () => {
     }
   };
 
-
   const onCancel = () => {
     navigate("..", { replace: true });
   };
 
   const onConfirm = () => {
-    deleteCourseSection.mutate(courseSection.sectionId)
+    deleteCourseSection.mutate(courseSection.sectionId);
   };
 
   if (courseInfo.isLoading) {
@@ -114,10 +108,7 @@ export const EditCourse = () => {
     <ContentLayout
       title={"Edit Course"}
       subtitle={"Update"}
-      breadcrumb={[
-        { label: "Courses", location: "/admin/courses" },
-        { label: "Edit Course" },
-      ]}
+      breadcrumb={[{ label: "Courses", location: "/courses" }, { label: "Edit Course" }]}
     >
       <section id="basic-vertical-layouts">
         <div className="row match-height">
@@ -214,10 +205,10 @@ export const EditCourse = () => {
                           type="react-select"
                           options={courseTypeList}
                           name="courseType"
-                          value={
-                            selectedCourseType
+                          value={selectedCourseType}
+                          isValid={
+                            !validator.current.message("courseType", course.courseType, "required")
                           }
-                          isValid={!validator.current.message("courseType", course.courseType, "required")}
                           onChange={(e) => onSelectChange(e, "courseType")}
                         />
                         <div className="text-danger">

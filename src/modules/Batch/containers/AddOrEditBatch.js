@@ -67,8 +67,8 @@ export const AddOrEditBatch = (props) => {
   const programIdList = React.useMemo(() => {
     return programData
       ? programData.map((p) => {
-        return { value: p.id, label: p.name };
-      })
+          return { value: p.id, label: p.name };
+        })
       : [];
   }, [programData]);
 
@@ -96,7 +96,7 @@ export const AddOrEditBatch = (props) => {
       subtitle={editMode ? "Update" : "Create"}
       title={"Batch"}
       breadcrumb={[
-        { label: "Batch", location: "/admin/batch" },
+        { label: "Batch", location: "/batch" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >

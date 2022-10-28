@@ -8,7 +8,6 @@ import { LoadingButton } from "shared/components/LoadingButton";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import InputControl from "shared/components/InputControl";
 
-
 export const AddOrEditProgram = () => {
   const [update, forceUpdate] = useState();
   const validator = useRef(
@@ -23,7 +22,16 @@ export const AddOrEditProgram = () => {
     load: false,
     programId: programId,
   });
-  const { name, description, selectedCourses, hasAssessment, hasCertificate, hasPracticals, hasOJT, isActive } = program;
+  const {
+    name,
+    description,
+    selectedCourses,
+    hasAssessment,
+    hasCertificate,
+    hasPracticals,
+    hasOJT,
+    isActive,
+  } = program;
   const navigate = useNavigate();
 
   const onChangeHandler = (e) => {
@@ -55,7 +63,6 @@ export const AddOrEditProgram = () => {
     return <LoadingSpinner />;
   }
 
-
   const onSelectChange = (e, name) => {
     const requiredFormat = e.map((item) => item.value);
     setProgram((draft) => {
@@ -68,7 +75,7 @@ export const AddOrEditProgram = () => {
       title={"Program"}
       subtitle={editMode ? "Update" : "Create"}
       breadcrumb={[
-        { label: "Program", location: "/admin/program" },
+        { label: "Program", location: "/program" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >
@@ -157,42 +164,62 @@ export const AddOrEditProgram = () => {
                     </div>
                     <div className="col-6">
                       <div className="form-group">
-                        <Input type="checkbox" name="hasAssessment" onChange={onCheckBoxChangeHandler} value={hasAssessment} checked={hasAssessment} />
-                        <Label check>
-                          Assessment
-                        </Label>
+                        <Input
+                          type="checkbox"
+                          name="hasAssessment"
+                          onChange={onCheckBoxChangeHandler}
+                          value={hasAssessment}
+                          checked={hasAssessment}
+                        />
+                        <Label check>Assessment</Label>
                       </div>
                     </div>
                     <div className="col-6">
                       <div className="form-group">
-                        <Input type="checkbox" name="hasCertificate" onChange={onCheckBoxChangeHandler} value={hasCertificate} checked={hasCertificate} />
-                        <Label check>
-                          Certificate
-                        </Label>
+                        <Input
+                          type="checkbox"
+                          name="hasCertificate"
+                          onChange={onCheckBoxChangeHandler}
+                          value={hasCertificate}
+                          checked={hasCertificate}
+                        />
+                        <Label check>Certificate</Label>
                       </div>
                     </div>
                     <div className="col-6">
                       <div className="form-group">
-                        <Input type="checkbox" name="hasPracticals" onChange={onCheckBoxChangeHandler} value={hasPracticals} checked={hasPracticals} />
-                        <Label check>
-                          Practicals
-                        </Label>
+                        <Input
+                          type="checkbox"
+                          name="hasPracticals"
+                          onChange={onCheckBoxChangeHandler}
+                          value={hasPracticals}
+                          checked={hasPracticals}
+                        />
+                        <Label check>Practicals</Label>
                       </div>
                     </div>
                     <div className="col-6">
                       <div className="form-group">
-                        <Input type="checkbox" name="hasOJT" onChange={onCheckBoxChangeHandler} value={hasOJT} checked={hasOJT} />
-                        <Label check>
-                          OJT
-                        </Label>
+                        <Input
+                          type="checkbox"
+                          name="hasOJT"
+                          onChange={onCheckBoxChangeHandler}
+                          value={hasOJT}
+                          checked={hasOJT}
+                        />
+                        <Label check>OJT</Label>
                       </div>
                     </div>
                     <div className="col-6">
                       <div className="form-group">
-                        <Input type="checkbox" name="isActive" onChange={onCheckBoxChangeHandler} value={isActive} checked={isActive} />
-                        <Label check>
-                          Active
-                        </Label>
+                        <Input
+                          type="checkbox"
+                          name="isActive"
+                          onChange={onCheckBoxChangeHandler}
+                          value={isActive}
+                          checked={isActive}
+                        />
+                        <Label check>Active</Label>
                       </div>
                     </div>
                   </div>

@@ -44,7 +44,7 @@ export const CreateStudent = () => {
     region,
     selectedCourses,
     userStatus,
-    selectedBatches
+    selectedBatches,
   } = student;
 
   const onChangeDate = (e) => {
@@ -84,7 +84,7 @@ export const CreateStudent = () => {
       title={"Student"}
       subtitle={editMode ? "Update" : "Create"}
       breadcrumb={[
-        { label: "Student", location: "/admin/student" },
+        { label: "Student", location: "/student" },
         { label: `${editMode ? "Edit" : "Create"}` },
       ]}
     >
