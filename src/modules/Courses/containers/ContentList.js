@@ -40,13 +40,20 @@ export const ContentList = (props) => {
                   </td>
                   <td>
                     {content.fileURL && content.contentType === 0 ? (
-                      <img src={content.fileURL} style={{ height: "40px" }} />
+                      <i className="bi bi-file-earmark-pdf" style={{ fontSize: "30px" }}></i>
                     ) : content.fileURL && content.contentType === 1 ? (
-                      <source src={content.fileURL} type="video/mp4"></source>
+                      <video controls width="200" height="">
+                        <source src={content.fileURL} type="video/mp4"></source>
+                      </video>
                     ) : content.fileURL && content.contentType === 2 ? (
-                      <iframe width="70" height="70" frameborder="0" src={content.fileURL}></iframe>
+                      <iframe
+                        width="200"
+                        height="100"
+                        frameborder="0"
+                        src={content.fileURL}
+                      ></iframe>
                     ) : content.fileURL && content.contentType === 3 ? (
-                      <iframe width="70" height="70" frameborder="0" src={content.fileURL}></iframe>
+                      <i className="bi bi-link-45deg" style={{ fontSize: "35px" }}></i>
                     ) : (
                       <span>No files</span>
                     )}
