@@ -66,13 +66,9 @@ export const SupportTicketList = () => {
       accessor: "subject",
     },
     {
-      Header: "Message",
-      accessor: "message",
+      Header: "Date",
+      accessor: "date",
     },
-    // {
-    //   Header: "Date",
-    //   accessor: "date",
-    // },
     {
       Header: "Status",
       accessor: "status",
