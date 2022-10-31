@@ -58,24 +58,8 @@ export const ContentList = (props) => {
                     ) : (
                       <span>No files</span>
                     )}
-                    {/* {content.fileURL && !content.isVideo ? (
-                      <img src={content.fileURL} style={{ height: "40px" }} />
-                    ) : content.fileURL && content.isVideo ? (
-                      <video controls width="240" height="">
-                        <source src={content.fileURL} type="video/mp4"></source>
-                      </video>
-                    ) : content.fileURL && content.isVideo && content.isExternal ? (
-                      <iframe width="240" height="" frameborder="0" src={content.fileURL}></iframe>
-                    ) : (
-                      <span>No files</span>
-                    )} */}
                   </td>
                   <td>
-                    {/* <Button color="danger" className="mt-4" size="sm" onClick={() =>
-                      history(`../section/content/edit?sectionId=${sectionId}&courseId=${courseId}&contentId=${content.contentId} `)}>
-                      <i className="bi bi-trash" style={{ fontSize: "10px" }}></i>{" "}
-                      <span>Edit</span>
-                    </Button> */}
                     <Button
                       color="danger"
                       className="mt-4"
