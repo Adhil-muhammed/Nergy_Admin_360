@@ -1,6 +1,7 @@
 import { Button, Table } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
+import pdficon from "../../../assets/images/pdf/pdf.png";
 
 export const ContentList = (props) => {
   const { contents, onDeleteContent } = props;
@@ -40,7 +41,7 @@ export const ContentList = (props) => {
                   </td>
                   <td>
                     {content.fileURL && content.contentType === 0 ? (
-                      <i className="bi bi-file-earmark-pdf" style={{ fontSize: "30px" }}></i>
+                      <img src={pdficon} style={{ height: "40px" }} />
                     ) : content.fileURL && content.contentType === 1 ? (
                       <video controls width="200" height="">
                         <source src={content.fileURL} type="video/mp4"></source>
