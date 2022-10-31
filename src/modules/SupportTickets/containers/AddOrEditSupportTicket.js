@@ -89,21 +89,21 @@ export const AddOrEditSupportTicket = (props) => {
 
   const ticketDate = moment(date);
   const navigate = useNavigate();
-  const onDateChange = (m) => {
-    const tdate = m.format("YYYY-MM-DDTHH:mm:ss").toString();
-    setSupportTicket((draft) => {
-      draft.date = tdate;
-    });
-  };
+  // const onDateChange = (m) => {
+  //   const tdate = m.format("YYYY-MM-DDTHH:mm:ss").toString();
+  //   setSupportTicket((draft) => {
+  //     draft.date = tdate;
+  //   });
+  // };
 
   const replyTicketDate = moment(reply.date);
 
-  const onReplyDateChange = (m) => {
-    const tdate = m.format("YYYY-MM-DDTHH:mm:ss").toString();
-    setReply((draft) => {
-      draft.date = tdate;
-    });
-  };
+  // const onReplyDateChange = (m) => {
+  //   const tdate = m.format("YYYY-MM-DDTHH:mm:ss").toString();
+  //   setReply((draft) => {
+  //     draft.date = tdate;
+  //   });
+  // };
 
   const onSelectChange = (e, name) => {
     const { value } = e;
@@ -154,10 +154,10 @@ export const AddOrEditSupportTicket = (props) => {
               <div className="form-body">
                 <div className="col-12">
                   <div className="row">
-                    <div className="col-sm-6">
+                    {/* <div className="col-sm-6">
                       <div className="form-group">
                         <label className="mb-2" htmlFor="contact-date-vertical">
-                          Date
+                          Date1
                         </label>
                         <Datetime
                           dateformat="YYYY-MM-DD"
@@ -172,7 +172,7 @@ export const AddOrEditSupportTicket = (props) => {
                           {update && !ticketDate.isValid() ? "Please select date" : ""}
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label className="mb-2" htmlFor="first-status-vertical">
@@ -322,7 +322,7 @@ export const AddOrEditSupportTicket = (props) => {
                   <tr>
                     <th>#</th>
                     <th>Reply message</th>
-                    <td>Date</td>
+                    {/* <td>Date</td> */}
                     <th style={{ width: "220px" }}>Actions</th>
                   </tr>
                 </thead>
@@ -336,9 +336,9 @@ export const AddOrEditSupportTicket = (props) => {
                         <td>
                           <span>{reply.replyMessage}</span>
                         </td>
-                        <td>
+                        {/* <td>
                           <span>{reply.date}</span>
-                        </td>
+                        </td> */}
                         <td>
                           <Button
                             color="danger"
@@ -385,7 +385,7 @@ export const AddOrEditSupportTicket = (props) => {
             <form className="form">
               <div className="form-body">
                 <div className="row">
-                  <div className="col-sm-6">
+                  {/* <div className="col-sm-6">
                     <div className="form-group">
                       <label className="mb-2" htmlFor="contact-replydate-vertical">
                         Date
@@ -403,7 +403,7 @@ export const AddOrEditSupportTicket = (props) => {
                         {update && !replyTicketDate.isValid() ? "Please select date" : ""}
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="mb-2" htmlFor="first-ticketid-vertical">

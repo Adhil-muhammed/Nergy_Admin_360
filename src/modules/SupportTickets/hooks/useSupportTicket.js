@@ -42,7 +42,7 @@ export const useSupportTicket = ({ load = false, ticketId = 0 }) => {
 
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [supportTicket, setSupportTicket] = useImmer({
-    date: "",
+    // date: "",
     subject: "",
     message: "",
     studentId: "",
@@ -52,7 +52,7 @@ export const useSupportTicket = ({ load = false, ticketId = 0 }) => {
   });
 
   const [reply, setReply] = useImmer({
-    date: "",
+    //date: "",
     replyMessage: "",
     ticketId: "",
     userId: "",
