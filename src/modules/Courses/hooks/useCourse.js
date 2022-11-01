@@ -8,7 +8,7 @@ import {
   updateCourses,
   deteleCourses,
   deleteCourseSectionById,
-  getCourseType
+  getCourseType,
 } from "..";
 import { useNavigate } from "react-router-dom";
 import { successMessage, successDeletedMessage, errorMessage } from "utils";
@@ -22,7 +22,7 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
   const queryClient = useQueryClient();
   const coursesQuery = useQuery(GET_COURSES, getCourses, {
     refetchOnWindowFocus: false,
-    staleTime: Infinity
+    staleTime: Infinity,
   });
   const courseInfo = useQuery(`${GET_COURSE_BY_ID}_${courseId}`, () => getCourseById(courseId), {
     refetchOnWindowFocus: false,
@@ -30,10 +30,8 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
   });
   const coursesTypeQuery = useQuery(GET_COURSE_TYPE, getCourseType, {
     refetchOnWindowFocus: false,
-    staleTime: Infinity
+    staleTime: Infinity,
   });
-
-
 
   const [course, setCourse] = useImmer({
     courseId: 0,
@@ -45,7 +43,7 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     certificateFile: "",
     contentPath: "",
     courseSections: [],
-    courseType: -1
+    courseType: "",
   });
 
   const [courseSection, setCourseSection] = useImmer({
@@ -102,7 +100,9 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
 
   const onDelete = (id) => {
     const selectedCourse = coursesQuery.data.find((c) => c.courseId === id);
-    if (selectedCourse) { setCourse(selectedCourse); }
+    if (selectedCourse) {
+      setCourse(selectedCourse);
+    }
     setIsConfirmDelete((draft) => {
       draft = true;
       return draft;
@@ -122,16 +122,12 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     },
   });
 
-  const onToggleModal = React.useCallback(
-    () => {
-      setIsConfirmDelete((draft) => {
-        draft = !draft;
-        return draft;
-      });
-    },
-    [setIsConfirmDelete]
-  );
-
+  const onToggleModal = React.useCallback(() => {
+    setIsConfirmDelete((draft) => {
+      draft = !draft;
+      return draft;
+    });
+  }, [setIsConfirmDelete]);
 
   const onSectionDelete = (id) => {
     const selectedCourse = courseInfo.data.courseSections.find((c) => c.sectionId === id);
@@ -159,6 +155,6 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     onSectionDelete,
     courseSection,
     deleteCourseSection,
-    coursesTypeQuery
+    coursesTypeQuery,
   };
 };
