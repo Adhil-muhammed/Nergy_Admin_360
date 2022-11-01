@@ -19,7 +19,7 @@ export const AddContent = () => {
   const { createCourseContent, courseContent, setCourseContent } = useContent({
     contentId: 0,
     sectionId,
-    courseId
+    courseId,
   });
 
   const [update, forceUpdate] = useState();
@@ -69,13 +69,17 @@ export const AddContent = () => {
 
   return (
     <ContentLayout
-      title={"Conent Section"}
+      title={"Content Section"}
       subtitle="Create new Content"
-      breadcrumb={[{ label: "Courses", location: "/admin/course/section" },
-      { label: "Edit Courses", location: `../${courseId}` },
-      { label: "Edit Section", location: `../section/edit?sectionId=${sectionId}&courseId=${courseId}` },
-      { label: "Create Content" }]}
-
+      breadcrumb={[
+        { label: "Courses", location: "/admin/course/section" },
+        { label: "Edit Courses", location: `../${courseId}` },
+        {
+          label: "Edit Section",
+          location: `../section/edit?sectionId=${sectionId}&courseId=${courseId}`,
+        },
+        { label: "Create Content" },
+      ]}
     >
       <div>
         <form className="form">
@@ -108,7 +112,11 @@ export const AddContent = () => {
                       draft.contentType = parseInt(e.target.value, 10);
                     });
                   }}
-                  invalid={validator.current.message("contentType", courseContent.contentType, "required")}
+                  invalid={validator.current.message(
+                    "contentType",
+                    courseContent.contentType,
+                    "required"
+                  )}
                 >
                   <option value={-1}>---Select---</option>
                   <option value={0}>PDF</option>
@@ -147,7 +155,11 @@ export const AddContent = () => {
                       )}
                     />
                     <FormFeedback>
-                      {validator.current.message("ContentFile", courseContent.contentFile, "required")}
+                      {validator.current.message(
+                        "ContentFile",
+                        courseContent.contentFile,
+                        "required"
+                      )}
                     </FormFeedback>
                   </>
                 )}
@@ -170,6 +182,6 @@ export const AddContent = () => {
           </div>
         </form>
       </div>
-    </ContentLayout >
+    </ContentLayout>
   );
 };
