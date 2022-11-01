@@ -240,6 +240,30 @@ export const EditCourse = () => {
                         onChange={handleChecked}
                       />
                     </div>
+                    <div className="d-flex justify-content-end">
+                      <div>
+                        <LoadingButton
+                          isLoading={createCourse.isLoading || editCourse.isLoading}
+                          className="me-1 mb-1"
+                          color="success"
+                          onClick={() => {
+                            onSubmit(false);
+                          }}
+                        >
+                          {"Update"}
+                        </LoadingButton>
+                        <button
+                          disabled={createCourse.isLoading || editCourse.isLoading}
+                          type="reset"
+                          className="btn btn-light-secondary me-1 mb-1"
+                          onClick={() => {
+                            onCancel();
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <div className="col-12 mt-4">
                     <SectionList
@@ -257,28 +281,6 @@ export const EditCourse = () => {
                       >
                         Add Section
                       </Button>
-                    </div>
-                    <div>
-                      <LoadingButton
-                        isLoading={createCourse.isLoading || editCourse.isLoading}
-                        className="me-1 mb-1"
-                        color="success"
-                        onClick={() => {
-                          onSubmit(false);
-                        }}
-                      >
-                        {"Update"}
-                      </LoadingButton>
-                      <button
-                        disabled={createCourse.isLoading || editCourse.isLoading}
-                        type="reset"
-                        className="btn btn-light-secondary me-1 mb-1"
-                        onClick={() => {
-                          onCancel();
-                        }}
-                      >
-                        Cancel
-                      </button>
                     </div>
                   </div>
                 </div>
