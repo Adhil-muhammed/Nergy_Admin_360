@@ -7,8 +7,6 @@ import { useSupportTicket } from "../hooks";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import { useAuthorizeContext } from "master";
 
-
-
 export const SupportTicketList = () => {
   const { hasPermission } = useAuthorizeContext();
   const hasCreatePermission = hasPermission("SupportTickets", "Create");
@@ -48,16 +46,16 @@ export const SupportTicketList = () => {
   const ActionButtons = ({ value }) => {
     return (
       <>
-        {
-          hasEditPermission && <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
+        {hasEditPermission && (
+          <Button outline color="primary" size="sm" onClick={() => onEdit(value)}>
             <i className="bi bi-pencil-square" style={{ fontSize: "10px" }}></i> <span>Edit</span>
           </Button>
-        }
-        {
-          hasDeletePermission && <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
+        )}
+        {hasDeletePermission && (
+          <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
             <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
           </Button>
-        }
+        )}
       </>
     );
   };
@@ -68,10 +66,6 @@ export const SupportTicketList = () => {
       accessor: "subject",
     },
     {
-      Header: "Message",
-      accessor: "message",
-    },
-    {
       Header: "Date",
       accessor: "date",
     },
@@ -80,7 +74,6 @@ export const SupportTicketList = () => {
       accessor: "status",
       Cell: StatusIndicator,
     },
-
   ];
 
   if (hasDeletePermission || hasEditPermission) {
@@ -102,9 +95,7 @@ export const SupportTicketList = () => {
       subtitle={"List"}
       breadcrumb={[{ label: "Support ticket", location: "/supportTicket" }]}
     >
-      {
-        hasCreatePermission && <SupportTicketFilter />
-      }
+      {hasCreatePermission && <SupportTicketFilter />}
       <TableLayout columns={columns} data={data} />
       <ModalLayout
         isOpen={isConfirmDelete}

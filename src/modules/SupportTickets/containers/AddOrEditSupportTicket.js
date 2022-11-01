@@ -13,6 +13,7 @@ import { useUser } from "modules/Users";
 import { useStudent } from "modules/Student";
 import InputControl from "shared/components/InputControl";
 import { ReplyModal } from "../components/ReplyModal";
+import parse from "html-react-parser";
 
 export const AddOrEditSupportTicket = (props) => {
   const { usersQuery } = useUser({ load: true });
@@ -21,6 +22,7 @@ export const AddOrEditSupportTicket = (props) => {
   const { data: studentData } = studentsQuery;
 
   const [update, forceUpdate] = useState();
+
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },
@@ -89,22 +91,8 @@ export const AddOrEditSupportTicket = (props) => {
 
   const ticketDate = moment(date);
   const navigate = useNavigate();
-  const onDateChange = (m) => {
-    const tdate = m.format("YYYY-MM-DDTHH:mm:ss").toString();
-    setSupportTicket((draft) => {
-      draft.date = tdate;
-    });
-  };
 
   const replyTicketDate = moment(reply.date);
-
-  const onReplyDateChange = (m) => {
-    const tdate = m.format("YYYY-MM-DDTHH:mm:ss").toString();
-    setReply((draft) => {
-      draft.date = tdate;
-    });
-  };
-
   const onSelectChange = (e, name) => {
     const { value } = e;
     setSupportTicket((draft) => {
@@ -154,25 +142,6 @@ export const AddOrEditSupportTicket = (props) => {
               <div className="form-body">
                 <div className="col-12">
                   <div className="row">
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label className="mb-2" htmlFor="contact-date-vertical">
-                          Date
-                        </label>
-                        <Datetime
-                          dateformat="YYYY-MM-DD"
-                          timeformat={false}
-                          name="date"
-                          closeOnSelect={true}
-                          selected={ticketDate}
-                          value={ticketDate}
-                          onChange={onDateChange}
-                        />
-                        <div className="text-danger">
-                          {update && !ticketDate.isValid() ? "Please select date" : ""}
-                        </div>
-                      </div>
-                    </div>
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label className="mb-2" htmlFor="first-status-vertical">
@@ -334,7 +303,7 @@ export const AddOrEditSupportTicket = (props) => {
                           <span>{index + 1}</span>
                         </td>
                         <td>
-                          <span>{reply.replyMessage}</span>
+                          <span>{parse(reply.replyMessage)}</span>
                         </td>
                         <td>
                           <span>{reply.date}</span>
@@ -387,25 +356,6 @@ export const AddOrEditSupportTicket = (props) => {
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label className="mb-2" htmlFor="contact-replydate-vertical">
-                        Date
-                      </label>
-                      <Datetime
-                        dateformat="YYYY-MM-DD"
-                        timeformat={false}
-                        name="date"
-                        closeOnSelect={true}
-                        selected={reply.date}
-                        value={reply.date}
-                        onChange={onReplyDateChange}
-                      />
-                      <div className="text-danger">
-                        {update && !replyTicketDate.isValid() ? "Please select date" : ""}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
                       <label className="mb-2" htmlFor="first-ticketid-vertical">
                         Ticket Id
                       </label>
@@ -416,16 +366,6 @@ export const AddOrEditSupportTicket = (props) => {
                         name="ticketId"
                         placeholder="Ticket Id"
                         value={reply.ticketId}
-                        // onChange={(e) => {
-                        //   setReply((draft) => {
-                        //     draft.ticketId = e.target.value;
-                        //   });
-                        // }}
-                        // invalid={ReplyValidator.current.message(
-                        //   "tiketId",
-                        //   reply.ticketId,
-                        //   "required"
-                        // )}
                         readOnly
                       />
                     </div>
