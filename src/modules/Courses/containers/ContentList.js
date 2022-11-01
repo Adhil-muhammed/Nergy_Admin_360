@@ -1,6 +1,7 @@
 import { Button, Table } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
+import pdficon from "../../../assets/images/pdf/pdf.png";
 
 export const ContentList = (props) => {
   const { contents, onDeleteContent } = props;
@@ -39,25 +40,34 @@ export const ContentList = (props) => {
                     )}
                   </td>
                   <td>
-                    {content.fileURL && !content.isVideo ? (
-                      <img src={content.fileURL} style={{ height: "40px" }} />
-                    ) : content.fileURL && content.isVideo ? (
-                      <video controls width="240" height="">
+                    {content.fileURL && content.contentType === 0 ? (
+                      <img src={pdficon} style={{ height: "40px" }} />
+                    ) : content.fileURL && content.contentType === 1 ? (
+                      <video controls width="200" height="">
                         <source src={content.fileURL} type="video/mp4"></source>
                       </video>
-                    ) : content.fileURL && content.isVideo && content.isExternal ? (
-                      <iframe width="240" height="" frameborder="0" src={content.fileURL}></iframe>
+                    ) : content.fileURL && content.contentType === 2 ? (
+                      <iframe
+                        width="200"
+                        height="100"
+                        frameborder="0"
+                        src={content.fileURL}
+                      ></iframe>
+                    ) : content.fileURL && content.contentType === 3 ? (
+                      <i className="bi bi-link-45deg" style={{ fontSize: "35px" }}></i>
                     ) : (
                       <span>No files</span>
                     )}
                   </td>
                   <td>
-                    {/* <Button color="danger" className="mt-4" size="sm" onClick={() =>
-                      history(`../section/content/edit?sectionId=${sectionId}&courseId=${courseId}&contentId=${content.contentId} `)}>
-                      <i className="bi bi-trash" style={{ fontSize: "10px" }}></i>{" "}
-                      <span>Edit</span>
-                    </Button> */}
-                    <Button color="danger" className="mt-4" size="sm" onClick={() => { onDeleteContent(content.contentId) }}>
+                    <Button
+                      color="danger"
+                      className="mt-4"
+                      size="sm"
+                      onClick={() => {
+                        onDeleteContent(content.contentId);
+                      }}
+                    >
                       <i className="bi bi-trash" style={{ fontSize: "10px" }}></i>{" "}
                       <span>Delete</span>
                     </Button>
