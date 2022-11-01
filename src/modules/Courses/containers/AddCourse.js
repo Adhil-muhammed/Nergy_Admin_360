@@ -130,7 +130,15 @@ export const AddCourse = () => {
                           name="courseImageFile"
                           accept=".jpeg, .png, .jpg, .JPG, .JPEG, .PNG"
                           onChange={handleUpload}
+                          invalid={validator.current.message(
+                            "courseImageFile",
+                            course.courseImageFile,
+                            "required"
+                          )}
                         />
+                        <FormFeedback>
+                          {validator.current.message("Image", course.courseImageFile, "required")}
+                        </FormFeedback>
                       </div>
                     </div>
                   </div>
