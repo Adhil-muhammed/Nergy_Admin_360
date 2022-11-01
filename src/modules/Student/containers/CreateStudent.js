@@ -371,10 +371,10 @@ export const CreateStudent = () => {
                               draft.mobile = e.target.value;
                             });
                           }}
-                          invalid={validator.current.message("mobile", mobile, "required")}
+                          invalid={validator.current.message("mobile", mobile, "required|phone")}
                         />
                         <FormFeedback>
-                          {validator.current.message("mobile", mobile, "required")}
+                          {validator.current.message("mobile", mobile, "required|phone")}
                         </FormFeedback>
                       </div>
                     </div>
