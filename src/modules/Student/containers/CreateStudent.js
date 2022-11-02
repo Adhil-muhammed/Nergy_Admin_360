@@ -16,9 +16,28 @@ export const CreateStudent = () => {
   const navigate = useNavigate();
   const editMode = studentId !== undefined;
   const [update, forceUpdate] = useState();
+
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },
+      //test
+      validators: {
+        mobile: {
+          // name the rule
+          message: "Mobile number must be +91XXXXXXXXXX or XXXXXXXXXX",
+          rule: (val, params, validator) => {
+            return (
+              validator.helpers.testRegex(
+                val,
+                /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/i
+              ) && params.indexOf(val) === -1
+            );
+          },
+          messageReplace: (message, params) =>
+            message.replace(":values", this.helpers.toSentence(params)), // optional
+          required: true, // optional
+        },
+      },
     })
   );
   const {
@@ -371,10 +390,10 @@ export const CreateStudent = () => {
                               draft.mobile = e.target.value;
                             });
                           }}
-                          invalid={validator.current.message("mobile", mobile, "required|phone")}
+                          invalid={validator.current.message("mobile", mobile, "required|mobile")}
                         />
                         <FormFeedback>
-                          {validator.current.message("mobile", mobile, "required|phone")}
+                          {validator.current.message("mobile", mobile, "required|mobile")}
                         </FormFeedback>
                       </div>
                     </div>
