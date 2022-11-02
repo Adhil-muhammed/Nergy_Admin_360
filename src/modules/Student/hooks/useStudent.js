@@ -36,21 +36,21 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
   });
   const batchesQuery = useQuery(GetBatchKey, getBatches, { staleTime: Infinity });
   const institutesQuery = useQuery(GetInstituteKey, getInstitutes, { staleTime: Infinity });
-  const coursesQuery = useQuery(GetCourseKey, getCourses, { staleTime: Infinity });
+  // const coursesQuery = useQuery(GetCourseKey, getCourses, { staleTime: Infinity });
 
-  const courses = React.useMemo(() => {
-    return coursesQuery.data
-      ? coursesQuery.data.map((c) => {
-        return { value: c.courseId, label: c.name };
-      })
-      : [];
-  }, [coursesQuery.data]);
+  // const courses = React.useMemo(() => {
+  //   return coursesQuery.data
+  //     ? coursesQuery.data.map((c) => {
+  //         return { value: c.courseId, label: c.name };
+  //       })
+  //     : [];
+  // }, [coursesQuery.data]);
 
   const batches = React.useMemo(() => {
     return batchesQuery.data
       ? batchesQuery.data.map((c) => {
-        return { value: c.batchId, label: c.name };
-      })
+          return { value: c.batchId, label: c.name };
+        })
       : [];
   }, [batchesQuery.data]);
 
@@ -69,7 +69,7 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     dateOfBirth: "",
     mobile: "",
     region: "",
-    selectedCourses: [],
+    //selectedCourses: [],
     selectedBatches: [],
   });
 
@@ -90,7 +90,8 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
 
   const createStudent = useMutation(createStudents, {
     onError: (e, newData, previousData) => {
-      errorMessage();
+      console.log(e.response.data.message);
+      errorMessage(e.response.data.message);
     },
     onSuccess: () => {
       successMessage();
@@ -111,7 +112,7 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
       navigate("..", { replace: true });
       queryClient.invalidateQueries(GetStudentKey);
     },
-    onError: (e, newData, previousData) => { },
+    onError: (e, newData, previousData) => {},
   });
 
   const deleteStudent = useMutation(deteleStudents, {
@@ -189,7 +190,7 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     fetchData,
     batches,
     institutesQuery,
-    courses,
+    //courses,
     studentInfo,
     isTemplateModalShow,
     setIsTemplateModalShow,
