@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { TableLayout, } from "shared/components";
+import { TableLayout } from "shared/components";
 import { Button } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { useSection } from "..";
@@ -8,10 +8,7 @@ export const SectionList = (props) => {
   const { sections, courseId, onSectionDelete } = props;
 
   const history = useNavigate();
-  const { courseSection,
-    onDelete,
-    deleteCourseSection,
-  } = useSection({ sectionId: 0, courseId });
+  const { courseSection, onDelete, deleteCourseSection } = useSection({ sectionId: 0, courseId });
 
   const onConfirm = () => {
     deleteCourseSection.mutate(courseSection.courseId);
@@ -41,10 +38,6 @@ export const SectionList = (props) => {
         accessor: "title",
       },
       {
-        Header: "Description",
-        accessor: "description",
-      },
-      {
         Header: "Actions",
         id: "actions",
         accessor: "sectionId",
@@ -54,9 +47,10 @@ export const SectionList = (props) => {
     []
   );
 
-  return (<>
-    <h2>Sections</h2>
-    <TableLayout columns={columns} data={sections} />
-  </>
+  return (
+    <>
+      <h2>Sections</h2>
+      <TableLayout columns={columns} data={sections} />
+    </>
   );
 };
