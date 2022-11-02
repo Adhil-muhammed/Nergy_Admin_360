@@ -57,9 +57,10 @@ export const AddCourse = () => {
   const handleUpload = (e, isContent = false) => {
     const file = e.target.files[0];
     const name = e.target.name;
-
+    const objectUrl = URL.createObjectURL(file);
     setCourse((draft) => {
       draft[name] = file;
+      draft.courseImageURL = objectUrl;
     });
   };
 
@@ -118,27 +119,32 @@ export const AddCourse = () => {
                         </FormFeedback>
                       </div>
                     </div>
-                    <div className="col-sm-6">
-                      <div className="form-group">
-                        <label htmlFor="courseImageFile" className="form-label">
-                          Course image*
-                        </label>
-                        <Input
-                          id="courseImageFile"
-                          type="file"
-                          className="form-control"
-                          name="courseImageFile"
-                          accept=".jpeg, .png, .jpg, .JPG, .JPEG, .PNG"
-                          onChange={handleUpload}
-                          invalid={validator.current.message(
-                            "courseImageFile",
-                            course.courseImageFile,
-                            "required"
-                          )}
-                        />
-                        <FormFeedback>
-                          {validator.current.message("Image", course.courseImageFile, "required")}
-                        </FormFeedback>
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <div className="form-group">
+                          <label htmlFor="courseImageFile" className="form-label">
+                            Course image*
+                          </label>
+                          <Input
+                            id="courseImageFile"
+                            type="file"
+                            className="form-control"
+                            name="courseImageFile"
+                            accept=".jpeg, .png, .jpg, .JPG, .JPEG, .PNG"
+                            onChange={handleUpload}
+                            invalid={validator.current.message(
+                              "courseImageFile",
+                              course.courseImageFile,
+                              "required"
+                            )}
+                          />
+                          <FormFeedback>
+                            {validator.current.message("Image", course.courseImageFile, "required")}
+                          </FormFeedback>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <img style={{ height: "70px" }} src={course.courseImageURL} />{" "}
                       </div>
                     </div>
                   </div>
