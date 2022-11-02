@@ -72,7 +72,7 @@ export const EditCourse = () => {
     const objectUrl = URL.createObjectURL(file);
     setCourse((draft) => {
       draft[name] = file;
-      draft.courseImageFile = objectUrl;
+      draft.courseImageURL = objectUrl;
     });
   };
 

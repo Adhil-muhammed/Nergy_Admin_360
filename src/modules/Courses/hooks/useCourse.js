@@ -44,6 +44,7 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     contentPath: "",
     courseSections: [],
     courseType: "",
+    courseImageURL: "",
   });
 
   const [courseSection, setCourseSection] = useImmer({
