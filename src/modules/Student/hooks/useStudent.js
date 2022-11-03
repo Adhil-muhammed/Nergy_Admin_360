@@ -13,12 +13,10 @@ import { useNavigate } from "react-router-dom";
 import { successMessage, successDeletedMessage, errorMessage } from "utils";
 import { getInstitutes } from "modules/Institute";
 import { getBatches } from "modules/Batch";
-import { getCourses } from "modules/Courses";
 
 const GetStudentKey = "GET_BATCHES_API";
 const GetBatchKey = "GET_BATCHES_FOR_CREATE_STUDENT";
 const GetInstituteKey = "GET_INSTITUTES_FOR_CREATE_STUDENT";
-const GetCourseKey = "GET_COURSE_FOR_CREATE_STUDENT";
 const Get_STUDENT_BY_ID = "GET_STUDENT_BY_ID";
 
 export const useStudent = ({ load = false, studentId = 0 }) => {
@@ -34,17 +32,8 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     enabled: load,
     staleTime: Infinity,
   });
-  const batchesQuery = useQuery(GetBatchKey, getBatches, { staleTime: Infinity });
-  const institutesQuery = useQuery(GetInstituteKey, getInstitutes, { staleTime: Infinity });
-  // const coursesQuery = useQuery(GetCourseKey, getCourses, { staleTime: Infinity });
-
-  // const courses = React.useMemo(() => {
-  //   return coursesQuery.data
-  //     ? coursesQuery.data.map((c) => {
-  //         return { value: c.courseId, label: c.name };
-  //       })
-  //     : [];
-  // }, [coursesQuery.data]);
+  const batchesQuery = useQuery(GetBatchKey, getBatches);
+  const institutesQuery = useQuery(GetInstituteKey, getInstitutes);
 
   const batches = React.useMemo(() => {
     return batchesQuery.data
@@ -90,7 +79,6 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
 
   const createStudent = useMutation(createStudents, {
     onError: (e, newData, previousData) => {
-      console.log(e.response.data.message);
       errorMessage(e.response.data.message);
     },
     onSuccess: () => {
@@ -112,7 +100,9 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
       navigate("..", { replace: true });
       queryClient.invalidateQueries(GetStudentKey);
     },
-    onError: (e, newData, previousData) => {},
+    onError: (e, newData, previousData) => {
+      errorMessage(e.response.data.message);
+    },
   });
 
   const deleteStudent = useMutation(deteleStudents, {
@@ -134,7 +124,6 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     },
     onSuccess: () => {
       successDeletedMessage();
-      // queryClient.invalidateQueries(GetStudentKey);
     },
     onSettled: () => {
       setIsTemplateModalShow(false);
@@ -190,7 +179,6 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     fetchData,
     batches,
     institutesQuery,
-    //courses,
     studentInfo,
     isTemplateModalShow,
     setIsTemplateModalShow,
