@@ -1,8 +1,6 @@
 import React, { useState, useRef } from "react";
 import { ContentLayout } from "shared/components";
 import { Input, Button, FormFeedback, Label } from "reactstrap";
-import Datetime from "react-datetime";
-import Select from "react-select";
 import SimpleReactValidator from "simple-react-validator";
 import moment from "moment";
 import { useStudent } from "../hooks";
@@ -38,16 +36,8 @@ export const CreateStudent = () => {
       },
     })
   );
-  const {
-    student,
-    setStudent,
-    createStudent,
-    batches,
-    institutesQuery,
-    courses,
-    editStudent,
-    studentInfo,
-  } = useStudent({ load: false, studentId: studentId });
+  const { student, setStudent, createStudent, batches, institutesQuery, editStudent, studentInfo } =
+    useStudent({ load: false, studentId: studentId });
   const {
     instituteId,
     registrationId,
@@ -59,7 +49,6 @@ export const CreateStudent = () => {
     dateOfBirth,
     mobile,
     region,
-    selectedCourses,
     userStatus,
     selectedBatches,
   } = student;
