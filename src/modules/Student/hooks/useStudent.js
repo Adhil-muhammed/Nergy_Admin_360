@@ -101,7 +101,7 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
       queryClient.invalidateQueries(GetStudentKey);
     },
     onError: (e, newData, previousData) => {
-      errorMessage();
+      errorMessage(e.response.data.message);
     },
   });
 
