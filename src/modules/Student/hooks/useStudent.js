@@ -34,8 +34,8 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     enabled: load,
     staleTime: Infinity,
   });
-  const batchesQuery = useQuery(GetBatchKey, getBatches, { staleTime: Infinity });
-  const institutesQuery = useQuery(GetInstituteKey, getInstitutes, { staleTime: Infinity });
+  const batchesQuery = useQuery(GetBatchKey, getBatches, { staleTime: 0 });
+  const institutesQuery = useQuery(GetInstituteKey, getInstitutes, { staleTime: 0 });
   // const coursesQuery = useQuery(GetCourseKey, getCourses, { staleTime: Infinity });
 
   // const courses = React.useMemo(() => {
