@@ -25,12 +25,10 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
   const queryClient = useQueryClient();
   const [page, setPage] = useImmer({
     pageIndex: 1,
-    pageSize: 100,
+    pageSize: 10,
   });
   const studentsQuery = useQuery([GetStudentKey, page], () => getStudents(page), {
-    keepPreviousData: true,
     enabled: load,
-    staleTime: Infinity,
   });
   const batchesQuery = useQuery(GetBatchKey, getBatches);
   const institutesQuery = useQuery(GetInstituteKey, getInstitutes);
@@ -83,7 +81,7 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     },
     onSuccess: () => {
       successMessage();
-      queryClient.invalidateQueries(GetStudentKey);
+      queryClient.invalidateQueries([GetStudentKey, page]);
       navigate("..", { replace: true });
     },
     onSettled: () => {
@@ -98,7 +96,7 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     onSuccess: () => {
       successMessage();
       navigate("..", { replace: true });
-      queryClient.invalidateQueries(GetStudentKey);
+      queryClient.invalidateQueries([GetStudentKey, page]);
     },
     onError: (e, newData, previousData) => {
       errorMessage(e.response.data.message);
@@ -111,7 +109,7 @@ export const useStudent = ({ load = false, studentId = 0 }) => {
     },
     onSuccess: () => {
       successDeletedMessage();
-      queryClient.invalidateQueries(GetStudentKey);
+      queryClient.invalidateQueries([GetStudentKey, page]);
     },
     onSettled: () => {
       onToggleModal(false);

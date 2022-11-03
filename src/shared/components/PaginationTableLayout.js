@@ -56,6 +56,7 @@ export const PaginationTableLayout = (props) => {
               onChange={(e) => {
                 setPage((draft) => {
                   draft.pageSize = Number(e.target.value);
+                  draft.pageIndex = 1;
                   return draft;
                 });
               }}
