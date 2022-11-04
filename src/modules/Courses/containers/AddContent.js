@@ -73,7 +73,7 @@ export const AddContent = () => {
     { value: 2, label: "Video Link" },
     { value: 3, label: "External Link" },
   ];
-  console.log(courseContent.contentType);
+
   return (
     <ContentLayout
       title={"Content Section"}
@@ -127,31 +127,6 @@ export const AddContent = () => {
                 <div className="text-danger">
                   {validator.current.message("contentType", courseContent.contentType, "required")}
                 </div>
-                {/* <Input
-                  value={courseContent.contentType}
-                  id="first-name-vertical"
-                  name="contentType"
-                  type="select"
-                  onChange={(e) => {
-                    setCourseContent((draft) => {
-                      draft.contentType = parseInt(e.target.value, 10);
-                    });
-                  }}
-                  invalid={validator.current.message(
-                    "contentType",
-                    courseContent.contentType,
-                    "required"
-                  )}
-                >
-                  <option value={-1}>---Select---</option>
-                  <option value={0}>PDF</option>
-                  <option value={1}>Video</option>
-                  <option value={2}>Video Link</option>
-                  <option value={3}>External Link</option>
-                </Input>
-                <FormFeedback>
-                  {validator.current.message("contentType", courseContent.contentType, "required")}
-                </FormFeedback> */}
               </div>
             </div>
 
