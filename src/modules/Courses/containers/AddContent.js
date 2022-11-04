@@ -67,6 +67,13 @@ export const AddContent = () => {
     navigate(`../section/edit?sectionId=${sectionId}&courseId=${courseId}`, { replace: true });
   };
 
+  const options = [
+    { value: 0, label: "PDF" },
+    { value: 1, label: "Video" },
+    { value: 2, label: "Video Link" },
+    { value: 3, label: "External Link" },
+  ];
+  console.log(courseContent.contentType);
   return (
     <ContentLayout
       title={"Content Section"}
@@ -102,7 +109,25 @@ export const AddContent = () => {
                 <label className="mb-2" htmlFor="first-name-vertical">
                   Content Type
                 </label>
-                <Input
+
+                <InputControl
+                  type="react-select"
+                  name="contentType"
+                  value={options.find((item) => item.value === courseContent.contentType)}
+                  options={options}
+                  onChange={(e) => {
+                    setCourseContent((draft) => {
+                      draft.contentType = parseInt(e.value, 10);
+                    });
+                  }}
+                  isValid={
+                    !validator.current.message("contentType", courseContent.contentType, "required")
+                  }
+                />
+                <div className="text-danger">
+                  {validator.current.message("contentType", courseContent.contentType, "required")}
+                </div>
+                {/* <Input
                   value={courseContent.contentType}
                   id="first-name-vertical"
                   name="contentType"
@@ -126,7 +151,7 @@ export const AddContent = () => {
                 </Input>
                 <FormFeedback>
                   {validator.current.message("contentType", courseContent.contentType, "required")}
-                </FormFeedback>
+                </FormFeedback> */}
               </div>
             </div>
 

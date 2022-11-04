@@ -23,7 +23,7 @@ export const useContent = ({ sectionId = 0, contentId = 0, courseId = 0 }) => {
     title: "",
     fileName: "",
     contentFile: "",
-    contentType: -1,
+    contentType: "",
     sectionId: 0,
   });
 
@@ -127,6 +127,6 @@ export const useContent = ({ sectionId = 0, contentId = 0, courseId = 0 }) => {
     courseCotentInfo,
     onDelete,
     setCourseContent,
-    editCourseContent
+    editCourseContent,
   };
 };
