@@ -67,6 +67,13 @@ export const AddContent = () => {
     navigate(`../section/edit?sectionId=${sectionId}&courseId=${courseId}`, { replace: true });
   };
 
+  const options = [
+    { value: 0, label: "PDF" },
+    { value: 1, label: "Video" },
+    { value: 2, label: "Video Link" },
+    { value: 3, label: "External Link" },
+  ];
+
   return (
     <ContentLayout
       title={"Content Section"}
@@ -102,31 +109,24 @@ export const AddContent = () => {
                 <label className="mb-2" htmlFor="first-name-vertical">
                   Content Type
                 </label>
-                <Input
-                  value={courseContent.contentType}
-                  id="first-name-vertical"
+
+                <InputControl
+                  type="react-select"
                   name="contentType"
-                  type="select"
+                  value={options.find((item) => item.value === courseContent.contentType)}
+                  options={options}
                   onChange={(e) => {
                     setCourseContent((draft) => {
-                      draft.contentType = parseInt(e.target.value, 10);
+                      draft.contentType = parseInt(e.value, 10);
                     });
                   }}
-                  invalid={validator.current.message(
-                    "contentType",
-                    courseContent.contentType,
-                    "required"
-                  )}
-                >
-                  <option value={-1}>---Select---</option>
-                  <option value={0}>PDF</option>
-                  <option value={1}>Video</option>
-                  <option value={2}>Video Link</option>
-                  <option value={3}>External Link</option>
-                </Input>
-                <FormFeedback>
+                  isValid={
+                    !validator.current.message("contentType", courseContent.contentType, "required")
+                  }
+                />
+                <div className="text-danger">
                   {validator.current.message("contentType", courseContent.contentType, "required")}
-                </FormFeedback>
+                </div>
               </div>
             </div>
 
