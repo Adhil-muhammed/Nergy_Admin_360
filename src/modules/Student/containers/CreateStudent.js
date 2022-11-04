@@ -1,8 +1,6 @@
 import React, { useState, useRef } from "react";
 import { ContentLayout } from "shared/components";
-import { Input, Button, FormFeedback } from "reactstrap";
-import Datetime from "react-datetime";
-import Select from "react-select";
+import { Input, Button, FormFeedback, Label } from "reactstrap";
 import SimpleReactValidator from "simple-react-validator";
 import moment from "moment";
 import { useStudent } from "../hooks";
@@ -38,16 +36,8 @@ export const CreateStudent = () => {
       },
     })
   );
-  const {
-    student,
-    setStudent,
-    createStudent,
-    batches,
-    institutesQuery,
-    courses,
-    editStudent,
-    studentInfo,
-  } = useStudent({ load: false, studentId: studentId });
+  const { student, setStudent, createStudent, batches, institutesQuery, editStudent, studentInfo } =
+    useStudent({ load: false, studentId: studentId });
   const {
     instituteId,
     registrationId,
@@ -59,7 +49,6 @@ export const CreateStudent = () => {
     dateOfBirth,
     mobile,
     region,
-    selectedCourses,
     userStatus,
     selectedBatches,
   } = student;
@@ -95,6 +84,18 @@ export const CreateStudent = () => {
   if (studentInfo.isLoading) {
     return <LoadingSpinner />;
   }
+
+  const options = [
+    { value: 0, label: "Male" },
+    { value: 1, label: "Female" },
+  ];
+
+  const status = [
+    { value: 0, label: "Active" },
+    { value: 1, label: "Inactive" },
+    { value: 2, label: "Pending Invite" },
+    { value: 3, label: "Invted" },
+  ];
 
   return (
     <ContentLayout
@@ -227,25 +228,21 @@ export const CreateStudent = () => {
                         <label className="mb-2" htmlFor="first-name-vertical">
                           Gender
                         </label>
-                        <Input
-                          value={gender}
-                          id="first-name-vertical"
+                        <InputControl
+                          type="react-select"
                           name="gender"
-                          type="select"
+                          value={options.filter((item) => item.value === gender)}
+                          options={options}
                           onChange={(e) => {
                             setStudent((draft) => {
-                              draft.gender = parseInt(e.target.value, 10);
+                              draft.gender = parseInt(e.value, 10);
                             });
                           }}
-                          invalid={validator.current.message("gender", gender, "required")}
-                        >
-                          <option value="">---Select---</option>
-                          <option value={0}>Male</option>
-                          <option value={1}>Female</option>
-                        </Input>
-                        <FormFeedback>
+                          isValid={!validator.current.message("gender", gender, "required")}
+                        />
+                        <div className="text-danger">
                           {validator.current.message("gender", gender, "required")}
-                        </FormFeedback>
+                        </div>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -255,7 +252,11 @@ export const CreateStudent = () => {
                         </label>
                         <Input
                           type="text"
-                          id="first-name-vertical"
+                          id="first-name-vertic
+                          
+                          
+                          
+                          al"
                           className="form-control"
                           name="qualification"
                           placeholder="Qualification"
@@ -419,56 +420,26 @@ export const CreateStudent = () => {
                       <label className="mb-2" htmlFor="first-status-vertical">
                         Status
                       </label>
-                      <Input
-                        value={userStatus}
-                        id="first-status-vertical"
-                        name="status"
-                        type="select"
-                        onChange={(e) => {
-                          setStudent((draft) => {
-                            draft.userStatus = parseInt(e.target.value, 10);
-                          });
-                        }}
-                        invalid={validator.current.message("Status", userStatus, "required")}
-                      >
-                        <option value="">---Select---</option>
-                        <option value={0}>Active</option>
-                        <option value={1}>Inactive</option>
-                        <option value={2}>Pending Invite</option>
-                        <option value={3}>Invited</option>
-                      </Input>
-                      <FormFeedback>
-                        {validator.current.message("Status", userStatus, "required")}
-                      </FormFeedback>
-                    </div>
-                  </div>
-                </div>
-                {/* <div className="row">
-                  <div className="col-6">
-                    <div className="form-group">
-                      <label className="mb-2" htmlFor="first-name-vertical">
-                        Courses*
-                      </label>
+
                       <InputControl
                         type="react-select"
-                        isMulti
-                        options={courses}
-                        name="selectedCourses"
-                        value={
-                          selectedCourses.length > 0 &&
-                          courses.filter((item) => selectedCourses.indexOf(item.value) > -1)
-                        }
-                        isValid={
-                          !validator.current.message("selectedCourses", selectedCourses, "required")
-                        }
-                        onChange={(e) => onSelectChange(e, "selectedCourses")}
+                        name="status"
+                        value={status.filter((item) => item.value === userStatus)}
+                        options={status}
+                        onChange={(e) => {
+                          setStudent((draft) => {
+                            draft.userStatus = parseInt(e.value, 10);
+                          });
+                        }}
+                        isValid={!validator.current.message("status", status, "required")}
                       />
                       <div className="text-danger">
-                        {validator.current.message("assessmentStatus", selectedCourses, "required")}
+                        {validator.current.message("status", status, "required")}
                       </div>
                     </div>
                   </div>
-                </div> */}
+                </div>
+
                 <div className="col-12 d-flex justify-content-end">
                   <LoadingButton
                     isLoading={createStudent.isLoading || editStudent.isLoading}
