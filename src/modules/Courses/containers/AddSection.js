@@ -1,13 +1,12 @@
 import React, { useRef, useState } from "react";
-import { useNavigate, useSearchParams, } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Input, FormFeedback, Label } from "reactstrap";
-import { ContentLayout, } from "shared";
+import { ContentLayout } from "shared";
 import { LoadingButton } from "shared/components/LoadingButton";
 import { LoadingSpinner } from "shared/components/LoadingSpinner";
 import SimpleReactValidator from "simple-react-validator";
 import { useSection } from "../hooks";
 import { QuillEditor } from "shared/components/QuillEditor";
-
 
 export const CreateCourseSection = () => {
   const [searchParams] = useSearchParams();
@@ -16,11 +15,10 @@ export const CreateCourseSection = () => {
   const courseId = searchParams.get("courseId");
 
   const [update, forceUpdate] = useState();
-  const { createCourseSections, setCourseSection, courseSection, } =
-    useSection({
-      sectionId: 0,
-      courseId,
-    });
+  const { createCourseSections, setCourseSection, courseSection } = useSection({
+    sectionId: 0,
+    courseId,
+  });
 
   const validator = useRef(
     new SimpleReactValidator({
@@ -67,7 +65,11 @@ export const CreateCourseSection = () => {
       <ContentLayout
         title={"Create Sections"}
         subtitle="Create new Section"
-        breadcrumb={[{ label: "Courses", location: "/admin/course/section" }, { label: "Edit Courses", location: `../${courseId}` }, { label: "Create Section" }]}
+        breadcrumb={[
+          { label: "Courses", location: "/admin/course/section" },
+          { label: "Edit Courses", location: `../${courseId}` },
+          { label: "Create Section" },
+        ]}
       >
         <section id="basic-vertical-layouts">
           <div className="row match-height">
@@ -141,6 +143,13 @@ export const CreateCourseSection = () => {
                               });
                             }}
                           />
+                          <div className="text-danger">
+                            {validator.current.message(
+                              "Description",
+                              courseSection.description,
+                              "required"
+                            )}
+                          </div>
                         </div>
                       </div>
                       <div className="col-6">
