@@ -5,6 +5,7 @@ import { useTrainingPartner } from "../hooks";
 import { Input, FormFeedback } from "reactstrap";
 import SimpleReactValidator from "simple-react-validator";
 import { LoadingButton } from "shared/components/LoadingButton";
+import InputControl from "shared/components/InputControl";
 
 export const AddOrEditTrainingPartner = (props) => {
   let { trainingPartnerId } = useParams();
@@ -15,6 +16,23 @@ export const AddOrEditTrainingPartner = (props) => {
   const validator = useRef(
     new SimpleReactValidator({
       autoForceUpdate: { forceUpdate: forceUpdate },
+      validators: {
+        pass: {
+          message:
+            "The :attribute  should contain Uppercase, Lowercase, number & special character :values.",
+          rule: (val, params, validator) => {
+            return (
+              validator.helpers.testRegex(
+                val,
+                /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/i
+              ) && params.indexOf(val) === -1
+            );
+          },
+          messageReplace: (message, params) =>
+            message.replace(":values", this.helpers.toSentence(params)), // optional
+          required: true,
+        },
+      },
     })
   );
 
@@ -44,6 +62,16 @@ export const AddOrEditTrainingPartner = (props) => {
   const onCancel = () => {
     navigate("..", { replace: true });
   };
+
+  const optionsGender = [
+    { value: 0, label: "Male" },
+    { value: 1, label: "Female" },
+  ];
+
+  const optionsStatus = [
+    { value: 0, label: "Active" },
+    { value: 1, label: "Inactive" },
+  ];
 
   return (
     <ContentLayout
@@ -136,22 +164,21 @@ export const AddOrEditTrainingPartner = (props) => {
                         <label htmlFor="user-gender-select" className="mb-3">
                           Gender
                         </label>
-                        <Input
-                          value={gender}
-                          id="first-name-vertical"
-                          name="select"
-                          type="select"
+                        <InputControl
+                          type="react-select"
+                          name="gender"
+                          value={optionsGender.filter((item) => item.value === gender)}
+                          options={optionsGender}
                           onChange={(e) => {
                             setTrainingPartner((draft) => {
-                              draft.gender = parseInt(e.target.value);
+                              draft.gender = parseInt(e.value, 10);
                             });
                           }}
-                          invalid={validator.current.message("gender", gender, "required")}
-                        >
-                          <option value={-1}>---Select---</option>
-                          <option value={0}>Male</option>
-                          <option value={1}>Female</option>
-                        </Input>
+                          isValid={!validator.current.message("gender", gender, "required")}
+                        />
+                        <div className="text-danger">
+                          {validator.current.message("gender", gender, "required")}
+                        </div>
                       </div>
                     </div>
 
@@ -203,11 +230,15 @@ export const AddOrEditTrainingPartner = (props) => {
                           invalid={validator.current.message(
                             "Email Address",
                             emailAddress,
-                            "required"
+                            "required|email"
                           )}
                         />
                         <FormFeedback>
-                          {validator.current.message("Email Address", emailAddress, "required")}
+                          {validator.current.message(
+                            "Email Address",
+                            emailAddress,
+                            "required|email"
+                          )}
                         </FormFeedback>
                       </div>
                     </div>
@@ -233,14 +264,14 @@ export const AddOrEditTrainingPartner = (props) => {
                                   draft.password = e.target.value;
                                 });
                               }}
-                              invalid={validator.current.message("password", password, "required")}
+                              invalid={validator.current.message(
+                                "password",
+                                password,
+                                "required|pass"
+                              )}
                             />
-                            <div>
-                              Password should contain Uppercase, Lowercase, number & special
-                              character
-                            </div>
                             <FormFeedback>
-                              {validator.current.message("password", password, "required")}
+                              {validator.current.message("password", password, "required|pass")}
                             </FormFeedback>
                           </div>
                         )}
@@ -251,25 +282,21 @@ export const AddOrEditTrainingPartner = (props) => {
                         <label className="mb-2" htmlFor="first-status-vertical">
                           Status
                         </label>
-                        <Input
-                          value={userStatus}
-                          id="first-status-vertical"
+                        <InputControl
+                          type="react-select"
                           name="status"
-                          type="select"
+                          value={optionsStatus.filter((item) => item.value === userStatus)}
+                          options={optionsStatus}
                           onChange={(e) => {
                             setTrainingPartner((draft) => {
-                              draft.userStatus = parseInt(e.target.value, 10);
+                              draft.userStatus = parseInt(e.value, 10);
                             });
                           }}
-                          invalid={validator.current.message("Status", userStatus, "required")}
-                        >
-                          <option value={-1}>---Select---</option>
-                          <option value={0}>Active</option>
-                          <option value={1}>Inactive</option>
-                        </Input>
-                        <FormFeedback>
-                          {validator.current.message("Status", userStatus, "required")}
-                        </FormFeedback>
+                          isValid={!validator.current.message("userStatus", userStatus, "required")}
+                        />
+                        <div className="text-danger">
+                          {validator.current.message("userStatus", userStatus, "required")}
+                        </div>
                       </div>
                     </div>
                   </div>

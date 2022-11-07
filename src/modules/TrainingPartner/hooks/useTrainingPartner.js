@@ -45,16 +45,16 @@ export const useTrainingPartner = ({ load = false, trainingPartnerId = undefined
     trainingPartnerId: "",
     firstName: "",
     lastName: "",
-    gender: -1,
+    gender: "",
     address: "",
     phoneNumber: "",
     emailAddress: "",
-    userStatus: -1,
+    userStatus: "",
   });
 
   const createTrainingPartner = useMutation(createTrPartner, {
     onError: (e, newData, previousData) => {
-      errorMessage("Unable to create!");
+      errorMessage(e.response.data.message);
     },
     onSuccess: () => {
       successMessage();
@@ -70,7 +70,7 @@ export const useTrainingPartner = ({ load = false, trainingPartnerId = undefined
       navigate("..", { replace: true });
     },
     onError: (e, newData, previousData) => {
-      errorMessage("Unable to edit!");
+      errorMessage(e.response.data.message);
     },
   });
 
