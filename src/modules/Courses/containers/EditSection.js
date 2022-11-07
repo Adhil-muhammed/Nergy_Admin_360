@@ -8,7 +8,6 @@ import SimpleReactValidator from "simple-react-validator";
 import { useSection, ContentList } from "..";
 import { QuillEditor } from "shared/components/QuillEditor";
 
-
 export const EditSection = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -17,7 +16,17 @@ export const EditSection = () => {
   const sectionId = searchParams.get("sectionId");
 
   const [update, forceUpdate] = useState();
-  const { isConfirmDelete, deleteCourseContent, updateCourseSection, setCourseSection, courseSection, contents, onDeleteContent, selectedContent, onToggleModal } = useSection({
+  const {
+    isConfirmDelete,
+    deleteCourseContent,
+    updateCourseSection,
+    setCourseSection,
+    courseSection,
+    contents,
+    onDeleteContent,
+    selectedContent,
+    onToggleModal,
+  } = useSection({
     sectionId,
     courseId,
   });
@@ -64,7 +73,11 @@ export const EditSection = () => {
       <ContentLayout
         title={"Course Sections"}
         subtitle="Create new Section"
-        breadcrumb={[{ label: "Courses", location: "/admin/courses" }, { label: "Edit Courses", location: `../${courseId}` }, { label: "Edit Section" }]}
+        breadcrumb={[
+          { label: "Courses", location: "/admin/courses" },
+          { label: "Edit Courses", location: `../${courseId}` },
+          { label: "Edit Section" },
+        ]}
       >
         <section id="basic-vertical-layouts">
           <div className="row match-height">
@@ -139,6 +152,13 @@ export const EditSection = () => {
                               });
                             }}
                           />
+                          <div className="text-danger">
+                            {validator.current.message(
+                              "Description",
+                              courseSection.description,
+                              "required"
+                            )}
+                          </div>
                         </div>
                       </div>
                       <div className="col-6">

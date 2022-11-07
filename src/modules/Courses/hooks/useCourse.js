@@ -62,6 +62,24 @@ export const useCourse = ({ load = false, courseId = 0 }) => {
     }
   }, [courseInfo.data]);
 
+  useEffect(() => {
+    if (course.description === "<p><br></p>") {
+      setCourse((draft) => {
+        draft.description = "";
+        return draft;
+      });
+    }
+  }, [course.description]);
+
+  useEffect(() => {
+    if (course.instructions === "<p><br></p>") {
+      setCourse((draft) => {
+        draft.instructions = "";
+        return draft;
+      });
+    }
+  }, [course.instructions]);
+
   const [isConfirmDelete, setIsConfirmDelete] = useImmer(false);
   const [isModalOpen, setIsModalOpen] = useImmer(false);
   const createCourse = useMutation(createCourses, {
