@@ -10,15 +10,11 @@ import {
 } from "..";
 import { useNavigate } from "react-router-dom";
 import { successMessage, successDeletedMessage, errorMessage } from "utils";
-import {
-  getBatches
-
-} from "modules/Batch";
+import { getBatches } from "modules/Batch";
 
 const GET_NOTIFICATIONS = "GET_NOTIFICATIONS";
 const GET_NOTIFICATION_BY_ID = "GET_NOTIFICATION_BY_ID";
 const GetBatchKey = "GET_BATCHES_FOR_NOTIFICTION";
-
 
 export const useNotification = ({ load = false, notificationId = 0 }) => {
   const navigate = useNavigate();
@@ -43,11 +39,10 @@ export const useNotification = ({ load = false, notificationId = 0 }) => {
   const batches = React.useMemo(() => {
     return batchesQuery.data
       ? batchesQuery.data.map((c) => {
-        return { value: c.batchId, label: c.name };
-      })
+          return { value: c.batchId, label: c.name };
+        })
       : [];
   }, [batchesQuery.data]);
-
 
   useEffect(() => {
     if (notificationInfo.data) {
@@ -60,8 +55,17 @@ export const useNotification = ({ load = false, notificationId = 0 }) => {
     title: "",
     content: "",
     isActive: true,
-    selectedBatches: []
+    selectedBatches: [],
   });
+
+  useEffect(() => {
+    if (notification.content === "<p><br></p>") {
+      setNotification((draft) => {
+        draft.content = "";
+        return draft;
+      });
+    }
+  }, [notification.content]);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -137,6 +141,6 @@ export const useNotification = ({ load = false, notificationId = 0 }) => {
     onChange,
     isConfirmDelete,
     onToggleModal,
-    batches
+    batches,
   };
 };
