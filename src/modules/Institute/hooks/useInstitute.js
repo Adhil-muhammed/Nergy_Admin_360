@@ -40,7 +40,7 @@ export const useInstitute = ({ load = false, instituteId = 0 }) => {
     instituteId: 0,
     name: "",
   });
-
+console.log(institute);
   const createInstitute = useMutation(createInstitutes, {
     onError: (e, newData, previousData) => {
       errorMessage("Unable to create!");
@@ -78,6 +78,7 @@ export const useInstitute = ({ load = false, instituteId = 0 }) => {
 
   const onDelete = (id) => {
     const selectedInstitute = institutesQuery.data.find((c) => c.instituteId === id);
+    console.log("selectedInstitute", selectedInstitute);
     if (selectedInstitute) setInstitute(selectedInstitute);
 
     setIsConfirmDelete((draft) => {

@@ -40,6 +40,7 @@ export const InstituteList = () => {
         {
           hasDeletePermission && <Button color="danger" size="sm" onClick={() => onDelete(value)} className="ms-3">
             <i className="bi bi-trash" style={{ fontSize: "10px" }}></i> <span>Delete</span>
+        
           </Button>
         }
       </>
